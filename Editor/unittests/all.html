@@ -1,0 +1,59 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>Rich text commands unit test suite</title>
+    <!--Rich text dependencies and rich text script-->
+    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+    <script type="text/javascript" src="../../Release/v0.1/Rangy.debug.js"></script>
+    <script type="text/javascript" src="../../Release/v0.1/Arte.debug.js"></script>
+
+    <!--Test Infrastructure-->
+    <link href="Qunit/qunit-1.12.0.css" rel="stylesheet" type="text/css" />
+    <script src="Qunit/qunit-1.12.0.js" type="text/javascript"></script>
+    <script type="text/javascript" src="unitTestsHelper.js"></script>
+
+    <!-- Add the test element id and selector-->
+    <script type="text/javascript">
+        TEST_ELEMENT_ID = "test-element";
+        TEST_ELEMENT_SELECTOR = "#" + TEST_ELEMENT_ID;
+    </script>
+    
+    
+</head>
+<body>
+    <h1 id="qunit-header">
+        Rich Text Unit Test Suite</h1>
+    <h2 id="qunit-banner"></h2>
+    <h2 id="qunit-userAgent"></h2>
+    <ol id="qunit-tests"></ol>
+    <!-- If you need to do DOM manipulation, do it in this element !-->
+    <div id="test-element"></div>
+    <div id="qunit-fixture">test markup, will be hidden</div>
+
+
+    <!-- End of files being tested !-->
+    <!-- Core Test cases -->
+
+    <script type="text/javascript" src="core/Commands.UnitTests.js"></script>
+    <script type="text/javascript" src="core/Events.UnitTests.js"></script>
+    <script type="text/javascript" src="core/TextArea.UnitTests.js"></script>
+    
+    <!--Extensions Unit-tests-->
+    <script type="text/javascript" src="lib/jquery-extensions/jquery-dom-cleanup.UnitTests.js"></script>
+    <script type="text/javascript" src="lib/jquery-extensions/jquery-dom-manipulation.UnitTests.js"></script>
+    <script type="text/javascript" src="lib/jquery-extensions/jquery-dom-traversal.UnitTests.js"></script>
+      
+    <script type="text/javascript" src="lib/rangy-extensions/rangy-blockElementApplier.unittests.js"></script>
+    <script type="text/javascript" src="lib/rangy-extensions/rangy-inlineElementApplier.unittests.js"></script>
+    <script type="text/javascript" src="lib/rangy-extensions/rangy-extensions.unittests.js"></script>
+    <script type="text/javascript" src="lib/rangy-extensions/richtextcommandapplier.unittests.js"></script>
+
+    <!--Plugins-->
+    <script type="text/javascript" src="plugins/insertcommand.unittests.js"></script>
+    <script type="text/javascript" src="plugins/keyboardEventHandler.unittests.js"></script>
+    <script type="text/javascript" src="plugins/pastehandler.unittests.js"></script>
+    <script type="text/javascript" src="plugins/undomanager.unittests.js"></script>
+    <script type="text/javascript" src="plugins/StateDetector.UnitTests.js"></script>
+    <!-- End of Unit Test references !-->
+</body>
+</html>

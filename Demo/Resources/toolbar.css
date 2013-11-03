@@ -1,0 +1,162 @@
+﻿#toolbar
+{
+    background-color: lightslategrey;
+    position: relative;
+}
+
+.toolbar-button
+{
+    border: 1px solid black; 
+    margin: 2px; 
+    display: inline-block;
+    height: 16px;
+    width: 16px;
+    background-color: lightgray;
+    background-size: 100%;
+}
+
+.toolbar-button:hover
+{
+    background-color: red;
+}
+
+.bold
+{
+   background-image: url("content/Icons/icons/text_bold.png"); 
+}
+
+.italic
+{
+   background-image: url("content/Icons/icons/text_italic.png"); 
+}
+
+.underline
+{
+   background-image: url("content/Icons/icons/text_underline.png"); 
+}
+
+.textAlignLeft
+{
+   background-image: url("content/Icons/icons/text_align_left.png"); 
+}
+
+.textAlignCenter
+{
+   background-image: url("content/Icons/icons/text_align_center.png"); 
+}
+
+.textAlignRight
+{
+   background-image: url("content/Icons/icons/text_align_right.png"); 
+}
+
+.h1
+{
+   background-image: url("content/Icons/icons/text_heading_1.png"); 
+}
+
+.h2
+{
+   background-image: url("content/Icons/icons/text_heading_2.png"); 
+}
+
+.h3
+{
+   background-image: url("content/Icons/icons/text_heading_3.png"); 
+}
+
+.h4
+{
+   background-image: url("content/Icons/icons/text_heading_4.png"); 
+}
+
+.h5
+{
+   background-image: url("content/Icons/icons/text_heading_5.png"); 
+}
+
+.h6
+{
+   background-image: url("content/Icons/icons/text_heading_6.png"); 
+}
+
+.subscript
+{
+   background-image: url("content/Icons/icons/text_subscript.png"); 
+}
+
+.superscript
+{
+   background-image: url("content/Icons/icons/text_superscript.png"); 
+}
+
+.subscript
+{
+   background-image: url("content/Icons/icons/text_subscript.png"); 
+}
+
+.superscript
+{
+   background-image: url("content/Icons/icons/text_superscript.png"); 
+}
+
+.unorderedList
+{
+   background-image: url("content/Icons/icons/text_list_bullets.png"); 
+}
+
+.orderedList
+{
+   background-image: url("content/Icons/icons/text_list_numbers.png"); 
+}
+
+.undo
+{
+   background-image: url("content/Icons/icons/arrow_undo.png"); 
+}
+
+.redo
+{
+   background-image: url("content/Icons/icons/arrow_redo.png"); 
+}
+
+.insertLink
+{
+    background-image: url("Content/Icons/icons/link_add.png");  
+}
+
+.diabled
+{
+    background-color: gray;
+}
+
+.selected
+{
+    background-color: lightblue;
+}
+
+select
+{
+    vertical-align: top;
+}
+
+
+.inline-dialog
+{
+    position: absolute;
+    text-align: center;
+    width: 100%;
+    bottom:0px;
+}
+
+.insert-dialog
+{
+    background-color: lightgrey;
+}
+
+.inline-dialog-button
+{
+    display: inline-block;
+    text-align: center;
+    cursor: default;
+}

@@ -1,0 +1,65 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+	<head>
+		<title>Simple Toolbar Demo</title>
+
+		<link rel="stylesheet" href="../Demo/Resources/arte.css" />
+		<link rel="stylesheet" href="../Demo/Resources/toolbar.css" />
+	</head>
+    <body>
+        A simple implementation of Arte.
+
+        <div id="toolbar"></div>
+        <div id="editor"></div>
+        <p id="textResult"></p>
+		
+        <script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.js"></script>
+        <script type="text/javascript" src="../Release/V0.1/Rangy.debug.js"></script>
+        <script type="text/javascript" src="../Release/V0.1/arte.debug.js"></script>
+		
+        <!-- optional: this is our implementation of a toolbar.  You can not include this and write your own toolbar if you wish -->
+        <script type="text/javascript" src="../Release/v0.1/Toolbar.debug.js"></script> 
+        <script type="text/javascript">
+            $("#editor").Arte(
+                {
+                    value: "Enter your text ..",
+                    on:
+                    {
+                        onvaluechange: function(e, data)
+                        {
+                            $('#textResult').text(data.newValue);
+                        }
+                    }
+                });
+
+            // Set globals: the commandAttrType determines if Arte uses styles or tags.
+            Arte.configuration.commandAttrType = Arte.constants.commandAttrType.tagName;
+            //Arte.configuration.commandAttrType = Arte.constants.commandAttrType.styleName;
+                
+            // Initialize the toolbar
+            var buttons = ["bold",
+                "italic",
+                "textAlignLeft",
+                "textAlignCenter",
+                "textAlignRight",
+                "h1",
+                "h2",
+                "h3",
+                "h4",
+                "h5",
+                "h6",
+                "subscript",
+                "superscript",
+                "fontSize",
+                "fontFamily",
+                "color",
+                "unorderedList", 
+                "orderedList"];
+
+            $("#toolbar").ArteToolbar({
+                editor: "#editor",
+                buttons: buttons
+            });
+        </script>
+    </body>
+</html>

@@ -1,0 +1,232 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+    <title>Rich text editor</title>
+    <style type="text/css">
+        .toolbarEditor 
+        {
+            width: 50%;
+        }
+        
+        .toolbar
+        {
+            background-image: linear-gradient(to bottom left, #ddd, rgba(128, 128, 128, 0));
+            border: 1px solid #ccc; 
+            -moz-border-radius: 2px;
+            border-radius: 2px;
+        }
+        
+        .toolbar div
+        {
+            cursor: pointer;
+            border: 2px solid #666;
+            background-image: linear-gradient(to bottom right, #ccc, rgba(64, 64, 64, 0));
+            display: inline-block;
+            text-align: center;
+            font-weight: Bolder;
+            font-family: "Arial", "Times New Roman";
+            margin: 1px;
+            padding: 1px;
+            width: 22px;
+            -moz-border-radius: 4px;
+            border-radius: 4px;
+        }
+        
+        .toolbar select 
+        {
+            cursor: pointer;
+            border: 2px solid #666; 
+            display: inline-block;   
+            margin: 1px;
+            padding: 1px;   
+            -moz-border-radius: 4px;
+            border-radius: 4px; 
+        }
+        
+        .disabled 
+        {
+            color: #888;
+            background-color: #aaa;
+        }
+        
+        .selected, .toolbar div:hover
+        {
+            background-color: #99CCCC;
+        }
+               
+        .editor 
+        {
+            max-height: 300px; 
+            height: 200px; 
+            overflow: auto;
+            border: #999 1px solid;
+        }
+    </style>
+</head>
+    <body>
+        <p>Arte supports unobtrusive javascript.</p>
+        <div class="toolbarEditor">
+            <!-- The elements toolbar elements need to have unselectable=on attribute to maintain the user selection-->
+            <div class="toolbar" unselectable="on">
+                <div data-command="bold" unselectable="on">B</div> 
+                <div data-command="italic" unselectable="on">I</div> 
+                <div data-command="underLine" unselectable="on">U</div> 
+                <div data-command="orderedList" unselectable="on">OL</div>  
+                <!-- Undo and Redo are initially disabled -->
+                <div data-command="undo" unselectable="on" class="disabled">-</div>
+                <div data-command="redo" unselectable="on" class="disabled">+</div>   
+                <!-- ensure that your values are lowercase and that font names with multiple words are enclosed in single quotes-->           
+                <select data-select="fontFamily" >
+                    <option value="arial">Arial</option>
+                    <option value="'courier new'">Courier New</option>
+                    <option value="'comic sans ms'">Comic Sans MS</option>
+                </select>
+                <select data-select="fontSize" >
+                    <option value="8px">8</option>
+                    <option value="16px">16</option>
+                    <option value="24px">24</option>
+                </select> 
+            </div>
+            <div class="editor"></div>
+            <!--<div class="textResult"></div>-->
+        </div>
+
+        <p>Arte also supports multiple editors on the same page.</p>
+        <div class="toolbarEditor">
+            <!-- The elements toolbar elements need to have unselectable=on attribute to maintain the user selection-->
+            <div class="toolbar" unselectable="on">
+                <div data-command="bold" unselectable="on">B</div> 
+                <div data-command="italic" unselectable="on">I</div> 
+                <div data-command="underLine" unselectable="on">U</div> 
+                <!-- Undo and Redo are initially disabled -->
+                <div data-command="undo" unselectable="on" class="disabled">-</div>
+                <div data-command="redo" unselectable="on" class="disabled">+</div> 
+            </div>
+            <div class="editor"></div>
+            <div class="textResult"></div>
+        </div>
+                           
+        <!--Included the Rich text and dependencies -->
+        <script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.js"></script>
+        <script type="text/javascript" src="../Release/V0.1/Rangy.debug.js"></script>
+        <script type="text/javascript" src="../Release/V0.1/Arte.debug.js"></script>
+        <script type="text/javascript">
+            $(function()
+            {
+                // Defines the behavior of divs
+                $("[data-command]").on({
+                    "mousedown": function(e)
+                    {
+                        e.stopPropagation();
+                        e.preventDefault();
+                    },
+                    "click": function(e)
+                    {
+                        var $this = $(this);
+                        var commandName = $this.attr("data-command");
+                        var commandValue = $this.attr("data-command-value");
+                        $(this.parentElement.parentElement).find(".editor").Arte(commandName, commandValue);
+
+                        e.stopPropagation();
+                    }
+                });
+
+                // Defines the behavior of selects
+                $("[data-select]").on({
+                    "mousedown": function(e)
+                    {
+                        e.stopPropagation();
+                    },
+                    "change": function(e)
+                    {
+                        var $this = $(this);
+                        var commandName = $this.attr("data-select");
+                        var commandValue = $this.children()[this.selectedIndex].value;
+                        $(this.parentElement.parentElement).find(".editor").Arte(commandName, commandValue);
+
+                        e.stopPropagation();
+                    }
+                });
+
+                // Prevents interactions with the toolbar removing selection
+                $("div .toolbar").on("click mousedown mouseup", function(e)
+                {
+                    e.stopPropagation();
+                    e.preventDefault();
+                });
+
+                HTMLDivElement.prototype.changeState = function(state, button)
+                {
+                    var commandName = $(button).attr("data-command");
+                    if (commandName && state[commandName] !== undefined)
+                    {
+                        state[commandName] ? $(button).addClass("selected") : $(button).removeClass("selected");
+                    }
+                };
+
+                HTMLSelectElement.prototype.changeState = function(state, button)
+                {
+                    var commandName = $(button).attr("data-select");
+                    if (commandName && state[commandName] !== undefined)
+                    {
+                        $(this).val(state[commandName]);
+                    }
+                };
+
+                // When this is false only text that is selected can be modified
+                $.Arte.configuration.allowOpsOnCollapsedSelection = false;
+
+                var configuration = {
+                    styles:
+                    {
+                        "font-weight": "normal",
+                        "font-style": "normal",
+                        "color": "black",
+                        "font-size": "12px",
+                        "font-family": "Arial",
+                        "text-align": "left",
+                        "min-height": "200px"
+                    },
+                    on:
+                    {
+                        onvaluechange: function(e, data)
+                        {
+                            var toolbar = $(this.parentElement).children().first();
+                            var undo = toolbar.find("[data-command='undo']");
+                            var redo = toolbar.find("[data-command='redo']");
+
+                            (data.textArea.hasUndo()) ? undo.removeClass("disabled") : undo.addClass("disabled");
+                            (data.textArea.hasRedo()) ? redo.removeClass("disabled") : redo.addClass("disabled");
+
+                            var textResult = $(this.parentElement).find(".textResult");
+                            if (textResult)
+                            {
+                                $(textResult).text(data.newValue);
+                            }
+                        },
+                        onselectionchange: function(e, data)
+                        {
+                            configuration.refresh(this, data);
+                        },
+                        oncommand: function(e, data)
+                        {
+                            configuration.refresh(this, data);
+                        }
+                    },
+                    refresh: function(me, data)
+                    {
+                        var buttons = $(me.parentElement).children().first().children();
+                        var state = data.textArea.getState();
+
+                        $.each(buttons, function()
+                        {
+                            this.changeState(state, this);
+                        });
+                    }
+                };
+
+                $(".editor").Arte(configuration);
+            });
+        </script>
+    </body>
+</html>
