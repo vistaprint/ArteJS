@@ -105,10 +105,10 @@ var ArteKeyboardEventTestData = [
         assertionCount: 2   ,
         op: function (arte)
         {
-            var currentFunc = $.fn.convertDivsToP;
+            var currentFunc = $.Arte.dom.convertDivsToP;
             $.Arte.dom.convertDivsToP = function ()
             {
-                $.fn.convertDivsToP = currentFunc;
+                $.Arte.dom.convertDivsToP = currentFunc;
                 ok(true, "Convert Divs to p called.");
             };
             arte.$element.trigger("onkeyup", {

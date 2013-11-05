@@ -226,7 +226,7 @@
                 className: configuration.classNameSpace + "-font-style-italic"
             }
         },
-        underLine: {
+        underline: {
             tagName: constants.tagName.U,
             applierTagName: {
                 "tagName": constants.tagName.U,

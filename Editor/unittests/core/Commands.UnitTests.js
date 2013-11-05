@@ -118,12 +118,12 @@ var commandsWithNoSelectionTestData = [
     },
     {
         name: "textDecoration",
-        commandName: "underLine",
+        commandName: "underline",
         altCommandName: "textDecoration"
     },
     {
-        name: "underLine",
-        commandName: "underLine",
+        name: "underline",
+        commandName: "underline",
         commandOptions: { tagName: "U" }
     },
     {

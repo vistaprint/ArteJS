@@ -163,9 +163,9 @@
         {
             exec.apply(this, ["italic", options]);
         },
-        "underLine": function(options)
+        "underline": function(options)
         {
-            exec.apply(this, ["underLine", options]);
+            exec.apply(this, ["underline", options]);
         },
         "blockquote": function()
         {
