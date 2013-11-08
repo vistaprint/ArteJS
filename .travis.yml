@@ -3,4 +3,4 @@ node_js:
   - 0.8
 before_script:
   - npm install
-script: grunt verify --verbose
+script: grunt travis --verbose

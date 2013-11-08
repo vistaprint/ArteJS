@@ -157,6 +157,7 @@ module.exports = function (grunt) {
     grunt.registerTask('verify', ["jshint:jslint", 'connect', "qunit"]);
     grunt.registerTask('analysis', ['karma:unitDeploy', 'plato']);
     grunt.registerTask('build', ['clean', 'uglify', 'concat', "verify"]);
+    grunt.registerTask('travis', ['build']);
     grunt.registerTask('all', ["build", 'analysis']);
 
 };
