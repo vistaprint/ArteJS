@@ -3,14 +3,17 @@
 <head>
     <title>Rich text commands unit test suite</title>
     <!--Rich text dependencies and rich text script-->
-    <script src="dependencies/jquery-current.js"></script>
-    <script type="text/javascript" src="../../Release/v0.1/Rangy.debug.js"></script>
-    <script type="text/javascript" src="../../Release/v0.1/Arte.debug.js"></script>
+    <script type="text/javascript" src="dependencies/jquery-current.js"></script>
 
     <!--Test Infrastructure-->
-    <link href="dependencies/Qunit/qunit-1.12.0.css" rel="stylesheet" type="text/css" />
-    <script src="dependencies/Qunit/qunit-1.12.0.js" type="text/javascript"></script>
+    <link href="dependencies/qunit/qunit-1.12.0.css" rel="stylesheet" type="text/css" />
+    <script src="dependencies/qunit/qunit-1.12.0.js" type="text/javascript"></script>
     <script type="text/javascript" src="unitTestsHelper.js"></script>
+
+    <!--Files To Test-->
+    <script type="text/javascript" src="../../Release/v0.1/rangy.debug.js"></script>
+    <script type="text/javascript" src="../../Release/v0.1/arte.debug.js"></script>
+
 
     <!-- Add the test element id and selector-->
     <script type="text/javascript">
@@ -39,20 +42,20 @@
     <script type="text/javascript" src="core/TextArea.UnitTests.js"></script>
     
     <!--Extensions Unit-tests-->
-    <script type="text/javascript" src="lib/jquery-extensions/jquery-dom-cleanup.UnitTests.js"></script>
-    <script type="text/javascript" src="lib/jquery-extensions/jquery-dom-manipulation.UnitTests.js"></script>
-    <script type="text/javascript" src="lib/jquery-extensions/jquery-dom-traversal.UnitTests.js"></script>
+    <script type="text/javascript" src="lib/jquery-extensions/jQueryDomCleanup.UnitTests.js"></script>
+    <script type="text/javascript" src="lib/jquery-extensions/jQueryDomManipulation.UnitTests.js"></script>
+    <script type="text/javascript" src="lib/jquery-extensions/jQueryDomTraversal.UnitTests.js"></script>
       
-    <script type="text/javascript" src="lib/rangy-extensions/rangy-blockElementApplier.unittests.js"></script>
-    <script type="text/javascript" src="lib/rangy-extensions/rangy-inlineElementApplier.unittests.js"></script>
-    <script type="text/javascript" src="lib/rangy-extensions/rangy-extensions.unittests.js"></script>
-    <script type="text/javascript" src="lib/rangy-extensions/richtextcommandapplier.unittests.js"></script>
+    <script type="text/javascript" src="lib/rangy-extensions/RangyBlockElementApplier.UnitTests.js"></script>
+    <script type="text/javascript" src="lib/rangy-extensions/RangyInlineElementApplier.UnitTests.js"></script>
+    <script type="text/javascript" src="lib/rangy-extensions/RangyExtensions.UnitTests.js"></script>
+    <script type="text/javascript" src="lib/rangy-extensions/RichTextCommandApplier.UnitTests.js"></script>
 
     <!--Plugins-->
-    <script type="text/javascript" src="plugins/insertcommand.unittests.js"></script>
-    <script type="text/javascript" src="plugins/keyboardEventHandler.unittests.js"></script>
-    <script type="text/javascript" src="plugins/pastehandler.unittests.js"></script>
-    <script type="text/javascript" src="plugins/undomanager.unittests.js"></script>
+    <script type="text/javascript" src="plugins/InsertCommand.UnitTests.js"></script>
+    <script type="text/javascript" src="plugins/KeyboardEventHandler.UnitTests.js"></script>
+    <script type="text/javascript" src="plugins/PasteHandler.UnitTests.js"></script>
+    <script type="text/javascript" src="plugins/UndoManager.UnitTests.js"></script>
     <script type="text/javascript" src="plugins/StateDetector.UnitTests.js"></script>
     <!-- End of Unit Test references !-->
 </body>
