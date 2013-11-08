@@ -3,43 +3,43 @@
   "version": "0.0.1",
   "description": "arte.js is a highly configurable rich text editor",
   "homepage": "",
-
   "repository": {
-	"type": "git",
-	"url": "TODO"
+    "type": "git",
+    "url": "TODO"
   },
   "bugs": {
-	"url": ""
+    "url": ""
   },
   "main": "Release",
   "engines": {
-	"node": ">=0.8.0"
+    "node": ">=0.8.0"
   },
   "scripts": {
-	"test": "grunt nodeunit"
+    "test": "grunt nodeunit"
   },
   "dependencies": {
-	"grunt": "~0.4.1",
-	"grunt-contrib-jshint": "~0.5.3",
-	"grunt-contrib-uglify": "~0.2.1",
-	"grunt-contrib-copy": "~0.4.1",
-	"grunt-contrib-clean": "~0.4.1",
-	"grunt-contrib-concat": "~0.3.0",
-	"grunt-cli": "~0.1.9",
-	"grunt-contrib-qunit": "~0.2.2",
-	"grunt-plato": "~0.2.0",
-	"grunt-karma": "~0.4.4",
-	"qunitjs": "~1.12.0",
-	"karma-qunit": "~0.1.1"
+    "grunt": "~0.4.1",
+    "grunt-contrib-jshint": "~0.5.3",
+    "grunt-contrib-uglify": "~0.2.1",
+    "grunt-contrib-copy": "~0.4.1",
+    "grunt-contrib-clean": "~0.4.1",
+    "grunt-contrib-concat": "~0.3.0",
+    "grunt-cli": "~0.1.9",
+    "grunt-contrib-qunit": "~0.2.2",
+    "grunt-plato": "~0.2.0",
+    "grunt-karma": "~0.4.4",
+    "qunitjs": "~1.12.0",
+    "karma-qunit": "~0.1.1",
+    "grunt-contrib-connect": "~0.5.0"
   },
   "keywords": [
-	"javascript",
-	"jquery",
-	"richtext"
+    "javascript",
+    "jquery",
+    "richtext"
   ],
   "author": {
-	"name": "Vistaprint",
-	"url": "http://www.vistaprint.net"
+    "name": "Vistaprint",
+    "url": "http://www.vistaprint.net"
   },
   "license": "Apache 2"
 }

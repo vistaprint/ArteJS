@@ -1,7 +1,6 @@
 'use strict';
 
-module.exports = function(grunt)
-{
+module.exports = function (grunt) {
     // Project configuration.
     grunt.initConfig({
         jshint: {
@@ -90,9 +89,22 @@ module.exports = function(grunt)
         },
 
         qunit: {
-            all: ["<%=baseDir%>/Editor/unittests/all.html"]
+            all: {
+                options: {
+                    urls: [
+                        "http://localhost:8000/Editor/unittests/all.html"
+                    ]
+                }
+            }
         },
-
+        connect: {
+            server: {
+                options: {
+                    port: 8000,
+                    base: "."
+                }
+            }
+        },
         clean: {
             options: {
                 force: true
@@ -136,12 +148,13 @@ module.exports = function(grunt)
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks("grunt-contrib-qunit");
+    grunt.loadNpmTasks("grunt-contrib-connect");
     grunt.loadNpmTasks("grunt-plato");
     grunt.loadNpmTasks("grunt-karma");
-    
+
     // Default task.
     grunt.registerTask('default', ['build']);
-    grunt.registerTask('verify', ["jshint:jslint", "qunit"]);
+    grunt.registerTask('verify', ["jshint:jslint", 'connect', "qunit"]);
     grunt.registerTask('analysis', ['karma:unitDeploy', 'plato']);
     grunt.registerTask('build', ['clean', 'uglify', 'concat', "verify"]);
     grunt.registerTask('all', ["build", 'analysis']);
