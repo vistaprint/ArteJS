@@ -9,3 +9,5 @@
 /*.csproj
 /*.sln
 /*.suo
+/Dependencies
+/Pages
