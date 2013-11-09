@@ -1,11 +1,11 @@
 {
-  "name": "rteJS",
+  "name": "ArteJS",
   "version": "0.0.1",
   "description": "arte.js is a highly configurable rich text editor",
   "homepage": "",
   "repository": {
     "type": "git",
-    "url": "TODO"
+    "url": "https://github.com/vistaprint/ArteJS/"
   },
   "bugs": {
     "url": ""
@@ -41,5 +41,10 @@
     "name": "Vistaprint",
     "url": "http://www.vistaprint.net"
   },
+  "contributors": [
+	{
+      "name": "Harminder Singh"
+    },
+  ],
   "license": "Apache 2"
 }
