@@ -1,0 +1,146 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet"
+        type="text/css" />
+    <link href="../stylesheets/stylesheet.css" rel="stylesheet" type="text/css" />
+    <style type="text/css">
+        .editor
+        {
+            width: 500px;
+            border: black solid 1px;
+        }
+        .syntaxhighlighter
+        {
+            background-color: inherit !important;
+        }
+    </style>
+    <script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+    <script src="http://alexgorbatchev.com/pub/sh/current/scripts/shAutoloader.js" type="text/javascript"></script>
+    <script src="http://agorbatchev.typepad.com/pub/sh/3_0_83/scripts/shbrushjscript.js"
+        type="text/javascript"></script>
+</head>
+    <body>
+        <h1>Example editor with unobtrusive toolbar </h1>
+        <div id="demo">
+            <!-- Build the toolbar -->
+            <!-- IE requires the unselectable=on attribute to make the elements not selectable (so that they do not take the focus from the text field) -->
+            <div class="toolbar">
+                <div data-command="bold" unselectable="on">B</div>
+                <div data-command="italic" unselectable="on">I</div>
+                <div data-command="underline" unselectable="on">U</div>
+                <div data-command="orderedList" unselectable="on">OL</div>
+                <!-- Undo and Redo are initially disabled -->
+                <div data-command="undo" unselectable="on" class="disabled">-</div>
+                <div data-command="redo" unselectable="on" class="disabled">+</div>
+                <!-- ensure that your values are lowercase and that font names with multiple words are enclosed in single quotes-->
+                <select data-select="fontFamily">
+                    <option value="arial">Arial</option>
+                    <option value="'courier new'">Courier New</option>
+                    <option value="'comic sans ms'">Comic Sans MS</option>
+                </select>
+                <select data-select="fontSize">
+                    <option value="8px">8</option>
+                    <option value="16px">16</option>
+                    <option value="24px">24</option>
+                </select>
+            </div>
+        
+            <!-- Div to host the Arte instance -->
+            <div class="editor"></div>
+
+            <!-- Some styles for the toolbar -->
+            <link href="../stylesheets/toolbar_with_data_attribute.css" rel="stylesheet" type="text/css" />
+
+            <!-- Dependencies-->
+            <script src="../Dependencies/jquery-1.9.2.js" type="text/javascript"></script>
+            <script src="../Dependencies/rangy.debug.js" type="text/javascript"></script>
+            <script src="../Dependencies/arte.debug.js" type="text/javascript"></script>
+        
+            <script type="text/javascript">
+                $(function () {
+                    // data-command behavior
+                    $("[data-command]").on({
+                        "mousedown": function (e) {
+                            return false;
+                        },
+                        "click": function (e) {
+                            var $this = $(this);
+                            var commandName = $this.attr("data-command");
+                            var commandValue = $this.attr("data-command-value");
+                            $(".editor").Arte(commandName, commandValue);
+
+                            return false;
+                        }
+                    });
+
+                    // data-select behavior
+                    $("[data-select]").on({
+                        "mousedown": function (e) {
+                            e.stopPropagation();
+                        },
+                        "change": function (e) {
+                            var $this = $(this);
+                            var commandName = $this.attr("data-select");
+                            var commandValue = $this.val();
+                            $(".editor").Arte(commandName, commandValue);
+
+                            return false;
+                        }
+                    });
+
+                    // Refreshes the toolbar based on the state of the selected text
+                    function refreshToolbar() {
+                        var state = $(".editor").Arte("getState").get(0);
+                        $("[data-command]").each(function () {
+                            var $this = $(this);
+                            var commandName = $this.attr("data-command");
+
+                            if (commandName && state[commandName] !== undefined) {
+                                var op = state[commandName] ? "addClass" : "removeClass";
+                                $this[op]("selected");
+                            }
+                        });
+
+                        $("[data-select]").each(function () {
+                            var $this = $(this);
+                            var commandName = $this.attr("data-select");
+
+                            if (commandName && state[commandName] !== undefined) {
+                                $this.val(state[commandName]);
+                            }
+                        });
+                    }
+
+                    // state of undo/redo buttons
+                    function refreshUndoRedo() {
+                        var undoOp = $(".editor").Arte("hasUndo") ? "addClass" : "removeClass";
+                        var redoOp = $(".editor").Arte("hasRedo") ? "addClass" : "removeClass";
+
+                        $("[data-command='undo']")[undoOp]("disabled");
+                        $("[data-command='redo']")[redoOp]("disabled");
+                    }
+
+                    // Initialize an instance of Arte with some initial values
+                    $(".editor").Arte({
+                        value: "This is the initial value of the text editor ..",
+                        // Listen to a set of interesting events
+                        on: {
+                            onvaluechange: function (e, data) {
+                                refreshUndoRedo();
+                            },
+                            onselectionchange: function (e, data) {
+                                refreshToolbar();
+                            },
+                            oncommand: function (e, data) {
+                                refreshToolbar();
+                            }
+                        }
+                    });
+                });
+            </script>
+        </div>
+         
+        <script src="../javascripts/pages.js" type="text/javascript"></script>
+    </body>
+</html>
