@@ -1,0 +1,153 @@
+﻿.toolbar
+{
+    background-color: lightgrey;
+    position: relative;
+}
+
+.toolbar-button
+{
+    display: inline-block;
+    height: 16px;
+    width: 16px;
+}
+
+.toolbar-button:hover
+{
+   
+}
+
+.bold
+{
+   background-image: url("content/Icons/text_bold.png"); 
+}
+
+.italic
+{
+   background-image: url("content/Icons/text_italic.png"); 
+}
+
+.underline
+{
+   background-image: url("content/Icons/text_underline.png"); 
+}
+
+.blockquote
+{
+   background-image: url("content/Icons/text_padding_left.png"); 
+}
+
+.textAlignLeft
+{
+   background-image: url("content/Icons/text_align_left.png"); 
+}
+
+.textAlignCenter
+{
+   background-image: url("content/Icons/text_align_center.png"); 
+}
+
+.textAlignRight
+{
+   background-image: url("content/Icons/text_align_right.png"); 
+}
+
+.h1
+{
+   background-image: url("content/Icons/text_heading_1.png"); 
+}
+
+.h2
+{
+   background-image: url("content/Icons/text_heading_2.png"); 
+}
+
+.h3
+{
+   background-image: url("content/Icons/text_heading_3.png"); 
+}
+
+.h4
+{
+   background-image: url("content/Icons/text_heading_4.png"); 
+}
+
+.h5
+{
+   background-image: url("content/Icons/text_heading_5.png"); 
+}
+
+.h6
+{
+   background-image: url("content/Icons/text_heading_6.png"); 
+}
+
+.subscript
+{
+   background-image: url("content/Icons/text_subscript.png"); 
+}
+
+.superscript
+{
+   background-image: url("content/Icons/text_superscript.png"); 
+}
+
+.unorderedList
+{
+   background-image: url("content/Icons/text_list_bullets.png"); 
+}
+
+.orderedList
+{
+   background-image: url("content/Icons/text_list_numbers.png"); 
+}
+
+.undo
+{
+   background-image: url("content/Icons/arrow_undo.png"); 
+}
+
+.redo
+{
+   background-image: url("content/Icons/arrow_redo.png"); 
+}
+
+.insertLink
+{
+    background-image: url("Content/Icons/link_add.png");  
+}
+
+.diabled
+{
+    background-color: gray;
+}
+
+.selected
+{
+    background-color: lightblue;
+}
+
+select
+{
+    vertical-align: top;
+}
+
+
+.inline-dialog
+{
+    position: absolute;
+    text-align: center;
+    width: 100%;
+    bottom:0px;
+}
+
+.insert-dialog
+{
+    background-color: lightgrey;
+}
+
+.inline-dialog-button
+{
+    display: inline-block;
+    text-align: center;
+    cursor: default;
+}

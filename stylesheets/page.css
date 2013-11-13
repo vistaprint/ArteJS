@@ -1,0 +1,10 @@
+﻿.header {
+    font-size: 30px;
+    font-weight: bold;
+    line-height: 30px;
+}
+#demo {
+    border: black solid 1px;
+    background-color: white;
+}
+

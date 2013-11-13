@@ -490,7 +490,7 @@
         selectedBackGroundColor: "lightblue",
         mouseoverBackGroundColor: "lightblue",
         disabledBackGroundColor: "lightgray",
-        commandAttrType: commandAttrType.className,
+        commandAttrType: commandAttrType.styleName,
         commandConfig: {}
     };
 

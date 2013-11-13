@@ -1,0 +1,42 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+	<head>
+	    <title>Rich text editor</title>
+	    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css"/>
+        <link rel="stylesheet" href="demo.css"/>
+        <link rel="stylesheet" href="arte.css" />
+	    <link rel="stylesheet" href="toolbar.css" />
+        <link href="../stylesheets/stylesheet.css" rel="stylesheet" type="text/css" />
+        <link href="../stylesheets/page.css" rel="stylesheet" type="text/css"/>
+	</head>
+    <body>
+        <div class="header">Rich text editor with a toolbar that has twitter bootstrap styles </div>
+
+        <div id="demo">
+            <div class="toolbar"></div>
+            <div class="editor"></div>
+                
+            <!--Included the Rich text files-->
+            <script type="text/javascript" src="../Dependencies/jquery-1.9.2.js"></script>
+            <script type="text/javascript" src="../Dependencies/rangy.debug.js"></script>
+            <script type="text/javascript" src="../Dependencies/arte.debug.js"></script>
+            <script type="text/javascript" src="../Dependencies/toolbar.debug.js"></script>
+
+            <script type="text/javascript">
+                $(function()
+                {
+                    // List of buttons 
+                    var buttons = ["bold", "italic", "underLine", "blockquote", "textAlignLeft", "textAlignCenter", "textAlignRight", "h1", "h2", "h3", "h4", "h5", "h6",
+                        "subscript", "superscript", "unorderedList", "orderedList", "undo", "redo", "fontSize", "fontFamily", "color", "backgroundColor", "insertLink"
+                    ];
+
+                    $(".editor").Arte();
+
+                    $(".toolbar").ArteToolbar({
+                        buttons: buttons
+                    });
+                });
+            </script>
+        </div>
+    </body>
+</html>
