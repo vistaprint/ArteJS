@@ -22,9 +22,9 @@
                     "className": "arte-font-style-italic"
                 }
             },
-            "underLine": {
+            "underline": {
                 js: buttonBase,
-                commandName: "underLine",
+                commandName: "underline",
                 commandValue: {
                     "styleName": "underline",
                     "className": "arte-text-decoration-underline"
@@ -111,28 +111,6 @@
                     if (type === commandAttrType.className) {
                         return $.Arte.Toolbar.configuration.ClassNameLookup.fontSize[value];
                     }
-
-                    // ensure that font-size has px appended
-                    if (!value.match(/px/i)) {
-                        value += "px";
-                    }
-                    return value;
-                }
-            },
-            "fontFamily": {
-                js: buttonWithDropDown,
-                icon: null,
-                commandName: "fontFamily",
-                acceptsParams: true,
-                getValue: function (type, value) {
-                    if (type === commandAttrType.className) {
-                        return $.Arte.Toolbar.configuration.ClassNameLookup.fontSize[value];
-                    }
-
-                    // ensure that font-size has px appended
-                    if (!value.match(/px/i)) {
-                        value += "px";
-                    }
                     return value;
                 }
             },
@@ -204,21 +182,14 @@
             },
             "insertLink": {
                 commandName: "insert",
-                js: $.Arte.Toolbar.ButtonWithDialog
+                js: $.Arte.Toolbar.InsertLink
             }
         },
-        buttonIds: {
-            "bold": "bold",
-            "font-weight": "font-weight",
-            "italic": "italic",
-            "text-align-left": "text-align-left",
-            "text-align-center": "text-align-center",
-            "text-align-right": "text-align"
+        buttonStateClass: {   
+            "disabled": "disabled",
+            "selected": "selected"
         },
-        selectedBackGroundColor: "lightblue",
-        mouseoverBackGroundColor: "lightblue",
-        disabledBackGroundColor: "lightgray",
-        commandAttrType: commandAttrType.className,
+        commandAttrType: commandAttrType.styleName,
         commandConfig: {}
     };
 
@@ -260,4 +231,17 @@
 
         }
     };
+
+    (function() {
+        // Create a reverse lookup from className to styleValue to be used while refreshing the toolbars 
+        var classNameReverseLookup = $.Arte.Toolbar.configuration.ClassNameReverseLookup = {};
+        $.each($.Arte.Toolbar.configuration.ClassNameLookup, function(styleName, classNameMapping) {
+            var styleKey = classNameReverseLookup[styleName] = {};
+
+            $.each(classNameMapping, function(styleValue, className) {
+                styleKey[className] = styleValue;
+            });
+        });
+    })();
+
 })(jQuery);

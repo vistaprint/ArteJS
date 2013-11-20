@@ -5,7 +5,6 @@
 /bin
 /Build
 /Obj
-/Release
 /*.csproj
 /*.sln
 /*.suo

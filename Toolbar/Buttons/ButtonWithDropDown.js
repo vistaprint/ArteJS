@@ -5,11 +5,27 @@
             var me = this;
 
             var element = $("<select>").addClass(".toolbar-button").addClass(this.name);
+
             $.each(config.options, function (index, option) {
                 var value = typeof (option) === "string" ? option.toLowerCase() : option;
-                if (buttonName === "color") {
-                    // Browser apply colors differently (i.e. RGB, Hex etc.)
-                    value = $("<div>").css("color", value).css("color");
+
+                switch (buttonName) {
+                    case "color":
+                        // Browser apply colors differently (i.e. RGB, Hex etc.)
+                        value = $("<div>").css("color", value).css("color");
+                        break;
+                    case "fontSize":
+                        // Add, px to font size if it doesn't exist
+                        if (!/px$/.test(value)) {
+                            value += "px";
+                        }
+                        break;
+                    case "fontFamily":
+                        // Enforce adding quotes to multi-word font families or the one that start with number.
+                        if (!value.match(/^\".+\"$/) && value.match(/^(?:\d.+|.+\s.+)$/)) {
+                            value = "\'" + value + "\'";
+                        }
+                        break;
                 }
                 element.append($("<option>").attr("value", value).html(option));
             });
@@ -33,22 +49,14 @@
         };
 
         this.refresh = function (state) {
-            var value = state[config.commandName];
+            var op = this.isEnabled() ? "removeAttr" : "attr";
+            this.element[op]("disabled", true);
 
-            if (value) {
-                value = value.replace(/\'/ig, ""); // remove quotes 
-                value = value.replace(/px/ig, ""); // remove px from fontSize
-            }
+            var value = state[config.commandName];
 
             // Perform a reverse lookup from className to actual value
             if ($.Arte.Toolbar.configuration.commandAttrType === $.Arte.constants.commandAttrType.className) {
-                var lookupTable = $.Arte.Toolbar.configuration.ClassNameLookup[config.commandName];
-                $.each(lookupTable, function (key, val) {
-                    if (value === val) {
-                        value = key;
-                        return false;
-                    }
-                });
+                value = $.Arte.Toolbar.configuration.ClassNameReverseLookup[config.commandName][value];
             }
 
             this.element.val(value);
