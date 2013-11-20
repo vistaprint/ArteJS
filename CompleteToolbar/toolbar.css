@@ -10,12 +10,17 @@
     height: 16px;
     width: 16px;
     margin: 4px;
-    background-color: lightslategrey;
+    background-color: lightblue;
 }
 
 .toolbar-button:hover
 {
    
+}
+
+.btn 
+{
+    display: inline-block;
 }
 
 .bold
@@ -125,7 +130,7 @@
 
 .selected
 {
-    background-color: lightblue;
+    background-color: lightcoral;
 }
 
 select

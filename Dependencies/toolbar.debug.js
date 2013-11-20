@@ -74,16 +74,17 @@
     };
 })(jQuery);
 /// dependencies: Toolbar
-(function($) {
-    $.Arte.Toolbar.Button = function(toolbar, buttonName, config) {
+(function ($) {
+    $.Arte.Toolbar.Button = function (toolbar, buttonName, config) {
         this.element = null;
         this.commandName = config.commandName;
-        this.isEnabled = function() {
+
+        this.isEnabled = function () {
             var selectedTextField = toolbar.selectionManager.getSelectedFields(this.supportedTypes);
             return selectedTextField && selectedTextField.length;
         };
 
-        this.executeCommand = function(commandValue) {
+        this.executeCommand = function (commandValue) {
             if (this.isEnabled()) {
                 var commandAttrType = (config && config.commandAttrType) ?
                     config.commandAttrType :
@@ -101,24 +102,24 @@
                     commandAttrType: commandAttrType
                 };
 
-                $.each(toolbar.selectionManager.getSelectedFields(), function() {
+                $.each(toolbar.selectionManager.getSelectedFields(), function () {
                     this[commandOptions.commandName].call(this, commandOptions);
                 });
                 toolbar.refresh();
             }
         };
 
-        this.render = function(parent) {
+        this.render = function (parent) {
             var me = this;
 
             var inner = $("<span>").addClass(buttonName + " toolbar-button");
             this.element = $("<a>").attr("href", "#").addClass("btn").html(inner);
             this.element.on({
-                mousedown: function(e) {
+                mousedown: function (e) {
                     e.preventDefault();
                     e.stopPropagation();
                 },
-                click: function(e) {
+                click: function (e) {
                     me.executeCommand.apply(me);
                     e.preventDefault();
                     e.stopPropagation();
@@ -127,7 +128,7 @@
 
             this.element.appendTo(parent);
         };
-        var isApplied = function(state) {
+        var isApplied = function (state) {
             if (config.commandName === "textAlign") {
                 var defaultValue = config.commandValue[$.Arte.Toolbar.configuration.commandAttrType];
                 return state === defaultValue;
@@ -135,14 +136,16 @@
             return state;
         };
 
-        this.refresh = function(state) {
+        this.refresh = function (state) {
+            var buttonStateClass = $.Arte.Toolbar.configuration.buttonStateClass;
+
             if (this.isEnabled()) {
-                this.element.removeClass("disabled");
-                
+                this.element.removeClass(buttonStateClass.disabled);
+
                 var op = isApplied(state[config.commandName]) ? "addClass" : "removeClass";
-                this.element[op]("btn-primary");
+                this.element[op](buttonStateClass.selected);
             } else {
-                this.element.addClass("disabled");
+                this.element.addClass(buttonStateClass.disabled);
             }
         };
     };
@@ -150,36 +153,48 @@
 (function($) {
     $.Arte.Toolbar.ButtonWithDialog = function(toolbar, buttonName, config) {
         $.extend(this, new $.Arte.Toolbar.Button(toolbar, buttonName, config));
-        var insertDialogClassName = "insert-dialog";
-        var dialogContent;
-        var getDialogContent = function() {
-            if (!dialogContent) {
-                dialogContent = $("<div>").addClass("insert-dialog").on("mousedown ", function(e) {
-                    e.stopPropagation();
-                });
-
-                var div = $("<div>").addClass("input-prepend input-append");
-                $("<span>").html("Content: ").addClass("add-on").appendTo(div);
-                $("<input>").addClass("input-medium").attr({ type: "text" }).appendTo(div).css({ height: "auto" });
-                $("<a>").attr("href", "#").addClass("btn ok").html("&#x2713").appendTo(div);
-                $("<a>").attr("href", "#").addClass("btn cancel").html("&#x2717").appendTo(div);
-                dialogContent.append(div);
-            }
-            return dialogContent;
+        
+        this.executeCommand = function() {
+            this.showPopup();
         };
+    };
+})(jQuery);
 
+(function() {
+    $.Arte.Toolbar.InsertLink = function(toolbar, buttonName, config) {
+        $.extend(this, new $.Arte.Toolbar.ButtonWithDialog(toolbar, buttonName, config));
+        var insertDialogClassName = "insert-link";
+        
         var insertContent = function(contentToInsert) {
             $.each(toolbar.selectionManager.getSelectedFields(), function() {
                 this.insert.call(this, { commandValue: contentToInsert });
             });
         };
+        
+        var dialogContent;
+        var getDialogContent = function() {
+            dialogContent = $("<div>").addClass(insertDialogClassName).on("mousedown ", function(e) {
+                e.stopPropagation();
+            });
 
-        var showPopup = function() {
+            var div = $("<div>").addClass("input-prepend input-append");
+            $("<span>").html("Text to Show: ").addClass("add-on").appendTo(div);
+            $("<input>").addClass("input-medium testToShow").attr({ type: "text" }).appendTo(div).css({ height: "auto" });
+            $("<span>").html("Url: ").addClass("add-on").appendTo(div);
+            $("<input>").addClass("input-medium").attr({ type: "text" }).appendTo(div).css({ height: "auto" });
+            $("<a>").attr("href", "#").addClass("btn ok").html("&#x2713").appendTo(div);
+            $("<a>").attr("href", "#").addClass("btn cancel").html("&#x2717").appendTo(div);
+            dialogContent.append(div);
+
+            return dialogContent;
+        };
+
+        this.showPopup = function() {
             var content = getDialogContent();
             $(".inline-dialog").append(content);
 
             var savedSelection = rangy.saveSelection();
-
+            $("." + insertDialogClassName + " .testToShow").val(rangy.getSelection().toHtml());
             $("." + insertDialogClassName + " .ok").on("click", function() {
                 rangy.restoreSelection(savedSelection);
 
@@ -199,18 +214,12 @@
 
             $(".inline-dialog").show();
         };
-
-        var closePopup = function() {
+        
+         var closePopup = function() {
             $("." + insertDialogClassName + " input").val("");
-            $(".inline-dialog").html("");
+             $(".inline-dialog").children().remove();   
         };
 
-        this.executeCommand = function() {
-            showPopup();
-        };
-
-        this.refresh = function() {
-        };
     };
 })(jQuery);
 (function ($) {
@@ -220,11 +229,27 @@
             var me = this;
 
             var element = $("<select>").addClass(".toolbar-button").addClass(this.name);
+
             $.each(config.options, function (index, option) {
                 var value = typeof (option) === "string" ? option.toLowerCase() : option;
-                if (buttonName === "color") {
-                    // Browser apply colors differently (i.e. RGB, Hex etc.)
-                    value = $("<div>").css("color", value).css("color");
+
+                switch (buttonName) {
+                    case "color":
+                        // Browser apply colors differently (i.e. RGB, Hex etc.)
+                        value = $("<div>").css("color", value).css("color");
+                        break;
+                    case "fontSize":
+                        // Add, px to font size if it doesn't exist
+                        if (!/px$/.test(value)) {
+                            value += "px";
+                        }
+                        break;
+                    case "fontFamily":
+                        // Enforce adding quotes to multi-word font families or the one that start with number.
+                        if (!value.match(/^\".+\"$/) && value.match(/^(?:\d.+|.+\s.+)$/)) {
+                            value = "\'" + value + "\'";
+                        }
+                        break;
                 }
                 element.append($("<option>").attr("value", value).html(option));
             });
@@ -248,22 +273,14 @@
         };
 
         this.refresh = function (state) {
-            var value = state[config.commandName];
+            var op = this.isEnabled() ? "removeAttr" : "attr";
+            this.element[op]("disabled", true);
 
-            if (value) {
-                value = value.replace(/\'/ig, ""); // remove quotes 
-                value = value.replace(/px/ig, ""); // remove px from fontSize
-            }
+            var value = state[config.commandName];
 
             // Perform a reverse lookup from className to actual value
             if ($.Arte.Toolbar.configuration.commandAttrType === $.Arte.constants.commandAttrType.className) {
-                var lookupTable = $.Arte.Toolbar.configuration.ClassNameLookup[config.commandName];
-                $.each(lookupTable, function (key, val) {
-                    if (value === val) {
-                        value = key;
-                        return false;
-                    }
-                });
+                value = $.Arte.Toolbar.configuration.ClassNameReverseLookup[config.commandName][value];
             }
 
             this.element.val(value);
@@ -294,9 +311,9 @@
                     "className": "arte-font-style-italic"
                 }
             },
-            "underLine": {
+            "underline": {
                 js: buttonBase,
-                commandName: "underLine",
+                commandName: "underline",
                 commandValue: {
                     "styleName": "underline",
                     "className": "arte-text-decoration-underline"
@@ -383,28 +400,6 @@
                     if (type === commandAttrType.className) {
                         return $.Arte.Toolbar.configuration.ClassNameLookup.fontSize[value];
                     }
-
-                    // ensure that font-size has px appended
-                    if (!value.match(/px/i)) {
-                        value += "px";
-                    }
-                    return value;
-                }
-            },
-            "fontFamily": {
-                js: buttonWithDropDown,
-                icon: null,
-                commandName: "fontFamily",
-                acceptsParams: true,
-                getValue: function (type, value) {
-                    if (type === commandAttrType.className) {
-                        return $.Arte.Toolbar.configuration.ClassNameLookup.fontSize[value];
-                    }
-
-                    // ensure that font-size has px appended
-                    if (!value.match(/px/i)) {
-                        value += "px";
-                    }
                     return value;
                 }
             },
@@ -476,20 +471,13 @@
             },
             "insertLink": {
                 commandName: "insert",
-                js: $.Arte.Toolbar.ButtonWithDialog
+                js: $.Arte.Toolbar.InsertLink
             }
         },
-        buttonIds: {
-            "bold": "bold",
-            "font-weight": "font-weight",
-            "italic": "italic",
-            "text-align-left": "text-align-left",
-            "text-align-center": "text-align-center",
-            "text-align-right": "text-align"
+        buttonStateClass: {   
+            "disabled": "disabled",
+            "selected": "selected"
         },
-        selectedBackGroundColor: "lightblue",
-        mouseoverBackGroundColor: "lightblue",
-        disabledBackGroundColor: "lightgray",
         commandAttrType: commandAttrType.styleName,
         commandConfig: {}
     };
@@ -532,6 +520,19 @@
 
         }
     };
+
+    (function() {
+        // Create a reverse lookup from className to styleValue to be used while refreshing the toolbars 
+        var classNameReverseLookup = $.Arte.Toolbar.configuration.ClassNameReverseLookup = {};
+        $.each($.Arte.Toolbar.configuration.ClassNameLookup, function(styleName, classNameMapping) {
+            var styleKey = classNameReverseLookup[styleName] = {};
+
+            $.each(classNameMapping, function(styleValue, className) {
+                styleKey[className] = styleValue;
+            });
+        });
+    })();
+
 })(jQuery);
 (function ($) {
     $.Arte.Toolbar = $.Arte.Toolbar || {};
