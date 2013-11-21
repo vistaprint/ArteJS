@@ -1,13 +1,21 @@
 ﻿(function ($) {
     $.Arte.Toolbar.ButtonWithDropDown = function (toolbar, buttonName, config) {
+        var classes = $.Arte.Toolbar.configuration.classes;
         $.extend(this, new $.Arte.Toolbar.Button(toolbar, buttonName, config));
         this.render = function (parent) {
             var me = this;
 
-            var element = $("<select>").addClass(".toolbar-button").addClass(this.name);
+            var element = $("<select>").addClass(classes.select).addClass(this.name);
 
             $.each(config.options, function (index, option) {
-                var value = typeof (option) === "string" ? option.toLowerCase() : option;
+                var display, value;
+                if ($.isPlainObject(option)) {
+                    display = option.display;
+                    value = option.value;
+                } else {
+                    display = option;
+                    value = typeof (option) === "string" ? option.toLowerCase() : option;
+                }
 
                 switch (buttonName) {
                     case "color":
@@ -27,11 +35,10 @@
                         }
                         break;
                 }
-                element.append($("<option>").attr("value", value).html(option));
+                element.append($("<option>").attr("value", value).html(display));
             });
             element.appendTo(parent);
-
-
+            
             element.on({
                 change: function () {
                     me.executeCommand.apply(me, [this.value]);

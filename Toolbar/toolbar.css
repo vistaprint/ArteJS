@@ -4,7 +4,7 @@
     position: relative;
 }
 
-.toolbar-button
+.btn-inner
 {
     display: inline-block;
     height: 16px;

@@ -47,15 +47,14 @@
 
 
         <script type="text/javascript">
-            $.Arte.Toolbar.configuration.buttonStateClass.selected = "btn-primary";
+            $.Arte.Toolbar.configuration.classes.selected = "btn-primary";
             $(".commandAttrType").on("change", function (e) {
                 var commandAttrType = $(this).val();
                 $.Arte.configuration.commandAttrType = commandAttrType;
                 $.Arte.Toolbar.configuration.commandAttrType = commandAttrType;
             });
 
-            $(function()
-            {
+            $(function () {
                 $.Arte.configuration.allowOpsOnCollapsedSelection = false;
                 // List of buttons 
                 var buttons = ["bold", "italic", "underline", "blockquote", "textAlignLeft", "textAlignCenter", "textAlignRight", "h1", "h2", "h3", "h4", "h5", "h6",
@@ -64,12 +63,26 @@
 
                 $(".editor").Arte();
 
+
+                $.extend(true, $.Arte.Toolbar.configuration, {
+                    classes: {
+                        "dialog":
+                        {
+                            "insertLink": {
+                                "label": "add-on",
+                                "input": "input-medium"
+                            }
+                        }
+                    }
+                });
+
                 $(".toolbar").ArteToolbar({
                     buttons: buttons
                 });
 
-                $("#editor").on("onvaluechange oncommand", function(e, data)
-                {
+
+
+                $("#editor").on("onvaluechange oncommand", function (e, data) {
                     var textArea = data.textArea;
                     $("#htmlContent").text(textArea.outerValue());
                 });

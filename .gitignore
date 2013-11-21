@@ -4,6 +4,7 @@
 *Resharper*
 /bin
 /Build
+/Release
 /Obj
 /*.csproj
 /*.sln

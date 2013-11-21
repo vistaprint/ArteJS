@@ -3,7 +3,8 @@
     $.Arte.Toolbar.Button = function (toolbar, buttonName, config) {
         this.element = null;
         this.commandName = config.commandName;
-
+        var buttonClasses = $.Arte.Toolbar.configuration.classes.button;
+        
         this.isEnabled = function () {
             var selectedTextField = toolbar.selectionManager.getSelectedFields(this.supportedTypes);
             return selectedTextField && selectedTextField.length;
@@ -37,8 +38,8 @@
         this.render = function (parent) {
             var me = this;
 
-            var inner = $("<span>").addClass(buttonName + " toolbar-button");
-            this.element = $("<a>").attr("href", "#").addClass("btn").html(inner);
+            var inner = $("<span>").addClass(buttonName).addClass(buttonClasses.inner);
+            this.element = $("<a>").attr("href", "#").addClass(buttonClasses.outer).html(inner);
             this.element.on({
                 mousedown: function (e) {
                     e.preventDefault();
@@ -62,15 +63,15 @@
         };
 
         this.refresh = function (state) {
-            var buttonStateClass = $.Arte.Toolbar.configuration.buttonStateClass;
 
             if (this.isEnabled()) {
-                this.element.removeClass(buttonStateClass.disabled);
+                this.element.removeClass(buttonClasses.disabled);
 
                 var op = isApplied(state[config.commandName]) ? "addClass" : "removeClass";
-                this.element[op](buttonStateClass.selected);
+                this.element[op](buttonClasses.selected);
             } else {
-                this.element.addClass(buttonStateClass.disabled);
+                this.element.addClass(buttonClasses.disabled);
+                this.element.removeClass(buttonClasses.selected);
             }
         };
     };

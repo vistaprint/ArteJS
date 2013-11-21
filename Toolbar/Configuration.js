@@ -105,7 +105,15 @@
                 js: buttonWithDropDown,
                 icon: null,
                 commandName: "fontSize",
-                options: ["", 8, 10, 12, 15, 20],
+                //options: ["", 8, 10, 12, 15, 20],
+                options: [
+                    { display: "", value: "" },
+                    { display: "Smaller", value: 8 },
+                    { display: "Small", value: 10 },
+                    { display: "Medium", value: 12 },
+                    { display: "Large", value: 15 },
+                    { display: "Larger", value: 20 }
+                ],
                 acceptsParams: true,
                 getValue: function (type, value) {
                     if (type === commandAttrType.className) {
@@ -185,9 +193,25 @@
                 js: $.Arte.Toolbar.InsertLink
             }
         },
-        buttonStateClass: {   
-            "disabled": "disabled",
-            "selected": "selected"
+        classes: {
+            "button": {
+                "outer": "btn",
+                "inner": "btn-inner",
+                "disabled": "disabled",
+                "selected": "selected"
+            },
+            "select": {
+                "inner": "select"
+            },
+            "dialog": {
+                "container": "inline-dialog",
+                "insertLink":
+                {
+                    "button": "btn",
+                    "label": "",
+                    "input": ""
+                }
+            }
         },
         commandAttrType: commandAttrType.styleName,
         commandConfig: {}
@@ -232,13 +256,13 @@
         }
     };
 
-    (function() {
+    (function () {
         // Create a reverse lookup from className to styleValue to be used while refreshing the toolbars 
         var classNameReverseLookup = $.Arte.Toolbar.configuration.ClassNameReverseLookup = {};
-        $.each($.Arte.Toolbar.configuration.ClassNameLookup, function(styleName, classNameMapping) {
+        $.each($.Arte.Toolbar.configuration.ClassNameLookup, function (styleName, classNameMapping) {
             var styleKey = classNameReverseLookup[styleName] = {};
 
-            $.each(classNameMapping, function(styleValue, className) {
+            $.each(classNameMapping, function (styleValue, className) {
                 styleKey[className] = styleValue;
             });
         });
