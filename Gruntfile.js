@@ -109,7 +109,7 @@ module.exports = function (grunt) {
             options: {
                 force: true
             },
-            src: ['reports/!(plato)', 'Build', 'Release']
+            src: ['Build', 'Release']
         },
 
         plato: {
@@ -127,17 +127,6 @@ module.exports = function (grunt) {
                 }
             }
         },
-
-        karma: {
-            unitBuild: {
-                configFile: 'karma.conf.js',
-                reporters: ['junit']
-            },
-            unitDeploy: {
-                configFile: 'karma.conf.js'
-            }
-        },
-
         baseDir: './'
     });
 
@@ -150,14 +139,13 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks("grunt-contrib-qunit");
     grunt.loadNpmTasks("grunt-contrib-connect");
     grunt.loadNpmTasks("grunt-plato");
-    grunt.loadNpmTasks("grunt-karma");
 
     // Default task.
     grunt.registerTask('default', ['build']);
-    grunt.registerTask('verify', ["jshint:jslint", 'connect', "qunit"]);
-    grunt.registerTask('analysis', ['karma:unitDeploy', 'plato']);
-    grunt.registerTask('build', ['clean', 'uglify', 'concat', "verify"]);
     grunt.registerTask('travis', ['build']);
+    grunt.registerTask('verify', ["jshint:jslint", 'connect', "qunit"]);
+    grunt.registerTask('analysis', ['plato']);
+    grunt.registerTask('build', ['clean', 'uglify', 'concat', "verify"]);
     grunt.registerTask('all', ["build", 'analysis']);
 
 };
