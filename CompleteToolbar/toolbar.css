@@ -4,13 +4,12 @@
     position: relative;
 }
 
-.toolbar-button
+.btn-inner
 {
     display: inline-block;
     height: 16px;
     width: 16px;
     margin: 4px;
-    background-color: lightblue;
 }
 
 .toolbar-button:hover
@@ -21,6 +20,7 @@
 .btn 
 {
     display: inline-block;
+    border: grey 1px solid;
 }
 
 .bold
@@ -130,7 +130,7 @@
 
 .selected
 {
-    background-color: lightcoral;
+    background-color: lightblue;
 }
 
 select

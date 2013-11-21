@@ -29,7 +29,21 @@
                         "subscript", "superscript", "unorderedList", "orderedList", "undo", "redo", "fontSize", "fontFamily", "color", "backgroundColor", "insertLink"
                     ];
 
-                    $.Arte.Toolbar.configuration.buttonStateClass.selected = "btn-primary";
+                    $.extend(true, $.Arte.Toolbar.configuration, {
+                        classes: {
+                            "button":
+                            {
+                                selected: "btn-primary"
+                            },
+                            "dialog":
+                            {
+                                "insertLink": {
+                                    "label": "add-on",
+                                    "input": "input-medium"
+                                }
+                            }
+                        }
+                    });
 
                     $(".editor").Arte();
 

@@ -78,7 +78,8 @@
     $.Arte.Toolbar.Button = function (toolbar, buttonName, config) {
         this.element = null;
         this.commandName = config.commandName;
-
+        var buttonClasses = $.Arte.Toolbar.configuration.classes.button;
+        
         this.isEnabled = function () {
             var selectedTextField = toolbar.selectionManager.getSelectedFields(this.supportedTypes);
             return selectedTextField && selectedTextField.length;
@@ -112,8 +113,8 @@
         this.render = function (parent) {
             var me = this;
 
-            var inner = $("<span>").addClass(buttonName + " toolbar-button");
-            this.element = $("<a>").attr("href", "#").addClass("btn").html(inner);
+            var inner = $("<span>").addClass(buttonName).addClass(buttonClasses.inner);
+            this.element = $("<a>").attr("href", "#").addClass(buttonClasses.outer).html(inner);
             this.element.on({
                 mousedown: function (e) {
                     e.preventDefault();
@@ -137,15 +138,15 @@
         };
 
         this.refresh = function (state) {
-            var buttonStateClass = $.Arte.Toolbar.configuration.buttonStateClass;
 
             if (this.isEnabled()) {
-                this.element.removeClass(buttonStateClass.disabled);
+                this.element.removeClass(buttonClasses.disabled);
 
                 var op = isApplied(state[config.commandName]) ? "addClass" : "removeClass";
-                this.element[op](buttonStateClass.selected);
+                this.element[op](buttonClasses.selected);
             } else {
-                this.element.addClass(buttonStateClass.disabled);
+                this.element.addClass(buttonClasses.disabled);
+                this.element.removeClass(buttonClasses.selected);
             }
         };
     };
@@ -162,8 +163,10 @@
 
 (function() {
     $.Arte.Toolbar.InsertLink = function(toolbar, buttonName, config) {
+        var dialogClasses = $.Arte.Toolbar.configuration.classes.dialog;
+        var insertLinkClasses = dialogClasses.insertLink;
         $.extend(this, new $.Arte.Toolbar.ButtonWithDialog(toolbar, buttonName, config));
-        var insertDialogClassName = "insert-link";
+        //var insertDialogClassName = "insert-link";
         
         var insertContent = function(contentToInsert) {
             $.each(toolbar.selectionManager.getSelectedFields(), function() {
@@ -171,35 +174,34 @@
             });
         };
         
-        var dialogContent;
+       // var dialogContent;
         var getDialogContent = function() {
-            dialogContent = $("<div>").addClass(insertDialogClassName).on("mousedown ", function(e) {
-                e.stopPropagation();
-            });
+          //  dialogContent = $("<div>").addClass(insertDialogClassName)
 
-            var div = $("<div>").addClass("input-prepend input-append");
-            $("<span>").html("Text to Show: ").addClass("add-on").appendTo(div);
-            $("<input>").addClass("input-medium testToShow").attr({ type: "text" }).appendTo(div).css({ height: "auto" });
-            $("<span>").html("Url: ").addClass("add-on").appendTo(div);
-            $("<input>").addClass("input-medium").attr({ type: "text" }).appendTo(div).css({ height: "auto" });
-            $("<a>").attr("href", "#").addClass("btn ok").html("&#x2713").appendTo(div);
-            $("<a>").attr("href", "#").addClass("btn cancel").html("&#x2717").appendTo(div);
-            dialogContent.append(div);
+            var dialogContent = $("<div>").addClass("input-prepend input-append").on("mousedown ", function(e) {
+                e.stopPropagation();
+            });;
+            $("<span>").html("Text to Show: ").addClass(insertLinkClasses.label).appendTo(dialogContent);
+            $("<input>").addClass(insertLinkClasses.input + " textToShow").attr({ type: "text" }).appendTo(dialogContent).css({ height: "auto" });
+            $("<span>").html("Url: ").addClass(insertLinkClasses.label).appendTo(dialogContent);
+            $("<input>").addClass(insertLinkClasses.input + " url").attr({ type: "text" }).appendTo(dialogContent).css({ height: "auto" });
+            $("<a>").attr("href", "#").addClass(insertLinkClasses.button + " ok").html("&#x2713").appendTo(dialogContent);
+            $("<a>").attr("href", "#").addClass(insertLinkClasses.button + " cancel").html("&#x2717").appendTo(dialogContent);
+            //dialogContent.append(div);
 
             return dialogContent;
         };
 
         this.showPopup = function() {
-            var content = getDialogContent();
-            $(".inline-dialog").append(content);
+            $("." + dialogClasses.container).append(getDialogContent());
 
             var savedSelection = rangy.saveSelection();
-            $("." + insertDialogClassName + " .testToShow").val(rangy.getSelection().toHtml());
-            $("." + insertDialogClassName + " .ok").on("click", function() {
+            $("." + dialogClasses.container + " .textToShow").val(rangy.getSelection().toHtml());
+            $("." + dialogClasses.container + " .ok").on("click", function() {
                 rangy.restoreSelection(savedSelection);
 
                 var selectedcontent = rangy.getSelection().toHtml();
-                var contentToInsert = $("." + insertDialogClassName + " input").val();
+                var contentToInsert = $("." + dialogClasses.container + " .url").val();
                 if (contentToInsert) {
                     var html = $("<a>").attr("href", contentToInsert).html(selectedcontent || contentToInsert);
                     insertContent(html.get(0).outerHTML);
@@ -207,31 +209,39 @@
                 closePopup();
             });
 
-            $("." + insertDialogClassName + " .cancel").on("click", function() {
+            $("." + dialogClasses.container + " .cancel").on("click", function() {
                 rangy.restoreSelection(savedSelection);
                 closePopup();
             });
 
-            $(".inline-dialog").show();
+            $("." + dialogClasses.container).show();
         };
         
          var closePopup = function() {
-            $("." + insertDialogClassName + " input").val("");
-             $(".inline-dialog").children().remove();   
+            //$("." + insertDialogClassName + " input").val("");
+             $("." + dialogClasses.container).children().remove();   
         };
 
     };
 })(jQuery);
 (function ($) {
     $.Arte.Toolbar.ButtonWithDropDown = function (toolbar, buttonName, config) {
+        var classes = $.Arte.Toolbar.configuration.classes;
         $.extend(this, new $.Arte.Toolbar.Button(toolbar, buttonName, config));
         this.render = function (parent) {
             var me = this;
 
-            var element = $("<select>").addClass(".toolbar-button").addClass(this.name);
+            var element = $("<select>").addClass(classes.select).addClass(this.name);
 
             $.each(config.options, function (index, option) {
-                var value = typeof (option) === "string" ? option.toLowerCase() : option;
+                var display, value;
+                if ($.isPlainObject(option)) {
+                    display = option.display;
+                    value = option.value;
+                } else {
+                    display = option;
+                    value = typeof (option) === "string" ? option.toLowerCase() : option;
+                }
 
                 switch (buttonName) {
                     case "color":
@@ -251,11 +261,10 @@
                         }
                         break;
                 }
-                element.append($("<option>").attr("value", value).html(option));
+                element.append($("<option>").attr("value", value).html(display));
             });
             element.appendTo(parent);
-
-
+            
             element.on({
                 change: function () {
                     me.executeCommand.apply(me, [this.value]);
@@ -394,7 +403,15 @@
                 js: buttonWithDropDown,
                 icon: null,
                 commandName: "fontSize",
-                options: ["", 8, 10, 12, 15, 20],
+                //options: ["", 8, 10, 12, 15, 20],
+                options: [
+                    { display: "", value: "" },
+                    { display: "Smaller", value: 8 },
+                    { display: "Small", value: 10 },
+                    { display: "Medium", value: 12 },
+                    { display: "Large", value: 15 },
+                    { display: "Larger", value: 20 }
+                ],
                 acceptsParams: true,
                 getValue: function (type, value) {
                     if (type === commandAttrType.className) {
@@ -474,9 +491,25 @@
                 js: $.Arte.Toolbar.InsertLink
             }
         },
-        buttonStateClass: {   
-            "disabled": "disabled",
-            "selected": "selected"
+        classes: {
+            "button": {
+                "outer": "btn",
+                "inner": "btn-inner",
+                "disabled": "disabled",
+                "selected": "selected"
+            },
+            "select": {
+                "inner": "select"
+            },
+            "dialog": {
+                "container": "inline-dialog",
+                "insertLink":
+                {
+                    "button": "btn",
+                    "label": "",
+                    "input": ""
+                }
+            }
         },
         commandAttrType: commandAttrType.styleName,
         commandConfig: {}
@@ -521,13 +554,13 @@
         }
     };
 
-    (function() {
+    (function () {
         // Create a reverse lookup from className to styleValue to be used while refreshing the toolbars 
         var classNameReverseLookup = $.Arte.Toolbar.configuration.ClassNameReverseLookup = {};
-        $.each($.Arte.Toolbar.configuration.ClassNameLookup, function(styleName, classNameMapping) {
+        $.each($.Arte.Toolbar.configuration.ClassNameLookup, function (styleName, classNameMapping) {
             var styleKey = classNameReverseLookup[styleName] = {};
 
-            $.each(classNameMapping, function(styleValue, className) {
+            $.each(classNameMapping, function (styleValue, className) {
                 styleKey[className] = styleValue;
             });
         });
