@@ -1,69 +1,174 @@
 <!DOCTYPE html>
 <html>
 
-  <head>
+<head>
     <meta charset='utf-8' />
     <meta http-equiv="X-UA-Compatible" content="chrome=1" />
     <meta name="description" content="Artejs : A powerful, extensible, flexible, cross-browser rich text editor" />
 
-    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="CSS/stylesheet.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="CSS/page.css" />
+    <link rel="stylesheet" type="text/css" href="CSS/3rdParty/Tocify/jquery.tocify.css" />
+    <link rel="stylesheet" type="text/css" href="CSS/3rdParty/Bootstrap/bootstrap.responsive.css" />
 
+    <link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+    <script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+    <script src="http://alexgorbatchev.com/pub/sh/current/scripts/shAutoloader.js" type="text/javascript"></script>
+    <script src="http://agorbatchev.typepad.com/pub/sh/3_0_83/scripts/shbrushjscript.js" type="text/javascript"></script>
     <title>Artejs</title>
-  </head>
+</head>
 
-  <body>
-
+<body>
+    <div id="toc"></div>
     <!-- HEADER -->
     <div id="header_wrap" class="outer">
         <header class="inner">
-          <a id="forkme_banner" href="https://github.com/vistaprint/ArteJS">View on GitHub</a>
+            <a id="forkme_banner" href="https://github.com/vistaprint/ArteJS">View on GitHub</a>
 
-          <h1 id="project_title">Artejs</h1>
-          <h2 id="project_tagline">A powerful, extensible, flexible, cross-browser rich text editor</h2>
+            <h1 id="project_title">Artejs</h1>
+            <p id="project_tagline">A powerful, extensible, flexible, cross-browser rich text editor</p>
 
             <section id="downloads">
-              <a class="zip_download_link" href="https://github.com/vistaprint/ArteJS/zipball/master">Download this project as a .zip file</a>
-              <a class="tar_download_link" href="https://github.com/vistaprint/ArteJS/tarball/master">Download this project as a tar.gz file</a>
+                <a class="zip_download_link" href="https://github.com/vistaprint/ArteJS/zipball/master">Download this project as a .zip file</a>
+                <a class="tar_download_link" href="https://github.com/vistaprint/ArteJS/tarball/master">Download this project as a tar.gz file</a>
             </section>
         </header>
     </div>
 
     <!-- MAIN CONTENT -->
+
     <div id="main_content_wrap" class="outer">
-      <section id="main_content" class="inner">
-        <h1>
-<a name="artejs" class="anchor" href="#artejs"><span class="octicon octicon-link"></span></a>ArteJS</h1>
 
-          <p>A powerful, extensible, flexible, cross-browser rich text editor</p>
-          
-          <ul>
-              <li>
-                  <a href="SimpleToolbar/Toolbar.html">Simple Editor</a>
-              </li>
-              <li>
-                  <a href="UnobtrusiveToolbar/Toolbar.html">Unobtrusive Toolbar</a>
+        <section id="main_content" class="inner">
+            <h1>Overview</h1>
+            <p>A powerful, extensible, flexible, cross-browser rich text editor</p>
+            ArteJS is an integral part of VistaPrint's DIY product design experience that allows adding rich text to a document that eventually gets printed. This imposes a stringent requirement on the output of the rich text editor. Most of the rich text editors we evaluated either did not allow any control on the resultant markup or were simply buggy/incomplete.
+            <br />
+
+            In addition, ArteJS provide many other features that are expected of a modern rich text editor library.
+            <ul>
+                <li>A simple and intuitive jQuery like API.
+                    <br />
+                    For example:
+                    <pre>
+$(".editor").Arte(); // Turns .editor into rich text editor 
+$(".editor").bold(); // Make the selected text bold
+$(".editor").fontSize(10); // Change fontsize fo selected text to 10px
+                    </pre>
                 </li>
-              <li>
-                  <a href="CompleteToolbar/Toolbar.html">Complete toolbar</a>
-              </li>
-              <li>
-                  <a href="CompleteToolbarWithTwitterBootstrap/Toolbar.html">Complete Toolbar with twitter bootstrap</a>
-              </li>
+                <li>A small dependency footprint: jQuery and Rangy 1.2.3 (Included with ArteJS).
+                </li>
+                <li>Full control over the resultant HTML : TODO: Links to examples with Classes/Styles/Tags for a command
+                </li>
+                <li>A loosely coupled architecture based on a plugins that can be used overwrite any existing or add new functionality. In fact, a large part of the functionality is built using plugins.
+                </li>
+                <li>ArteJS supports a clean interface for toolbar integration. TODO: Link to reference toolbar implementations that can support multiple editors with a single toolbar or one toolbar for each editor.
+                </li>
+                <li>Semantically concise and valid markup: e.g. no redundant styles, classes or tags.
+                </li>
+                <li>A rich event model provide a rich integration point. TODO: Link to supported events
+                </li>
+                <li>Keyboard shortcut integration
+                </li>
+                <li>State detection so that it's easy to figure out the state of selected html.
+                </li>
+                <li>Highly granular configuration.
+                </li>
+                <li>Copy/paste functionality from Microsoft Word.
+                </li>
+                <li>Open sourced so it's free--ArteJS is available on an Apache2 license.
+                </li>
+                <li>Most importantly, ArteJS is used in production millions of times a day
+                </li>
+            </ul>
 
+            <h1>Getting Started</h1>
+            <h2>Get ArteJS</h2>
+            Download the latest release of <a href="https://github.com/vistaprint/ArteJS/releases">ArteJS</a>
 
-          </ul>
-      </section>
+            <h2>Typical page structure structure</h2>
+            <pre>
+        &lt;!-- Markup to host the toolbar and the editor--&gt;
+        &lt;div class=&quot;toolbar&quot;&gt;&lt;/div&gt;
+        &lt;div class=&quot;editor&quot;&gt;&lt;/div&gt;
+        &lt;!--Included the Rich text files--&gt;
+
+        &lt;!--Add dependencies and ArteJS Scripts--&gt;
+        &lt;script src=&quot;../path/to/jquery-1.9.1.js&quot;&gt;&lt;/script&gt;
+        &lt;script src=&quot;../path/to/ArteJS/rangy.debug.js&quot;&gt;&lt;/script&gt;
+        &lt;script src=&quot;../path/to/ArteJS/arte.debug.js&quot;&gt;&lt;/script&gt;
+        &lt;script src=&quot;../path/to/ArteJS/toolbar.debug.js&quot;&gt;&lt;/script&gt;
+
+        &lt;script type=&quot;text/javascript&quot;&gt;
+            $(function () {
+                // List and sequence of the toolbar buttons 
+                var buttons = [&quot;bold&quot;, &quot;italic&quot;, &quot;underline&quot;, &quot;blockquote&quot;, &quot;textAlignLeft&quot;, &quot;textAlignCenter&quot;, &quot;textAlignRight&quot;, &quot;h1&quot;, &quot;h2&quot;, &quot;h3&quot;, &quot;h4&quot;, &quot;h5&quot;, &quot;h6&quot;, &quot;subscript&quot;, &quot;superscript&quot;, &quot;unorderedList&quot;, &quot;orderedList&quot;, &quot;undo&quot;, &quot;redo&quot;, &quot;fontSize&quot;, &quot;fontFamily&quot;, &quot;color&quot;, &quot;backgroundColor&quot;, &quot;insertLink&quot;];
+
+                // Initialize the Arte editor with default options
+                $(&quot;.editor&quot;).Arte();
+
+                // Initialize the toolbar with default options
+                $(&quot;.toolbar&quot;).ArteToolbar({
+                    buttons: buttons
+                });
+            });
+        &lt;/script&gt;
+
+    </pre>
+            <h1>Examples</h1>
+            <h2>A simple editor</h2>
+            <iframe class="editor-demo" src="SimpleToolbar/Toolbar.html"></iframe>
+
+            <h2>Unobtrusive toolbar</h2>
+            <iframe class="editor-demo" src="UnobtrusiveToolbar/Toolbar.html"></iframe>
+
+            <h2>Reference toolbar implementation</h2>
+            <iframe class="editor-demo" src="CompleteToolbar/Toolbar.html"></iframe>
+
+            <h2>Reference toolbar with bootstrap</h2>
+            <iframe class="editor-demo" src="CompleteToolbarWithTwitterBootstrap/Toolbar.html"></iframe>
+
+            <h1>ArteJS Cookbook</h1>
+            
+            <h1>Compiling ArteJS</h1>
+            ArteJS uses <a href="http://gruntjs.com/">Grunt</a> to minify, combine, analyze code and run unit tests.  Following are the steps to run grunt tasks:
+            <ul>
+                <li>Install <a href="http://nodejs.org/download/">Node</a></li>
+                <li>Install <a href="http://windows.github.com/">Github client</a></li>
+                <li>Create and navigate to a local directory for ArteJS code</li>
+                <li>Clone the git repository</li>
+                <li>Install node dependencies: execute "npm install"</li>
+                <li>Build ArteJS: Execute "Grunt all"</li>
+            </ul>
+            There are many <a href="https://github.com/vistaprint/ArteJS/blob/master/Gruntfile.js">other grunt tasks</a> defined for conveniance.
+        </section>
+
     </div>
-
     <!-- FOOTER  -->
     <div id="footer_wrap" class="outer">
-      <footer class="inner">
-        <p class="copyright">Artejs maintained by <a href="https://github.com/vistaprint">vistaprint</a></p>
-        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
-      </footer>
+        <footer class="inner">
+            <p class="copyright">Artejs maintained by <a href="https://github.com/vistaprint">vistaprint</a></p>
+            <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+        </footer>
     </div>
 
-    
+    <script type="text/javascript" src="Scripts/3rdParty/jQuery/jquery-1.9.1.js"></script>
+    <script type="text/javascript" src="scripts/3rdParty/jQuery/jquery-ui-1.10.3.custom.min.js"></script>
+    <script type="text/javascript" src="scripts/3rdParty/Tocify/jquery.tocify.min.js"></script>
 
-  </body>
+    <script>
+        $(function () {
+            $("#toc").tocify();
+
+            $("iframe").on("load", function () {
+                $(this).css("height", this.contentWindow.document.body.scrollHeight + "px");
+            });
+
+            $("pre").attr("class", "brush: js, toolbar: false");
+            SyntaxHighlighter.all();
+        });
+
+    </script>
+
+</body>
 </html>

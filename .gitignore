@@ -7,5 +7,6 @@
 /Obj
 /Release
 /*.csproj
-/*.sln
-/*.suo	
+*.sln
+*.suo
+*.user

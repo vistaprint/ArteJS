@@ -1,40 +1,42 @@
 ﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <html>
-	<head>
-	    <title>Rich text editor</title>
-        <link rel="stylesheet" href="demo.css"/>
-	    <link rel="stylesheet" href="toolbar.css" />
-        <link href="../stylesheets/stylesheet.css" rel="stylesheet" type="text/css" />
-        <link href="../stylesheets/page.css" rel="stylesheet" type="text/css"/>
-	</head>
-    <body>
-        <div class="header">Rich text editor with complete toolbar </div>
-        <div id="demo">
-            <!-- Markup to host the toolbar and the editor-->
-            <div class="toolbar"></div>
-            <div class="editor"></div>
-            <!--Included the Rich text files-->
-            <script type="text/javascript" src="../Dependencies/jquery-1.9.2.js"></script>
-            <script type="text/javascript" src="../Dependencies/rangy.debug.js"></script>
-            <script type="text/javascript" src="../Dependencies/arte.debug.js"></script>
-            <script type="text/javascript" src="../Dependencies/toolbar.debug.js"></script>
+<head>
+    <title>Rich text editor</title>
+    <link rel="stylesheet" href="demo.css" />
+    <link rel="stylesheet" href="toolbar.css" />
+    <link href="../CSS/stylesheet.css" rel="stylesheet" type="text/css" />
+    <link href="../CSS/page.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <div id="demo">
+        <!-- Markup to host the toolbar and the editor-->
+        <div class="toolbar"></div>
+        <div class="editor"></div>
+        <!--Included the Rich text files-->
+        <!--Dependencies-->
+        <script src="../Scripts/3rdParty/jQuery/jquery-1.9.1.js"></script>
 
-            <script type="text/javascript">
-                $(function () {
-                    // List of buttons to show on the toolbar 
-                    var buttons = ["bold", "italic", "underline", "blockquote", "textAlignLeft", "textAlignCenter", "textAlignRight", "h1", "h2", "h3", "h4", "h5", "h6",
-                        "subscript", "superscript", "unorderedList", "orderedList", "undo", "redo", "fontSize", "fontFamily", "color", "backgroundColor", "insertLink"
-                    ];
+        <!-- Include the Arte scripts-->
+        <script src="../Scripts/ArteJS/rangy.debug.js"></script>
+        <script src="../Scripts/ArteJS/arte.debug.js"></script>
+        <script src="../Scripts/ArteJS/toolbar.debug.js"></script>
 
-                    // Initialize the editor
-                    $(".editor").Arte();
+        <script type="text/javascript">
+            $(function () {
+                // List of buttons to show on the toolbar 
+                var buttons = ["bold", "italic", "underline", "blockquote", "textAlignLeft", "textAlignCenter", "textAlignRight", "h1", "h2", "h3", "h4", "h5", "h6",
+                    "subscript", "superscript", "unorderedList", "orderedList", "undo", "redo", "fontSize", "fontFamily", "color", "backgroundColor", "insertLink"
+                ];
 
-                    // Initialize the toolbar
-                    $(".toolbar").ArteToolbar({
-                        buttons: buttons
-                    });
+                // Initialize the editor
+                $(".editor").Arte();
+
+                // Initialize the toolbar
+                $(".toolbar").ArteToolbar({
+                    buttons: buttons
                 });
-            </script>
-        </div>
-    </body>
+            });
+        </script>
+    </div>
+</body>
 </html>

@@ -11,9 +11,8 @@
     width: 16px;
 }
 
-.toolbar-button:hover
-{
-   
+select {
+    width: auto;
 }
 
 .bold

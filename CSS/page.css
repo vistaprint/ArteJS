@@ -1,0 +1,28 @@
+﻿.header {
+    font-size: 30px;
+    font-weight: bold;
+    line-height: 30px;
+}
+#demo {
+    border: black solid 1px;
+    background-color: white;
+}
+
+.editor-demo {
+    display: block;
+    width: 100%;
+}
+
+
+.nav-list > .active {
+    background-color: #0088cc;
+}
+
+.nav-list > .active > a {
+    color: white;
+}
+
+code {
+    padding: 0px;
+    margin: 0px;
+}
