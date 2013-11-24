@@ -26,3 +26,11 @@ code {
     padding: 0px;
     margin: 0px;
 }
+
+blockquote {
+    margin: 0px;
+}
+
+.indent {
+    margin-left: 10px;
+}

@@ -130,7 +130,22 @@ $(".editor").fontSize(10); // Change fontsize fo selected text to 10px
 
             <h1>ArteJS Cookbook</h1>
             
-            <h1>Compiling ArteJS</h1>
+            <h1>Project details</h1>
+
+            <h2>Project file structure</h2>
+            <strong>/Editor</strong>
+            <div class="indent">
+                <strong>/Core: </strong> rich text infrastructure classes <br/>
+                <strong>/lib: </strong> extensions to the 3rd party libraries (jQuery and rangy) <br/>
+                <strong>/plugins: </strong> plugins <br/>
+                <strong>/unittests: </strong> unit tests for each components
+            </div>
+            <strong>Toolbar</strong>
+            <div class="indent">
+                <strong>/Buttons: </strong> various base button types
+            </div>
+
+            <h2>Compiling ArteJS</h2>
             ArteJS uses <a href="http://gruntjs.com/">Grunt</a> to minify, combine, analyze code and run unit tests.  Following are the steps to run grunt tasks:
             <ul>
                 <li>Install <a href="http://nodejs.org/download/">Node</a></li>
@@ -141,6 +156,7 @@ $(".editor").fontSize(10); // Change fontsize fo selected text to 10px
                 <li>Build ArteJS: Execute "Grunt all"</li>
             </ul>
             There are many <a href="https://github.com/vistaprint/ArteJS/blob/master/Gruntfile.js">other grunt tasks</a> defined for conveniance.
+           
         </section>
 
     </div>
@@ -153,8 +169,8 @@ $(".editor").fontSize(10); // Change fontsize fo selected text to 10px
     </div>
 
     <script type="text/javascript" src="Scripts/3rdParty/jQuery/jquery-1.9.1.js"></script>
-    <script type="text/javascript" src="scripts/3rdParty/jQuery/jquery-ui-1.10.3.custom.min.js"></script>
-    <script type="text/javascript" src="scripts/3rdParty/Tocify/jquery.tocify.min.js"></script>
+    <script type="text/javascript" src="Scripts/3rdParty/jQuery/jquery-ui-1.10.3.custom.min.js"></script>
+    <script type="text/javascript" src="Scripts/3rdParty/Tocify/jquery.tocify.min.js"></script>
 
     <script>
         $(function () {
