@@ -127,26 +127,14 @@
                     { display: "Larger", value: "arte-font-weight-20" }
                 ],
                 */
-                acceptsParams: true,
-                getValue: function (type, value) {
-                    if (type === commandAttrType.className) {
-                        return $.Arte.Toolbar.configuration.ClassNameLookup.fontSize[value];
-                    }
-                    return value;
-                }
+                acceptsParams: true
             },
             "fontFamily": {
                 js: buttonWithDropDown,
                 icon: null,
                 commandName: "fontFamily",
                 options: ["", "Arial", "curier new", "Georgia", "Times New Roman"],
-                acceptsParams: true,
-                getValue: function (type, value) {
-                    if (type === commandAttrType.className) {
-                        return $.Arte.Toolbar.configuration.ClassNameLookup.fontFamily[value];
-                    }
-                    return value;
-                }
+                acceptsParams: true
             },
             "color": {
                 js: buttonWithDropDown,
@@ -154,12 +142,6 @@
                 commandName: "color",
                 options: ["", "Black", "Blue", "Green", "Red"],
                 acceptsParams: true,
-                getValue: function (type, value) {
-                    if (type === commandAttrType.className) {
-                        return $.Arte.Toolbar.configuration.ClassNameLookup.color[value];
-                    }
-                    return value;
-                }
             },
             "unorderedList": {
                 js: buttonBase,
@@ -173,13 +155,7 @@
                 acceptsParams: true,
                 js: buttonWithDropDown,
                 commandName: "backgroundColor",
-                options: ["", "Black", "Blue", "Green", "Red"],
-                getValue: function (type, value) {
-                    if (type === commandAttrType.className) {
-                        return $.Arte.Toolbar.configuration.ClassNameLookup.backgroundColor[value];
-                    }
-                    return value;
-                }
+                options: ["", "Black", "Blue", "Green", "Red"]
             },
             "undo": {
                 js: buttonBase,
