@@ -108,6 +108,61 @@
                 selectedNodes = rangy.util.getTextNodes(range);
             }
             return selectedNodes;
+        },
+        /*
+        * Identify the ArteJS command configuration from className, styleName or tagName
+        */
+        getCommandConfig: function(options)
+        {
+            var result = null;
+            var commandAttrType = null;
+            var configuration = $.Arte.configuration, constants = $.Arte.constants;
+            
+            if (options && options.commandName)
+            {
+                return configuration.commands[options.commandName];
+            }
+
+            /* Infer the command from the properties in the options. */
+            for (var command in configuration.commands)
+            {
+                var commandConfig = configuration.commands[command];
+
+                if (options.className && commandConfig.classNameRegex && commandConfig.classNameRegex.test(options.className))
+                {
+                    result = commandConfig;
+                    commandAttrType = constants.commandAttrType.className;
+                }
+                else if (options.styleName && options.styleName === commandConfig.styleName)
+                {
+                    result = commandConfig;
+                    commandAttrType = constants.commandAttrType.styleName;
+                }
+                else if (options.tagName && !(options.className || options.styleName))
+                {
+                    if ($.isPlainObject(commandConfig.tagName))
+                    {
+                        var hasTag = util.any(commandConfig.tagName, function(key, value)
+                        {
+                            return value === options.tagName;
+                        });
+                        if (hasTag)
+                        {
+                            result = commandConfig;
+                        }
+                    }
+                    else if (options.tagName === commandConfig.tagName)
+                    {
+                        result = commandConfig;
+                    }
+                    commandAttrType = constants.commandAttrType.tagName;
+                }
+                if (result)
+                {
+                    return $.extend({ commandAttrType: commandAttrType }, result);
+                }
+            }
+            return null;
         }
     };
 })(jQuery);

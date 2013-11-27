@@ -16,12 +16,8 @@
                     config.commandAttrType :
                     $.Arte.Toolbar.configuration.commandAttrType;
 
-                var value = commandValue;
-                if (config.acceptsParams) {
-                    value = config.getValue(commandAttrType, value);
-                } else {
-                    value = config.commandValue ? config.commandValue[commandAttrType] : "";
-                }
+                var value = commandValue || (config.commandValue ? config.commandValue[commandAttrType] : "");
+
                 var commandOptions = {
                     commandName: config.commandName,
                     commandValue: value,
@@ -63,7 +59,6 @@
         };
 
         this.refresh = function (state) {
-
             if (this.isEnabled()) {
                 this.element.removeClass(buttonClasses.disabled);
 

@@ -52,7 +52,7 @@
 
         if (!this.commandName)
         {
-            var commandConfig = $.Arte.configuration.commands.getCommandConfig(this);
+            var commandConfig = $.Arte.util.getCommandConfig(this);
             if (commandConfig)
             {
                 this.commandName = commandConfig.commandName;

@@ -1,4 +1,4 @@
-ArteJS [![Build Status](https://secure.travis-ci.org/vistaprint/ArteJS.png?branch=master)](http://travis-ci.org/vistaprint/ArteJs)
+ArteJS [![Build Status](https://secure.travis-ci.org/vistaprint/ArteJS.png?branch=master)](http://travis-ci.org/vistaprint/ArteJS)
 ======
 
 ArteJS is a powerful, extensible, flexible and cross-browser rich text editor that is designed to product  consistent, valid and concise html.  

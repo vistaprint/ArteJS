@@ -60,12 +60,6 @@
             this.element[op]("disabled", true);
 
             var value = state[config.commandName];
-
-            // Perform a reverse lookup from className to actual value
-            if ($.Arte.Toolbar.configuration.commandAttrType === $.Arte.constants.commandAttrType.className) {
-                value = $.Arte.Toolbar.configuration.ClassNameReverseLookup[config.commandName][value];
-            }
-
             this.element.val(value);
         };
     };

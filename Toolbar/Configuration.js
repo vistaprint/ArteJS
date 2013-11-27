@@ -1,15 +1,16 @@
-﻿(function ($) {
-
+﻿/* File overview: configuration for the toolbar */
+(function ($) {
     $.Arte.Toolbar = $.Arte.Toolbar || {};
     var buttonBase = $.Arte.Toolbar.Button;
     var buttonWithDropDown = $.Arte.Toolbar.ButtonWithDropDown;
     var commandAttrType = $.Arte.constants.commandAttrType;
+    // Button Configuration
     $.Arte.Toolbar.configuration = {
         buttons: {
             "bold": {
-                js: buttonBase,
-                commandName: "bold",
-                commandValue: {
+                js: buttonBase, // Button js to render and manage this button
+                commandName: "bold", // Command to execute
+                commandValue: { // command values for each command attribut type
                     "styleName": "bold",
                     "className": "arte-font-weight-bold"
                 }
@@ -105,7 +106,9 @@
                 js: buttonWithDropDown,
                 icon: null,
                 commandName: "fontSize",
-                //options: ["", 8, 10, 12, 15, 20],
+                options: ["", 8, 10, 12, 15, 20],
+                /*
+                Alternate way of specifying the options where the display is different that the actual values
                 options: [
                     { display: "", value: "" },
                     { display: "Smaller", value: 8 },
@@ -114,6 +117,16 @@
                     { display: "Large", value: 15 },
                     { display: "Larger", value: 20 }
                 ],
+                Another way of specifying the options where the display is different that the actual values
+                options: [
+                    { display: "", value: "" },
+                    { display: "Smaller", value: "arte-font-weight-8" },
+                    { display: "Small", value: "arte-font-weight-10" },
+                    { display: "Medium", value: "arte-font-weight-12" },
+                    { display: "Large", value: "arte-font-weight-15" },
+                    { display: "Larger", value: "arte-font-weight-20" }
+                ],
+                */
                 acceptsParams: true,
                 getValue: function (type, value) {
                     if (type === commandAttrType.className) {
@@ -193,6 +206,7 @@
                 js: $.Arte.Toolbar.InsertLink
             }
         },
+        // Set of classes used to control the look-n-feel of the toolbar buttons
         classes: {
             "button": {
                 "outer": "btn",
@@ -213,59 +227,8 @@
                 }
             }
         },
+        // By default, this toolbar will apply rich text commands using styles
         commandAttrType: commandAttrType.styleName,
         commandConfig: {}
     };
-
-    // In case we are using classNames to apply styles, the following mapping
-    // maps user selected values to a className 
-    $.Arte.Toolbar.configuration.ClassNameLookup = {
-        fontWeight: {
-            bold: "arte-font-weight-bold"
-        },
-        fontSize: {
-            8: "arte-font-size-8",
-            10: "arte-font-size-10",
-            12: "arte-font-size-12",
-            15: "arte-font-size-15",
-            20: "arte-font-size-20"
-        },
-        color: {
-            red: "arte-font-color-red",
-            blue: "arte-font-color-blue",
-            black: "arte-font-color-black",
-            green: "arte-font-color-green"
-        },
-        fontFamily: {
-            "times new roman": "arte-font-family-times-new-roman",
-            "curier new": "arte-font-family-curier-new",
-            "arial": "arte-font-family-arial",
-            "georgia": "arte-font-family-georgia"
-        },
-        textAlign: {
-            "left": "arte-text-align-left",
-            "center": "arte-text-align-center",
-            "right": "arte-text-align-right"
-        },
-        backgroundColor: {
-            red: "arte-background-color-red",
-            blue: "arte-background-color-blue",
-            black: "arte-background-color-black",
-            green: "arte-background-color-green"
-
-        }
-    };
-
-    (function () {
-        // Create a reverse lookup from className to styleValue to be used while refreshing the toolbars 
-        var classNameReverseLookup = $.Arte.Toolbar.configuration.ClassNameReverseLookup = {};
-        $.each($.Arte.Toolbar.configuration.ClassNameLookup, function (styleName, classNameMapping) {
-            var styleKey = classNameReverseLookup[styleName] = {};
-
-            $.each(classNameMapping, function (styleValue, className) {
-                styleKey[className] = styleValue;
-            });
-        });
-    })();
-
 })(jQuery);

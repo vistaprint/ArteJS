@@ -13,7 +13,47 @@
     var configuration = $.Arte.configuration;
     var constants = $.Arte.constants;
     var util = $.Arte.util;
-    
+
+    $.extend(configuration, {
+        /**
+    * A set of tagNames to which a style/class can be styled.  If a tagName is not styleable, the styles/classes will be applied to all of its 
+    * children or the parent depending on the markup.
+    */
+        styleableTags: {
+            SPAN: 1,
+            DIV: 1,
+            P: 1,
+            LI: 1,
+            UL: 1,
+            OL: 1
+        },
+
+        /**
+        * During the cleanup phase, the elements with tagName specified with Key can be merged with the parent element specified by the values
+        * For example, A SPAN can be merged with SPAN/DIV/P/LI while a LI can't be merged with anything
+        */
+        mergableTags: {
+            SPAN: { SPAN: 1, DIV: 1, P: 1, LI: 1 },
+            DIV: { DIV: 1, P: 1, LI: 1 },
+            P: { DIV: 1, P: 1, LI: 1 },
+            LI: {},
+            OL: {},
+            UL: {},
+            B: { B: 1 },
+            U: { U: 1 },
+            I: { I: 1 },
+            STRONG: { STRONG: 1 },
+            SUB: { SUB: 1 },
+            SUP: { SUP: 1 },
+            H1: { H2: 1, H3: 1, H4: 1, H5: 1, H6: 1 },
+            H2: { H1: 1, H3: 1, H4: 1, H5: 1, H6: 1 },
+            H3: { H1: 1, H2: 1, H4: 1, H5: 1, H6: 1 },
+            H4: { H1: 1, H2: 1, H3: 1, H5: 1, H6: 1 },
+            H5: { H1: 1, H2: 1, H3: 1, H4: 1, H6: 1 },
+            H6: { H1: 1, H2: 1, H3: 1, H4: 1, H5: 1 }
+        }
+    });
+
     /**
     * Merge adjunct lists within the set of matched element
     * For example <ul><li>1</li><ul><ul><li>2</li></ul> => <ul><li>1</li><li>2</li></ul>
@@ -138,7 +178,7 @@
 
                 $.each(classes, function(index, className)
                 {
-                    var commandConfig = configuration.commands.getCommandConfig({ className: className });
+                    var commandConfig = util.getCommandConfig({ className: className });
                     if (commandConfig && commandConfig.classNameRegex)
                     {
                         dom.removeClassWithPattern(jElement, commandConfig.classNameRegex);
@@ -152,7 +192,7 @@
                 // jElement has 1+ children, 
                 $.each(styles, function(styleName, styleValue)
                 {
-                    var commandConfig = configuration.commands.getCommandConfig({ styleName: styleName });
+                    var commandConfig = util.getCommandConfig({ styleName: styleName });
                     var styleOptions = { commandName: commandConfig.commandName, styleName: styleName, styleValue: styleValue, topEditableParent: topEditableParent };
                     // If all of the children have a style value applied, push it to the node
                     if (dom.closestWithCommandValue(contentNodes, styleOptions).length === contentNodes.length)
@@ -167,7 +207,7 @@
                     // If all of the contentNodes have a class, push it to the parent and remove it from all contentNodes
                     if (dom.allHaveClass(contentNodes, className))
                     {
-                        var commandConfig = configuration.commands.getCommandConfig({ className: className });
+                        var commandConfig = util.getCommandConfig({ className: className });
                         if (commandConfig.classNameRegex)
                         {
                             dom.removeClassWithPattern(jElement, commandConfig.classNameRegex);
@@ -237,7 +277,7 @@
             // if so, we can simply unwrap the child
             var allStylesApplied = util.all(styles, function(styleName, styleValue)
             {
-                var commandConfig = configuration.commands.getCommandConfig({ styleName: styleName });
+                var commandConfig = util.getCommandConfig({ styleName: styleName });
                 var parentWithStyle = dom.closestWithCommand($this.parent(), { commandName: commandConfig.commandName, styleName: styleName });
                 return parentWithStyle.get(0) && (dom.getStyles(parentWithStyle)[styleName] === styleValue);
             });
@@ -279,7 +319,7 @@
         var classes = dom.getClasses(jElement);
         $.each(classes, function(index, className)
         {
-            var commandConfig = configuration.commands.getCommandConfig({ className: className });
+            var commandConfig = util.getCommandConfig({ className: className });
             var allNodesHaveClass = commandConfig && commandConfig.classNameRegex && util.all(contentNodes, function(index, contentNode)
             {
                 return dom.hasClassWithPattern($(contentNode), commandConfig.classNameRegex);

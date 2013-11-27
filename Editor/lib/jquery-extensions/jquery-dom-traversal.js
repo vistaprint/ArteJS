@@ -462,7 +462,7 @@
         closestWithCommand: function(jNode, options)
         {
             var result = $();
-            var commandConfig = configuration.commands.getCommandConfig(options);
+            var commandConfig = util.getCommandConfig(options);
             if (!commandConfig)
             {
                 return result;

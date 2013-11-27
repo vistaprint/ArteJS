@@ -40,7 +40,7 @@
                 parent.css(options.styleName, options.styleValue);
             } else if (options.commandAttrType === constants.commandAttrType.className)
             {
-                var config = configuration.commands.getCommandConfig({ className: options.className });
+                var config = util.getCommandConfig({ className: options.className });
                 if (config && config.classNameRegex)
                 {
                     dom.removeClassWithPattern(parent, config.classNameRegex);
