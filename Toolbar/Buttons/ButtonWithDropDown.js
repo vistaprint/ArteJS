@@ -49,18 +49,20 @@
                 },
                 mousedown: function (e) {
                     e.stopPropagation();
-                }
+                },
+                mouseover: function (e) { me.showTooltip(e); },
+                mouseout: function (e) { me.hideTooltip(e); }
             });
 
-            this.element = element;
+            this.$el = element;
         };
 
         this.refresh = function (state) {
             var op = this.isEnabled() ? "removeAttr" : "attr";
-            this.element[op]("disabled", true);
+            this.$el[op]("disabled", true);
 
             var value = state[config.commandName];
-            this.element.val(value);
+            this.$el.val(value);
         };
     };
 })(jQuery);

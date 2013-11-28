@@ -3,7 +3,8 @@
     $.Arte.Toolbar.Button = function (toolbar, buttonName, config) {
         this.element = null;
         this.commandName = config.commandName;
-        var buttonClasses = $.Arte.Toolbar.configuration.classes.button;
+        var classes = $.Arte.Toolbar.configuration.classes;
+        var buttonClasses = classes.button;
         
         this.isEnabled = function () {
             var selectedTextField = toolbar.selectionManager.getSelectedFields(this.supportedTypes);
@@ -35,8 +36,10 @@
             var me = this;
 
             var inner = $("<span>").addClass(buttonName).addClass(buttonClasses.inner);
-            this.element = $("<a>").attr("href", "#").addClass(buttonClasses.outer).html(inner);
-            this.element.on({
+            this.$el = $("<a>").attr("href", "#").addClass(buttonClasses.outer).html(inner);
+            this.$el.on({
+                mouseover: function (e) { me.showTooltip(e); },
+                mouseout: function (e) { me.hideTooltip(e); },
                 mousedown: function (e) {
                     e.preventDefault();
                     e.stopPropagation();
@@ -48,7 +51,7 @@
                 }
             });
 
-            this.element.appendTo(parent);
+            this.$el.appendTo(parent);
         };
         var isApplied = function (state) {
             if (config.commandName === "textAlign") {
@@ -60,14 +63,38 @@
 
         this.refresh = function (state) {
             if (this.isEnabled()) {
-                this.element.removeClass(buttonClasses.disabled);
+                this.$el.removeClass(buttonClasses.disabled);
 
                 var op = isApplied(state[config.commandName]) ? "addClass" : "removeClass";
-                this.element[op](buttonClasses.selected);
+                this.$el[op](buttonClasses.selected);
             } else {
-                this.element.addClass(buttonClasses.disabled);
-                this.element.removeClass(buttonClasses.selected);
+                this.$el.addClass(buttonClasses.disabled);
+                this.$el.removeClass(buttonClasses.selected);
             }
+        };
+
+        this.showTooltip = function (mouseEvent) {
+            if (this.$el.hasClass(buttonClasses.disabled)) {
+                return;
+            }
+
+            var tooltip = toolbar.$el.find("." + classes.tooltip.container);
+            tooltip.html(config.tooltip || this.commandName);
+
+            // position the tooltip
+            var elementOffset = toolbar.$el.offset();
+            var x = mouseEvent.pageX - elementOffset.left + 15;
+            var y = mouseEvent.pageY - elementOffset.top + 5;
+
+            tooltip.css({ top: y, left: x });
+            tooltip.show();
+        };
+        this.hideTooltip = function (mouseEvent) {
+            if (this.$el.hasClass(buttonClasses.disabled)) {
+                return;
+            }
+
+            toolbar.$el.find("." + classes.tooltip.outer).hide();
         };
     };
 })(jQuery);

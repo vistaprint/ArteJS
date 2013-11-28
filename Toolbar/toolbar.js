@@ -7,7 +7,7 @@
         this.each(function() {
             var toolbar;
             if (options && typeof(options) === "object") {
-                $.extend(options, { element: this });
+                $.extend(options, { element: $(this) });
                 toolbar = new $.Arte.Toolbar(options);
                 $(this).data("Toolbar", toolbar);
             }
@@ -18,20 +18,22 @@
 
     $.Arte.Toolbar = function (options) {
         var me = this;
-
+        var classes = $.Arte.Toolbar.configuration.classes;
+        this.$el = options.element;
         function render() {
-            $(options.element).on({
+            me.$el.on({
                 "click mousedown mouseup": function (e) {
                     e.stopPropagation();
                     e.preventDefault();
                 }
             });
             $.each(buttons, function () {
-                this.render(options.element);
+                this.render(me.$el);
             });
 
             // Add a container for inline dialogs
-            $("<div>").addClass("inline-dialog").appendTo(options.element);
+            $("<div>").addClass(classes.dialog.container).appendTo(me.$el);
+            $("<div>").addClass(classes.tooltip.container).appendTo(me.$el);
         }
 
         var buttons = [];

@@ -11,6 +11,11 @@
     width: 16px;
 }
 
+.tooltip {
+    position: absolute;
+    background-color: red;
+}
+
 .toolbar-button:hover
 {
    

@@ -33,7 +33,7 @@
             },
             "blockquote": {
                 js: buttonBase,
-                commandName: "blockquote"
+                commandName: "blockquote",
             },
             "textAlignLeft": {
                 js: buttonBase,
@@ -42,7 +42,8 @@
                 commandValue: {
                     "styleName": "left",
                     "className": "arte-text-align-left"
-                }
+                },
+                tooltip: "Text align left"
             },
             "textAlignCenter": {
                 js: buttonBase,
@@ -51,7 +52,8 @@
                 commandValue: {
                     "styleName": "center",
                     "className": "arte-text-align-center"
-                }
+                },
+                tooltip: "Text align center"
             },
             "textAlignRight": {
                 js: buttonBase,
@@ -60,7 +62,8 @@
                 commandValue: {
                     "styleName": "right",
                     "className": "arte-text-align-right"
-                }
+                },
+                tooltip: "Text align right"
             },
             "h1": {
                 js: buttonBase,
@@ -127,14 +130,16 @@
                     { display: "Larger", value: "arte-font-weight-20" }
                 ],
                 */
-                acceptsParams: true
+                acceptsParams: true,
+                tooltip: "Font size"
             },
             "fontFamily": {
                 js: buttonWithDropDown,
                 icon: null,
                 commandName: "fontFamily",
                 options: ["", "Arial", "curier new", "Georgia", "Times New Roman"],
-                acceptsParams: true
+                acceptsParams: true,
+                tooltip: "Font family"
             },
             "color": {
                 js: buttonWithDropDown,
@@ -145,21 +150,25 @@
             },
             "unorderedList": {
                 js: buttonBase,
-                commandName: "unorderedList"
+                commandName: "unorderedList",
+                tooltip: "Unordered list"
             },
             "orderedList": {
                 js: buttonBase,
-                commandName: "orderedList"
+                commandName: "orderedList",
+                tooltip: "Ordered list"
             },
             "backgroundColor": {
                 acceptsParams: true,
                 js: buttonWithDropDown,
                 commandName: "backgroundColor",
-                options: ["", "Black", "Blue", "Green", "Red"]
+                options: ["", "Black", "Blue", "Green", "Red"],
+                tooltip: "Background Color"
             },
             "undo": {
                 js: buttonBase,
-                commandName: "undo"
+                commandName: "undo",
+                tooltip: "Undo"
             },
             "redo": {
                 js: buttonBase,
@@ -179,7 +188,8 @@
             },
             "insertLink": {
                 commandName: "insert",
-                js: $.Arte.Toolbar.InsertLink
+                js: $.Arte.Toolbar.InsertLink,
+                tooltip: "Insert link"
             }
         },
         // Set of classes used to control the look-n-feel of the toolbar buttons
@@ -201,6 +211,10 @@
                     "label": "",
                     "input": ""
                 }
+            },
+            "tooltip":
+            {
+                "container": "tooltip"
             }
         },
         // By default, this toolbar will apply rich text commands using styles
