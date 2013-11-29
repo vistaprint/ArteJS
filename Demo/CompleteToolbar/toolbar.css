@@ -23,6 +23,13 @@
     border: grey 1px solid;
 }
 
+.tooltip {
+    position: absolute;
+    background-color: lightblue;
+    line-height: 12px;
+    font-size: 10px;
+}
+
 .bold
 {
    background-image: url("Content/Icons/text_bold.png"); 

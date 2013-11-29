@@ -1,0 +1,11 @@
+﻿#text_editor
+{
+    width: 800px;
+    border: 1px black solid;
+    padding: 2px;
+}
+
+.editor1, .editor2{
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+}

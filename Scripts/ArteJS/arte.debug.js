@@ -244,7 +244,7 @@
     });
 })(jQuery);
 /*
-* Various constants used throughout the editor
+* This file lists the configuration and constants used by ArteJS
 */
 (function($)
 {
@@ -263,24 +263,14 @@
         * Rich text command type
         */
         commandType: {
-            inline: "inline",
-            block: "block",
-            complex: "complex", // OL/UL
-            other: "other" // Insert, etc
+            inline: "inline", // command is applied to the selection. e.g. fontWeight, fontStyle
+            block: "block", // command is applied to the full block. e.g align, h1
+            complex: "complex", // Composite command: OL/UL
+            other: "other" // command handles how it is applied. e.g. insert
         },
 
         /*
-        * commandAttrType specifies how the command is applied.  For example, by using tagName, styleName or className
-        */
-        commandAttrType: {
-            tagName: "tagName",
-            styleName: "styleName",
-            className: "className",
-            other: "other"  // for example, insert command
-        },
-
-        /*
-        * nodeType enumerates the element types that Arte interacts with
+        * enumeration of the element types that Arte interacts with
         */
         nodeType: {
             ELEMENT: 1,
@@ -290,7 +280,7 @@
         },
 
         /*
-        * tagName enumerates the tags used by Arte
+        * enumeration of the tags used by Arte
         */
         tagName: {
             LI: "LI",
@@ -333,6 +323,16 @@
             "oncommand": "oncommand",
             "oncreate": "oncreate",
             "ondestroy": "ondestroy"
+        },
+
+        /*
+        * commandAttrType specifies how the command is applied.  For example, by using tagName, styleName or className
+        */
+        commandAttrType: {
+            tagName: "tagName",
+            styleName: "styleName",
+            className: "className",
+            other: "other"  // for example, insert command
         }
     };
 
@@ -351,44 +351,6 @@
         */
         classNameSpace: "arte",
 
-        /**
-        * A set of tagNames to which a style/class can be styled.  If a tagName is not styleable, the styles/classes will be applied to all of its 
-        * children or the parent depending on the markup.
-        */
-        styleableTags: {
-            SPAN: 1,
-            DIV: 1,
-            P: 1,
-            LI: 1,
-            UL: 1,
-            OL: 1
-        },
-
-        /**
-        * During the cleanup phase, the elements with tagName specified with Key can be merged with the parent element specified by the values
-        * For example, A SPAN can be merged with SPAN/DIV/P/LI while a LI can't be merged with anything
-        */
-        mergableTags: {
-            SPAN: { SPAN: 1, DIV: 1, P: 1, LI: 1 },
-            DIV: { DIV: 1, P: 1, LI: 1 },
-            P: { DIV: 1, P: 1, LI: 1 },
-            LI: {},
-            OL: {},
-            UL: {},
-            B: { B: 1 },
-            U: { U: 1 },
-            I: { I: 1 },
-            STRONG: { STRONG: 1 },
-            SUB: { SUB: 1 },
-            SUP: { SUP: 1 },
-            H1: { H2: 1, H3: 1, H4: 1, H5: 1, H6: 1 },
-            H2: { H1: 1, H3: 1, H4: 1, H5: 1, H6: 1 },
-            H3: { H1: 1, H2: 1, H4: 1, H5: 1, H6: 1 },
-            H4: { H1: 1, H2: 1, H3: 1, H5: 1, H6: 1 },
-            H5: { H1: 1, H2: 1, H3: 1, H4: 1, H6: 1 },
-            H6: { H1: 1, H2: 1, H3: 1, H4: 1, H5: 1 }
-        },
-
         /*
         * Default attribute to use when applying a rich text command.
         * Options: See Arte.constants.commandAttrType
@@ -405,7 +367,10 @@
         */
         rangySelectionBoundaryClassName: "rangySelectionBoundary",
 
-        /**/
+        /* 
+        * Default tags to use when applying a rich text command
+        * These can be over-ridden in the command configuration for each command
+        */
         defaultInlineTag: constants.tagName.SPAN,
         defaultBlockTag: constants.tagName.P
     };
@@ -439,17 +404,29 @@
     };
 
     var configuration = $.Arte.configuration;
+    
+    /*
+    * ArteJS command configuration
+    * Command configuration specifies how a command can be applied and how can we identify if that command has been applied
+    */
     $.Arte.configuration.commands = {
-        /* Tag based rich text commands */
+        /* 
+        * Bold command be applied using a tag (B), a style (font-weight=bold), or a class (arte-font-weight-bold)
+        * command configuration specifies how to apply command in each case
+        */
         bold: {
+            // Bold command is inline; it can be applied to a selection
             commandType: constants.commandType.inline,
+            // The following three properties are used to identify if bold command is applied 
             tagName: constants.tagName.B,
             styleName: "font-weight",
             classNameRegex: new RegExp(configuration.classNameSpace + "-font-weight-[\\S]+"),
+            // Default value to use when none is specified.
             defaultValue: {
                 "styleName": "bold",
                 "className": configuration.classNameSpace + "-font-weight-bold"
             },
+            // Tag to use for each type of command applier
             applierTagName: {
                 "tagName": constants.tagName.B,
                 "className": constants.tagName.SPAN,
@@ -486,6 +463,7 @@
                 className: configuration.classNameSpace + "-text-decoration-underline"
             }
         },
+        // A command that can only be applied using a tag name
         blockquote: {
             tagName: constants.tagName.BLOCKQUOTE,
             commandType: constants.commandType.block,
@@ -551,37 +529,7 @@
             commandType: constants.commandType.other,
             commandAttrType: constants.commandAttrType.other
         },
-        /* Style or class based rich text commands */
-        //    fontWeight: {
-        //        styleName: "font-weight",
-        //        classNameRegex: new RegExp(Arte.configuration.classNameSpace + "-font-weight-[\\S]+"),
-        //        tagName: Arte.constants.tagName.SPAN,
-        //        commandType: Arte.constants.commandType.inline,
-        //        defaultValue: {
-        //            styleName: "bold",
-        //            className: Arte.configuration.classNameSpace + "-font-weight-bold"
-        //        }
-        //    },
-        //    fontStyle: {
-        //        styleName: "font-style",
-        //        classNameRegex: new RegExp(Arte.configuration.classNameSpace + "-font-style-italic"),
-        //        tagName: Arte.constants.tagName.SPAN,
-        //        commandType: Arte.constants.commandType.inline,
-        //        defaultValue: {
-        //            styleName: "italic",
-        //            className: Arte.configuration.classNameSpace + "-font-style-italic"
-        //        }
-        //    },
-        //    textDecoration: {
-        //        styleName: "text-decoration",
-        //        classNameRegex: new RegExp(Arte.configuration.classNameSpace + "-text-decoration-[\\S]+"),
-        //        tagName: Arte.constants.tagName.SPAN,
-        //        commandType: Arte.constants.commandType.inline,
-        //        defaultValue: {
-        //            styleName: "underline",
-        //            className: Arte.configuration.classNameSpace + "-text-decoration-underline"
-        //        }
-        //    },
+        // A command that accepts parameters, for example: the value to set as the font-size
         fontSize: {
             styleName: "font-size",
             acceptsParams: true,
@@ -627,60 +575,6 @@
             value.commandName = key;
         });
     })();
-
-    /*
-    * Given a set of command options, find the command configuration
-    */
-    $.Arte.configuration.commands.getCommandConfig = function(options)
-    {
-        var result = null;
-        var commandAttrType = null;
-        if (options && options.commandName)
-        {
-            return configuration.commands[options.commandName];
-        }
-
-        /* Infer the command from the properties in the options. */
-        for (var command in configuration.commands)
-        {
-            var commandConfig = configuration.commands[command];
-
-            if (options.className && commandConfig.classNameRegex && commandConfig.classNameRegex.test(options.className))
-            {
-                result = commandConfig;
-                commandAttrType = constants.commandAttrType.className;
-            }
-            else if (options.styleName && options.styleName === commandConfig.styleName)
-            {
-                result = commandConfig;
-                commandAttrType = constants.commandAttrType.styleName;
-            }
-            else if (options.tagName && !(options.className || options.styleName))
-            {
-                if ($.isPlainObject(commandConfig.tagName))
-                {
-                    var hasTag = util.any(commandConfig.tagName, function(key, value)
-                    {
-                        return value === options.tagName;
-                    });
-                    if (hasTag)
-                    {
-                        result = commandConfig;
-                    }
-                }
-                else if (options.tagName === commandConfig.tagName)
-                {
-                    result = commandConfig;
-                }
-                commandAttrType = constants.commandAttrType.tagName;
-            }
-            if (result)
-            {
-                return $.extend({ commandAttrType: commandAttrType }, result);
-            }
-        }
-        return null;
-    };
 })(jQuery);
 /**
 * @fileoverview manages the plugins for Arte
@@ -1080,6 +974,61 @@
                 selectedNodes = rangy.util.getTextNodes(range);
             }
             return selectedNodes;
+        },
+        /*
+        * Identify the ArteJS command configuration from className, styleName or tagName
+        */
+        getCommandConfig: function(options)
+        {
+            var result = null;
+            var commandAttrType = null;
+            var configuration = $.Arte.configuration, constants = $.Arte.constants;
+            
+            if (options && options.commandName)
+            {
+                return configuration.commands[options.commandName];
+            }
+
+            /* Infer the command from the properties in the options. */
+            for (var command in configuration.commands)
+            {
+                var commandConfig = configuration.commands[command];
+
+                if (options.className && commandConfig.classNameRegex && commandConfig.classNameRegex.test(options.className))
+                {
+                    result = commandConfig;
+                    commandAttrType = constants.commandAttrType.className;
+                }
+                else if (options.styleName && options.styleName === commandConfig.styleName)
+                {
+                    result = commandConfig;
+                    commandAttrType = constants.commandAttrType.styleName;
+                }
+                else if (options.tagName && !(options.className || options.styleName))
+                {
+                    if ($.isPlainObject(commandConfig.tagName))
+                    {
+                        var hasTag = util.any(commandConfig.tagName, function(key, value)
+                        {
+                            return value === options.tagName;
+                        });
+                        if (hasTag)
+                        {
+                            result = commandConfig;
+                        }
+                    }
+                    else if (options.tagName === commandConfig.tagName)
+                    {
+                        result = commandConfig;
+                    }
+                    commandAttrType = constants.commandAttrType.tagName;
+                }
+                if (result)
+                {
+                    return $.extend({ commandAttrType: commandAttrType }, result);
+                }
+            }
+            return null;
         }
     };
 })(jQuery);
@@ -1098,7 +1047,47 @@
     var configuration = $.Arte.configuration;
     var constants = $.Arte.constants;
     var util = $.Arte.util;
-    
+
+    $.extend(configuration, {
+        /**
+    * A set of tagNames to which a style/class can be styled.  If a tagName is not styleable, the styles/classes will be applied to all of its 
+    * children or the parent depending on the markup.
+    */
+        styleableTags: {
+            SPAN: 1,
+            DIV: 1,
+            P: 1,
+            LI: 1,
+            UL: 1,
+            OL: 1
+        },
+
+        /**
+        * During the cleanup phase, the elements with tagName specified with Key can be merged with the parent element specified by the values
+        * For example, A SPAN can be merged with SPAN/DIV/P/LI while a LI can't be merged with anything
+        */
+        mergableTags: {
+            SPAN: { SPAN: 1, DIV: 1, P: 1, LI: 1 },
+            DIV: { DIV: 1, P: 1, LI: 1 },
+            P: { DIV: 1, P: 1, LI: 1 },
+            LI: {},
+            OL: {},
+            UL: {},
+            B: { B: 1 },
+            U: { U: 1 },
+            I: { I: 1 },
+            STRONG: { STRONG: 1 },
+            SUB: { SUB: 1 },
+            SUP: { SUP: 1 },
+            H1: { H2: 1, H3: 1, H4: 1, H5: 1, H6: 1 },
+            H2: { H1: 1, H3: 1, H4: 1, H5: 1, H6: 1 },
+            H3: { H1: 1, H2: 1, H4: 1, H5: 1, H6: 1 },
+            H4: { H1: 1, H2: 1, H3: 1, H5: 1, H6: 1 },
+            H5: { H1: 1, H2: 1, H3: 1, H4: 1, H6: 1 },
+            H6: { H1: 1, H2: 1, H3: 1, H4: 1, H5: 1 }
+        }
+    });
+
     /**
     * Merge adjunct lists within the set of matched element
     * For example <ul><li>1</li><ul><ul><li>2</li></ul> => <ul><li>1</li><li>2</li></ul>
@@ -1223,7 +1212,7 @@
 
                 $.each(classes, function(index, className)
                 {
-                    var commandConfig = configuration.commands.getCommandConfig({ className: className });
+                    var commandConfig = util.getCommandConfig({ className: className });
                     if (commandConfig && commandConfig.classNameRegex)
                     {
                         dom.removeClassWithPattern(jElement, commandConfig.classNameRegex);
@@ -1237,7 +1226,7 @@
                 // jElement has 1+ children, 
                 $.each(styles, function(styleName, styleValue)
                 {
-                    var commandConfig = configuration.commands.getCommandConfig({ styleName: styleName });
+                    var commandConfig = util.getCommandConfig({ styleName: styleName });
                     var styleOptions = { commandName: commandConfig.commandName, styleName: styleName, styleValue: styleValue, topEditableParent: topEditableParent };
                     // If all of the children have a style value applied, push it to the node
                     if (dom.closestWithCommandValue(contentNodes, styleOptions).length === contentNodes.length)
@@ -1252,7 +1241,7 @@
                     // If all of the contentNodes have a class, push it to the parent and remove it from all contentNodes
                     if (dom.allHaveClass(contentNodes, className))
                     {
-                        var commandConfig = configuration.commands.getCommandConfig({ className: className });
+                        var commandConfig = util.getCommandConfig({ className: className });
                         if (commandConfig.classNameRegex)
                         {
                             dom.removeClassWithPattern(jElement, commandConfig.classNameRegex);
@@ -1322,7 +1311,7 @@
             // if so, we can simply unwrap the child
             var allStylesApplied = util.all(styles, function(styleName, styleValue)
             {
-                var commandConfig = configuration.commands.getCommandConfig({ styleName: styleName });
+                var commandConfig = util.getCommandConfig({ styleName: styleName });
                 var parentWithStyle = dom.closestWithCommand($this.parent(), { commandName: commandConfig.commandName, styleName: styleName });
                 return parentWithStyle.get(0) && (dom.getStyles(parentWithStyle)[styleName] === styleValue);
             });
@@ -1364,7 +1353,7 @@
         var classes = dom.getClasses(jElement);
         $.each(classes, function(index, className)
         {
-            var commandConfig = configuration.commands.getCommandConfig({ className: className });
+            var commandConfig = util.getCommandConfig({ className: className });
             var allNodesHaveClass = commandConfig && commandConfig.classNameRegex && util.all(contentNodes, function(index, contentNode)
             {
                 return dom.hasClassWithPattern($(contentNode), commandConfig.classNameRegex);
@@ -2147,7 +2136,7 @@
         closestWithCommand: function(jNode, options)
         {
             var result = $();
-            var commandConfig = configuration.commands.getCommandConfig(options);
+            var commandConfig = util.getCommandConfig(options);
             if (!commandConfig)
             {
                 return result;
@@ -2720,7 +2709,7 @@ rangy.createModule("InlineElementApplier", function(api)
                 parent.css(options.styleName, options.styleValue);
             } else if (options.commandAttrType === constants.commandAttrType.className)
             {
-                var config = configuration.commands.getCommandConfig({ className: options.className });
+                var config = util.getCommandConfig({ className: options.className });
                 if (config && config.classNameRegex)
                 {
                     dom.removeClassWithPattern(parent, config.classNameRegex);
@@ -2882,7 +2871,7 @@ rangy.createModule("InlineElementApplier", function(api)
 
         if (!this.commandName)
         {
-            var commandConfig = $.Arte.configuration.commands.getCommandConfig(this);
+            var commandConfig = $.Arte.util.getCommandConfig(this);
             if (commandConfig)
             {
                 this.commandName = commandConfig.commandName;

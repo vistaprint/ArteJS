@@ -20,6 +20,7 @@
 
 <body>
     <div id="toc"></div>
+   
     <!-- HEADER -->
     <div id="header_wrap" class="outer">
         <header class="inner">
@@ -36,7 +37,6 @@
     </div>
 
     <!-- MAIN CONTENT -->
-
     <div id="main_content_wrap" class="outer">
 
         <section id="main_content" class="inner">
@@ -115,7 +115,7 @@ $(".editor").fontSize(10); // Change fontsize fo selected text to 10px
     </pre>
             <h1>Examples</h1>
             <h2>A simple editor</h2>
-            <iframe class="editor-demo" src="Demo/SimpleToolbar/Toolbar.html"></iframe>
+            <iframe class="editor-demo" src="Demo/SimpleToolbar/Toolbar.html" ></iframe>
 
             <h2>Unobtrusive toolbar</h2>
             <iframe class="editor-demo" src="Demo/UnobtrusiveToolbar/Toolbar.html"></iframe>
@@ -125,9 +125,20 @@ $(".editor").fontSize(10); // Change fontsize fo selected text to 10px
 
             <h2>Reference toolbar with bootstrap</h2>
             <iframe class="editor-demo" src="Demo/CompleteToolbarWithTwitterBootstrap/Toolbar.html"></iframe>
-
-            <h1>ArteJS Cookbook</h1>
             
+            <h2>Single toolbar with multiple editors</h2>
+            <iframe class="editor-demo" src="Demo/SingleToolbarMultipleEditors/Toolbar.html"></iframe>
+            
+            <h2>Multiple toolbars/editors</h2>
+            <iframe class="editor-demo" src="Demo/MultipleEditors/Toolbar.html"></iframe>
+            
+            <h1>ArteJS Cookbook</h1>
+            <h2>Rich Text</h2>
+            <h3>Initialize a rich text editor</h3>
+            <h2>Toolbar</h2>
+            <h3>How do I interact with multiple editors using a single toolbar</h3>
+            <h1>Rich Text API Reference</h1>
+
             <h1>Project details</h1>
 
             <h2>Project file structure</h2>
@@ -175,7 +186,13 @@ $(".editor").fontSize(10); // Change fontsize fo selected text to 10px
             $("#toc").tocify();
 
             $("iframe").on("load", function () {
-                $(this).css("height", this.contentWindow.document.body.scrollHeight + "px");
+                var iFrame = this;
+                setTimeout(function () {
+                    var contentHeight = iFrame.contentWindow.document.body.scrollHeight;
+                    if (contentHeight !== $(iFrame).height()) {
+                        $(iFrame).css("height", iFrame.contentWindow.document.body.scrollHeight + "px");
+                    }
+                }, 100);
             });
 
             $("pre").attr("class", "brush: js, toolbar: false");

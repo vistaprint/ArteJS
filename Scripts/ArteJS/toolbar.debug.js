@@ -7,7 +7,7 @@
         this.each(function() {
             var toolbar;
             if (options && typeof(options) === "object") {
-                $.extend(options, { element: this });
+                $.extend(options, { element: $(this) });
                 toolbar = new $.Arte.Toolbar(options);
                 $(this).data("Toolbar", toolbar);
             }
@@ -18,20 +18,22 @@
 
     $.Arte.Toolbar = function (options) {
         var me = this;
-
+        var classes = $.Arte.Toolbar.configuration.classes;
+        this.$el = options.element;
         function render() {
-            $(options.element).on({
+            me.$el.on({
                 "click mousedown mouseup": function (e) {
                     e.stopPropagation();
                     e.preventDefault();
                 }
             });
             $.each(buttons, function () {
-                this.render(options.element);
+                this.render(me.$el);
             });
 
             // Add a container for inline dialogs
-            $("<div>").addClass("inline-dialog").appendTo(options.element);
+            $("<div>").addClass(classes.dialog.container).appendTo(me.$el);
+            $("<div>").addClass(classes.tooltip.container).appendTo(me.$el);
         }
 
         var buttons = [];
@@ -78,7 +80,8 @@
     $.Arte.Toolbar.Button = function (toolbar, buttonName, config) {
         this.element = null;
         this.commandName = config.commandName;
-        var buttonClasses = $.Arte.Toolbar.configuration.classes.button;
+        var classes = $.Arte.Toolbar.configuration.classes;
+        var buttonClasses = classes.button;
         
         this.isEnabled = function () {
             var selectedTextField = toolbar.selectionManager.getSelectedFields(this.supportedTypes);
@@ -91,12 +94,8 @@
                     config.commandAttrType :
                     $.Arte.Toolbar.configuration.commandAttrType;
 
-                var value = commandValue;
-                if (config.acceptsParams) {
-                    value = config.getValue(commandAttrType, value);
-                } else {
-                    value = config.commandValue ? config.commandValue[commandAttrType] : "";
-                }
+                var value = commandValue || (config.commandValue ? config.commandValue[commandAttrType] : "");
+
                 var commandOptions = {
                     commandName: config.commandName,
                     commandValue: value,
@@ -114,8 +113,10 @@
             var me = this;
 
             var inner = $("<span>").addClass(buttonName).addClass(buttonClasses.inner);
-            this.element = $("<a>").attr("href", "#").addClass(buttonClasses.outer).html(inner);
-            this.element.on({
+            this.$el = $("<a>").attr("href", "#").addClass(buttonClasses.outer).html(inner);
+            this.$el.on({
+                mouseover: function (e) { me.showTooltip(e); },
+                mouseout: function (e) { me.hideTooltip(e); },
                 mousedown: function (e) {
                     e.preventDefault();
                     e.stopPropagation();
@@ -127,7 +128,7 @@
                 }
             });
 
-            this.element.appendTo(parent);
+            this.$el.appendTo(parent);
         };
         var isApplied = function (state) {
             if (config.commandName === "textAlign") {
@@ -138,16 +139,39 @@
         };
 
         this.refresh = function (state) {
-
             if (this.isEnabled()) {
-                this.element.removeClass(buttonClasses.disabled);
+                this.$el.removeClass(buttonClasses.disabled);
 
                 var op = isApplied(state[config.commandName]) ? "addClass" : "removeClass";
-                this.element[op](buttonClasses.selected);
+                this.$el[op](buttonClasses.selected);
             } else {
-                this.element.addClass(buttonClasses.disabled);
-                this.element.removeClass(buttonClasses.selected);
+                this.$el.addClass(buttonClasses.disabled);
+                this.$el.removeClass(buttonClasses.selected);
             }
+        };
+
+        this.showTooltip = function (mouseEvent) {
+            if (this.$el.hasClass(buttonClasses.disabled)) {
+                return;
+            }
+
+            var tooltip = toolbar.$el.find("." + classes.tooltip.container);
+            tooltip.html(config.tooltip || this.commandName);
+
+            // position the tooltip
+            var elementOffset = toolbar.$el.offset();
+            var x = mouseEvent.pageX - elementOffset.left + 15;
+            var y = mouseEvent.pageY - elementOffset.top + 5;
+
+            tooltip.css({ top: y, left: x });
+            tooltip.show();
+        };
+        this.hideTooltip = function (mouseEvent) {
+            if (this.$el.hasClass(buttonClasses.disabled)) {
+                return;
+            }
+
+            toolbar.$el.find("." + classes.tooltip.outer).hide();
         };
     };
 })(jQuery);
@@ -275,39 +299,36 @@
                 },
                 mousedown: function (e) {
                     e.stopPropagation();
-                }
+                },
+                mouseover: function (e) { me.showTooltip(e); },
+                mouseout: function (e) { me.hideTooltip(e); }
             });
 
-            this.element = element;
+            this.$el = element;
         };
 
         this.refresh = function (state) {
             var op = this.isEnabled() ? "removeAttr" : "attr";
-            this.element[op]("disabled", true);
+            this.$el[op]("disabled", true);
 
             var value = state[config.commandName];
-
-            // Perform a reverse lookup from className to actual value
-            if ($.Arte.Toolbar.configuration.commandAttrType === $.Arte.constants.commandAttrType.className) {
-                value = $.Arte.Toolbar.configuration.ClassNameReverseLookup[config.commandName][value];
-            }
-
-            this.element.val(value);
+            this.$el.val(value);
         };
     };
 })(jQuery);
+/* File overview: configuration for the toolbar */
 (function ($) {
-
     $.Arte.Toolbar = $.Arte.Toolbar || {};
     var buttonBase = $.Arte.Toolbar.Button;
     var buttonWithDropDown = $.Arte.Toolbar.ButtonWithDropDown;
     var commandAttrType = $.Arte.constants.commandAttrType;
+    // Button Configuration
     $.Arte.Toolbar.configuration = {
         buttons: {
             "bold": {
-                js: buttonBase,
-                commandName: "bold",
-                commandValue: {
+                js: buttonBase, // Button js to render and manage this button
+                commandName: "bold", // Command to execute
+                commandValue: { // command values for each command attribut type
                     "styleName": "bold",
                     "className": "arte-font-weight-bold"
                 }
@@ -330,7 +351,7 @@
             },
             "blockquote": {
                 js: buttonBase,
-                commandName: "blockquote"
+                commandName: "blockquote",
             },
             "textAlignLeft": {
                 js: buttonBase,
@@ -339,7 +360,8 @@
                 commandValue: {
                     "styleName": "left",
                     "className": "arte-text-align-left"
-                }
+                },
+                tooltip: "Text align left"
             },
             "textAlignCenter": {
                 js: buttonBase,
@@ -348,7 +370,8 @@
                 commandValue: {
                     "styleName": "center",
                     "className": "arte-text-align-center"
-                }
+                },
+                tooltip: "Text align center"
             },
             "textAlignRight": {
                 js: buttonBase,
@@ -357,7 +380,8 @@
                 commandValue: {
                     "styleName": "right",
                     "className": "arte-text-align-right"
-                }
+                },
+                tooltip: "Text align right"
             },
             "h1": {
                 js: buttonBase,
@@ -403,7 +427,9 @@
                 js: buttonWithDropDown,
                 icon: null,
                 commandName: "fontSize",
-                //options: ["", 8, 10, 12, 15, 20],
+                options: ["", 8, 10, 12, 15, 20],
+                /*
+                Alternate way of specifying the options where the display is different that the actual values
                 options: [
                     { display: "", value: "" },
                     { display: "Smaller", value: 8 },
@@ -412,13 +438,18 @@
                     { display: "Large", value: 15 },
                     { display: "Larger", value: 20 }
                 ],
+                Another way of specifying the options where the display is different that the actual values
+                options: [
+                    { display: "", value: "" },
+                    { display: "Smaller", value: "arte-font-weight-8" },
+                    { display: "Small", value: "arte-font-weight-10" },
+                    { display: "Medium", value: "arte-font-weight-12" },
+                    { display: "Large", value: "arte-font-weight-15" },
+                    { display: "Larger", value: "arte-font-weight-20" }
+                ],
+                */
                 acceptsParams: true,
-                getValue: function (type, value) {
-                    if (type === commandAttrType.className) {
-                        return $.Arte.Toolbar.configuration.ClassNameLookup.fontSize[value];
-                    }
-                    return value;
-                }
+                tooltip: "Font size"
             },
             "fontFamily": {
                 js: buttonWithDropDown,
@@ -426,12 +457,7 @@
                 commandName: "fontFamily",
                 options: ["", "Arial", "curier new", "Georgia", "Times New Roman"],
                 acceptsParams: true,
-                getValue: function (type, value) {
-                    if (type === commandAttrType.className) {
-                        return $.Arte.Toolbar.configuration.ClassNameLookup.fontFamily[value];
-                    }
-                    return value;
-                }
+                tooltip: "Font family"
             },
             "color": {
                 js: buttonWithDropDown,
@@ -439,36 +465,28 @@
                 commandName: "color",
                 options: ["", "Black", "Blue", "Green", "Red"],
                 acceptsParams: true,
-                getValue: function (type, value) {
-                    if (type === commandAttrType.className) {
-                        return $.Arte.Toolbar.configuration.ClassNameLookup.color[value];
-                    }
-                    return value;
-                }
             },
             "unorderedList": {
                 js: buttonBase,
-                commandName: "unorderedList"
+                commandName: "unorderedList",
+                tooltip: "Unordered list"
             },
             "orderedList": {
                 js: buttonBase,
-                commandName: "orderedList"
+                commandName: "orderedList",
+                tooltip: "Ordered list"
             },
             "backgroundColor": {
                 acceptsParams: true,
                 js: buttonWithDropDown,
                 commandName: "backgroundColor",
                 options: ["", "Black", "Blue", "Green", "Red"],
-                getValue: function (type, value) {
-                    if (type === commandAttrType.className) {
-                        return $.Arte.Toolbar.configuration.ClassNameLookup.backgroundColor[value];
-                    }
-                    return value;
-                }
+                tooltip: "Background Color"
             },
             "undo": {
                 js: buttonBase,
-                commandName: "undo"
+                commandName: "undo",
+                tooltip: "Undo"
             },
             "redo": {
                 js: buttonBase,
@@ -488,9 +506,11 @@
             },
             "insertLink": {
                 commandName: "insert",
-                js: $.Arte.Toolbar.InsertLink
+                js: $.Arte.Toolbar.InsertLink,
+                tooltip: "Insert link"
             }
         },
+        // Set of classes used to control the look-n-feel of the toolbar buttons
         classes: {
             "button": {
                 "outer": "btn",
@@ -509,63 +529,16 @@
                     "label": "",
                     "input": ""
                 }
+            },
+            "tooltip":
+            {
+                "container": "tooltip"
             }
         },
+        // By default, this toolbar will apply rich text commands using styles
         commandAttrType: commandAttrType.styleName,
         commandConfig: {}
     };
-
-    // In case we are using classNames to apply styles, the following mapping
-    // maps user selected values to a className 
-    $.Arte.Toolbar.configuration.ClassNameLookup = {
-        fontWeight: {
-            bold: "arte-font-weight-bold"
-        },
-        fontSize: {
-            8: "arte-font-size-8",
-            10: "arte-font-size-10",
-            12: "arte-font-size-12",
-            15: "arte-font-size-15",
-            20: "arte-font-size-20"
-        },
-        color: {
-            red: "arte-font-color-red",
-            blue: "arte-font-color-blue",
-            black: "arte-font-color-black",
-            green: "arte-font-color-green"
-        },
-        fontFamily: {
-            "times new roman": "arte-font-family-times-new-roman",
-            "curier new": "arte-font-family-curier-new",
-            "arial": "arte-font-family-arial",
-            "georgia": "arte-font-family-georgia"
-        },
-        textAlign: {
-            "left": "arte-text-align-left",
-            "center": "arte-text-align-center",
-            "right": "arte-text-align-right"
-        },
-        backgroundColor: {
-            red: "arte-background-color-red",
-            blue: "arte-background-color-blue",
-            black: "arte-background-color-black",
-            green: "arte-background-color-green"
-
-        }
-    };
-
-    (function () {
-        // Create a reverse lookup from className to styleValue to be used while refreshing the toolbars 
-        var classNameReverseLookup = $.Arte.Toolbar.configuration.ClassNameReverseLookup = {};
-        $.each($.Arte.Toolbar.configuration.ClassNameLookup, function (styleName, classNameMapping) {
-            var styleKey = classNameReverseLookup[styleName] = {};
-
-            $.each(classNameMapping, function (styleValue, className) {
-                styleKey[className] = styleValue;
-            });
-        });
-    })();
-
 })(jQuery);
 (function ($) {
     $.Arte.Toolbar = $.Arte.Toolbar || {};

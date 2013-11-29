@@ -34,3 +34,7 @@ blockquote {
 .indent {
     margin-left: 10px;
 }
+
+td .container{
+    width: 100%
+}
