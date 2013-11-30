@@ -20,7 +20,7 @@
 
 <body>
     <div id="toc"></div>
-   
+
     <!-- HEADER -->
     <div id="header_wrap" class="outer">
         <header class="inner">
@@ -115,7 +115,7 @@ $(".editor").fontSize(10); // Change fontsize fo selected text to 10px
     </pre>
             <h1>Examples</h1>
             <h2>A simple editor</h2>
-            <iframe class="editor-demo" src="Demo/SimpleToolbar/Toolbar.html" ></iframe>
+            <iframe class="editor-demo" src="Demo/SimpleToolbar/Toolbar.html"></iframe>
 
             <h2>Unobtrusive toolbar</h2>
             <iframe class="editor-demo" src="Demo/UnobtrusiveToolbar/Toolbar.html"></iframe>
@@ -125,33 +125,113 @@ $(".editor").fontSize(10); // Change fontsize fo selected text to 10px
 
             <h2>Reference toolbar with bootstrap</h2>
             <iframe class="editor-demo" src="Demo/CompleteToolbarWithTwitterBootstrap/Toolbar.html"></iframe>
-            
+
             <h2>Single toolbar with multiple editors</h2>
             <iframe class="editor-demo" src="Demo/SingleToolbarMultipleEditors/Toolbar.html"></iframe>
-            
+
             <h2>Multiple toolbars/editors</h2>
             <iframe class="editor-demo" src="Demo/MultipleEditors/Toolbar.html"></iframe>
-            
+
+            <h1>Rich Text API Reference</h1>
+            <h2>Supported rich text commands</h2>
+            A rich text command can be applied using a html tag, a style or a class name. ArteJS allows applying the command in either of these three mechanisms. 
+             <br />
+            Note that the default configuration excluded the use of deprecated html tags (e.g.: font).  Configuration can be easily updated to used the deprecated html tags if needed.
+            <h3>Commands that can be applied using Tag/Style/Class</h3>
+            <ul>
+                <li>Bold</li>
+                <li>Italic</li>
+                <li>UnderLine</li>
+            </ul>
+            <h3>Commands that can be applied using Style/Class</h3>
+            <ul>
+                <li>Alignment</li>
+                <li>Background color</li>
+                <li>Font size</li>
+                <li>Font family</li>
+                <li>Font color</li>
+            </ul>
+            <h3>Commands that can be applied using a html Tag</h3>
+            <ul>
+                <li>Blockquote</li>
+                <li>H1-H6</li>
+                <li>Subscript/Superscript</li>
+                <li>UL/OL</li>
+            </ul>
+            <h3>Other commands</h3>
+            <ul>
+                <li>Insert Link (Implemented using a plugin)</li>
+            </ul>
+
+            <h2>Events</h2>
+            ArteJS raises a rich collection of events to interact with the editor.
+            <ul>
+                <li>onfocus</li>
+                <li>onblur</li>
+                <li>onvaluechange: the value of the rich text field has changed</li>
+                <li>onmousedown</li>
+                <li>onmouseup</li>
+                <li>onclick</li>
+                <li>onkeydown</li>
+                <li>onkeypress</li>
+                <li>onkeyup</li>
+                <li>onpaste</li>
+                <li>onselectionchange</li>
+                <li>onbeforecommand</li>
+                <li>oncommand</li>
+                <li>oncreate</li>
+                <li>ondestroy</li>
+            </ul>
+            <h2>Methods</h2>
+            <ul>
+                <li>value</li>
+                <li>outerValue</li>
+                <li>focus</li>
+                <li>destroy</li>
+                <li>on</li>
+                <li>off</li>
+                <li>toggleStyleOnElement</li>
+            </ul>
+
+             State Detector Plugin
+            <ul>
+                <li>getState</li>
+             </ul>
+
+            Insert plugin
+             <ul>
+                <li>insert</li>
+             </ul>
+
+            UndoManager plugin
+            <ul>
+                <li>hasUndo</li>
+                <li>hasRedo</li>
+                <li>undo</li>
+                <li>redo</li>
+            </ul>
+
             <h1>ArteJS Cookbook</h1>
             <h2>Rich Text</h2>
-            <h3>Initialize a rich text editor</h3>
+            <h3>Extending ArteJS</h3>
+            <a href="https://github.com/vistaprint/ArteJS/blob/master/Editor/plugins/UndoManager.js">Example Plugin</a>
             <h2>Toolbar</h2>
-            <h3>How do I interact with multiple editors using a single toolbar</h3>
-            <h1>Rich Text API Reference</h1>
-
+           
             <h1>Project details</h1>
-
             <h2>Project file structure</h2>
             <strong>/Editor</strong>
             <div class="indent">
-                <strong>/Core: </strong> rich text infrastructure classes <br/>
-                <strong>/lib: </strong> extensions to the 3rd party libraries (jQuery and rangy) <br/>
-                <strong>/plugins: </strong> plugins <br/>
-                <strong>/unittests: </strong> unit tests for each components
+                <strong>/Core: </strong>rich text infrastructure classes
+                <br />
+                <strong>/lib: </strong>extensions to the 3rd party libraries (jQuery and rangy)
+                <br />
+                <strong>/plugins: </strong>plugins
+                <br />
+                <strong>/unittests: </strong>unit tests for each components
             </div>
             <strong>Toolbar</strong>
             <div class="indent">
-                <strong>/Buttons: </strong> various base button types
+                <strong>/Buttons: </strong>various base button types
             </div>
 
             <h2>Compiling ArteJS</h2>
