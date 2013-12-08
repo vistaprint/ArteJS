@@ -84,24 +84,13 @@
             rangy.restoreSelection(sel);
         };
 
-        var applyToElement = function(textField, commandInfo)
-        {
-            textField.toggleStyleOnElement(commandInfo);
-        };
-
         var applyCommand = function(commandInfo, type)
         {
             var textField = commandInfo.textArea;
             var editorTypes = constants.editorTypes;
-            switch (textField.editorType)
-            {
-                case editorTypes.richText:
-                    applyToTextNodes(commandInfo, type);
-                    break;
-                case editorTypes.plainText:
-                    applyToElement(textField, commandInfo);
-                    break;
-            }
+            var applyToElement = textField.editorType === editorTypes.plainText || !textField.$el.html();
+
+            applyToElement ? textField.toggleStyleOnElement(commandInfo) : applyToTextNodes(commandInfo, type);
         };
 
         /*
