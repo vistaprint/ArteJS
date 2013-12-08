@@ -13,7 +13,8 @@
                 commandValue: { // command values for each command attribut type
                     "styleName": "bold",
                     "className": "arte-font-weight-bold"
-                }
+                },
+                tooltip: "Bold"
             },
             "italic": {
                 js: buttonBase,
@@ -21,7 +22,8 @@
                 commandValue: {
                     "styleName": "italic",
                     "className": "arte-font-style-italic"
-                }
+                },
+                tooltip: "Italic"
             },
             "underline": {
                 js: buttonBase,
@@ -29,11 +31,13 @@
                 commandValue: {
                     "styleName": "underline",
                     "className": "arte-text-decoration-underline"
-                }
+                },
+                tooltip: "Underline"
             },
             "blockquote": {
                 js: buttonBase,
                 commandName: "blockquote",
+                tooltip: "Blockquote"
             },
             "textAlignLeft": {
                 js: buttonBase,
@@ -68,42 +72,50 @@
             "h1": {
                 js: buttonBase,
                 commandName: "h1",
-                icon: "../content/Icons/icons/text_heading_1.png"
+                icon: "../content/Icons/icons/text_heading_1.png",
+                tooltip: "H1"
             },
             "h2": {
                 js: buttonBase,
                 commandName: "h2",
-                icon: "../content/Icons/icons/text_heading_2.png"
+                icon: "../content/Icons/icons/text_heading_2.png",
+                tooltip: "H2"
             },
             "h3": {
                 js: buttonBase,
                 commandName: "h3",
-                icon: "../content/Icons/icons/text_heading_3.png"
+                icon: "../content/Icons/icons/text_heading_3.png",
+                tooltip: "H3"
             },
             "h4": {
                 js: buttonBase,
                 commandName: "h4",
-                icon: "../content/Icons/icons/text_heading_4.png"
+                icon: "../content/Icons/icons/text_heading_4.png",
+                tooltip: "H4"
             },
             "h5": {
                 js: buttonBase,
                 commandName: "h5",
-                icon: "../content/Icons/icons/text_heading_5.png"
+                icon: "../content/Icons/icons/text_heading_5.png",
+                tooltip: "H5"
             },
             "h6": {
                 js: buttonBase,
                 commandName: "h6",
-                icon: "../content/Icons/icons/text_heading_6.png"
+                icon: "../content/Icons/icons/text_heading_6.png",
+                tooltip: "H6"
             },
             "subscript": {
                 js: buttonBase,
                 commandName: "subscript",
-                icon: "../content/Icons/icons/text_subscript.png"
+                icon: "../content/Icons/icons/text_subscript.png",
+                tooltip: "Subscript"
             },
             "superscript": {
                 js: buttonBase,
                 commandName: "superscript",
-                icon: "../content/Icons/icons/text_superscript.png"
+                icon: "../content/Icons/icons/text_superscript.png",
+                tooltip: "Superscript"
             },
             "fontSize": {
                 js: buttonWithDropDown,
@@ -147,6 +159,7 @@
                 commandName: "color",
                 options: ["", "Black", "Blue", "Green", "Red"],
                 acceptsParams: true,
+                tooltip: "Color"
             },
             "unorderedList": {
                 js: buttonBase,
@@ -172,7 +185,8 @@
             },
             "redo": {
                 js: buttonBase,
-                commandName: "redo"
+                commandName: "redo",
+                tooltip: "Redo"
             },
             "toolbarLineBreak": {
                 // Inserts a line break into the toolbar.
@@ -190,6 +204,11 @@
                 commandName: "insert",
                 js: $.Arte.Toolbar.InsertLink,
                 tooltip: "Insert link"
+            },
+            "insertImage": {
+                commandName: "insert",
+                js: $.Arte.Toolbar.InsertImage,
+                tooltip: "Insert Image"
             }
         },
         // Set of classes used to control the look-n-feel of the toolbar buttons
@@ -210,7 +229,11 @@
                     "button": "btn",
                     "label": "",
                     "input": ""
-                }
+                },
+                "insertImage":
+                    {
+
+                    }
             },
             "tooltip":
             {

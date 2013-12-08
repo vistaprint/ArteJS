@@ -94,7 +94,7 @@
                 return;
             }
 
-            toolbar.$el.find("." + classes.tooltip.outer).hide();
+            toolbar.$el.find("." + classes.tooltip.container).hide();
         };
     };
 })(jQuery);
