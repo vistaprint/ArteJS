@@ -136,8 +136,25 @@
     function toggleSelection(options)
     {
         var inlineOptions = new $.Arte.ElementApplierOptions(options);
+        
         var selection = rangy.getSelection();
-        var range = selection.getRangeAt(0);
+        if (!selection.isCollapsed)
+        {
+            // rangy.splitBoundaris, causes the loss of user selection.  The following is a work around.
+            var savedSelection = rangy.saveSelection();
+            var rangeInfo = savedSelection.rangeInfos[0];
+
+            var startMarker = $("#" + rangeInfo.startMarkerId);
+            var endMarker = $("#" + rangeInfo.endMarkerId);
+            
+            var newRange = rangy.util.createRangeFromElements(startMarker.get(0), endMarker.get(0), true);
+            selection.setSingleRange(newRange);
+
+            startMarker.remove();
+            endMarker.remove();
+        }
+
+        range = rangy.getSelection().getRangeAt(0);
         if (range)
         {
             toggleRange(range, inlineOptions);

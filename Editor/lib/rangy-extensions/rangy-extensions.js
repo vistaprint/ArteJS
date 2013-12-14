@@ -247,42 +247,11 @@
     {
         if (!range.collapsed)
         {
-            if (!keepBoundaries)
-            {
-                range = splitBoundaries(range);
-            }
             return $(range.getNodes([3])).filter(function()
             {
                 return !isWhitespaceNode(this);
             });
         }
-    }
-
-    /**
-    * Replacement for range.splitNodes
-    * rangy.splitBoundaris, causes the loss of user selection.  We need to restore the selection.
-    */
-    function splitBoundaries(range)
-    {
-        var selection = rangy.getSelection();
-        if (selection.isCollapsed)
-        {
-            return range;
-        }
-
-        var savedSelection = rangy.saveSelection();
-        (rangy.getSelection().getRangeAt(0)).splitBoundaries();
-
-        var rangeInfo = savedSelection.rangeInfos[0];
-
-        var startMarker = $("#" + rangeInfo.startMarkerId);
-        var endMarker = $("#" + rangeInfo.endMarkerId);
-        var newRange = createRangeFromElements(startMarker.get(0), endMarker.get(0), true);
-        selection.setSingleRange(newRange);
-
-        startMarker.remove();
-        endMarker.remove();
-        return rangy.getSelection().getRangeAt(0);
     }
 
     rangy.util.getRangeFromSavedSelection = getRangeFromSavedSelection;
