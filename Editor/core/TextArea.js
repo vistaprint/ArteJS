@@ -141,7 +141,9 @@
         // Get outerHtml of the contentEditable
         "outerValue": function (value) {
             if (typeof (value) === "undefined") {
-                return this.$element.html();
+                var clone = this.$element.clone();
+                clone.children().removeAttr("contenteditable");
+                return clone.html();
             }
             var newElement = $(value);
 
