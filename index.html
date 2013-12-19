@@ -5,11 +5,11 @@
     <meta charset='utf-8' />
     <meta http-equiv="X-UA-Compatible" content="chrome=1" />
     <meta name="description" content="Artejs : A powerful, extensible, flexible, cross-browser rich text editor" />
-
-    <link rel="stylesheet" type="text/css" media="screen" href="CSS/stylesheet.css" />
-    <link rel="stylesheet" type="text/css" media="screen" href="CSS/page.css" />
+    
     <link rel="stylesheet" type="text/css" href="CSS/3rdParty/Tocify/jquery.tocify.css" />
     <link rel="stylesheet" type="text/css" href="CSS/3rdParty/Bootstrap/bootstrap-responsive.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="CSS/stylesheet.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="CSS/page.css" />
 
     <link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
     <script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
@@ -133,82 +133,98 @@ $(".editor").fontSize(10); // Change fontsize fo selected text to 10px
             <iframe class="editor-demo" src="Demo/MultipleEditors/Toolbar.html"></iframe>
 
             <h1>Rich Text API Reference</h1>
-            <h2>Supported rich text commands</h2>
+            <h2>Commands</h2>
             A rich text command can be applied using a html tag, a style or a class name. ArteJS allows applying the command in either of these three mechanisms. 
              <br />
-            Note that the default configuration excluded the use of deprecated html tags (e.g.: font).  Configuration can be easily updated to used the deprecated html tags if needed.
-            <h3>Commands that can be applied using Tag/Style/Class</h3>
+            Note that the default configuration excluded the use of deprecated html tags (e.g.: font).  Configuration can be easily updated to use the deprecated html tags if needed. <br />
+            <pre>
+                // Calling a rich text command
+                $(selector).Arte('commandName', arguments); or
+                editorInstance.commandName(arguments);
+            </pre>
+            <span>Commands that ce be applied using Tag/Style/Class</span>
             <ul>
-                <li>Bold</li>
-                <li>Italic</li>
-                <li>UnderLine</li>
+                <li>bold</li>
+                <li>italic</li>
+                <li>underline</li>
             </ul>
-            <h3>Commands that can be applied using Style/Class</h3>
+            <span>Commands that can be applied using Style/Class</span>
             <ul>
-                <li>Alignment</li>
-                <li>Background color</li>
-                <li>Font size</li>
-                <li>Font family</li>
-                <li>Font color</li>
+                <li>align</li>
+                <li>backgroundColor</li>
+                <li>fontSize</li>
+                <li>fontFamily</li>
+                <li>color</li>
             </ul>
-            <h3>Commands that can be applied using a html Tag</h3>
+            <span>Commands that can be applied using a html Tag</span>
             <ul>
-                <li>Blockquote</li>
-                <li>H1-H6</li>
-                <li>Subscript/Superscript</li>
-                <li>UL/OL</li>
+                <li>blockquote</li>
+                <li>h1-h6</li>
+                <li>subscript/superscript</li>
+                <li>ul/ol</li>
             </ul>
-            <h3>Other commands</h3>
+            <span>Other commands</span>
             <ul>
-                <li>Insert Link (Implemented using a plugin)</li>
+                <li>insert (Implemented using a plugin)</li>
             </ul>
 
             <h2>Events</h2>
-            ArteJS raises a rich collection of events to interact with the editor.
+            ArteJS raises a rich collection of events to interact with the editor.  
+            <pre>
+                // Listening to the events 
+                $(selector).on('eventName', function(e, data) {...}); or
+                editorInstance.on('eventName', function(e, data) {...});
+            </pre>
             <ul>
-                <li>onfocus</li>
-                <li>onblur</li>
-                <li>onvaluechange: the value of the rich text field has changed</li>
-                <li>onmousedown</li>
-                <li>onmouseup</li>
-                <li>onclick</li>
-                <li>onkeydown</li>
-                <li>onkeypress</li>
-                <li>onkeyup</li>
-                <li>onpaste</li>
-                <li>onselectionchange</li>
-                <li>onbeforecommand</li>
-                <li>oncommand</li>
-                <li>oncreate</li>
-                <li>ondestroy</li>
+                <li>onfocus <span>Editor gained focus.</span></li>
+                <li>onblur <span>Editor lost focus.</span></li>
+                <li>onvaluechange <span>Rich text value changed.</span></li>
+                <li>onmousedown <span>Mouse down over the editor.</span></li>
+                <li>onmouseup <span>Mouse up over the editor</span></li>
+                <li>onclick <span>Mouse clicked over the editor.</span></li>
+                <li>onkeydown <span>Keydown over the editor.</span></li>
+                <li>onkeypress <span>Keypress over the editor.</span></li>
+                <li>onkeyup <span>Key up over the editor</span></li>
+                <li>onpaste <span>Content pasted</span></li>
+                <li>onselectionchange <span>Selection changed.</span></li>
+                <li>onbeforecommand <span>Before a command is executed.</span></li>
+                <li>oncommand <span>A command has been executed.</span></li>
+                <li>oncreate <span>An editor is created.</span></li>
+                <li>ondestroy <span>An editor is destroyed.</span></li>
             </ul>
             <h2>Methods</h2>
+            An ArteJS method or the public methods on the plugins can be called as the following:
+            <pre>
+                // Calling a ArteJS method
+                $(selector).Arte('methodName', arguments ..) 
+                ArteInstance.methodName(arguments)
+            </pre>
             <ul>
-                <li>value</li>
-                <li>outerValue</li>
-                <li>focus</li>
-                <li>destroy</li>
-                <li>on</li>
-                <li>off</li>
-                <li>toggleStyleOnElement</li>
+                <li>value <span>Get the innerHtml of the editor.</span></li>
+                <li>outerValue <span>Get the outerHtml of the editor.</span></li>
+                <li>focus <span>Set focus to the editor.</span></li>
+                <li>destroy <span>Remove the editor from dom.</span></li>
+                <li>on <span>Attach an event listener to the editor.</span></li>
+                <li>off <span>Remove the event listener from the editor.</span></li>
+                <li>toggleStyleOnElement <span>Apply style to the editor</span></li>
             </ul>
 
              State Detector Plugin
             <ul>
-                <li>getState</li>
+                <li>getState <span>Get the state of the selection for each command.</span></li>
              </ul>
 
             Insert plugin
              <ul>
-                <li>insert</li>
+                <li>insert <span>Insert html content into the editor.</span></li>
              </ul>
 
             UndoManager plugin
             <ul>
-                <li>hasUndo</li>
-                <li>hasRedo</li>
-                <li>undo</li>
-                <li>redo</li>
+                <li>hasUndo <span>Whethere the editor has undo information.</span></li>
+                <li>hasRedo <span>Whether the editor has redo information.</span></li>
+                <li>undo <span>Undo</span></li>
+                <li>redo <span>Redo</span></li>
             </ul>
 
             <h1>ArteJS Cookbook</h1>

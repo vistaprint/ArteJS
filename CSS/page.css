@@ -38,3 +38,19 @@ blockquote {
 td .container{
     width: 100%
 }
+
+UL span
+{
+    color: lightgrey;
+    font-style: italic;
+}
+
+.syntaxhighlighter
+{
+    display: inline-block;
+}
+
+table
+{
+    margin-bottom: 0px;
+}
