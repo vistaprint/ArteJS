@@ -156,11 +156,9 @@
         "focus": function () {
             var me = this;
             var focusHandler = function () {
-                //                setTimeout(function()
-                //                {
                 me.$el.off("focus", focusHandler);
                 $.Arte.util.moveCursorToEndOfElement(me.$el.get(0));
-                //                }, 10);
+                me.triggerEvent($.Arte.constants.eventNames.onselectionchange);
             };
 
             me.$el.on("focus", focusHandler);
