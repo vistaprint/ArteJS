@@ -1,10 +1,51 @@
 ﻿(function($) {
-    $.Arte.Toolbar.ButtonWithDialog = function(toolbar, buttonName, config) {
-        $.extend(this, new $.Arte.Toolbar.Button(toolbar, buttonName, config));
-        
+    $.Arte.Toolbar.ButtonWithDialog = function (toolbar, buttonName, config) {
+        var me = this;
+        $.Arte.Toolbar.Button.call(this, toolbar, buttonName, config);
+        //$.extend(this, new $.Arte.Toolbar.Button(toolbar, buttonName, config));
+        var dialogClasses = $.Arte.Toolbar.configuration.classes.dialog;
+        //var me = this;
         this.executeCommand = function() {
-            this.showPopup();
+            me.showPopup();
         };
+
+        function getDialogContent() {
+           var dialogContent = me.getDialogContent();
+           $("<a>").attr("href", "#").addClass(dialogClasses.button + " ok").html("&#x2713").appendTo(dialogContent);
+           $("<a>").attr("href", "#").addClass(dialogClasses.button + " cancel").html("&#x2717").appendTo(dialogContent);
+            return dialogContent;
+        }
+
+        this.showPopup = function() {
+            var dialogContainer = $("." + dialogClasses.container);
+            dialogContainer.append(getDialogContent());
+            dialogContainer.on("mousedown ", function (e) {
+                e.stopPropagation();
+            });
+            var savedSelection = rangy.saveSelection();
+
+            me.addContent();
+
+            dialogContainer.find(".ok").on("click", function() {
+                rangy.restoreSelection(savedSelection);
+                me.onOk();
+                me.closePopup();
+            });
+
+            dialogContainer.find(".cancel").on("click", function() {
+                rangy.restoreSelection(savedSelection);
+                me.closePopup();
+            });
+            
+            dialogContainer.show();
+        };
+
+        this.closePopup = function() {
+            $("." + dialogClasses.container).children().each(function() {
+                this.remove();
+            });
+        };
+        return me;
     };
 })(jQuery);
 
@@ -12,8 +53,8 @@
     $.Arte.Toolbar.InsertLink = function(toolbar, buttonName, config) {
         var dialogClasses = $.Arte.Toolbar.configuration.classes.dialog;
         var insertLinkClasses = dialogClasses.insertLink;
-        $.extend(this, new $.Arte.Toolbar.ButtonWithDialog(toolbar, buttonName, config));
-        //var insertDialogClassName = "insert-link";
+        var me = this;
+        $.Arte.Toolbar.ButtonWithDialog.call(this, toolbar, buttonName, config);
         
         var insertContent = function(contentToInsert) {
             $.each(toolbar.selectionManager.getSelectedFields(), function() {
@@ -21,63 +62,36 @@
             });
         };
         
-       // var dialogContent;
-        var getDialogContent = function() {
-          //  dialogContent = $("<div>").addClass(insertDialogClassName)
-
-            var dialogContent = $("<div>").addClass("input-prepend input-append").on("mousedown ", function(e) {
-                e.stopPropagation();
-            });;
+        this.getDialogContent = function() {
+            var dialogContent = $("<div>").addClass("input-prepend input-append");
             $("<span>").html("Text to Show: ").addClass(insertLinkClasses.label).appendTo(dialogContent);
             $("<input>").addClass(insertLinkClasses.input + " textToShow").attr({ type: "text" }).appendTo(dialogContent).css({ height: "auto" });
             $("<span>").html("Url: ").addClass(insertLinkClasses.label).appendTo(dialogContent);
             $("<input>").addClass(insertLinkClasses.input + " url").attr({ type: "text" }).appendTo(dialogContent).css({ height: "auto" });
-            $("<a>").attr("href", "#").addClass(insertLinkClasses.button + " ok").html("&#x2713").appendTo(dialogContent);
-            $("<a>").attr("href", "#").addClass(insertLinkClasses.button + " cancel").html("&#x2717").appendTo(dialogContent);
-            //dialogContent.append(div);
-
             return dialogContent;
         };
 
-        this.showPopup = function() {
-            $("." + dialogClasses.container).append(getDialogContent());
-
-            var savedSelection = rangy.saveSelection();
-            $("." + dialogClasses.container + " .textToShow").val(rangy.getSelection().toHtml());
-            $("." + dialogClasses.container + " .ok").on("click", function() {
-                rangy.restoreSelection(savedSelection);
-
-                var selectedcontent = rangy.getSelection().toHtml();
-                var contentToInsert = $("." + dialogClasses.container + " .url").val();
-                if (contentToInsert) {
-                    var html = $("<a>").attr("href", contentToInsert).html(selectedcontent || contentToInsert);
-                    insertContent(html.get(0).outerHTML);
-                }
-                closePopup();
-            });
-
-            $("." + dialogClasses.container + " .cancel").on("click", function() {
-                rangy.restoreSelection(savedSelection);
-                closePopup();
-            });
-
-            $("." + dialogClasses.container).show();
+        this.onOk = function() {
+            var selectedcontent = rangy.getSelection().toHtml();
+            var contentToInsert = $("." + dialogClasses.container + " .url").val();
+            if (contentToInsert) {
+                var html = $("<a>").attr("href", contentToInsert).html(selectedcontent || contentToInsert);
+                insertContent(html.get(0).outerHTML);
+            }
         };
-        
-         var closePopup = function() {
-            //$("." + insertDialogClassName + " input").val("");
-             $("." + dialogClasses.container).children().remove();   
+
+        this.addContent = function () {
+            $("." + dialogClasses.container + " .textToShow").val(rangy.getSelection().toHtml());
         };
 
     };
 })(jQuery);
 
-
 (function () {
     $.Arte.Toolbar.InsertImage = function (toolbar, buttonName, config) {
         var dialogClasses = $.Arte.Toolbar.configuration.classes.dialog;
         var insertLinkClasses = dialogClasses.insertLink;
-        $.extend(this, new $.Arte.Toolbar.ButtonWithDialog(toolbar, buttonName, config));
+        $.Arte.Toolbar.ButtonWithDialog.call(this, toolbar, buttonName, config);
 
         var insertContent = function (contentToInsert) {
             $.each(toolbar.selectionManager.getSelectedFields(), function () {
@@ -85,53 +99,25 @@
             });
         };
 
-        // var dialogContent;
-        var getDialogContent = function () {
-            //  dialogContent = $("<div>").addClass(insertDialogClassName)
-
-            var dialogContent = $("<div>").addClass("input-prepend input-append").on("mousedown ", function (e) {
-                e.stopPropagation();
-            });;
+        this.getDialogContent = function () {
+            var dialogContent = $("<div>").addClass("input-prepend input-append");
             $("<span>").html("Text to Show: ").addClass(insertLinkClasses.label).appendTo(dialogContent);
             $("<input>").addClass(insertLinkClasses.input + " textToShow").attr({ type: "text" }).appendTo(dialogContent).css({ height: "auto" });
             $("<span>").html("Url: ").addClass(insertLinkClasses.label).appendTo(dialogContent);
             $("<input>").addClass(insertLinkClasses.input + " url").attr({ type: "text" }).appendTo(dialogContent).css({ height: "auto" });
-            $("<a>").attr("href", "#").addClass(insertLinkClasses.button + " ok").html("&#x2713").appendTo(dialogContent);
-            $("<a>").attr("href", "#").addClass(insertLinkClasses.button + " cancel").html("&#x2717").appendTo(dialogContent);
-            //dialogContent.append(div);
-
             return dialogContent;
         };
 
-        this.showPopup = function () {
-            $("." + dialogClasses.container).append(getDialogContent());
+        this.onOk = function() {
+            var contentToInsert = $("." + dialogClasses.container + " .url").val();
+            if (contentToInsert) {
+                var html = $("<img>").attr("src", contentToInsert);
+                insertContent(html.get(0).outerHTML);
+            }
+        };
 
-            var savedSelection = rangy.saveSelection();
+        this.addContent = function () {
             $("." + dialogClasses.container + " .textToShow").val(rangy.getSelection().toHtml());
-            $("." + dialogClasses.container + " .ok").on("click", function () {
-                rangy.restoreSelection(savedSelection);
-
-                var selectedcontent = rangy.getSelection().toHtml();
-                var contentToInsert = $("." + dialogClasses.container + " .url").val();
-                if (contentToInsert) {
-                    var html = $("<img>").attr("src", contentToInsert);
-                    insertContent(html.get(0).outerHTML);
-                }
-                closePopup();
-            });
-
-            $("." + dialogClasses.container + " .cancel").on("click", function () {
-                rangy.restoreSelection(savedSelection);
-                closePopup();
-            });
-
-            $("." + dialogClasses.container).show();
         };
-
-        var closePopup = function () {
-            //$("." + insertDialogClassName + " input").val("");
-            $("." + dialogClasses.container).children().remove();
-        };
-
     };
 })(jQuery);

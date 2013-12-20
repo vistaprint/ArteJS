@@ -1,11 +1,12 @@
 ﻿/// dependencies: Toolbar
 (function ($) {
     $.Arte.Toolbar.Button = function (toolbar, buttonName, config) {
-        this.element = null;
-        this.commandName = config.commandName;
+        var me = this;
+        me.element = null;
+        me.commandName = config.commandName;
         var classes = $.Arte.Toolbar.configuration.classes;
         var buttonClasses = classes.button;
-        
+
         this.isEnabled = function () {
             var selectedTextField = toolbar.selectionManager.getSelectedFields(this.supportedTypes);
             return selectedTextField && selectedTextField.length;
@@ -32,12 +33,10 @@
             }
         };
 
-        this.render = function (parent) {
-            var me = this;
-
+        this.render = function () {
             var inner = $("<span>").addClass(buttonName).addClass(buttonClasses.inner);
-            this.$el = $("<a>").attr("href", "#").addClass(buttonClasses.outer).html(inner);
-            this.$el.on({
+            me.$el = $("<a>").attr("href", "#").addClass(buttonClasses.outer).html(inner);
+            me.$el.on({
                 mouseover: function (e) { me.showTooltip(e); },
                 mouseout: function (e) { me.hideTooltip(e); },
                 mousedown: function (e) {
@@ -51,12 +50,12 @@
                 }
             });
 
-            this.$el.appendTo(parent);
+            me.$el.appendTo(toolbar.$el);
         };
 
         this.unrender = function () {
-            this.$el.off();
-            this.$el.remove();
+            me.$el.off();
+            me.$el.remove();
         };
 
         var isApplied = function (state) {
@@ -69,22 +68,22 @@
 
         this.refresh = function (state) {
             if (this.isEnabled()) {
-                this.$el.removeClass(buttonClasses.disabled);
+                me.$el.removeClass(buttonClasses.disabled);
 
                 var op = isApplied(state[config.commandName]) ? "addClass" : "removeClass";
-                this.$el[op](buttonClasses.selected);
+                me.$el[op](buttonClasses.selected);
             } else {
-                this.$el.addClass(buttonClasses.disabled);
-                this.$el.removeClass(buttonClasses.selected);
+                me.$el.addClass(buttonClasses.disabled);
+                me.$el.removeClass(buttonClasses.selected);
             }
         };
 
         this.showTooltip = function (mouseEvent) {
-            if (this.$el.hasClass(buttonClasses.disabled)) {
+            if (me.$el.hasClass(buttonClasses.disabled)) {
                 return;
             }
 
-            var tooltip = this.$el.parent().find("." + classes.tooltip.container);
+            var tooltip = toolbar.$el.find("." + classes.tooltip.container);
             tooltip.html(config.tooltip || this.commandName);
 
             // position the tooltip
@@ -96,7 +95,7 @@
             tooltip.show();
         };
         this.hideTooltip = function (mouseEvent) {
-            if (this.$el.hasClass(buttonClasses.disabled)) {
+            if (me.$el.hasClass(buttonClasses.disabled)) {
                 return;
             }
 

@@ -9,30 +9,32 @@
         <link rel="Stylesheet" href="bootstrap/css/bootstrap.css" />
 	</head>
     <body>
-        <div>        
-            Configuration
-            <div>
-               <h3>Editor Configuration</h3> 
+        <div id="configuration">
+            <div>        
+                Configuration
+                <div>
+                    <h3>Editor Configuration</h3> 
 
-                <div class="commandAttrTypeSelector">
-                    Command Attribute Type
-                    <label class="radio">
-                        <input type="radio" name="attrType" value="className"/> Class 
-                    </label>
-                    <label class="radio">
-                        <input type="radio" name="attrType" value="styleName"/> Style
-                    </label>
-                    <label class="radio">
-                        <input type="radio" name="attrType" value="tagName"/> Tag
+                    <div class="commandAttrTypeSelector">
+                        Command Attribute Type
+                        <label class="radio">
+                            <input type="radio" name="attrType" value="className"/> Class 
+                        </label>
+                        <label class="radio">
+                            <input type="radio" name="attrType" value="styleName"/> Style
+                        </label>
+                        <label class="radio">
+                            <input type="radio" name="attrType" value="tagName"/> Tag
+                        </label>
+                    </div>
+
+                </div>
+                <div>
+                    <h3>Toolbar Configuration</h3> 
+                    <label class="checkbox">
+                        <input type="checkbox" value="focus"> Require Focus
                     </label>
                 </div>
-
-            </div>
-            <div>
-            <h3>Toolbar Configuration</h3> 
-            <label class="checkbox">
-              <input type="checkbox" value="focus"> Require Focus
-            </label>
             </div>
         </div>
 
@@ -50,7 +52,12 @@
             Markup
             <div class="resultHtml"></div>
         </div>
-                                
+ 
+        <div class="box">
+            Events:
+            <div class="console" style="max-height: 200px; overflow: auto;"></div>
+        </div>
+                                       
         <!--Included the Rich text files-->
 
         <script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.js"></script>
@@ -71,30 +78,67 @@
         <script type="text/javascript">
             $.Arte.Toolbar.configuration.classes.selected = "btn-primary";
 
+            function update() {
+                var editor = $(".editor").Arte().get(0);
+                $(".result").html(editor.outerValue());
+                $(".resultHtml").text(editor.outerValue());
+            };
+
+            function logEventToConsole(e, data) {
+                var count = $(".console").children().length;
+                var dataClone = $.extend(true, {}, data);
+                delete dataClone.textArea; // remove text area
+                delete dataClone.originalEvent; // remove text area
+                var content = $("<div>").text(count + ": " + e.type + "=> " + JSON.stringify(dataClone));
+                $(".console").prepend(content);
+            }
+
             var createEditor = function () {
                 // List of buttons 
-                var buttons = ["bold", "italic", "underline", "blockquote",
+                var buttons = [
+                    "bold", "italic", "underline", "blockquote",
                     "textAlignLeft", "textAlignCenter", "textAlignRight",
                     "h1", "h2", "h3", "h4", "h5", "h6",
                     "subscript", "superscript", "unorderedList", "orderedList",
-                    "undo", "redo", "fontSize", "fontFamily", "color", "backgroundColor",
+                    "undo", "redo",
+                    "fontSize", "fontFamily", "color", "backgroundColor",
                     "insertLink", "insertImage"
                 ];
 
-                $(".editor").Arte();
+                $(".editor").Arte({
+                    on: {
+                        "onvaluechange": function() {
+                            update();
+                            logEventToConsole();
+                        },
+                        "onfocus": logEventToConsole,
+                        "onblur": logEventToConsole,
+                        "onmousedown": logEventToConsole,
+                        "onmouseup": logEventToConsole,
+                        "onclick": logEventToConsole,
+                        "onkeydown": logEventToConsole,
+                        "onkeypress": logEventToConsole,
+                        "onkeyup": logEventToConsole,
+                        "onpaste": logEventToConsole,
+                        "onselectionchange": logEventToConsole,
+                        "onbeforecommand": logEventToConsole,
+                        "oncommand": logEventToConsole,
+                        "oncreate": logEventToConsole,
+                        "ondestroy": logEventToConsole
+                    }
+                });
 
                 $(".toolbar").ArteToolbar({
                     buttons: buttons
                 });
 
+                update();
             };
 
             var destroyEditor = function () {
                 $(".editor").Arte("destroy");
                 $(".toolbar").ArteToolbar("destroy");
             };
-
-
 
             $(".commandAttrTypeSelector input").on("change", function (e) {
                 var commandAttrType = $(this).val();
@@ -121,15 +165,6 @@
                 });
 
                 createEditor();
-
-                function update() {
-                    var editor = $(".editor").Arte().get(0);
-                    $(".result").html(editor.outerValue());
-                    $(".resultHtml").text(editor.outerValue());
-                };
-
-                $(".editor").on("onvaluechange", update);
-                update();
             });
         </script>
     </body>

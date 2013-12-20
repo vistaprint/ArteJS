@@ -1,7 +1,7 @@
 ﻿(function ($) {
     $.Arte.Toolbar.ButtonWithDropDown = function (toolbar, buttonName, config) {
         var classes = $.Arte.Toolbar.configuration.classes;
-        $.extend(this, new $.Arte.Toolbar.Button(toolbar, buttonName, config));
+        $.Arte.Toolbar.Button.call(this, toolbar, buttonName, config);
         var me = this;
         this.render = function (parent) {    
 
@@ -37,7 +37,7 @@
                 }
                 element.append($("<option>").attr("value", value).html(display));
             });
-            element.appendTo(parent);
+            element.appendTo(toolbar.$el);
             
             element.on({
                 change: function () {

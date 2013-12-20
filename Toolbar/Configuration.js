@@ -225,6 +225,7 @@
             },
             "dialog": {
                 "container": "inline-dialog",
+                "button" : "btn",
                 "insertLink":
                 {
                     "button": "btn",

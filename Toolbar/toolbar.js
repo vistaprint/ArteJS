@@ -5,7 +5,7 @@
         }
         var result = $();
         this.each(function() {
-            var toolbar = $(this).data("Toolbar");
+            var toolbar = $(this).data("ArteToolbar");
             if (options && typeof (options) === "string") {
                 // Most likely this is a method call
                 var methodName = options;
@@ -24,7 +24,7 @@
                 if (!toolbar) {
                     $.extend(options, { element: $(this) });
                     toolbar = new $.Arte.Toolbar(options);
-                    $(this).data("Toolbar", toolbar);
+                    $(this).data("ArteToolbar", toolbar);
                 }
                 result.push(toolbar);
             }
@@ -36,15 +36,16 @@
     $.Arte.Toolbar = function (options) {
         var me = this;
         
-        var $el = options.element;
+        me.$el = options.element;
 
-        $el.on({
+        me.$el.on({
             "click mousedown mouseup": function (e) {
                 e.stopPropagation();
                 e.preventDefault();
             }
         });
 
+        // Clear the selection if user clicks outside of the editor
         $("body").on({
             click: function () {
                 me.selectionManager.clear();
@@ -52,21 +53,17 @@
             }
         });
 
-        me.selectionManager = new $.Arte.Toolbar.SelectionManager();
-        me.selectionManager.initialize({ editor: options.editor });
-        me.selectionManager.on({
-            selectionchanged: me.refresh
-        });
-
         var buttons = [];
         // Initialize and render each of the button
         $.each(options.buttons, function (index, buttonName) {
             var config = $.Arte.Toolbar.configuration.buttons[buttonName];
             var button = new config.js(me, buttonName, config);
-            button.render($el);
+            button.render();
 
             buttons.push(button);
         });
+        
+        // Create the containers for the inline dialog and tooltip
         var classes = $.Arte.Toolbar.configuration.classes;
         $("<div>").addClass(classes.dialog.container).appendTo(me.$el);
         $("<div>").addClass(classes.tooltip.container).appendTo(me.$el);
@@ -81,6 +78,8 @@
         };
 
         this.destroy = function () {
+            $el.removeData("ArteToolbar");
+
             $.each(buttons, function () {
                 this.unrender();
             });
@@ -88,6 +87,13 @@
             $("." + classes.tooltip.container).remove();
             $el.off();
         };
+
+        // Setup the selection manager
+        me.selectionManager = new $.Arte.Toolbar.SelectionManager();
+        me.selectionManager.initialize({ editor: options.editor });
+        me.selectionManager.on({
+            selectionchanged: me.refresh
+        });
 
         me.refresh();
     };
