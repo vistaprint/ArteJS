@@ -6,6 +6,7 @@
     var commandAttrType = $.Arte.constants.commandAttrType;
     // Button Configuration
     $.Arte.Toolbar.configuration = {
+        requireEditorFocus: false,
         buttons: {
             "bold": {
                 js: buttonBase, // Button js to render and manage this button

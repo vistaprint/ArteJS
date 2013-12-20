@@ -3,16 +3,33 @@
         if (options && typeof(options) === "object") {
             options = $.extend({}, $.Arte.Toolbar.Defaults, options);
         }
-
+        var result = $();
         this.each(function() {
-            var toolbar;
-            if (options && typeof(options) === "object") {
-                $.extend(options, { element: $(this) });
-                toolbar = new $.Arte.Toolbar(options);
-                $(this).data("Toolbar", toolbar);
+            var toolbar = $(this).data("Toolbar");
+            if (options && typeof (options) === "string") {
+                // Most likely this is a method call
+                var methodName = options;
+                if (this.constructor === $.Arte.Toolbar) {
+                    toolbar = this;
+                }
+
+                if (!toolbar) {
+                    throw "This is not a arte toolbar.";
+                }
+
+                var returnValue = toolbar[methodName].call(toolbar, args);
+                result.push(returnValue);
+            }
+            else {
+                if (!toolbar) {
+                    $.extend(options, { element: $(this) });
+                    toolbar = new $.Arte.Toolbar(options);
+                    $(this).data("Toolbar", toolbar);
+                }
+                result.push(toolbar);
             }
         });
-        return this;
+        return result;
     };
 
 
@@ -20,6 +37,8 @@
         var me = this;
         var classes = $.Arte.Toolbar.configuration.classes;
         this.$el = options.element;
+        var buttons = [];
+
         function render() {
             me.$el.on({
                 "click mousedown mouseup": function (e) {
@@ -27,6 +46,7 @@
                     e.preventDefault();
                 }
             });
+
             $.each(buttons, function () {
                 this.render(me.$el);
             });
@@ -36,18 +56,13 @@
             $("<div>").addClass(classes.tooltip.container).appendTo(me.$el);
         }
 
-        var buttons = [];
-        this.add = function (button) {
-            buttons.push(button);
-        };
-
         this.selectionManager = new $.Arte.Toolbar.SelectionManager();
 
         // Initialize each of the button
         $.each(options.buttons, function (index, buttonName) {
             var config = $.Arte.Toolbar.configuration.buttons[buttonName];
             var button = new config.js(me, buttonName, config);
-            me.add(button);
+            buttons.push(button);
         });
 
         render();
@@ -67,7 +82,7 @@
             }
         });
 
-        this.selectionManager.on({
+        me.selectionManager.on({
             selectionchanged: me.refresh
         });
 

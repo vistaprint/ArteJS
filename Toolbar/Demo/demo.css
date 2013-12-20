@@ -1,6 +1,13 @@
 ﻿#text_editor
 {
+    
+}
+
+.box 
+{
     width: 800px;
+    display: "inline-block";
+    float: left;
     border: 1px black solid;
     padding: 2px;
 }

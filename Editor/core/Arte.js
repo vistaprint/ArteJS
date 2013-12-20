@@ -47,7 +47,7 @@
                     $this.data("Arte", editor);
                 }
                 result.push(editor);
-            }
+            }   
         });
         return $(result);
     };
