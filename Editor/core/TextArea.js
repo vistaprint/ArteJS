@@ -173,6 +173,7 @@
             // Converts the rich text editor to non-editable state and remove rich text state information
             this.$element.removeData("Arte");
             this.$element.removeAttr($.Arte.configuration.textFieldIdentifier);
+            this.$element.off();
 
             this.$el.off();
             this.$el.removeAttr("contentEditable");

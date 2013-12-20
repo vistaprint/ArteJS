@@ -12,21 +12,27 @@
         <div>        
             Configuration
             <div>
-                Editor Configuration
+               <h3>Editor Configuration</h3> 
 
-                <div class="commandTypeSelector">
+                <div class="commandAttrTypeSelector">
                     Command Attribute Type
-                    <select class = "commandAttrType">
-                        <option value="className">use class names</option>
-                        <option value="styleName">use styles</option>
-                        <option value="tagName">use tags</option>
-                    </select>
+                    <label class="radio">
+                        <input type="radio" name="attrType" value="className"/> Class 
+                    </label>
+                    <label class="radio">
+                        <input type="radio" name="attrType" value="styleName"/> Style
+                    </label>
+                    <label class="radio">
+                        <input type="radio" name="attrType" value="tagName"/> Tag
+                    </label>
                 </div>
 
             </div>
             <div>
-                Toolbar Configuration
-
+            <h3>Toolbar Configuration</h3> 
+            <label class="checkbox">
+              <input type="checkbox" value="focus"> Require Focus
+            </label>
             </div>
         </div>
 
@@ -64,14 +70,8 @@
 
         <script type="text/javascript">
             $.Arte.Toolbar.configuration.classes.selected = "btn-primary";
-            $(".commandAttrType").on("change", function (e) {
-                var commandAttrType = $(this).val();
-                $.Arte.configuration.commandAttrType = commandAttrType;
-                $.Arte.Toolbar.configuration.commandAttrType = commandAttrType;
-            });
 
-            $(function () {
-                $.Arte.configuration.allowOpsOnCollapsedSelection = false;
+            var createEditor = function () {
                 // List of buttons 
                 var buttons = ["bold", "italic", "underline", "blockquote",
                     "textAlignLeft", "textAlignCenter", "textAlignRight",
@@ -83,7 +83,31 @@
 
                 $(".editor").Arte();
 
+                $(".toolbar").ArteToolbar({
+                    buttons: buttons
+                });
 
+            };
+
+            var destroyEditor = function () {
+                $(".editor").Arte("destroy");
+                $(".toolbar").ArteToolbar("destroy");
+            };
+
+
+
+            $(".commandAttrTypeSelector input").on("change", function (e) {
+                var commandAttrType = $(this).val();
+                $.Arte.configuration.commandAttrType = commandAttrType;
+                $.Arte.Toolbar.configuration.commandAttrType = commandAttrType;
+
+                destroyEditor();
+                createEditor();
+            });
+
+            $(function () {
+                $.Arte.configuration.allowOpsOnCollapsedSelection = false;
+                
                 $.extend(true, $.Arte.Toolbar.configuration, {
                     classes: {
                         "dialog":
@@ -96,9 +120,7 @@
                     }
                 });
 
-                $(".toolbar").ArteToolbar({
-                    buttons: buttons
-                });
+                createEditor();
 
                 function update() {
                     var editor = $(".editor").Arte().get(0);

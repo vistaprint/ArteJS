@@ -17,7 +17,7 @@
                     throw "This is not a arte toolbar.";
                 }
 
-                var returnValue = toolbar[methodName].call(toolbar, args);
+                var returnValue = toolbar[methodName].call(toolbar);
                 result.push(returnValue);
             }
             else {
@@ -35,45 +35,15 @@
 
     $.Arte.Toolbar = function (options) {
         var me = this;
-        var classes = $.Arte.Toolbar.configuration.classes;
-        this.$el = options.element;
-        var buttons = [];
+        
+        var $el = options.element;
 
-        function render() {
-            me.$el.on({
-                "click mousedown mouseup": function (e) {
-                    e.stopPropagation();
-                    e.preventDefault();
-                }
-            });
-
-            $.each(buttons, function () {
-                this.render(me.$el);
-            });
-
-            // Add a container for inline dialogs
-            $("<div>").addClass(classes.dialog.container).appendTo(me.$el);
-            $("<div>").addClass(classes.tooltip.container).appendTo(me.$el);
-        }
-
-        this.selectionManager = new $.Arte.Toolbar.SelectionManager();
-
-        // Initialize each of the button
-        $.each(options.buttons, function (index, buttonName) {
-            var config = $.Arte.Toolbar.configuration.buttons[buttonName];
-            var button = new config.js(me, buttonName, config);
-            buttons.push(button);
+        $el.on({
+            "click mousedown mouseup": function (e) {
+                e.stopPropagation();
+                e.preventDefault();
+            }
         });
-
-        render();
-
-        this.refresh = function () {
-            var selectedField = me.selectionManager.getSelectedFields()[0];
-            var state = (selectedField) ? selectedField.getState() : {};
-            $.each(buttons, function () {
-                    this.refresh(state);
-                });
-        };
 
         $("body").on({
             click: function () {
@@ -82,11 +52,43 @@
             }
         });
 
+        me.selectionManager = new $.Arte.Toolbar.SelectionManager();
+        me.selectionManager.initialize({ editor: options.editor });
         me.selectionManager.on({
             selectionchanged: me.refresh
         });
 
-        this.selectionManager.initialize({ editor: options.editor });
+        var buttons = [];
+        // Initialize and render each of the button
+        $.each(options.buttons, function (index, buttonName) {
+            var config = $.Arte.Toolbar.configuration.buttons[buttonName];
+            var button = new config.js(me, buttonName, config);
+            button.render($el);
+
+            buttons.push(button);
+        });
+        var classes = $.Arte.Toolbar.configuration.classes;
+        $("<div>").addClass(classes.dialog.container).appendTo(me.$el);
+        $("<div>").addClass(classes.tooltip.container).appendTo(me.$el);
+
+        // public api
+        this.refresh = function () {
+            var selectedField = me.selectionManager.getSelectedFields()[0];
+            var state = (selectedField) ? selectedField.getState() : {};
+            $.each(buttons, function () {
+                this.refresh(state);
+            });
+        };
+
+        this.destroy = function () {
+            $.each(buttons, function () {
+                this.unrender();
+            });
+            $("." + classes.dialog.container).remove();
+            $("." + classes.tooltip.container).remove();
+            $el.off();
+        };
+
         me.refresh();
     };
 })(jQuery);

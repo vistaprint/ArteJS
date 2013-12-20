@@ -2,8 +2,8 @@
     $.Arte.Toolbar.ButtonWithDropDown = function (toolbar, buttonName, config) {
         var classes = $.Arte.Toolbar.configuration.classes;
         $.extend(this, new $.Arte.Toolbar.Button(toolbar, buttonName, config));
-        this.render = function (parent) {
-            var me = this;
+        var me = this;
+        this.render = function (parent) {    
 
             var element = $("<select>").addClass(classes.select).addClass(this.name);
 
@@ -55,6 +55,10 @@
             });
 
             this.$el = element;
+        };
+        this.unrender = function () {
+            me.$el.off();
+            me.$el.remove();
         };
 
         this.refresh = function (state) {

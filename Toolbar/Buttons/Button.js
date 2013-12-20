@@ -53,6 +53,12 @@
 
             this.$el.appendTo(parent);
         };
+
+        this.unrender = function () {
+            this.$el.off();
+            this.$el.remove();
+        };
+
         var isApplied = function (state) {
             if (config.commandName === "textAlign") {
                 var defaultValue = config.commandValue[$.Arte.Toolbar.configuration.commandAttrType];
@@ -78,7 +84,7 @@
                 return;
             }
 
-            var tooltip = toolbar.$el.find("." + classes.tooltip.container);
+            var tooltip = this.$el.parent().find("." + classes.tooltip.container);
             tooltip.html(config.tooltip || this.commandName);
 
             // position the tooltip
