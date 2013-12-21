@@ -19,7 +19,7 @@
 
                 // Ensure that the selection is valid
                 var selectionIsInContentEditable = $.Arte.util.isSelectionInElement(this.$el);
-                if (!selectionIsInContentEditable && !$.Arte.configuration.allowOpsOnCollapsedSelection)
+                if (!selectionIsInContentEditable && $.Arte.configuration.requireFocus)
                 {
                     return;
                 }

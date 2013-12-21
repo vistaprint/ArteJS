@@ -70,7 +70,7 @@
 
         // public api
         this.refresh = function () {
-            var selectedField = me.selectionManager.getSelectedFields()[0];
+            var selectedField = me.selectionManager.getSelectedEditors()[0];
             var state = (selectedField) ? selectedField.getState() : {};
             $.each(buttons, function () {
                 this.refresh(state);
@@ -78,14 +78,14 @@
         };
 
         this.destroy = function () {
-            $el.removeData("ArteToolbar");
+            me.$el.removeData("ArteToolbar");
 
             $.each(buttons, function () {
                 this.unrender();
             });
             $("." + classes.dialog.container).remove();
             $("." + classes.tooltip.container).remove();
-            $el.off();
+            me.$el.off();
         };
 
         // Setup the selection manager

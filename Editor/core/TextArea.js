@@ -169,7 +169,7 @@
         "triggerEvent": function (name, data) {
             this.$element.trigger(name, $.extend(data, { textArea: this }));
         },
-        "destroy": function () {
+        "destroy": function (options) {
             // Converts the rich text editor to non-editable state and remove rich text state information
             this.$element.removeData("Arte");
             this.$element.removeAttr($.Arte.configuration.textFieldIdentifier);
@@ -178,6 +178,10 @@
             this.$el.off();
             this.$el.removeAttr("contentEditable");
             this.triggerEvent($.Arte.constants.eventNames.ondestroy);
+            
+            if (options && options.removeContent) {
+                this.$element.empty();
+            }
         },
         /**
         *  on/off methods to support attaching events handler using a rich text instance 

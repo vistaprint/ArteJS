@@ -9,7 +9,7 @@
         <link rel="Stylesheet" href="bootstrap/css/bootstrap.css" />
 	</head>
     <body>
-        <div id="configuration">
+        <div class="configurationx">
             <div>        
                 Configuration
                 <div>
@@ -32,7 +32,7 @@
                 <div>
                     <h3>Toolbar Configuration</h3> 
                     <label class="checkbox">
-                        <input type="checkbox" value="focus"> Require Focus
+                        <input class="requireEditorFocus" type="checkbox" value="focus"> Require Focus
                     </label>
                 </div>
             </div>
@@ -107,9 +107,9 @@
 
                 $(".editor").Arte({
                     on: {
-                        "onvaluechange": function() {
+                        "onvaluechange": function(e, data) {
                             update();
-                            logEventToConsole();
+                            logEventToConsole(e, data);
                         },
                         "onfocus": logEventToConsole,
                         "onblur": logEventToConsole,
@@ -128,6 +128,8 @@
                     }
                 });
 
+                $(".editor").Arte("value", $.Arte.configuration.initialValues.value);
+
                 $(".toolbar").ArteToolbar({
                     buttons: buttons
                 });
@@ -136,22 +138,30 @@
             };
 
             var destroyEditor = function () {
-                $(".editor").Arte("destroy");
+                $(".editor").Arte("destroy", {removeContent: true});
                 $(".toolbar").ArteToolbar("destroy");
             };
 
-            $(".commandAttrTypeSelector input").on("change", function (e) {
-                var commandAttrType = $(this).val();
+            var ResetConfiguration = function () {
+                var commandAttrType = $("[name=attrType]:checked").val();
                 $.Arte.configuration.commandAttrType = commandAttrType;
                 $.Arte.Toolbar.configuration.commandAttrType = commandAttrType;
 
+                $.Arte.Toolbar.configuration.requireEditorFocus = $(".requireEditorFocus").is(":checked");
+
+                console.log("$.Arte.Toolbar.configuration.requireEditorFocus: " + $.Arte.Toolbar.configuration.requireEditorFocus);
+            };
+
+            $(".configurationx input").on("change", function(e) {
+                console.log("configuration clicked. " + e.target + ", time: " + e.originalEvent.timeStamp);
                 destroyEditor();
+                ResetConfiguration();
                 createEditor();
             });
 
             $(function () {
                 $.Arte.configuration.allowOpsOnCollapsedSelection = false;
-                
+                $.Arte.configuration.commandAttrType = "tagName";
                 $.extend(true, $.Arte.Toolbar.configuration, {
                     classes: {
                         "dialog":
@@ -163,6 +173,10 @@
                         }
                     }
                 });
+
+                // Check the initial values
+                $("[value=" + $.Arte.configuration.commandAttrType + "]").prop("checked", true);
+                $(".requireEditorFocus").prop("checked", $.Arte.Toolbar.configuration.requireEditorFocus);
 
                 createEditor();
             });

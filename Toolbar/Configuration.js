@@ -6,7 +6,9 @@
     var commandAttrType = $.Arte.constants.commandAttrType;
     // Button Configuration
     $.Arte.Toolbar.configuration = {
-        requireEditorFocus: false,
+        requireEditorFocus: true,
+        // By default, this toolbar will apply rich text commands using styles
+        commandAttrType: commandAttrType.styleName,
         buttons: {
             "bold": {
                 js: buttonBase, // Button js to render and manage this button
@@ -242,8 +244,6 @@
                 "container": "tooltip"
             }
         },
-        // By default, this toolbar will apply rich text commands using styles
-        commandAttrType: commandAttrType.styleName,
         commandConfig: {}
     };
 })(jQuery);

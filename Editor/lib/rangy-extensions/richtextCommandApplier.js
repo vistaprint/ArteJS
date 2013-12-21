@@ -20,7 +20,7 @@
             // If the selection is not in the content editable element and ops of collapsed
             // selection aren't allowed, return
             var selectionIsInContentEditable = util.isSelectionInElement(textArea.$el);
-            if (!selectionIsInContentEditable && !configuration.allowOpsOnCollapsedSelection)
+            if(!selectionIsInContentEditable && configuration.requireFocus)
             {
                 return;
             }

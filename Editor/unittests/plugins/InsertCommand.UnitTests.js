@@ -82,18 +82,18 @@ var ArteInsertCommandeTestData = [
         name: "noOp",
         rawContent: "<span id='span'>span</span>Test",
         contentToInsert: "Content",
-        beforeCommand: function (textArea)
-        {
-            var currentValue = $.Arte.configuration.allowOpsOnCollapsedSelection;
+        beforeCommand: function (textArea) {
+            debugger;
+            var currentValue = $.Arte.configuration.requireFocus;
             textArea.on("onbeforeinsert", function (e, data)
             {
-                $.Arte.configuration.allowOpsOnCollapsedSelection = false;
+                $.Arte.configuration.requireFocus = true;
             });
             
             // Restore the value
             textArea.on("onafterinsert", function (e, data)
             {
-                $.Arte.configuration.allowOpsOnCollapsedSelection = currentValue;
+                $.Arte.configuration.requireFocus = currentValue;
             });
         },
         expectedContent: "<span id='span'>span</span>Test"

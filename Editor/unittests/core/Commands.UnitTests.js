@@ -9,7 +9,7 @@
             styles: {}
         }); // use default options
 
-        $.Arte.configuration.allowOpsOnCollapsedSelection = true;
+        $.Arte.configuration.requireFocus = false;
 
         // Execute the command
         var options = testData.commandOptions;

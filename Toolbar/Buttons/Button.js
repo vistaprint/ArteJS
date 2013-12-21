@@ -4,12 +4,17 @@
         var me = this;
         me.element = null;
         me.commandName = config.commandName;
-        var classes = $.Arte.Toolbar.configuration.classes;
+        var configuration = $.Arte.Toolbar.configuration;
+        var classes = configuration.classes;
         var buttonClasses = classes.button;
 
         this.isEnabled = function () {
-            var selectedTextField = toolbar.selectionManager.getSelectedFields(this.supportedTypes);
-            return selectedTextField && selectedTextField.length;
+            if (!configuration.requireEditorFocus) {
+                return true;
+            }
+            
+            var selectedEditors = toolbar.selectionManager.getSelectedEditors(this.supportedTypes);
+            return (selectedEditors && selectedEditors.length);
         };
 
         this.executeCommand = function (commandValue) {
@@ -20,13 +25,23 @@
 
                 var value = commandValue || (config.commandValue ? config.commandValue[commandAttrType] : "");
 
+                if (!value && config.commandValue) {
+                    commandAttrType = $.Arte.constants.commandAttrType.styleName;
+                    value = config.commandValue[commandAttrType];
+                }
+
                 var commandOptions = {
                     commandName: config.commandName,
                     commandValue: value,
                     commandAttrType: commandAttrType
                 };
 
-                $.each(toolbar.selectionManager.getSelectedFields(), function () {
+                var selectedEditors = toolbar.selectionManager.getSelectedEditors();
+                if (!selectedEditors.length && !configuration.requireEditorFocus) {
+                    selectedEditors = toolbar.selectionManager.getEditors();
+                }
+
+                $.each(selectedEditors, function () {
                     this[commandOptions.commandName].call(this, commandOptions);
                 });
                 toolbar.refresh();

@@ -99,7 +99,7 @@
         /*
         * Whether to perform a rich text operation when there is no user selection (for example, the cursor is not inside the text field).
         */
-        allowOpsOnCollapsedSelection: true,
+        requireFocus: true,
 
         /*
         * ClassNameSpace is pre-pended to the name of the class. (for example: classNameSpace-font-weight-bold)
