@@ -4,6 +4,7 @@
     var buttonBase = $.Arte.Toolbar.Button;
     var buttonWithDropDown = $.Arte.Toolbar.ButtonWithDropDown;
     var commandAttrType = $.Arte.constants.commandAttrType;
+    var editorTypes = $.Arte.constants.editorTypes;
     // Button Configuration
     $.Arte.Toolbar.configuration = {
         requireEditorFocus: true,
@@ -17,6 +18,7 @@
                     "styleName": "bold",
                     "className": "arte-font-weight-bold"
                 },
+                supportedTypes: [editorTypes.richText, editorTypes.plainText],
                 tooltip: "Bold"
             },
             "italic": {
@@ -26,6 +28,7 @@
                     "styleName": "italic",
                     "className": "arte-font-style-italic"
                 },
+                supportedTypes: [editorTypes.richText, editorTypes.plainText],
                 tooltip: "Italic"
             },
             "underline": {
@@ -35,11 +38,13 @@
                     "styleName": "underline",
                     "className": "arte-text-decoration-underline"
                 },
+                supportedTypes: [editorTypes.richText, editorTypes.plainText],
                 tooltip: "Underline"
             },
             "blockquote": {
                 js: buttonBase,
                 commandName: "blockquote",
+                supportedTypes: [editorTypes.richText],
                 tooltip: "Blockquote"
             },
             "textAlignLeft": {
@@ -50,6 +55,7 @@
                     "styleName": "left",
                     "className": "arte-text-align-left"
                 },
+                supportedTypes: [editorTypes.richText],
                 tooltip: "Text align left"
             },
             "textAlignCenter": {
@@ -60,6 +66,7 @@
                     "styleName": "center",
                     "className": "arte-text-align-center"
                 },
+                supportedTypes: [editorTypes.richText],
                 tooltip: "Text align center"
             },
             "textAlignRight": {
@@ -70,54 +77,63 @@
                     "styleName": "right",
                     "className": "arte-text-align-right"
                 },
+                supportedTypes: [editorTypes.richText],
                 tooltip: "Text align right"
             },
             "h1": {
                 js: buttonBase,
                 commandName: "h1",
                 icon: "../content/Icons/icons/text_heading_1.png",
+                supportedTypes: [editorTypes.richText],
                 tooltip: "H1"
             },
             "h2": {
                 js: buttonBase,
                 commandName: "h2",
                 icon: "../content/Icons/icons/text_heading_2.png",
+                supportedTypes: [editorTypes.richText],
                 tooltip: "H2"
             },
             "h3": {
                 js: buttonBase,
                 commandName: "h3",
                 icon: "../content/Icons/icons/text_heading_3.png",
+                supportedTypes: [editorTypes.richText],
                 tooltip: "H3"
             },
             "h4": {
                 js: buttonBase,
                 commandName: "h4",
                 icon: "../content/Icons/icons/text_heading_4.png",
+                supportedTypes: [editorTypes.richText],
                 tooltip: "H4"
             },
             "h5": {
                 js: buttonBase,
                 commandName: "h5",
                 icon: "../content/Icons/icons/text_heading_5.png",
+                supportedTypes: [editorTypes.richText],
                 tooltip: "H5"
             },
             "h6": {
                 js: buttonBase,
                 commandName: "h6",
                 icon: "../content/Icons/icons/text_heading_6.png",
+                supportedTypes: [editorTypes.richText],
                 tooltip: "H6"
             },
             "subscript": {
                 js: buttonBase,
                 commandName: "subscript",
                 icon: "../content/Icons/icons/text_subscript.png",
+                supportedTypes: [editorTypes.richText],
                 tooltip: "Subscript"
             },
             "superscript": {
                 js: buttonBase,
                 commandName: "superscript",
                 icon: "../content/Icons/icons/text_superscript.png",
+                supportedTypes: [editorTypes.richText],
                 tooltip: "Superscript"
             },
             "fontSize": {
@@ -146,6 +162,7 @@
                 ],
                 */
                 acceptsParams: true,
+                supportedTypes: [editorTypes.richText, editorTypes.plainText],
                 tooltip: "Font size"
             },
             "fontFamily": {
@@ -154,6 +171,7 @@
                 commandName: "fontFamily",
                 options: ["", "Arial", "curier new", "Georgia", "Times New Roman"],
                 acceptsParams: true,
+                supportedTypes: [editorTypes.richText, editorTypes.plainText],
                 tooltip: "Font family"
             },
             "color": {
@@ -162,11 +180,13 @@
                 commandName: "color",
                 options: ["", "Black", "Blue", "Green", "Red"],
                 acceptsParams: true,
+                supportedTypes: [editorTypes.richText, editorTypes.plainText],
                 tooltip: "Color"
             },
             "unorderedList": {
                 js: buttonBase,
                 commandName: "unorderedList",
+                supportedTypes: [editorTypes.richText],
                 tooltip: "Unordered list"
             },
             "orderedList": {
@@ -179,16 +199,19 @@
                 js: buttonWithDropDown,
                 commandName: "backgroundColor",
                 options: ["", "Black", "Blue", "Green", "Red"],
+                supportedTypes: [editorTypes.richText],
                 tooltip: "Background Color"
             },
             "undo": {
                 js: buttonBase,
                 commandName: "undo",
+                supportedTypes: [editorTypes.richText, editorTypes.plainText],
                 tooltip: "Undo"
             },
             "redo": {
                 js: buttonBase,
                 commandName: "redo",
+                supportedTypes: [editorTypes.richText, editorTypes.plainText],
                 tooltip: "Redo"
             },
             "toolbarLineBreak": {
@@ -206,11 +229,13 @@
             "insertLink": {
                 commandName: "insert",
                 js: $.Arte.Toolbar.InsertLink,
+                supportedTypes: [editorTypes.richText],
                 tooltip: "Insert link"
             },
             "insertImage": {
                 commandName: "insert",
                 js: $.Arte.Toolbar.InsertImage,
+                supportedTypes: [editorTypes.richText],
                 tooltip: "Insert Image"
             }
         },

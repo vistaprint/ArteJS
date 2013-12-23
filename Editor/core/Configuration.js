@@ -127,7 +127,13 @@
         * These can be over-ridden in the command configuration for each command
         */
         defaultInlineTag: constants.tagName.SPAN,
-        defaultBlockTag: constants.tagName.P
+        defaultBlockTag: constants.tagName.P,
+
+        /*
+        * Interval at which to poll of value change of the rich text editor while the   editor is focused
+        */
+        pollIntervalInMs: 350,
+
     };
 
     /*
@@ -146,11 +152,6 @@
         * Collection of classes applied to rich text editor
         */
         classes: [],
-
-        /*
-        * Interval at which to poll of value change of the rich text editor while the   editor is focused
-        */
-        pollIntervalInMs: 350,
 
         /*
         * Initial value of the text editor
@@ -186,7 +187,8 @@
                 "tagName": constants.tagName.B,
                 "className": constants.tagName.SPAN,
                 "styleName": constants.tagName.SPAN
-            }
+            },
+            supportsPlainText: true
         },
         italic: {
             tagName: constants.tagName.I,
@@ -201,7 +203,8 @@
             defaultValue: {
                 styleName: "italic",
                 className: configuration.classNameSpace + "-font-style-italic"
-            }
+            },
+            supportsPlainText: true
         },
         underline: {
             tagName: constants.tagName.U,
@@ -216,7 +219,8 @@
             defaultValue: {
                 styleName: "underline",
                 className: configuration.classNameSpace + "-text-decoration-underline"
-            }
+            },
+            supportsPlainText: true
         },
         // A command that can only be applied using a tag name
         blockquote: {
@@ -290,35 +294,40 @@
             acceptsParams: true,
             classNameRegex: new RegExp(configuration.classNameSpace + "-font-size-[\\S]+"),
             applierTagName: constants.tagName.SPAN,
-            commandType: constants.commandType.inline
+            commandType: constants.commandType.inline,
+            supportsPlainText: true
         },
         fontFamily: {
             styleName: "font-family",
             acceptsParams: true,
             classNameRegex: new RegExp(configuration.classNameSpace + "-font-family-[\\S]+"),
             applierTagName: constants.tagName.SPAN,
-            commandType: constants.commandType.inline
+            commandType: constants.commandType.inline,
+            supportsPlainText: true
         },
         color: {
             styleName: "color",
             acceptsParams: true,
             classNameRegex: new RegExp(configuration.classNameSpace + "-font-color-[\\S]+"),
             applierTagName: constants.tagName.SPAN,
-            commandType: constants.commandType.inline
+            commandType: constants.commandType.inline,
+            supportsPlainText: true
         },
         backgroundColor: {
             styleName: "background-color",
             acceptsParams: true,
             classNameRegex: new RegExp(configuration.classNameSpace + "-background-color-[\\S]+"),
             applierTagName: constants.tagName.SPAN,
-            commandType: constants.commandType.inline
+            commandType: constants.commandType.inline,
+            supportsPlainText: true
         },
         textAlign: {
             styleName: "text-align",
             acceptsParams: true,
             classNameRegex: new RegExp(configuration.classNameSpace + "-text-align-[\\S]+"),
             applierTagName: constants.tagName.P,
-            commandType: constants.commandType.block
+            commandType: constants.commandType.block,
+            supportsPlainText: true
         }
     };
 

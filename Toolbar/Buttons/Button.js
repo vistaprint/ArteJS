@@ -8,12 +8,18 @@
         var classes = configuration.classes;
         var buttonClasses = classes.button;
 
+        this.isApplicable = function ()
+        {
+            var editors = toolbar.selectionManager.getEditors(config.supportedTypes);
+            return editors && editors.length;
+        }
+
         this.isEnabled = function () {
             if (!configuration.requireEditorFocus) {
                 return true;
             }
             
-            var selectedEditors = toolbar.selectionManager.getSelectedEditors(this.supportedTypes);
+            var selectedEditors = toolbar.selectionManager.getSelectedEditors(config.supportedTypes);
             return (selectedEditors && selectedEditors.length);
         };
 
@@ -82,6 +88,15 @@
         };
 
         this.refresh = function (state) {
+            if (this.isApplicable())
+            {
+                this.$el.show();
+            } else
+            {
+                this.$el.hide();
+                return;
+            }
+
             if (this.isEnabled()) {
                 me.$el.removeClass(buttonClasses.disabled);
 

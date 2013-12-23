@@ -20,10 +20,7 @@
             // If the selection is not in the content editable element and ops of collapsed
             // selection aren't allowed, return
             var selectionIsInContentEditable = util.isSelectionInElement(textArea.$el);
-            if(!selectionIsInContentEditable && configuration.requireFocus)
-            {
-                return;
-            }
+
 
             var range = null;
             if (selection.isCollapsed)
@@ -89,6 +86,18 @@
             var textField = commandInfo.textArea;
             var editorTypes = constants.editorTypes;
             var applyToElement = textField.editorType === editorTypes.plainText || !textField.$el.html();
+            
+            // If the selection is not in the content editable element and focus is required return
+            var selectionIsInContentEditable = util.isSelectionInElement(textField.$el);
+            if (!selectionIsInContentEditable && configuration.requireFocus) {
+                return;
+            }
+            
+            // Apply to element if focus is not required
+            if (!selectionIsInContentEditable && !configuration.requireFocus &&
+                commandInfo.commandAttrType != "tagName") {
+                applyToElement = true;
+            }
 
             applyToElement ? textField.toggleStyleOnElement(commandInfo) : applyToTextNodes(commandInfo, type);
         };

@@ -7,9 +7,8 @@
         var constants = $.Arte.constants;
 
         me.$element = $(options.element);
-
         // Create a mix-in of the user provided values and configuration defined default values
-        options = $.extend({}, configuration.initialValues, options);
+        var myOptions = $.extend({}, configuration.initialValues, options);
 
         var eventNames = constants.eventNames;
         this.editorType = options.editorType || constants.editorTypes.richText;
@@ -39,6 +38,7 @@
             me.$el = (me.editorType === constants.editorTypes.richText) ?
                 $("<div>").attr({ contentEditable: "true" }) :
                 me.$el = $("<textarea>").css({ height: "100%", width: "100%", padding: "0px", border: "0px" });
+            me.$element.append(me.$el);
         }
         else {
             me.$el = me.$element.children().first();
@@ -46,12 +46,11 @@
                 me.$el.attr({ contentEditable: "true" });
             }
         }
-        me.$el.css(options.styles);
-        $.each(options.classes, function (index, value) {
-            me.$el.addClass(value);
+        me.$el.css(myOptions.styles);
+        $.each(myOptions.classes, function (index, className) {
+            me.$el.addClass(className);
         });
-
-        me.$element.append(me.$el);
+        
         me.$element.attr(configuration.textFieldIdentifier, "1");
 
         /*
@@ -117,10 +116,10 @@
         });
         $.Arte.pluginManager.init(me);
 
-        me.value(options.value);
+        me.value(myOptions.value);
         me.currentValue = me.outerValue();
 
-        me.$element.on(options.on);
+        me.$element.on(myOptions.on);
         me.triggerEvent(eventNames.oncreate);
     };
 
