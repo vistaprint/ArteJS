@@ -501,7 +501,8 @@
         */
         getTopEditableParent: function(jNode)
         {
-            return jNode.closest("[contenteditable=true]") || jNode.closest("textarea");
+            var contentEditable = jNode.closest("[contenteditable=true]");
+            return contentEditable.length ? contentEditable : jNode.closest("textarea");
         },
 
         /**

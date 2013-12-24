@@ -32,7 +32,7 @@
                 var value = commandValue || (config.commandValue ? config.commandValue[commandAttrType] : "");
 
                 if (!value && config.commandValue) {
-                    commandAttrType = $.Arte.constants.commandAttrType.styleName;
+                    commandAttrType = $.Arte.Toolbar.configuration.altCommandAttrType;
                     value = config.commandValue[commandAttrType];
                 }
 
@@ -81,7 +81,8 @@
 
         var isApplied = function (state) {
             if (config.commandName === "textAlign") {
-                var defaultValue = config.commandValue[$.Arte.Toolbar.configuration.commandAttrType];
+                var defaultValue = config.commandValue[$.Arte.Toolbar.configuration.commandAttrType] ||
+                    config.commandValue[$.Arte.Toolbar.configuration.altCommandAttrType];
                 return state === defaultValue;
             }
             return state;

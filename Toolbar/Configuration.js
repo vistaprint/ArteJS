@@ -10,6 +10,8 @@
         requireEditorFocus: true,
         // By default, this toolbar will apply rich text commands using styles
         commandAttrType: commandAttrType.styleName,
+        // In case a command can't be applied using the commandAttrType, try applying the command using the altCommandAttrType
+        altCommandAttrType: commandAttrType.styleName,
         buttons: {
             "bold": {
                 js: buttonBase, // Button js to render and manage this button
@@ -192,6 +194,7 @@
             "orderedList": {
                 js: buttonBase,
                 commandName: "orderedList",
+                supportedTypes: [editorTypes.richText],
                 tooltip: "Ordered list"
             },
             "backgroundColor": {

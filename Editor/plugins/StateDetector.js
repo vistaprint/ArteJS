@@ -71,10 +71,10 @@
     $.extend($.Arte.TextArea.prototype, {
         getState: function(commandName)
         {
-            var selectedNdoes = $.Arte.util.getSelectedTextNodes.apply(this, [true]);
+            var selectedNodes = $.Arte.util.getSelectedTextNodes.apply(this, [true]);
             if (commandName)
             {
-                return getState(selectedNdoes, commandName);
+                return getState(selectedNodes, commandName);
             }
             else
             {
@@ -83,7 +83,7 @@
                 {
                     if ($.isPlainObject(config) && config.commandType && config.commandType != constants.commandType.other)
                     {
-                        result[name] = getState(selectedNdoes, name);
+                        result[name] = getState(selectedNodes, name);
                     }
                 });
                 return result;
