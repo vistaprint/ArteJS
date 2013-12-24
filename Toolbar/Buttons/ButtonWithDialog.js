@@ -57,7 +57,7 @@
         $.Arte.Toolbar.ButtonWithDialog.call(this, toolbar, buttonName, config);
         
         var insertContent = function(contentToInsert) {
-            $.each(toolbar.selectionManager.getSelectedFields(), function() {
+            $.each(toolbar.selectionManager.getSelectedEditors(), function () {
                 this.insert.call(this, { commandValue: contentToInsert });
             });
         };
@@ -94,7 +94,7 @@
         $.Arte.Toolbar.ButtonWithDialog.call(this, toolbar, buttonName, config);
 
         var insertContent = function (contentToInsert) {
-            $.each(toolbar.selectionManager.getSelectedFields(), function () {
+            $.each(toolbar.selectionManager.getSelectedEditors(), function () {
                 this.insert.call(this, { commandValue: contentToInsert });
             });
         };

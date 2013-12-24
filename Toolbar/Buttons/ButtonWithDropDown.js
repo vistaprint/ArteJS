@@ -4,7 +4,6 @@
         $.Arte.Toolbar.Button.call(this, toolbar, buttonName, config);
         var me = this;
         this.render = function (parent) {    
-
             var element = $("<select>").addClass(classes.select).addClass(this.name);
 
             $.each(config.options, function (index, option) {
@@ -62,6 +61,13 @@
         };
 
         this.refresh = function (state) {
+            if (this.isApplicable()) {
+                this.$el.show();
+            } else {
+                this.$el.hide();
+                return;
+            }
+
             var op = this.isEnabled() ? "removeAttr" : "attr";
             this.$el[op]("disabled", true);
 

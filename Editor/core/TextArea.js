@@ -8,7 +8,7 @@
 
         me.$element = $(options.element);
         // Create a mix-in of the user provided values and configuration defined default values
-        var myOptions = $.extend({}, configuration.initialValues, options);
+        var initialValues = $.extend({}, configuration.initialValues, options);
 
         var eventNames = constants.eventNames;
         this.editorType = options.editorType || constants.editorTypes.richText;
@@ -46,8 +46,8 @@
                 me.$el.attr({ contentEditable: "true" });
             }
         }
-        me.$el.css(myOptions.styles);
-        $.each(myOptions.classes, function (index, className) {
+        me.$el.css(initialValues.styles);
+        $.each(initialValues.classes, function (index, className) {
             me.$el.addClass(className);
         });
         
@@ -116,10 +116,10 @@
         });
         $.Arte.pluginManager.init(me);
 
-        me.value(myOptions.value);
+        me.value(initialValues.value);
         me.currentValue = me.outerValue();
 
-        me.$element.on(myOptions.on);
+        me.$element.on(options.on);
         me.triggerEvent(eventNames.oncreate);
     };
 

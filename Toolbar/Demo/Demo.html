@@ -10,41 +10,40 @@
 </head>
 <body>
     <div class="configuration">
-        Configuration
+        <h3>Configuration</h3>
         <br />
-             
-                <div class="editorConfiguration">
-                    <h3>Editor Configuration</h3>
-                    <label class="checkbox">
-                        <input class="requireFocus" type="checkbox" value="focus">
-                        Require Focus
-                    </label>
+        <div class="editorConfiguration">
+            <h4>Editor Configuration</h4>
+            <label class="checkbox">
+                <input class="requireFocus" type="checkbox" value="focus">
+                Require Focus
+            </label>
 
-                    <label class="checkbox">
-                        <input class="editorIsPlainText" type="checkbox" value="plainText">
-                        Editor is plainText
-                    </label>
-                    
-                    <div class="commandAttrTypeSelector">
-                        Command Attribute Type
+            <label class="checkbox">
+                <input class="editorIsPlainText" type="checkbox" value="plainText">
+                Editor is plainText
+            </label>
+
+            <div class="commandAttrTypeSelector">
+                Command Attribute Type
                         <label class="radio">
                             <input type="radio" name="attrType" value="className" />
                             Class 
                         </label>
-                        <label class="radio">
-                            <input type="radio" name="attrType" value="styleName" />
-                            Style
-                        </label>
-                        <label class="radio">
-                            <input type="radio" name="attrType" value="tagName" />
-                            Tag
-                        </label>
-                    </div>
+                <label class="radio">
+                    <input type="radio" name="attrType" value="styleName" />
+                    Style
+                </label>
+                <label class="radio">
+                    <input type="radio" name="attrType" value="tagName" />
+                    Tag
+                </label>
+            </div>
 
-                </div>
+        </div>
         <div class="divider"></div>
         <div class="toolbarConfiguration">
-            <h3>Toolbar Configuration</h3>
+            <h4>Toolbar Configuration</h4>
             <label class="checkbox">
                 <input class="requireEditorFocus" type="checkbox" value="focus">
                 Require Editor Focus
@@ -54,29 +53,31 @@
 
 
     <div class="box" id="text_editor">
+        <h4>Editor and toolbar</h4>
         <div class="toolbar"></div>
         <div class="editor"></div>
     </div>
 
     <div class="box">
-        Non-editable HTML
-            <div class="result"></div>
+        <h4>HTML Rendered</h4>
+        <div class="result"></div>
     </div>
 
     <div class="box">
-        Markup
-            <div class="resultHtml"></div>
+       <h4>Html Markup</h4>
+        <div class="resultHtml"></div>
     </div>
 
     <div class="box">
-        Events:
-            <div class="console" style="max-height: 200px; overflow: auto;"></div>
+        <h4>Various events raised by Arte</h4>
+        <div class="console" style="max-height: 200px; overflow: auto;"></div>
     </div>
 
     <!--Included the Rich text files-->
 
     <script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.js"></script>
     <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="demo.js"></script>
 
     <script type="text/javascript" src="../../Release/V0.1/Rangy.debug.js"></script>
     <script type="text/javascript" src="../../Release/V0.1/Arte.debug.js"></script>
@@ -90,122 +91,5 @@
     <script type="text/javascript" src="../Configuration.js"></script>
     <script type="text/javascript" src="../SelectionManager.js"></script>
 
-    <script type="text/javascript">
-        $.Arte.Toolbar.configuration.classes.selected = "btn-primary";
-
-        function update() {
-            var editor = $(".editor").Arte().get(0);
-            $(".result").html(editor.outerValue());
-            $(".resultHtml").text(editor.outerValue());
-        };
-
-        function logEventToConsole(e, data) {
-            var count = $(".console").children().length;
-            var dataClone = $.extend(true, {}, data);
-            delete dataClone.textArea; // remove text area
-            delete dataClone.originalEvent; // remove text area
-            var content = $("<div>").text(count + ": " + e.type + "=> " + JSON.stringify(dataClone));
-            $(".console").prepend(content);
-        }
-
-        var createEditor = function () {
-            // List of buttons 
-            var buttons = [
-                "bold", "italic", "underline", "blockquote",
-                "textAlignLeft", "textAlignCenter", "textAlignRight",
-                "h1", "h2", "h3", "h4", "h5", "h6",
-                "subscript", "superscript", "unorderedList", "orderedList",
-                "undo", "redo",
-                "fontSize", "fontFamily", "color", "backgroundColor",
-                "insertLink", "insertImage"
-            ];
-
-            $(".editor").Arte({
-                editorType: $(".editorIsPlainText").is(":checked") ? $.Arte.constants.editorTypes.plainText : $.Arte.constants.editorTypes.richText,
-                on: {
-                    "onvaluechange": function (e, data) {
-                        update();
-                        logEventToConsole(e, data);
-                    },
-                    "onfocus": logEventToConsole,
-                    "onblur": logEventToConsole,
-                    "onmousedown": logEventToConsole,
-                    "onmouseup": logEventToConsole,
-                    "onclick": logEventToConsole,
-                    "onkeydown": logEventToConsole,
-                    "onkeypress": logEventToConsole,
-                    "onkeyup": logEventToConsole,
-                    "onpaste": logEventToConsole,
-                    "onselectionchange": logEventToConsole,
-                    "onbeforecommand": logEventToConsole,
-                    "oncommand": logEventToConsole,
-                    "oncreate": logEventToConsole,
-                    "ondestroy": logEventToConsole
-                }
-            });
-
-            $(".editor").Arte("value", $.Arte.configuration.initialValues.value);
-
-            $(".toolbar").ArteToolbar({
-                buttons: buttons
-            });
-
-            update();
-        };
-
-        var destroyEditor = function () {
-            $(".editor").Arte("destroy", { removeContent: true });
-            $(".toolbar").ArteToolbar("destroy");
-        };
-
-        var ResetConfiguration = function () {
-            // Editor configurations
-            var commandAttrType = $("[name=attrType]:checked").val();
-            $.Arte.configuration.commandAttrType = commandAttrType;
-            $.Arte.configuration.requireFocus = $(".requireFocus").is(":checked");
-
-            // Toolbar configurations
-            $.Arte.Toolbar.configuration.commandAttrType = commandAttrType;
-            $.Arte.Toolbar.configuration.requireEditorFocus = $(".requireEditorFocus").is(":checked");
-
-            console.log("$.Arte.Toolbar.configuration.requireEditorFocus: " + $.Arte.Toolbar.configuration.requireEditorFocus);
-        };
-
-        $(".configuration input").on("change", function (e) {
-            console.log("configuration clicked. " + e.target + ", time: " + e.originalEvent.timeStamp);
-            destroyEditor();
-            ResetConfiguration();
-            createEditor();
-        });
-
-        $(function () {
-            $.Arte.configuration.allowOpsOnCollapsedSelection = false;
-            $.Arte.configuration.commandAttrType = "tagName";
-            $.extend(true, $.Arte.Toolbar.configuration, {
-                classes: {
-                    "button": {
-                        "selected": "btn-success"
-                    },
-                    "dialog":
-                    {
-                        "insertLink": {
-                            "label": "add-on",
-                            "input": "input-medium"
-                        }
-                    }
-                }
-            });
-
-            // Check the initial values
-            // Editor Configuration
-            $("[value=" + $.Arte.configuration.commandAttrType + "]").prop("checked", true);
-            $(".requireFocus").prop("checked", $.Arte.Toolbar.configuration.requireFocus);
-
-            // Toolbar configuration
-            $(".requireEditorFocus").prop("checked", $.Arte.Toolbar.configuration.requireEditorFocus);
-
-            createEditor();
-        });
-    </script>
 </body>
 </html>

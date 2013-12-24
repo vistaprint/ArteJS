@@ -415,33 +415,23 @@
     /**
     * Convert the divs to P (some browsers produce div when creating new line).
     */
-    var convertDivsToP = function(jNodes)
-    {
-        var result = $();
-        jNodes.children().each(function()
-        {
-            var $this = $(this);
-            convertDivsToP($this);
+    
+    var convertDivsToP = function (element) {
+        var pElement = element;
+        if (element.prop("tagName") === constants.tagName.DIV) {
+            pElement = $("<p>").html(element.html());
+            // maintain the attributes from the p element
+            $.each(["style", "id", "class"], function (index, attribute) {
+                var attrValue = element.attr(attribute);
+                if (attrValue) {
+                    pElement.attr(attribute, attrValue);
+                }
+            });
 
-            if (this.tagName === constants.tagName.DIV)
-            {
-                var pElement = $("<p>").html($this.html());
-                // maintain the attributes from the p element
-                $.each(["style", "id", "class"], function(index, attribute)
-                {
-                    var attrValue = $this.attr(attribute);
-                    if (attrValue)
-                    {
-                        pElement.attr(attribute, attrValue);
-                    }
-                });
-
-                $this.before(pElement);
-                $this.remove();
-                result.push(pElement.get(0));
-            }
-        });
-        return result;
+            element.before(pElement);
+            element.remove();
+        }
+        return pElement;
     };
 
     /**
@@ -461,5 +451,17 @@
 
     // Public API
     dom.cleanup = cleanup;
-    dom.convertDivsToP = convertDivsToP;
+    dom.convertDivsToP = function (element)
+    {
+        var result = $();
+        element.each(function () {
+            var $this = $(this);
+            $this.children().each(function () {
+                var $this = $(this);
+                convertDivsToP($this);
+            });
+            result.push(convertDivsToP($this).get(0));
+        });
+        return result;
+    };
 })(jQuery);

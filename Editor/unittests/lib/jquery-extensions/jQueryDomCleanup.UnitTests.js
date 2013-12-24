@@ -22,7 +22,7 @@
     module(suiteName + ".convertDivToP");
     unitTestHelper.executeTestCollection(convertDivToPTestData, function(testData)
     {
-        $.Arte.dom.convertDivsToP($("#editableDiv"));
+        $.Arte.dom.convertDivsToP($("#editableDiv").children());
     });
 
     module(suiteName + ".removeEmptyElements");

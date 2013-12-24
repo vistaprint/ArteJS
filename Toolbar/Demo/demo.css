@@ -5,7 +5,7 @@
 
 .box 
 {
-    width: 800px;
+    width: 600px;
     display: "inline-block";
     float: left;
     border: 1px black solid;
@@ -21,4 +21,15 @@
 
 .editorconfiguration{
     border-right: 1px solid black;
+}
+
+select{
+    margin-bottom: 0px;
+}
+
+/*Mask some useragent styles*/
+p{
+    margin: 0px;
+    -webkit-margin-before: 0px;
+    -webkit-margin-after: 0px;
 }

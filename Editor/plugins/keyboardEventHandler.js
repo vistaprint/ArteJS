@@ -102,7 +102,15 @@
             switch (key)
             {
                 case "Enter":
-                    $.Arte.dom.convertDivsToP(textArea.$el);
+                    var range = rangy.getSelection().getRangeAt(0);
+                    var element = range.commonAncestorContainer.nodeType === $.Arte.constants.nodeType.TEXT ?
+                        $(range.commonAncestorContainer.parentNode) : $(range.commonAncestorContainer);
+                    var result = $.Arte.dom.convertDivsToP(element).get(0);
+                    
+                    var children = result.childNodes;
+                    var selection = rangy.getSelection();
+                    selection.setSingleRange(rangy.util.createRangeFromElements(children[0], children[children.length - 1]));
+                    selection.collapseToStart();
                     break;
             }
         };
