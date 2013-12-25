@@ -3,63 +3,49 @@
         if (options && typeof(options) === "object") {
             options = $.extend({}, $.Arte.Toolbar.Defaults, options);
         }
-
+        var result = $();
         this.each(function() {
-            var toolbar;
-            if (options && typeof(options) === "object") {
-                $.extend(options, { element: $(this) });
-                toolbar = new $.Arte.Toolbar(options);
-                $(this).data("Toolbar", toolbar);
+            var toolbar = $(this).data("ArteToolbar");
+            if (options && typeof (options) === "string") {
+                // Most likely this is a method call
+                var methodName = options;
+                if (this.constructor === $.Arte.Toolbar) {
+                    toolbar = this;
+                }
+
+                if (!toolbar) {
+                    throw "This is not a arte toolbar.";
+                }
+
+                var returnValue = toolbar[methodName].call(toolbar);
+                result.push(returnValue);
+            }
+            else {
+                if (!toolbar) {
+                    $.extend(options, { element: $(this) });
+                    toolbar = new $.Arte.Toolbar(options);
+                    $(this).data("ArteToolbar", toolbar);
+                }
+                result.push(toolbar);
             }
         });
-        return this;
+        return result;
     };
 
 
     $.Arte.Toolbar = function (options) {
         var me = this;
-        var classes = $.Arte.Toolbar.configuration.classes;
-        this.$el = options.element;
-        function render() {
-            me.$el.on({
-                "click mousedown mouseup": function (e) {
-                    e.stopPropagation();
-                    e.preventDefault();
-                }
-            });
-            $.each(buttons, function () {
-                this.render(me.$el);
-            });
+        
+        me.$el = options.element;
 
-            // Add a container for inline dialogs
-            $("<div>").addClass(classes.dialog.container).appendTo(me.$el);
-            $("<div>").addClass(classes.tooltip.container).appendTo(me.$el);
-        }
-
-        var buttons = [];
-        this.add = function (button) {
-            buttons.push(button);
-        };
-
-        this.selectionManager = new $.Arte.Toolbar.SelectionManager();
-
-        // Initialize each of the button
-        $.each(options.buttons, function (index, buttonName) {
-            var config = $.Arte.Toolbar.configuration.buttons[buttonName];
-            var button = new config.js(me, buttonName, config);
-            me.add(button);
+        me.$el.on({
+            "click mousedown mouseup": function (e) {
+                e.stopPropagation();
+                e.preventDefault();
+            }
         });
 
-        render();
-
-        this.refresh = function () {
-            var selectedField = me.selectionManager.getSelectedFields()[0];
-            var state = (selectedField) ? selectedField.getState() : {};
-            $.each(buttons, function () {
-                    this.refresh(state);
-                });
-        };
-
+        // Clear the selection if user clicks outside of the editor
         $("body").on({
             click: function () {
                 me.selectionManager.clear();
@@ -67,25 +53,74 @@
             }
         });
 
-        this.selectionManager.on({
+        var buttons = [];
+        // Initialize and render each of the button
+        $.each(options.buttons, function (index, buttonName) {
+            var config = $.Arte.Toolbar.configuration.buttons[buttonName];
+            var button = new config.js(me, buttonName, config);
+            button.render();
+
+            buttons.push(button);
+        });
+        
+        // Create the containers for the inline dialog and tooltip
+        var classes = $.Arte.Toolbar.configuration.classes;
+        $("<div>").addClass(classes.dialog.container).appendTo(me.$el);
+        $("<div>").addClass(classes.tooltip.container).appendTo(me.$el);
+
+        // public api
+        this.refresh = function () {
+            var selectedField = me.selectionManager.getSelectedEditors()[0];
+            var state = (selectedField) ? selectedField.getState() : {};
+            $.each(buttons, function () {
+                this.refresh(state);
+            });
+        };
+
+        this.destroy = function () {
+            me.$el.removeData("ArteToolbar");
+
+            $.each(buttons, function () {
+                this.unrender();
+            });
+            $("." + classes.dialog.container).remove();
+            $("." + classes.tooltip.container).remove();
+            me.$el.off();
+        };
+
+        // Setup the selection manager
+        me.selectionManager = new $.Arte.Toolbar.SelectionManager();
+        me.selectionManager.initialize({ editor: options.editor });
+        me.selectionManager.on({
             selectionchanged: me.refresh
         });
 
-        this.selectionManager.initialize({ editor: options.editor });
         me.refresh();
     };
 })(jQuery);
 /// dependencies: Toolbar
 (function ($) {
     $.Arte.Toolbar.Button = function (toolbar, buttonName, config) {
-        this.element = null;
-        this.commandName = config.commandName;
-        var classes = $.Arte.Toolbar.configuration.classes;
+        var me = this;
+        me.element = null;
+        me.commandName = config.commandName;
+        var configuration = $.Arte.Toolbar.configuration;
+        var classes = configuration.classes;
         var buttonClasses = classes.button;
-        
+
+        this.isApplicable = function ()
+        {
+            var editors = toolbar.selectionManager.getEditors(config.supportedTypes);
+            return editors && editors.length;
+        }
+
         this.isEnabled = function () {
-            var selectedTextField = toolbar.selectionManager.getSelectedFields(this.supportedTypes);
-            return selectedTextField && selectedTextField.length;
+            if (!configuration.requireEditorFocus) {
+                return true;
+            }
+            
+            var selectedEditors = toolbar.selectionManager.getSelectedEditors(config.supportedTypes);
+            return (selectedEditors && selectedEditors.length);
         };
 
         this.executeCommand = function (commandValue) {
@@ -96,25 +131,33 @@
 
                 var value = commandValue || (config.commandValue ? config.commandValue[commandAttrType] : "");
 
+                if (!value && config.commandValue) {
+                    commandAttrType = $.Arte.Toolbar.configuration.altCommandAttrType;
+                    value = config.commandValue[commandAttrType];
+                }
+
                 var commandOptions = {
                     commandName: config.commandName,
                     commandValue: value,
                     commandAttrType: commandAttrType
                 };
 
-                $.each(toolbar.selectionManager.getSelectedFields(), function () {
+                var selectedEditors = toolbar.selectionManager.getSelectedEditors();
+                if (!selectedEditors.length && !configuration.requireEditorFocus) {
+                    selectedEditors = toolbar.selectionManager.getEditors();
+                }
+
+                $.each(selectedEditors, function () {
                     this[commandOptions.commandName].call(this, commandOptions);
                 });
                 toolbar.refresh();
             }
         };
 
-        this.render = function (parent) {
-            var me = this;
-
+        this.render = function () {
             var inner = $("<span>").addClass(buttonName).addClass(buttonClasses.inner);
-            this.$el = $("<a>").attr("href", "#").addClass(buttonClasses.outer).html(inner);
-            this.$el.on({
+            me.$el = $("<a>").attr("href", "#").addClass(buttonClasses.outer).html(inner);
+            me.$el.on({
                 mouseover: function (e) { me.showTooltip(e); },
                 mouseout: function (e) { me.hideTooltip(e); },
                 mousedown: function (e) {
@@ -128,30 +171,46 @@
                 }
             });
 
-            this.$el.appendTo(parent);
+            me.$el.appendTo(toolbar.$el);
         };
+
+        this.unrender = function () {
+            me.$el.off();
+            me.$el.remove();
+        };
+
         var isApplied = function (state) {
             if (config.commandName === "textAlign") {
-                var defaultValue = config.commandValue[$.Arte.Toolbar.configuration.commandAttrType];
+                var defaultValue = config.commandValue[$.Arte.Toolbar.configuration.commandAttrType] ||
+                    config.commandValue[$.Arte.Toolbar.configuration.altCommandAttrType];
                 return state === defaultValue;
             }
             return state;
         };
 
         this.refresh = function (state) {
+            if (this.isApplicable())
+            {
+                this.$el.show();
+            } else
+            {
+                this.$el.hide();
+                return;
+            }
+
             if (this.isEnabled()) {
-                this.$el.removeClass(buttonClasses.disabled);
+                me.$el.removeClass(buttonClasses.disabled);
 
                 var op = isApplied(state[config.commandName]) ? "addClass" : "removeClass";
-                this.$el[op](buttonClasses.selected);
+                me.$el[op](buttonClasses.selected);
             } else {
-                this.$el.addClass(buttonClasses.disabled);
-                this.$el.removeClass(buttonClasses.selected);
+                me.$el.addClass(buttonClasses.disabled);
+                me.$el.removeClass(buttonClasses.selected);
             }
         };
 
         this.showTooltip = function (mouseEvent) {
-            if (this.$el.hasClass(buttonClasses.disabled)) {
+            if (me.$el.hasClass(buttonClasses.disabled)) {
                 return;
             }
 
@@ -167,21 +226,62 @@
             tooltip.show();
         };
         this.hideTooltip = function (mouseEvent) {
-            if (this.$el.hasClass(buttonClasses.disabled)) {
+            if (me.$el.hasClass(buttonClasses.disabled)) {
                 return;
             }
 
-            toolbar.$el.find("." + classes.tooltip.outer).hide();
+            toolbar.$el.find("." + classes.tooltip.container).hide();
         };
     };
 })(jQuery);
 (function($) {
-    $.Arte.Toolbar.ButtonWithDialog = function(toolbar, buttonName, config) {
-        $.extend(this, new $.Arte.Toolbar.Button(toolbar, buttonName, config));
-        
+    $.Arte.Toolbar.ButtonWithDialog = function (toolbar, buttonName, config) {
+        var me = this;
+        $.Arte.Toolbar.Button.call(this, toolbar, buttonName, config);
+        //$.extend(this, new $.Arte.Toolbar.Button(toolbar, buttonName, config));
+        var dialogClasses = $.Arte.Toolbar.configuration.classes.dialog;
+        //var me = this;
         this.executeCommand = function() {
-            this.showPopup();
+            me.showPopup();
         };
+
+        function getDialogContent() {
+           var dialogContent = me.getDialogContent();
+           $("<a>").attr("href", "#").addClass(dialogClasses.button + " ok").html("&#x2713").appendTo(dialogContent);
+           $("<a>").attr("href", "#").addClass(dialogClasses.button + " cancel").html("&#x2717").appendTo(dialogContent);
+            return dialogContent;
+        }
+
+        this.showPopup = function() {
+            var dialogContainer = $("." + dialogClasses.container);
+            dialogContainer.append(getDialogContent());
+            dialogContainer.on("mousedown ", function (e) {
+                e.stopPropagation();
+            });
+            var savedSelection = rangy.saveSelection();
+
+            me.addContent();
+
+            dialogContainer.find(".ok").on("click", function() {
+                rangy.restoreSelection(savedSelection);
+                me.onOk();
+                me.closePopup();
+            });
+
+            dialogContainer.find(".cancel").on("click", function() {
+                rangy.restoreSelection(savedSelection);
+                me.closePopup();
+            });
+            
+            dialogContainer.show();
+        };
+
+        this.closePopup = function() {
+            $("." + dialogClasses.container).children().each(function() {
+                this.remove();
+            });
+        };
+        return me;
     };
 })(jQuery);
 
@@ -189,72 +289,80 @@
     $.Arte.Toolbar.InsertLink = function(toolbar, buttonName, config) {
         var dialogClasses = $.Arte.Toolbar.configuration.classes.dialog;
         var insertLinkClasses = dialogClasses.insertLink;
-        $.extend(this, new $.Arte.Toolbar.ButtonWithDialog(toolbar, buttonName, config));
-        //var insertDialogClassName = "insert-link";
+        var me = this;
+        $.Arte.Toolbar.ButtonWithDialog.call(this, toolbar, buttonName, config);
         
         var insertContent = function(contentToInsert) {
-            $.each(toolbar.selectionManager.getSelectedFields(), function() {
+            $.each(toolbar.selectionManager.getSelectedEditors(), function () {
                 this.insert.call(this, { commandValue: contentToInsert });
             });
         };
         
-       // var dialogContent;
-        var getDialogContent = function() {
-          //  dialogContent = $("<div>").addClass(insertDialogClassName)
-
-            var dialogContent = $("<div>").addClass("input-prepend input-append").on("mousedown ", function(e) {
-                e.stopPropagation();
-            });;
+        this.getDialogContent = function() {
+            var dialogContent = $("<div>").addClass("input-prepend input-append");
             $("<span>").html("Text to Show: ").addClass(insertLinkClasses.label).appendTo(dialogContent);
             $("<input>").addClass(insertLinkClasses.input + " textToShow").attr({ type: "text" }).appendTo(dialogContent).css({ height: "auto" });
             $("<span>").html("Url: ").addClass(insertLinkClasses.label).appendTo(dialogContent);
             $("<input>").addClass(insertLinkClasses.input + " url").attr({ type: "text" }).appendTo(dialogContent).css({ height: "auto" });
-            $("<a>").attr("href", "#").addClass(insertLinkClasses.button + " ok").html("&#x2713").appendTo(dialogContent);
-            $("<a>").attr("href", "#").addClass(insertLinkClasses.button + " cancel").html("&#x2717").appendTo(dialogContent);
-            //dialogContent.append(div);
-
             return dialogContent;
         };
 
-        this.showPopup = function() {
-            $("." + dialogClasses.container).append(getDialogContent());
+        this.onOk = function() {
+            var selectedcontent = rangy.getSelection().toHtml();
+            var contentToInsert = $("." + dialogClasses.container + " .url").val();
+            if (contentToInsert) {
+                var html = $("<a>").attr("href", contentToInsert).html(selectedcontent || contentToInsert);
+                insertContent(html.get(0).outerHTML);
+            }
+        };
 
-            var savedSelection = rangy.saveSelection();
+        this.addContent = function () {
             $("." + dialogClasses.container + " .textToShow").val(rangy.getSelection().toHtml());
-            $("." + dialogClasses.container + " .ok").on("click", function() {
-                rangy.restoreSelection(savedSelection);
-
-                var selectedcontent = rangy.getSelection().toHtml();
-                var contentToInsert = $("." + dialogClasses.container + " .url").val();
-                if (contentToInsert) {
-                    var html = $("<a>").attr("href", contentToInsert).html(selectedcontent || contentToInsert);
-                    insertContent(html.get(0).outerHTML);
-                }
-                closePopup();
-            });
-
-            $("." + dialogClasses.container + " .cancel").on("click", function() {
-                rangy.restoreSelection(savedSelection);
-                closePopup();
-            });
-
-            $("." + dialogClasses.container).show();
-        };
-        
-         var closePopup = function() {
-            //$("." + insertDialogClassName + " input").val("");
-             $("." + dialogClasses.container).children().remove();   
         };
 
+    };
+})(jQuery);
+
+(function () {
+    $.Arte.Toolbar.InsertImage = function (toolbar, buttonName, config) {
+        var dialogClasses = $.Arte.Toolbar.configuration.classes.dialog;
+        var insertLinkClasses = dialogClasses.insertLink;
+        $.Arte.Toolbar.ButtonWithDialog.call(this, toolbar, buttonName, config);
+
+        var insertContent = function (contentToInsert) {
+            $.each(toolbar.selectionManager.getSelectedEditors(), function () {
+                this.insert.call(this, { commandValue: contentToInsert });
+            });
+        };
+
+        this.getDialogContent = function () {
+            var dialogContent = $("<div>").addClass("input-prepend input-append");
+            $("<span>").html("Text to Show: ").addClass(insertLinkClasses.label).appendTo(dialogContent);
+            $("<input>").addClass(insertLinkClasses.input + " textToShow").attr({ type: "text" }).appendTo(dialogContent).css({ height: "auto" });
+            $("<span>").html("Url: ").addClass(insertLinkClasses.label).appendTo(dialogContent);
+            $("<input>").addClass(insertLinkClasses.input + " url").attr({ type: "text" }).appendTo(dialogContent).css({ height: "auto" });
+            return dialogContent;
+        };
+
+        this.onOk = function() {
+            var contentToInsert = $("." + dialogClasses.container + " .url").val();
+            if (contentToInsert) {
+                var html = $("<img>").attr("src", contentToInsert);
+                insertContent(html.get(0).outerHTML);
+            }
+        };
+
+        this.addContent = function () {
+            $("." + dialogClasses.container + " .textToShow").val(rangy.getSelection().toHtml());
+        };
     };
 })(jQuery);
 (function ($) {
     $.Arte.Toolbar.ButtonWithDropDown = function (toolbar, buttonName, config) {
         var classes = $.Arte.Toolbar.configuration.classes;
-        $.extend(this, new $.Arte.Toolbar.Button(toolbar, buttonName, config));
-        this.render = function (parent) {
-            var me = this;
-
+        $.Arte.Toolbar.Button.call(this, toolbar, buttonName, config);
+        var me = this;
+        this.render = function (parent) {    
             var element = $("<select>").addClass(classes.select).addClass(this.name);
 
             $.each(config.options, function (index, option) {
@@ -287,7 +395,7 @@
                 }
                 element.append($("<option>").attr("value", value).html(display));
             });
-            element.appendTo(parent);
+            element.appendTo(toolbar.$el);
             
             element.on({
                 change: function () {
@@ -306,8 +414,19 @@
 
             this.$el = element;
         };
+        this.unrender = function () {
+            me.$el.off();
+            me.$el.remove();
+        };
 
         this.refresh = function (state) {
+            if (this.isApplicable()) {
+                this.$el.show();
+            } else {
+                this.$el.hide();
+                return;
+            }
+
             var op = this.isEnabled() ? "removeAttr" : "attr";
             this.$el[op]("disabled", true);
 
@@ -322,8 +441,14 @@
     var buttonBase = $.Arte.Toolbar.Button;
     var buttonWithDropDown = $.Arte.Toolbar.ButtonWithDropDown;
     var commandAttrType = $.Arte.constants.commandAttrType;
+    var editorTypes = $.Arte.constants.editorTypes;
     // Button Configuration
     $.Arte.Toolbar.configuration = {
+        requireEditorFocus: true,
+        // By default, this toolbar will apply rich text commands using styles
+        commandAttrType: commandAttrType.styleName,
+        // In case a command can't be applied using the commandAttrType, try applying the command using the altCommandAttrType
+        altCommandAttrType: commandAttrType.styleName,
         buttons: {
             "bold": {
                 js: buttonBase, // Button js to render and manage this button
@@ -331,7 +456,9 @@
                 commandValue: { // command values for each command attribut type
                     "styleName": "bold",
                     "className": "arte-font-weight-bold"
-                }
+                },
+                supportedTypes: [editorTypes.richText, editorTypes.plainText],
+                tooltip: "Bold"
             },
             "italic": {
                 js: buttonBase,
@@ -339,7 +466,9 @@
                 commandValue: {
                     "styleName": "italic",
                     "className": "arte-font-style-italic"
-                }
+                },
+                supportedTypes: [editorTypes.richText, editorTypes.plainText],
+                tooltip: "Italic"
             },
             "underline": {
                 js: buttonBase,
@@ -347,11 +476,15 @@
                 commandValue: {
                     "styleName": "underline",
                     "className": "arte-text-decoration-underline"
-                }
+                },
+                supportedTypes: [editorTypes.richText, editorTypes.plainText],
+                tooltip: "Underline"
             },
             "blockquote": {
                 js: buttonBase,
                 commandName: "blockquote",
+                supportedTypes: [editorTypes.richText],
+                tooltip: "Blockquote"
             },
             "textAlignLeft": {
                 js: buttonBase,
@@ -361,6 +494,7 @@
                     "styleName": "left",
                     "className": "arte-text-align-left"
                 },
+                supportedTypes: [editorTypes.richText],
                 tooltip: "Text align left"
             },
             "textAlignCenter": {
@@ -371,6 +505,7 @@
                     "styleName": "center",
                     "className": "arte-text-align-center"
                 },
+                supportedTypes: [editorTypes.richText],
                 tooltip: "Text align center"
             },
             "textAlignRight": {
@@ -381,47 +516,64 @@
                     "styleName": "right",
                     "className": "arte-text-align-right"
                 },
+                supportedTypes: [editorTypes.richText],
                 tooltip: "Text align right"
             },
             "h1": {
                 js: buttonBase,
                 commandName: "h1",
-                icon: "../content/Icons/icons/text_heading_1.png"
+                icon: "../content/Icons/icons/text_heading_1.png",
+                supportedTypes: [editorTypes.richText],
+                tooltip: "H1"
             },
             "h2": {
                 js: buttonBase,
                 commandName: "h2",
-                icon: "../content/Icons/icons/text_heading_2.png"
+                icon: "../content/Icons/icons/text_heading_2.png",
+                supportedTypes: [editorTypes.richText],
+                tooltip: "H2"
             },
             "h3": {
                 js: buttonBase,
                 commandName: "h3",
-                icon: "../content/Icons/icons/text_heading_3.png"
+                icon: "../content/Icons/icons/text_heading_3.png",
+                supportedTypes: [editorTypes.richText],
+                tooltip: "H3"
             },
             "h4": {
                 js: buttonBase,
                 commandName: "h4",
-                icon: "../content/Icons/icons/text_heading_4.png"
+                icon: "../content/Icons/icons/text_heading_4.png",
+                supportedTypes: [editorTypes.richText],
+                tooltip: "H4"
             },
             "h5": {
                 js: buttonBase,
                 commandName: "h5",
-                icon: "../content/Icons/icons/text_heading_5.png"
+                icon: "../content/Icons/icons/text_heading_5.png",
+                supportedTypes: [editorTypes.richText],
+                tooltip: "H5"
             },
             "h6": {
                 js: buttonBase,
                 commandName: "h6",
-                icon: "../content/Icons/icons/text_heading_6.png"
+                icon: "../content/Icons/icons/text_heading_6.png",
+                supportedTypes: [editorTypes.richText],
+                tooltip: "H6"
             },
             "subscript": {
                 js: buttonBase,
                 commandName: "subscript",
-                icon: "../content/Icons/icons/text_subscript.png"
+                icon: "../content/Icons/icons/text_subscript.png",
+                supportedTypes: [editorTypes.richText],
+                tooltip: "Subscript"
             },
             "superscript": {
                 js: buttonBase,
                 commandName: "superscript",
-                icon: "../content/Icons/icons/text_superscript.png"
+                icon: "../content/Icons/icons/text_superscript.png",
+                supportedTypes: [editorTypes.richText],
+                tooltip: "Superscript"
             },
             "fontSize": {
                 js: buttonWithDropDown,
@@ -449,6 +601,7 @@
                 ],
                 */
                 acceptsParams: true,
+                supportedTypes: [editorTypes.richText, editorTypes.plainText],
                 tooltip: "Font size"
             },
             "fontFamily": {
@@ -457,6 +610,7 @@
                 commandName: "fontFamily",
                 options: ["", "Arial", "curier new", "Georgia", "Times New Roman"],
                 acceptsParams: true,
+                supportedTypes: [editorTypes.richText, editorTypes.plainText],
                 tooltip: "Font family"
             },
             "color": {
@@ -465,15 +619,19 @@
                 commandName: "color",
                 options: ["", "Black", "Blue", "Green", "Red"],
                 acceptsParams: true,
+                supportedTypes: [editorTypes.richText, editorTypes.plainText],
+                tooltip: "Color"
             },
             "unorderedList": {
                 js: buttonBase,
                 commandName: "unorderedList",
+                supportedTypes: [editorTypes.richText],
                 tooltip: "Unordered list"
             },
             "orderedList": {
                 js: buttonBase,
                 commandName: "orderedList",
+                supportedTypes: [editorTypes.richText],
                 tooltip: "Ordered list"
             },
             "backgroundColor": {
@@ -481,16 +639,20 @@
                 js: buttonWithDropDown,
                 commandName: "backgroundColor",
                 options: ["", "Black", "Blue", "Green", "Red"],
+                supportedTypes: [editorTypes.richText],
                 tooltip: "Background Color"
             },
             "undo": {
                 js: buttonBase,
                 commandName: "undo",
+                supportedTypes: [editorTypes.richText, editorTypes.plainText],
                 tooltip: "Undo"
             },
             "redo": {
                 js: buttonBase,
-                commandName: "redo"
+                commandName: "redo",
+                supportedTypes: [editorTypes.richText, editorTypes.plainText],
+                tooltip: "Redo"
             },
             "toolbarLineBreak": {
                 // Inserts a line break into the toolbar.
@@ -507,7 +669,14 @@
             "insertLink": {
                 commandName: "insert",
                 js: $.Arte.Toolbar.InsertLink,
+                supportedTypes: [editorTypes.richText],
                 tooltip: "Insert link"
+            },
+            "insertImage": {
+                commandName: "insert",
+                js: $.Arte.Toolbar.InsertImage,
+                supportedTypes: [editorTypes.richText],
+                tooltip: "Insert Image"
             }
         },
         // Set of classes used to control the look-n-feel of the toolbar buttons
@@ -523,77 +692,98 @@
             },
             "dialog": {
                 "container": "inline-dialog",
+                "button" : "btn",
                 "insertLink":
                 {
                     "button": "btn",
                     "label": "",
                     "input": ""
-                }
+                },
+                "insertImage":
+                    {
+
+                    }
             },
             "tooltip":
             {
                 "container": "tooltip"
             }
         },
-        // By default, this toolbar will apply rich text commands using styles
-        commandAttrType: commandAttrType.styleName,
         commandConfig: {}
     };
 })(jQuery);
 (function ($) {
     $.Arte.Toolbar = $.Arte.Toolbar || {};
-    $.Arte.Toolbar.SelectionManager = function () {
-        return {
-            selection: [],
-            isValidSelection: function () {
-                var userSelection = rangy.getSelection();
-                var range = userSelection.getAllRanges()[0];
-                if (range) {
-                    var textFields = this.getSelectedFields();
-                    return $.Arte.util.any(textFields, function (index, textField) {
-                        return textField.$el.get(0) === range.startContainer || textField.$el.has(range.startContainer).get(0);
-                    });
-                }
-                return false;
-            },
-            getSelectedFields: function (types) {
-                if (types) {
-                    return $.Arte.util.filterCollection(this.selection, function (index, textField) {
-                        return $.Arte.util.any(types, function (i, type) {
-                            return textField.editorType === type;
-                        });
-                    });
-                }
+    $.Arte.Toolbar.SelectionManager = function() {
+        var editors = $();
+        var selectedEditors = [];
 
-                return this.selection;
-            },
-            initialize: function (options) {
-                var me = this;
-                var elements = options && options.editor ? $(options.editor) :
-                    $("[" + $.Arte.configuration.textFieldIdentifier + "]");
+        var isValidSelection = function() {
+            var userSelection = rangy.getSelection();
+            var range = userSelection.getAllRanges()[0];
+            if (range) {
+                var textFields = this.getSelectedFields();
+                return $.Arte.util.any(textFields, function(index, textField) {
+                    return textField.$el.get(0) === range.startContainer || textField.$el.has(range.startContainer).get(0);
+                });
+            }
+            return false;
+        };
 
-                elements.each(function () {
-                    $(this).on({
-                        onfocus: function (e, data) {
-                            me.selection.splice(0, me.selection.length);
-                            me.selection.push(data.textArea);
-                            $(me).trigger("selectionchanged", e);
-                        },
-                        onselectionchange: function (e) {
-                            $(me).trigger("selectionchanged", e);
-                        }
+        this.getSelectedEditors = function(types) {
+            if (types) {
+                return $.Arte.util.filterCollection(selectedEditors, function (index, textField) {
+                    return $.Arte.util.any(types, function(i, type) {
+                        return textField.editorType === type;
                     });
                 });
-            },
-            clear: function () {
-                this.selection.splice(0, this.selection.length);
-            },
-            on: function (type, handler) {
-                $(this).on(type, handler);
-            },
-            off: function (type, handler) {
-                $(this).off(type, handler);
             }
+
+            return selectedEditors;
+        };
+
+        this.getEditors = function (types) {
+            if (types) {
+                return $.Arte.util.filterCollection(editors, function (index, textField) {
+                    return $.Arte.util.any(types, function (i, type) {
+                        return textField.editorType === type;
+                    });
+                });
+            }
+            return editors;
+        };
+
+        this.initialize = function(options) {
+            var me = this;
+            var elements = options && options.editor ? $(options.editor) :
+                $("[" + $.Arte.configuration.textFieldIdentifier + "]");
+
+            editors = $.map(elements, function(element) {
+                return $(element).Arte().get(0);
+            });
+
+            $.each(editors, function() {
+                this.on({
+                    onfocus: function(e, data) {
+                        me.clear();
+                        selectedEditors.push(data.textArea);
+                        $(me).trigger("selectionchanged", e);
+                    },
+                    onselectionchange: function(e) {
+                        $(me).trigger("selectionchanged", e);
+                    }
+                });
+            });
+        };
+
+        this.clear = function() {
+            selectedEditors.splice(0, selectedEditors.length);
+        };
+        this.on = function(type, handler) {
+            $(this).on(type, handler);
+        };
+        this.off = function(type, handler) {
+            $(this).off(type, handler);
         };
     };
 })(jQuery);

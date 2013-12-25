@@ -8,9 +8,15 @@
     background-color: white;
 }
 
+
+.inner{
+    max-width: 860px;
+}
+
 .editor-demo {
     display: block;
     width: 100%;
+    height: 230px;
 }
 
 

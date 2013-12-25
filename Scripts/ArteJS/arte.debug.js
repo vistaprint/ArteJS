@@ -47,7 +47,7 @@
                     $this.data("Arte", editor);
                 }
                 result.push(editor);
-            }
+            }   
         });
         return $(result);
     };
@@ -61,9 +61,8 @@
         var constants = $.Arte.constants;
 
         me.$element = $(options.element);
-
         // Create a mix-in of the user provided values and configuration defined default values
-        options = $.extend({}, configuration.initialValues, options);
+        var initialValues = $.extend({}, configuration.initialValues, options);
 
         var eventNames = constants.eventNames;
         this.editorType = options.editorType || constants.editorTypes.richText;
@@ -93,6 +92,7 @@
             me.$el = (me.editorType === constants.editorTypes.richText) ?
                 $("<div>").attr({ contentEditable: "true" }) :
                 me.$el = $("<textarea>").css({ height: "100%", width: "100%", padding: "0px", border: "0px" });
+            me.$element.append(me.$el);
         }
         else {
             me.$el = me.$element.children().first();
@@ -100,12 +100,11 @@
                 me.$el.attr({ contentEditable: "true" });
             }
         }
-        me.$el.css(options.styles);
-        $.each(options.classes, function (index, value) {
-            me.$el.addClass(value);
+        me.$el.css(initialValues.styles);
+        $.each(initialValues.classes, function (index, className) {
+            me.$el.addClass(className);
         });
-
-        me.$element.append(me.$el);
+        
         me.$element.attr(configuration.textFieldIdentifier, "1");
 
         /*
@@ -171,7 +170,7 @@
         });
         $.Arte.pluginManager.init(me);
 
-        me.value(options.value);
+        me.value(initialValues.value);
         me.currentValue = me.outerValue();
 
         me.$element.on(options.on);
@@ -195,7 +194,9 @@
         // Get outerHtml of the contentEditable
         "outerValue": function (value) {
             if (typeof (value) === "undefined") {
-                return this.$element.html();
+                var clone = this.$element.clone();
+                clone.children().removeAttr("contenteditable");
+                return clone.html();
             }
             var newElement = $(value);
 
@@ -210,11 +211,9 @@
         "focus": function () {
             var me = this;
             var focusHandler = function () {
-                //                setTimeout(function()
-                //                {
                 me.$el.off("focus", focusHandler);
                 $.Arte.util.moveCursorToEndOfElement(me.$el.get(0));
-                //                }, 10);
+                me.triggerEvent($.Arte.constants.eventNames.onselectionchange);
             };
 
             me.$el.on("focus", focusHandler);
@@ -223,14 +222,19 @@
         "triggerEvent": function (name, data) {
             this.$element.trigger(name, $.extend(data, { textArea: this }));
         },
-        "destroy": function () {
+        "destroy": function (options) {
             // Converts the rich text editor to non-editable state and remove rich text state information
             this.$element.removeData("Arte");
             this.$element.removeAttr($.Arte.configuration.textFieldIdentifier);
+            this.$element.off();
 
             this.$el.off();
             this.$el.removeAttr("contentEditable");
             this.triggerEvent($.Arte.constants.eventNames.ondestroy);
+            
+            if (options && options.removeContent) {
+                this.$element.empty();
+            }
         },
         /**
         *  on/off methods to support attaching events handler using a rich text instance 
@@ -344,7 +348,7 @@
         /*
         * Whether to perform a rich text operation when there is no user selection (for example, the cursor is not inside the text field).
         */
-        allowOpsOnCollapsedSelection: true,
+        requireFocus: true,
 
         /*
         * ClassNameSpace is pre-pended to the name of the class. (for example: classNameSpace-font-weight-bold)
@@ -372,7 +376,13 @@
         * These can be over-ridden in the command configuration for each command
         */
         defaultInlineTag: constants.tagName.SPAN,
-        defaultBlockTag: constants.tagName.P
+        defaultBlockTag: constants.tagName.P,
+
+        /*
+        * Interval at which to poll of value change of the rich text editor while the   editor is focused
+        */
+        pollIntervalInMs: 350,
+
     };
 
     /*
@@ -391,11 +401,6 @@
         * Collection of classes applied to rich text editor
         */
         classes: [],
-
-        /*
-        * Interval at which to poll of value change of the rich text editor while the   editor is focused
-        */
-        pollIntervalInMs: 350,
 
         /*
         * Initial value of the text editor
@@ -431,7 +436,8 @@
                 "tagName": constants.tagName.B,
                 "className": constants.tagName.SPAN,
                 "styleName": constants.tagName.SPAN
-            }
+            },
+            supportsPlainText: true
         },
         italic: {
             tagName: constants.tagName.I,
@@ -446,7 +452,8 @@
             defaultValue: {
                 styleName: "italic",
                 className: configuration.classNameSpace + "-font-style-italic"
-            }
+            },
+            supportsPlainText: true
         },
         underline: {
             tagName: constants.tagName.U,
@@ -461,7 +468,8 @@
             defaultValue: {
                 styleName: "underline",
                 className: configuration.classNameSpace + "-text-decoration-underline"
-            }
+            },
+            supportsPlainText: true
         },
         // A command that can only be applied using a tag name
         blockquote: {
@@ -535,35 +543,40 @@
             acceptsParams: true,
             classNameRegex: new RegExp(configuration.classNameSpace + "-font-size-[\\S]+"),
             applierTagName: constants.tagName.SPAN,
-            commandType: constants.commandType.inline
+            commandType: constants.commandType.inline,
+            supportsPlainText: true
         },
         fontFamily: {
             styleName: "font-family",
             acceptsParams: true,
             classNameRegex: new RegExp(configuration.classNameSpace + "-font-family-[\\S]+"),
             applierTagName: constants.tagName.SPAN,
-            commandType: constants.commandType.inline
+            commandType: constants.commandType.inline,
+            supportsPlainText: true
         },
         color: {
             styleName: "color",
             acceptsParams: true,
             classNameRegex: new RegExp(configuration.classNameSpace + "-font-color-[\\S]+"),
             applierTagName: constants.tagName.SPAN,
-            commandType: constants.commandType.inline
+            commandType: constants.commandType.inline,
+            supportsPlainText: true
         },
         backgroundColor: {
             styleName: "background-color",
             acceptsParams: true,
             classNameRegex: new RegExp(configuration.classNameSpace + "-background-color-[\\S]+"),
             applierTagName: constants.tagName.SPAN,
-            commandType: constants.commandType.inline
+            commandType: constants.commandType.inline,
+            supportsPlainText: true
         },
         textAlign: {
             styleName: "text-align",
             acceptsParams: true,
             classNameRegex: new RegExp(configuration.classNameSpace + "-text-align-[\\S]+"),
             applierTagName: constants.tagName.P,
-            commandType: constants.commandType.block
+            commandType: constants.commandType.block,
+            supportsPlainText: true
         }
     };
 
@@ -1449,33 +1462,23 @@
     /**
     * Convert the divs to P (some browsers produce div when creating new line).
     */
-    var convertDivsToP = function(jNodes)
-    {
-        var result = $();
-        jNodes.children().each(function()
-        {
-            var $this = $(this);
-            convertDivsToP($this);
+    
+    var convertDivsToP = function (element) {
+        var pElement = element;
+        if (element.prop("tagName") === constants.tagName.DIV) {
+            pElement = $("<p>").html(element.html());
+            // maintain the attributes from the p element
+            $.each(["style", "id", "class"], function (index, attribute) {
+                var attrValue = element.attr(attribute);
+                if (attrValue) {
+                    pElement.attr(attribute, attrValue);
+                }
+            });
 
-            if (this.tagName === constants.tagName.DIV)
-            {
-                var pElement = $("<p>").html($this.html());
-                // maintain the attributes from the p element
-                $.each(["style", "id", "class"], function(index, attribute)
-                {
-                    var attrValue = $this.attr(attribute);
-                    if (attrValue)
-                    {
-                        pElement.attr(attribute, attrValue);
-                    }
-                });
-
-                $this.before(pElement);
-                $this.remove();
-                result.push(pElement.get(0));
-            }
-        });
-        return result;
+            element.before(pElement);
+            element.remove();
+        }
+        return pElement;
     };
 
     /**
@@ -1495,7 +1498,19 @@
 
     // Public API
     dom.cleanup = cleanup;
-    dom.convertDivsToP = convertDivsToP;
+    dom.convertDivsToP = function (element)
+    {
+        var result = $();
+        element.each(function () {
+            var $this = $(this);
+            $this.children().each(function () {
+                var $this = $(this);
+                convertDivsToP($this);
+            });
+            result.push(convertDivsToP($this).get(0));
+        });
+        return result;
+    };
 })(jQuery);
 /*global Arte:false*/
 
@@ -2175,7 +2190,8 @@
         */
         getTopEditableParent: function(jNode)
         {
-            return jNode.closest("[contenteditable=true]") || jNode.closest("textarea");
+            var contentEditable = jNode.closest("[contenteditable=true]");
+            return contentEditable.length ? contentEditable : jNode.closest("textarea");
         },
 
         /**
@@ -2805,8 +2821,25 @@ rangy.createModule("InlineElementApplier", function(api)
     function toggleSelection(options)
     {
         var inlineOptions = new $.Arte.ElementApplierOptions(options);
+        
         var selection = rangy.getSelection();
-        var range = selection.getRangeAt(0);
+        if (!selection.isCollapsed)
+        {
+            // rangy.splitBoundaris, causes the loss of user selection.  The following is a work around.
+            var savedSelection = rangy.saveSelection();
+            var rangeInfo = savedSelection.rangeInfos[0];
+
+            var startMarker = $("#" + rangeInfo.startMarkerId);
+            var endMarker = $("#" + rangeInfo.endMarkerId);
+            
+            var newRange = rangy.util.createRangeFromElements(startMarker.get(0), endMarker.get(0), true);
+            selection.setSingleRange(newRange);
+
+            startMarker.remove();
+            endMarker.remove();
+        }
+
+        range = rangy.getSelection().getRangeAt(0);
         if (range)
         {
             toggleRange(range, inlineOptions);
@@ -2905,10 +2938,7 @@ rangy.createModule("InlineElementApplier", function(api)
             // If the selection is not in the content editable element and ops of collapsed
             // selection aren't allowed, return
             var selectionIsInContentEditable = util.isSelectionInElement(textArea.$el);
-            if (!selectionIsInContentEditable && !configuration.allowOpsOnCollapsedSelection)
-            {
-                return;
-            }
+
 
             var range = null;
             if (selection.isCollapsed)
@@ -2969,24 +2999,25 @@ rangy.createModule("InlineElementApplier", function(api)
             rangy.restoreSelection(sel);
         };
 
-        var applyToElement = function(textField, commandInfo)
-        {
-            textField.toggleStyleOnElement(commandInfo);
-        };
-
         var applyCommand = function(commandInfo, type)
         {
             var textField = commandInfo.textArea;
             var editorTypes = constants.editorTypes;
-            switch (textField.editorType)
-            {
-                case editorTypes.richText:
-                    applyToTextNodes(commandInfo, type);
-                    break;
-                case editorTypes.plainText:
-                    applyToElement(textField, commandInfo);
-                    break;
+            var applyToElement = textField.editorType === editorTypes.plainText || !textField.$el.html();
+            
+            // If the selection is not in the content editable element and focus is required return
+            var selectionIsInContentEditable = util.isSelectionInElement(textField.$el);
+            if (!selectionIsInContentEditable && configuration.requireFocus) {
+                return;
             }
+            
+            // Apply to element if focus is not required
+            if (!selectionIsInContentEditable && !configuration.requireFocus &&
+                commandInfo.commandAttrType != "tagName") {
+                applyToElement = true;
+            }
+
+            applyToElement ? textField.toggleStyleOnElement(commandInfo) : applyToTextNodes(commandInfo, type);
         };
 
         /*
@@ -3268,42 +3299,11 @@ $(document).ready(function()
     {
         if (!range.collapsed)
         {
-            if (!keepBoundaries)
-            {
-                range = splitBoundaries(range);
-            }
             return $(range.getNodes([3])).filter(function()
             {
                 return !isWhitespaceNode(this);
             });
         }
-    }
-
-    /**
-    * Replacement for range.splitNodes
-    * rangy.splitBoundaris, causes the loss of user selection.  We need to restore the selection.
-    */
-    function splitBoundaries(range)
-    {
-        var selection = rangy.getSelection();
-        if (selection.isCollapsed)
-        {
-            return range;
-        }
-
-        var savedSelection = rangy.saveSelection();
-        (rangy.getSelection().getRangeAt(0)).splitBoundaries();
-
-        var rangeInfo = savedSelection.rangeInfos[0];
-
-        var startMarker = $("#" + rangeInfo.startMarkerId);
-        var endMarker = $("#" + rangeInfo.endMarkerId);
-        var newRange = createRangeFromElements(startMarker.get(0), endMarker.get(0), true);
-        selection.setSingleRange(newRange);
-
-        startMarker.remove();
-        endMarker.remove();
-        return rangy.getSelection().getRangeAt(0);
     }
 
     rangy.util.getRangeFromSavedSelection = getRangeFromSavedSelection;
@@ -3338,7 +3338,7 @@ $(document).ready(function()
 
                 // Ensure that the selection is valid
                 var selectionIsInContentEditable = $.Arte.util.isSelectionInElement(this.$el);
-                if (!selectionIsInContentEditable && !$.Arte.configuration.allowOpsOnCollapsedSelection)
+                if (!selectionIsInContentEditable && $.Arte.configuration.requireFocus)
                 {
                     return;
                 }
@@ -3456,10 +3456,10 @@ $(document).ready(function()
     $.extend($.Arte.TextArea.prototype, {
         getState: function(commandName)
         {
-            var selectedNdoes = $.Arte.util.getSelectedTextNodes.apply(this, [true]);
+            var selectedNodes = $.Arte.util.getSelectedTextNodes.apply(this, [true]);
             if (commandName)
             {
-                return getState(selectedNdoes, commandName);
+                return getState(selectedNodes, commandName);
             }
             else
             {
@@ -3468,7 +3468,7 @@ $(document).ready(function()
                 {
                     if ($.isPlainObject(config) && config.commandType && config.commandType != constants.commandType.other)
                     {
-                        result[name] = getState(selectedNdoes, name);
+                        result[name] = getState(selectedNodes, name);
                     }
                 });
                 return result;
@@ -3715,7 +3715,15 @@ $(document).ready(function()
             switch (key)
             {
                 case "Enter":
-                    $.Arte.dom.convertDivsToP(textArea.$el);
+                    var range = rangy.getSelection().getRangeAt(0);
+                    var element = range.commonAncestorContainer.nodeType === $.Arte.constants.nodeType.TEXT ?
+                        $(range.commonAncestorContainer.parentNode) : $(range.commonAncestorContainer);
+                    var result = $.Arte.dom.convertDivsToP(element).get(0);
+                    
+                    var children = result.childNodes;
+                    var selection = rangy.getSelection();
+                    selection.setSingleRange(rangy.util.createRangeFromElements(children[0], children[children.length - 1]));
+                    selection.collapseToStart();
                     break;
             }
         };

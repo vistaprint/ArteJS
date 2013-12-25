@@ -5,9 +5,8 @@
     <meta charset='utf-8' />
     <meta http-equiv="X-UA-Compatible" content="chrome=1" />
     <meta name="description" content="Artejs : A powerful, extensible, flexible, cross-browser rich text editor" />
-    
+
     <link rel="stylesheet" type="text/css" href="CSS/3rdParty/Tocify/jquery.tocify.css" />
-    <link rel="stylesheet" type="text/css" href="CSS/3rdParty/Bootstrap/bootstrap-responsive.css" />
     <link rel="stylesheet" type="text/css" media="screen" href="CSS/stylesheet.css" />
     <link rel="stylesheet" type="text/css" media="screen" href="CSS/page.css" />
 
@@ -20,7 +19,6 @@
 
 <body>
     <div id="toc"></div>
-
     <!-- HEADER -->
     <div id="header_wrap" class="outer">
         <header class="inner">
@@ -51,7 +49,7 @@
                     <pre>
 $(".editor").Arte(); // Turns .editor into rich text editor 
 $(".editor").bold(); // Make the selected text bold
-$(".editor").fontSize(10); // Change fontsize fo selected text to 10px
+$(".editor").fontSize(10); // Change fontsize of the selected text to 10px
                     </pre>
                 </li>
                 <li>A small dependency footprint: jQuery and Rangy 1.2.3 (Included with ArteJS).
@@ -64,7 +62,7 @@ $(".editor").fontSize(10); // Change fontsize fo selected text to 10px
                 </li>
                 <li>Semantically concise and valid markup: e.g. no redundant styles, classes or tags.
                 </li>
-                <li>A rich event model provide a rich integration point. TODO: Link to supported events
+                <li>A <a href="#events">rich event model</a> provide a rich integration point.
                 </li>
                 <li>Keyboard shortcut integration
                 </li>
@@ -89,7 +87,6 @@ $(".editor").fontSize(10); // Change fontsize fo selected text to 10px
         &lt;!-- Markup to host the toolbar and the editor--&gt;
         &lt;div class=&quot;toolbar&quot;&gt;&lt;/div&gt;
         &lt;div class=&quot;editor&quot;&gt;&lt;/div&gt;
-        &lt;!--Included the Rich text files--&gt;
 
         &lt;!--Add dependencies and ArteJS Scripts--&gt;
         &lt;script src=&quot;../path/to/jquery-1.9.1.js&quot;&gt;&lt;/script&gt;
@@ -114,29 +111,27 @@ $(".editor").fontSize(10); // Change fontsize fo selected text to 10px
 
     </pre>
             <h1>Examples</h1>
-            <h2>A simple editor</h2>
-            <iframe class="editor-demo" src="Demo/SimpleToolbar/Toolbar.html"></iframe>
-
-            <h2>Unobtrusive toolbar</h2>
-            <iframe class="editor-demo" src="Demo/UnobtrusiveToolbar/Toolbar.html"></iframe>
 
             <h2>Reference toolbar implementation</h2>
             <iframe class="editor-demo" src="Demo/CompleteToolbar/Toolbar.html"></iframe>
 
-            <h2>Reference toolbar with bootstrap</h2>
-            <iframe class="editor-demo" src="Demo/CompleteToolbarWithTwitterBootstrap/Toolbar.html"></iframe>
+            <h2>Simple Toolbar Examples</h2>
+            <a href="Demo/SimpleToolbar/Toolbar.html">Simple toolbar</a><br />
+            <a href="Demo/UnobtrusiveToolbar/Toolbar.html">Unobtrusive toolbar</a>
 
-            <h2>Single toolbar with multiple editors</h2>
-            <iframe class="editor-demo" src="Demo/SingleToolbarMultipleEditors/Toolbar.html"></iframe>
-
-            <h2>Multiple toolbars/editors</h2>
-            <iframe class="editor-demo" src="Demo/MultipleEditors/Toolbar.html"></iframe>
+            <h2>Various flavors of reference toolbar</h2>
+            <a href="Demo/CompleteToolbar/Toolbar.html">Full toolbar</a>
+            <br />
+            <a href="Demo/CompleteToolbarWithTwitterBootstrap/Toolbar.html">Toolbar with twitter bootstrap styles</a><br />
+            <a href="Demo/SingleToolbarMultipleEditors/Toolbar.html">Single toolbar with multiple editors</a><br />
+            <a href="Demo/MultipleEditors/Toolbar.html">Multiple toolbars/editors</a>
 
             <h1>Rich Text API Reference</h1>
             <h2>Commands</h2>
             A rich text command can be applied using a html tag, a style or a class name. ArteJS allows applying the command in either of these three mechanisms. 
              <br />
-            Note that the default configuration excluded the use of deprecated html tags (e.g.: font).  Configuration can be easily updated to use the deprecated html tags if needed. <br />
+            Note that the default configuration excluded the use of deprecated html tags (e.g.: font).  Configuration can be easily updated to use the deprecated html tags if needed.
+            <br />
             <pre>
                 // Calling a rich text command
                 $(selector).Arte('commandName', arguments); or
@@ -168,6 +163,7 @@ $(".editor").fontSize(10); // Change fontsize fo selected text to 10px
                 <li>insert (Implemented using a plugin)</li>
             </ul>
 
+            <a name="events"></a>
             <h2>Events</h2>
             ArteJS raises a rich collection of events to interact with the editor.  
             <pre>
@@ -175,6 +171,7 @@ $(".editor").fontSize(10); // Change fontsize fo selected text to 10px
                 $(selector).on('eventName', function(e, data) {...}); or
                 editorInstance.on('eventName', function(e, data) {...});
             </pre>
+            <h4>Events raised by editor</h4>
             <ul>
                 <li>onfocus <span>Editor gained focus.</span></li>
                 <li>onblur <span>Editor lost focus.</span></li>
@@ -192,6 +189,27 @@ $(".editor").fontSize(10); // Change fontsize fo selected text to 10px
                 <li>oncreate <span>An editor is created.</span></li>
                 <li>ondestroy <span>An editor is destroyed.</span></li>
             </ul>
+            <h4>Events raised by plugins</h4>
+            <h5>Insert/replace content Plugin</h5>
+            <ul>
+                <li>onbeforeinsert</li>
+                <li>oninsert</li>
+            </ul>
+
+            <h5>Paste handler</h5>
+            <ul>
+                <li>onbeforehandlepaste</li>
+                <li>onafterhandlepaste</li>
+            </ul>
+
+            <h5>Undo/redo</h5>
+            <ul>
+                <li>onbeforeundo</li>
+                <li>onafterundo</li>
+                <li>onbeforeredo</li>
+                <li>onafterredo</li>
+            </ul>
+
             <h2>Methods</h2>
             An ArteJS method or the public methods on the plugins can be called as the following:
             <pre>
@@ -199,6 +217,7 @@ $(".editor").fontSize(10); // Change fontsize fo selected text to 10px
                 $(selector).Arte('methodName', arguments ..) 
                 ArteInstance.methodName(arguments)
             </pre>
+            <h4>Methods on the editor</h4>
             <ul>
                 <li>value <span>Get the innerHtml of the editor.</span></li>
                 <li>outerValue <span>Get the outerHtml of the editor.</span></li>
@@ -209,17 +228,19 @@ $(".editor").fontSize(10); // Change fontsize fo selected text to 10px
                 <li>toggleStyleOnElement <span>Apply style to the editor</span></li>
             </ul>
 
-             State Detector Plugin
+           <h4>Public methods exposed by plugins</h4>
+
+            <h5>State Detector Plugin</h5>
             <ul>
                 <li>getState <span>Get the state of the selection for each command.</span></li>
-             </ul>
+            </ul>
 
-            Insert plugin
+            <h5>Insert plugin</h5>
              <ul>
-                <li>insert <span>Insert html content into the editor.</span></li>
+                 <li>insert <span>Insert html content into the editor.</span></li>
              </ul>
 
-            UndoManager plugin
+            <h5>UndoManager plugin</h5>
             <ul>
                 <li>hasUndo <span>Whethere the editor has undo information.</span></li>
                 <li>hasRedo <span>Whether the editor has redo information.</span></li>
@@ -228,11 +249,150 @@ $(".editor").fontSize(10); // Change fontsize fo selected text to 10px
             </ul>
 
             <h1>ArteJS Cookbook</h1>
-            <h2>Rich Text</h2>
-            <h3>Extending ArteJS</h3>
-            <a href="https://github.com/vistaprint/ArteJS/blob/master/Editor/plugins/UndoManager.js">Example Plugin</a>
+            <h2>Editor</h2>
+            <h4>Creating a rich text editor</h4>
+            <pre>
+// Creating a rich text editor with default initial values ($.Arte.configuration.initialValues)
+$(selector).Arte();
+                
+// Creating a rich text editor with some special options
+var options = {
+    styles: {
+        "font-weight": "bold", 
+        "font-size": "16px"
+    },
+    classes: ["arte-class1", "arte-class2"],
+    value: "This is <span style='color: green'>new</span> value"
+};
+ 
+// Construct the text area
+// The following takes a set of matched elements and convert them to rich text editors
+$(selector).Arte(options);
+                </pre>
+
+            <h4>Executing Arte methods</h4>
+            <pre>
+// Once a rich text editor is created, any rich text method can now be executed as the following
+$(selector).Arte("methodName", parameter1, parameter2, ...);
+ 
+// Alternatively, a method can be applied to an Arte instance directly
+var editorInstances = $(selector).Arte();
+$(selector).Arte().each(function(){
+    this.methodName(parameter1, parameter2);
+});
+// or 
+editorInstances.get(0).methodName(parameter1, parameter2);
+
+// Example methods
+$(selector).Arte("bold"); // make something bold
+$(selector).Arte("fontSize", "12px"); // make something bold
+
+// alternatively
+$(selector).Arte().each(function(){
+    this.bold();
+    this.fontSize("12px");
+});
+            </pre>
+
+            <h4>Changing the way a rich text command is applied</h4>
+            <pre>
+// Many rich text commands can be applied using a tagName, style and class.  For example, bold command be applied as either
+// style (font-weight), class (with font-weight), tags (b or strong).  RTE allows us to choose how a rich text command 
+// is applied using the following mechanism:
+// 1) Supplied in the command options ({commandAttrType = "styleName" | "className" | "tagName"})
+// 2) Inferred from the values in the options ({className = "..."})
+// 3) Using default attribute type specified in the configuration file (RTE.configuration.commandAttrType)
+
+// Arte configuration allows setting the commandAttrType globally or can be changed for each command.
+// For the commands that can only be applied one way (e.g. H1, BlockQuotes, etc.) the commandAttrType is ignored.
+
+// Bold is applied based on the global configuration
+$(selector).Arte("bold");  
+
+// Override the global configuration to apply bold using B/Strong tag
+$(selector).Arte("bold", { tagName: "B" });
+$(selector).Arte("bold", { tagName: "STRONG" });
+
+// Override the global configuration to apply bold using a className
+$(selector).Arte("bold", { className: "arte-font-weight-bold" });
+
+// Apply the command using the styleName
+$(selector).Arte("bold", { styleName: "font-weight", styleValue: "bold" });
+            </pre>
+
+            <h4>Getting/Setting the rich text values</h4>
+            <pre>
+// Arte allows getting the innerValue or the outerValue (like outerHTML) of the editor
+// Get / set the value of a rich text editor
+var value = $(selector).Arte("value");
+$(selector).Arte("value", "This can be any <b>valid</b> html fragment.");
+
+// Get the array of outer html of all rich text editors associated with this selector
+var outerValues = $(selector).RTE("outerValue");
+$(selector).RTE("value", "<div style='font-weight: bold'>This can only be a <span style='font-weight: bold'>single html element</span> </div>");
+            </pre>
+
+            <h4>Interacting with rich text command</h4>
+            <pre>
+                // Suppose we want to ensure that only valid values are used in rich text commands (e.g. a whitelist 
+// for font-size and font-family) or we need to translate some command values (e.g. convert 
+// color from CMYk to RGB).  This can be achieved by listening to onBeforeCommand event
+$("#editor").RTE("on", {
+    "onBeforeCommand": function (e, data) {
+        switch (data.commandName) {
+            case "fontSize":
+                switch (data.commandValue) {
+                    // Translate the commandValue to a valid fontSize
+                    case "Really really big font":
+                        data.commandValue = "50px";
+                        break;
+                }
+                break;
+            case "fontFamily":
+                if(!isFontInWhiteList(data.commandValue))
+                {
+                    // If font name is not whitelisted, don't execute the command
+                    data.execute = false; 
+                }
+                break;
+        }
+    }
+});
+            </pre>
+            
+            <h4>Extending ArteJS</h4>
+            <pre>
+                // Following is a basic template for a plugin
+(function(pluginManager)
+{
+    // plugin internals
+    var property;
+    function pluginMethod() { }
+
+    // Public methods
+    $.extend($.Arte.TextArea.prototype, {
+        publicMethodA: function{},
+        publicMethodB: pluginMethod
+    });
+
+    var myPlugin = function ()
+    {
+        return {
+            init: function (textArea)
+            {
+                // any setup or listen to textArea events
+            }
+        }
+    }
+
+    // Register this plugin with the plugin manager
+    pluginManager.register("myPlugin", myPlugin);
+})($.Arte.pluginManager)
+            </pre>
+            <a href="https://github.com/vistaprint/ArteJS/blob/master/Editor/plugins">Plugin examples</a>
             <h2>Toolbar</h2>
-           
+            <h4></h4>
+
             <h1>Project details</h1>
             <h2>Project file structure</h2>
             <strong>/Editor</strong>
@@ -272,6 +432,7 @@ $(".editor").fontSize(10); // Change fontsize fo selected text to 10px
             <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
         </footer>
     </div>
+            </div>
 
     <script type="text/javascript" src="Scripts/3rdParty/JQuery/jquery-1.9.1.js"></script>
     <script type="text/javascript" src="Scripts/3rdParty/JQuery/jquery-ui-1.10.3.custom.min.js"></script>
@@ -281,15 +442,15 @@ $(".editor").fontSize(10); // Change fontsize fo selected text to 10px
         $(function () {
             $("#toc").tocify();
 
-            $("iframe").on("load", function () {
-                var iFrame = this;
-                setTimeout(function () {
-                    var contentHeight = iFrame.contentWindow.document.body.scrollHeight;
-                    if (contentHeight !== $(iFrame).height()) {
-                        $(iFrame).css("height", iFrame.contentWindow.document.body.scrollHeight + "px");
-                    }
-                }, 100);
-            });
+            //$("iframe").on("load", function () {
+            //    var iFrame = this;
+            //    setTimeout(function () {
+            //        var contentHeight = iFrame.contentWindow.document.body.scrollHeight;
+            //        if (contentHeight !== $(iFrame).height()) {
+            //            $(iFrame).css("height", iFrame.contentWindow.document.body.scrollHeight + "px");
+            //        }
+            //    }, 100);
+            //});
 
             $("pre").attr("class", "brush: js, toolbar: false");
             SyntaxHighlighter.all();
