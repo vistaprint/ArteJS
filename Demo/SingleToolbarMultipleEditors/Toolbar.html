@@ -2,12 +2,15 @@
 <html>
 <head>
     <title>Rich text editor</title>
-    <link rel="stylesheet" href="demo.css" />
     <link rel="stylesheet" href="toolbar.css" />
-    <link rel="stylesheet" href="../../CSS/stylesheet.css"/>
+    <link rel="stylesheet" href="../../CSS/stylesheet.css" />
     <link rel="stylesheet" href="../../CSS/page.css" />
+    <link rel="stylesheet" href="../../CSS/demopage.css" />
 </head>
 <body>
+    <div class="overview">
+        This page includes an example of a single toolbar controlling multiple editors. Example code is located <a href="https://github.com/vistaprint/ArteJS/blob/gh-pages/Demo/SingleToolbarMultipleEditors/Toolbar.html">here</a>
+    </div>
     <div id="demo">
         <!-- Markup to host the toolbar and the editor-->
         <div class="toolbar"></div>
@@ -18,11 +21,8 @@
         <div>Editor 2</div>
         <div class="editor"></div>
 
-        <!--Included the Rich text files-->
         <!--Dependencies-->
         <script src="../../Scripts/3rdParty/JQuery/jquery-1.9.1.js"></script>
-
-        <!-- Include the Arte scripts-->
         <script src="../../Scripts/ArteJS/rangy.debug.js"></script>
         <script src="../../Scripts/ArteJS/arte.debug.js"></script>
         <script src="../../Scripts/ArteJS/toolbar.debug.js"></script>

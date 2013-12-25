@@ -3,11 +3,6 @@
     font-weight: bold;
     line-height: 30px;
 }
-#demo {
-    border: black solid 1px;
-    background-color: white;
-}
-
 
 .inner{
     max-width: 860px;

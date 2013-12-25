@@ -17,17 +17,17 @@
    
 }
 
+.btn 
+{
+    display: inline-block;
+    border: grey 1px solid;
+}
+
 .tooltip {
     position: absolute;
     background-color: lightblue;
     line-height: 12px;
     font-size: 10px;
-}
-
-.btn 
-{
-    display: inline-block;
-    border: grey 1px solid;
 }
 
 .bold
@@ -130,9 +130,9 @@
     background-image: url("Content/Icons/link_add.png");  
 }
 
-.diabled
+.disabled
 {
-    background-color: gray;
+    opacity: .5;
 }
 
 .selected

@@ -5,9 +5,13 @@
     <link href="../../CSS/page.css" rel="stylesheet" type="text/css" />
     <!-- Some styles for the toolbar -->
     <link href="toolbar.css" rel="stylesheet" type="text/css" />
-
+    <link rel="stylesheet" href="../../CSS/demopage.css" type="text/css" />
 </head>
 <body>
+    <div class="overview">
+        This page includes an example of very simple toolbar. Example code is located <a href="https://github.com/vistaprint/ArteJS/blob/gh-pages/Demo/UnobtrusiveToolbar/Toolbar.html">here</a>
+    </div>
+
     <div id="demo">
         <!-- Build the toolbar -->
         <!-- IE requires the unselectable=on attribute to make the elements not selectable (so that they do not take the focus from the text field) -->
@@ -35,11 +39,8 @@
         <!-- Div to host the Arte instance -->
         <div class="editor"></div>
 
-
         <!--Dependencies-->
         <script src="../../Scripts/3rdParty/JQuery/jquery-1.9.1.js"></script>
-
-        <!-- Include the Arte scripts-->
         <script src="../../Scripts/ArteJS/rangy.debug.js"></script>
         <script src="../../Scripts/ArteJS/arte.debug.js"></script>
         <script src="toolbar.js"></script>

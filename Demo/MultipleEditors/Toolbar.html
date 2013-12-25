@@ -2,23 +2,29 @@
 <html>
 <head>
     <title>Rich text editor</title>
-    <link rel="stylesheet" href="demo.css" />
     <link rel="stylesheet" href="toolbar.css" />
-    <link rel="stylesheet" href="../../CSS/stylesheet.css"/>
+    <link rel="stylesheet" href="../../CSS/stylesheet.css" />
     <link rel="stylesheet" href="../../CSS/page.css" />
+    <link rel="stylesheet" href="../../CSS/demopage.css" />
 </head>
 <body>
+    <div class="overview">
+        This page includes an example of multiple toolbar/editor pairs on a single page. Example code is located <a href="https://github.com/vistaprint/ArteJS/blob/gh-pages/Demo/MultipleEditors/Toolbar.html">here</a>
+    </div>
+
     <div id="demo">
         <!-- Markup to host the toolbar and the editor-->
-        
-        <div style="position:relative">Toolbar and Editor #1
-        <div class="toolbar1"></div>
-        <div class="editor1"></div>
-</div>
-        <div style="position:relative">Toolbar and Editor #2
-        <div class="toolbar2"></div>
-        <div class="editor2"></div>
-</div>
+
+        <div class="pair1" style="position: relative">
+            Toolbar and Editor #1
+            <div class="toolbar"></div>
+            <div class="editor"></div>
+        </div>
+        <div class="pair2" style="position: relative">
+            Toolbar and Editor #2
+            <div class="toolbar"></div>
+            <div class="editor"></div>
+        </div>
         <!--Included the Rich text files-->
         <!--Dependencies-->
         <script src="../../Scripts/3rdParty/JQuery/jquery-1.9.1.js"></script>
@@ -35,21 +41,18 @@
                     "subscript", "superscript", "unorderedList", "orderedList", "undo", "redo", "fontSize", "fontFamily", "color", "backgroundColor", "insertLink"
                 ];
 
-                // Initialize the editor
-                $(".editor1").Arte();
+                // Initialize the editors
+                $(".editor").Arte();
 
                 // Initialize the toolbar
-                $(".toolbar1").ArteToolbar({
-                    editor: $(".editor1"),
+                $(".pair1 .toolbar").ArteToolbar({
+                    editor: $(".pair1 .editor"),
                     buttons: buttons
                 });
 
-                // Initialize the editor
-                $(".editor2").Arte();
-
                 // Initialize the toolbar
-                $(".toolbar2").ArteToolbar({
-                    editor: $(".editor2"),
+                $(".pair2 .toolbar").ArteToolbar({
+                    editor: $(".pair2 .editor"),
                     buttons: buttons
                 });
             });

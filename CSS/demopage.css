@@ -1,0 +1,31 @@
+﻿body > div {
+    background-color: white;
+    margin:auto;
+    max-width: 750px;    
+}
+
+.overview{
+    margin-bottom: 5px;
+}
+
+.toolbar
+{
+
+}
+
+.editor{
+    border: 1px solid #a7a7a7;
+    margin-top:1px;
+}
+
+p, h1, h2, h3, h4, h5, h6{
+    margin: 0px;
+}
+
+sub{
+    vertical-align: sub;
+}
+
+sup{
+    vertical-align: super;
+}

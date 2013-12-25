@@ -130,9 +130,9 @@
     background-image: url("Content/Icons/link_add.png");  
 }
 
-.diabled
+.disabled
 {
-    background-color: gray;
+    opacity: .5;
 }
 
 .selected
