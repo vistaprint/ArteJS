@@ -120,7 +120,6 @@
 
     $(function () {
         $.Arte.configuration.allowOpsOnCollapsedSelection = false;
-        $.Arte.configuration.commandAttrType = "tagName";
         $.extend(true, $.Arte.Toolbar.configuration, {
             classes: {
                 "button": {

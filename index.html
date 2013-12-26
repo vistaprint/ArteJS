@@ -255,7 +255,7 @@ $(".editor").fontSize(10); // Change fontsize of the selected text to 10px
 // Creating a rich text editor with default initial values ($.Arte.configuration.initialValues)
 $(selector).Arte();
                 
-// Creating a rich text editor with some special options
+// Creating a rich text editor with options
 var options = {
     styles: {
         "font-weight": "bold", 
@@ -284,8 +284,8 @@ $(selector).Arte().each(function(){
 editorInstances.get(0).methodName(parameter1, parameter2);
 
 // Example methods
-$(selector).Arte("bold"); // make something bold
-$(selector).Arte("fontSize", "12px"); // make something bold
+$(selector).Arte("bold"); // make the selection bold
+$(selector).Arte("fontSize", "12px"); // set the fontsize of the selection to 12px
 
 // alternatively
 $(selector).Arte().each(function(){
@@ -334,7 +334,7 @@ $(selector).RTE("value", "<div style='font-weight: bold'>This can only be a <spa
 
             <h4>Interacting with rich text command</h4>
             <pre>
-                // Suppose we want to ensure that only valid values are used in rich text commands (e.g. a whitelist 
+//Suppose we want to ensure that only valid values are used in rich text commands (e.g. a whitelist 
 // for font-size and font-family) or we need to translate some command values (e.g. convert 
 // color from CMYk to RGB).  This can be achieved by listening to onBeforeCommand event
 $("#editor").RTE("on", {
@@ -343,8 +343,11 @@ $("#editor").RTE("on", {
             case "fontSize":
                 switch (data.commandValue) {
                     // Translate the commandValue to a valid fontSize
-                    case "Really really big font":
+                    case "Big font":
                         data.commandValue = "50px";
+                        break;
+                    case "Small font":
+                        data.commandValue = "5px";
                         break;
                 }
                 break;
@@ -362,7 +365,7 @@ $("#editor").RTE("on", {
             
             <h4>Extending ArteJS</h4>
             <pre>
-                // Following is a basic template for a plugin
+// Following is a basic template for a plugin
 (function(pluginManager)
 {
     // plugin internals
@@ -389,7 +392,7 @@ $("#editor").RTE("on", {
     pluginManager.register("myPlugin", myPlugin);
 })($.Arte.pluginManager)
             </pre>
-            <a href="https://github.com/vistaprint/ArteJS/blob/master/Editor/plugins">Plugin examples</a>
+            Here are a few <a href="https://github.com/vistaprint/ArteJS/blob/master/Editor/plugins">examples</a> of plugins.
             <h2>Toolbar</h2>
             <h4></h4>
 
