@@ -31,7 +31,7 @@
 
                 var value = commandValue || (config.commandValue ? config.commandValue[commandAttrType] : "");
 
-                if (!value && config.commandValue) {
+                if (!value && !config.supportsTagName && config.commandValue) {
                     commandAttrType = $.Arte.Toolbar.configuration.altCommandAttrType;
                     value = config.commandValue[commandAttrType];
                 }
