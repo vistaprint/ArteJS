@@ -131,7 +131,7 @@
 
                 var value = commandValue || (config.commandValue ? config.commandValue[commandAttrType] : "");
 
-                if (!value && config.commandValue) {
+                if (!value && !config.supportsTagName && config.commandValue) {
                     commandAttrType = $.Arte.Toolbar.configuration.altCommandAttrType;
                     value = config.commandValue[commandAttrType];
                 }
@@ -458,6 +458,7 @@
                     "className": "arte-font-weight-bold"
                 },
                 supportedTypes: [editorTypes.richText, editorTypes.plainText],
+                supportsTagName: true,
                 tooltip: "Bold"
             },
             "italic": {
@@ -468,6 +469,7 @@
                     "className": "arte-font-style-italic"
                 },
                 supportedTypes: [editorTypes.richText, editorTypes.plainText],
+                supportsTagName: true,
                 tooltip: "Italic"
             },
             "underline": {
@@ -478,6 +480,7 @@
                     "className": "arte-text-decoration-underline"
                 },
                 supportedTypes: [editorTypes.richText, editorTypes.plainText],
+                supportsTagName: true,
                 tooltip: "Underline"
             },
             "blockquote": {
@@ -494,7 +497,7 @@
                     "styleName": "left",
                     "className": "arte-text-align-left"
                 },
-                supportedTypes: [editorTypes.richText],
+                supportedTypes: [editorTypes.richText, editorTypes.plainText],
                 tooltip: "Text align left"
             },
             "textAlignCenter": {
@@ -505,7 +508,7 @@
                     "styleName": "center",
                     "className": "arte-text-align-center"
                 },
-                supportedTypes: [editorTypes.richText],
+                supportedTypes: [editorTypes.richText, editorTypes.plainText],
                 tooltip: "Text align center"
             },
             "textAlignRight": {
@@ -516,7 +519,7 @@
                     "styleName": "right",
                     "className": "arte-text-align-right"
                 },
-                supportedTypes: [editorTypes.richText],
+                supportedTypes: [editorTypes.richText, editorTypes.plainText],
                 tooltip: "Text align right"
             },
             "h1": {
