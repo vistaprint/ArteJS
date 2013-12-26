@@ -1,0 +1,116 @@
+﻿/*These styles are used to apply rich text commands*/
+
+.arte-font-weight-bold
+{
+    font-weight: bold;
+}
+
+.arte-font-style-italic
+{
+    font-style: italic;
+}
+
+.arte-text-decoration-underline
+{
+    text-decoration: underline;
+}
+
+.arte-text-align-left
+{
+    text-align: left;
+}
+
+.arte-text-align-center
+{
+    text-align: center;
+}
+
+.arte-text-align-right
+{
+    text-align: right;
+}
+
+.arte-font-size-8
+{
+    font-size: 8px;
+}
+
+.arte-font-size-12
+{
+    font-size: 12px;
+}
+
+.arte-font-size-16
+{
+    font-size: 16px;
+}
+
+.arte-font-size-20
+{
+    font-size: 20px;
+}
+
+.arte-font-size-24
+{
+    font-size: 24px;
+}
+
+.arte-font-color-red
+{
+    color: red;
+}
+
+.arte-font-color-blue
+{
+    color: blue;
+}
+
+.arte-font-color-black
+{
+    color: black;
+}
+
+.arte-font-color-green
+{
+    color: green;
+}
+
+.arte-font-family-times-new-roman
+{
+    font-family: "times new roman";
+}
+
+.arte-font-family-curier-new
+{
+    font-family: "curier-new";
+}
+
+.arte-font-family-arial
+{
+    font-family: "arial";
+}
+
+.arte-font-family-georgia
+{
+    font-family: "georgia";
+}
+
+.arte-background-color-red
+{
+    background-color: red;
+}
+
+.arte-background-color-blue
+{
+    background-color: blue;
+}
+
+.arte-background-color-black
+{
+    background-color: black;
+}
+
+.arte-background-color-green
+{
+    background-color: green;
+}
