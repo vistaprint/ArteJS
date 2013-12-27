@@ -1,4 +1,4 @@
-(function($) {
+(function($) { 
     $.fn.ArteToolbar = function(options) {
         if (options && typeof(options) === "object") {
             options = $.extend({}, $.Arte.Toolbar.Defaults, options);
