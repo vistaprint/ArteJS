@@ -1,0 +1,48 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+    <title>Rich text editor</title>
+    <link rel="stylesheet" href="toolbar.css" />
+    <link rel="stylesheet" href="../CommonFiles/CSS/page.css" />
+    <link rel="stylesheet" href="../CommonFiles/CSS/arte.css" />
+    <link rel="stylesheet" href="../CommonFiles/CSS/toolbar.css" />
+</head>
+<body>
+    <div class="overview">
+        This page includes an example of a single toolbar controlling multiple editors. Example code is located <a href="https://github.com/vistaprint/ArteJS/blob/gh-pages/Demo/SingleToolbarMultipleEditors/Toolbar.html">here</a>
+    </div>
+    <div id="demo">
+        <!-- Markup to host the toolbar and the editor-->
+        <div class="toolbar"></div>
+
+        <div>Editor 1</div>
+        <div class="editor"></div>
+
+        <div>Editor 2</div>
+        <div class="editor"></div>
+
+        <!--Dependencies-->
+        <script src="../../Scripts/3rdParty/JQuery/jquery-1.9.1.js"></script>
+        <script src="../../Scripts/ArteJS/rangy.debug.js"></script>
+        <script src="../../Scripts/ArteJS/arte.debug.js"></script>
+        <script src="../../Scripts/ArteJS/toolbar.debug.js"></script>
+
+        <script type="text/javascript">
+            $(function () {
+                // List of buttons to show on the toolbar 
+                var buttons = ["bold", "italic", "underline", "blockquote", "textAlignLeft", "textAlignCenter", "textAlignRight", "h1", "h2", "h3", "h4", "h5", "h6",
+                    "subscript", "superscript", "unorderedList", "orderedList", "undo", "redo", "fontSize", "fontFamily", "color", "backgroundColor", "insertLink"
+                ];
+
+                // Initialize the editor
+                $(".editor").Arte();
+
+                // Initialize the toolbar
+                $(".toolbar").ArteToolbar({
+                    buttons: buttons
+                });
+            });
+        </script>
+    </div>
+</body>
+</html>

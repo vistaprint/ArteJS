@@ -1,0 +1,45 @@
+﻿.toolbar
+{
+    background-image: linear-gradient(to bottom left, #ddd, rgba(128, 128, 128, 0));
+    border: 1px solid #ccc;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+}
+
+.toolbar div
+{
+    cursor: pointer;
+    border: 2px solid #666;
+    background-image: linear-gradient(to bottom right, #ccc, rgba(64, 64, 64, 0));
+    display: inline-block;
+    text-align: center;
+    font-weight: Bolder;
+    font-family: "Arial" , "Times New Roman";
+    margin: 1px;
+    padding: 1px;
+    width: 22px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+}
+
+.toolbar select
+{
+    cursor: pointer;
+    border: 2px solid #666;
+    display: inline-block;
+    margin: 1px;
+    padding: 1px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+}
+
+.disabled
+{
+    color: #888;
+    background-color: #aaa;
+}
+
+.selected, .toolbar div:hover
+{
+    background-color: #99CCCC;
+}

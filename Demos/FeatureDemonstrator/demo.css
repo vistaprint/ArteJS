@@ -1,0 +1,25 @@
+﻿.box 
+{
+    width: 400px;
+    height: 290px;
+    display: "inline-block";
+    float: left;
+    border: 1px black solid;
+    padding: 2px;
+    margin: 4px 1px;
+}
+
+.configuration div 
+{
+    display: inline-block;
+    vertical-align: top;    
+}
+
+.editorconfiguration{
+    border-right: 1px solid black;
+}
+
+.console{
+    max-height: 270px;
+    overflow: auto;
+}

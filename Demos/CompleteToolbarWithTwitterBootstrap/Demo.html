@@ -1,0 +1,57 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+    <title>Rich text editor</title>
+    <link rel="stylesheet" href="../CommonFiles/CSS/3rdParty/Bootstrap/bootstrap.min.css" />
+    <link rel="stylesheet" href="../CommonFiles/CSS/arte.css" />
+    <link rel="stylesheet" href="../CommonFiles/CSS/page.css" />
+    <link rel="stylesheet" href="../CommonFiles/CSS/toolbar.css" />
+</head>
+<body>
+    <div class="overview">
+        This page includes an example of the reference toolbar using bootstrap styles. Example code is located <a href="https://github.com/vistaprint/ArteJS/blob/gh-pages/Demo/CompleteToolbarWithTwitterBootstrap/Toolbar.html">here</a>
+    </div>
+    <div id="demo">
+        <!-- Markup to host the toolbar and the editor-->
+        <div class="toolbar"></div>
+        <div class="editor"></div>
+
+        <!--Dependencies-->
+        <script src="../CommonFiles/Scripts/3rdParty/JQuery/jquery-1.9.1.js"></script>
+        <script src="../CommonFiles/Scripts/ArteJS/rangy.debug.js"></script>
+        <script src="../CommonFiles/Scripts/ArteJS/arte.debug.js"></script>
+        <script src="../CommonFiles/Scripts/ArteJS/toolbar.debug.js"></script>
+
+        <script type="text/javascript">
+            $(function () {
+                // List of buttons 
+                var buttons = ["bold", "italic", "underline", "blockquote", "textAlignLeft", "textAlignCenter", "textAlignRight", "h1", "h2", "h3", "h4", "h5", "h6",
+                    "subscript", "superscript", "unorderedList", "orderedList", "undo", "redo", "fontSize", "fontFamily", "color", "backgroundColor", "insertLink"
+                ];
+
+                $.extend(true, $.Arte.Toolbar.configuration, {
+                    classes: {
+                        "button":
+                        {
+                            selected: "btn-primary"
+                        },
+                        "dialog":
+                        {
+                            "insertLink": {
+                                "label": "add-on",
+                                "input": "input-medium"
+                            }
+                        }
+                    }
+                });
+
+                $(".editor").Arte();
+
+                $(".toolbar").ArteToolbar({
+                    buttons: buttons
+                });
+            });
+        </script>
+    </div>
+</body>
+</html>
