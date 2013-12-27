@@ -73,7 +73,7 @@
         $(".editor").Arte("destroy", { removeContent: true });
         $(".toolbar").ArteToolbar("destroy");
     };
-    
+ 
     var ResetConfiguration = function () {
         // Editor configurations
         if ($(".editorIsPlainText").is(":checked"))
@@ -93,6 +93,20 @@
         $.Arte.Toolbar.configuration.commandAttrType = commandAttrType;
         $.Arte.Toolbar.configuration.requireEditorFocus = $(".requireEditorFocus").is(":checked");
 
+        // Reset options
+        if (commandAttrType === "className") {
+            $.Arte.Toolbar.configuration.buttons.fontSize.options = [
+                { display: "", value: "" },
+                { display: "Smaller", value: "arte-font-size-8" },
+                { display: "Small", value: "arte-font-size-10" },
+                { display: "Medium", value: "arte-font-size-12" },
+                { display: "Large", value: "arte-font-size-15" },
+                { display: "Larger", value: "arte-font-size-20" }
+            ];
+        } else {
+            $.Arte.Toolbar.configuration.buttons.fontSize.options = [8, 10, 12, 15, 20];
+        }
+
         console.log("$.Arte.Toolbar.configuration.requireEditorFocus: " + $.Arte.Toolbar.configuration.requireEditorFocus);
     };
 
@@ -102,10 +116,10 @@
         ResetConfiguration();
         createEditorAndToolbar();
     });
-
+    
+    
     $(function () {
         $.Arte.configuration.allowOpsOnCollapsedSelection = false;
-        $.Arte.configuration.commandAttrType = "tagName";
         $.extend(true, $.Arte.Toolbar.configuration, {
             classes: {
                 "button": {

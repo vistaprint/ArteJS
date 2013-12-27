@@ -274,7 +274,6 @@
             {
                 "container": "tooltip"
             }
-        },
-        commandConfig: {}
+        }
     };
 })(jQuery);

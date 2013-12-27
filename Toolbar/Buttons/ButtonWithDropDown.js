@@ -23,7 +23,7 @@
                         break;
                     case "fontSize":
                         // Add, px to font size if it doesn't exist
-                        if (!/px$/.test(value)) {
+                        if (value && !isNaN(+value) && !/px$/.test(value)) {
                             value += "px";
                         }
                         break;
