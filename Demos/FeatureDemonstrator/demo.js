@@ -10,23 +10,21 @@
         //"textAlignRight",
         "h1",
         "h2",
-        //"h3",
-        //"h4",
-        //"h5",
-        //"h6",
-        "subscript",
-        "superscript",
+        "h3",
+        //"h4", "h5", "h6",
+        "subscript", "superscript",
         "unorderedList",
-        "orderedList",
-        "undo",
-        "redo",
+        //"orderedList",
+        "undo", "redo",
         "fontSize",
-        //"fontFamily",
+        //"fontFamily", 
         "color"
         //"backgroundColor",
         //"insertLink"
     ];
-    
+
+
+
     // Read the data from the editor and update the other displays
     function update() {
         var editor = $(".editor").Arte().get(0);
@@ -88,7 +86,7 @@
         $(".editor").Arte("destroy", { removeContent: true });
         $(".toolbar").ArteToolbar("destroy");
     };
-    
+ 
     var ResetConfiguration = function () {
         // Editor configurations
         if ($(".editorIsPlainText").is(":checked"))
@@ -108,7 +106,19 @@
         $.Arte.Toolbar.configuration.commandAttrType = commandAttrType;
         $.Arte.Toolbar.configuration.requireEditorFocus = $(".requireEditorFocus").is(":checked");
 
-        $(".console").empty();
+        // Reset options
+        if (commandAttrType === "className") {
+            $.Arte.Toolbar.configuration.buttons.fontSize.options = [
+                { display: "", value: "" },
+                { display: "Smaller", value: "arte-font-size-8" },
+                { display: "Small", value: "arte-font-size-10" },
+                { display: "Medium", value: "arte-font-size-12" },
+                { display: "Large", value: "arte-font-size-15" },
+                { display: "Larger", value: "arte-font-size-20" }
+            ];
+        } else {
+            $.Arte.Toolbar.configuration.buttons.fontSize.options = [8, 10, 12, 15, 20];
+        }
     };
 
     $(".configuration input").on("change", function (e) {
@@ -117,7 +127,8 @@
         ResetConfiguration();
         createEditorAndToolbar();
     });
-
+    
+    
     $(function () {
         $.Arte.configuration.allowOpsOnCollapsedSelection = false;
         $.extend(true, $.Arte.Toolbar.configuration, {

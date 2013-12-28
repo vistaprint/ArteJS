@@ -228,7 +228,7 @@ $(".editor").fontSize(10); // Change fontsize of the selected text to 10px
                 <li>toggleStyleOnElement <span>Apply style to the editor</span></li>
             </ul>
 
-           <h4>Public methods exposed by plugins</h4>
+            <h4>Public methods exposed by plugins</h4>
 
             <h5>State Detector Plugin</h5>
             <ul>
@@ -236,9 +236,9 @@ $(".editor").fontSize(10); // Change fontsize of the selected text to 10px
             </ul>
 
             <h5>Insert plugin</h5>
-             <ul>
-                 <li>insert <span>Insert html content into the editor.</span></li>
-             </ul>
+            <ul>
+                <li>insert <span>Insert html content into the editor.</span></li>
+            </ul>
 
             <h5>UndoManager plugin</h5>
             <ul>
@@ -362,7 +362,7 @@ $("#editor").RTE("on", {
     }
 });
             </pre>
-            
+
             <h4>Extending ArteJS</h4>
             <pre>
 // Following is a basic template for a plugin
@@ -394,8 +394,35 @@ $("#editor").RTE("on", {
             </pre>
             Here are a few <a href="https://github.com/vistaprint/ArteJS/blob/master/Editor/plugins">examples</a> of plugins.
             <h2>Toolbar</h2>
-            <h4></h4>
+            <h4>Configure toolbar dropdown</h4>
+            <pre>
+// Toolbar allows setting the display value and actual value that is applied to text
+// Note that the values need to be set according to the commandAttrType configuration
+// Following are few of the examples of setting the styles
 
+// Simply apply the font-size.
+$.Arte.Toolbar.configuration.buttons.fontSize.options = ["", 8, 10, 12, 15, 20];
+
+// Example where the display value different than the the actual value
+$.Arte.Toolbar.configuration.buttons.fontSize.options = [
+    { display: "", value: "" },
+    { display: "Smaller", value: 8 },
+    { display: "Small", value: 10 },
+    { display: "Medium", value: 12 },
+    { display: "Large", value: 15 },
+    { display: "Larger", value: 20 }
+];
+
+// The actual value is name of the class to be applied
+$.Arte.Toolbar.configuration.buttons.fontSize.options = [
+    { display: "", value: "" },
+    { display: "Smaller", value: "arte-font-weight-8" },
+    { display: "Small", value: "arte-font-weight-10" },
+    { display: "Medium", value: "arte-font-weight-12" },
+    { display: "Large", value: "arte-font-weight-15" },
+    { display: "Larger", value: "arte-font-weight-20" }
+];
+            </pre>
             <h1>Project details</h1>
             <h2>Project file structure</h2>
             <strong>/Editor</strong>
@@ -435,7 +462,6 @@ $("#editor").RTE("on", {
             <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
         </footer>
     </div>
-            </div>
 
     <script type="text/javascript" src="Scripts/3rdParty/JQuery/jquery-1.9.1.js"></script>
     <script type="text/javascript" src="Scripts/3rdParty/JQuery/jquery-ui-1.10.3.custom.min.js"></script>
@@ -444,17 +470,6 @@ $("#editor").RTE("on", {
     <script>
         $(function () {
             $("#toc").tocify();
-
-            //$("iframe").on("load", function () {
-            //    var iFrame = this;
-            //    setTimeout(function () {
-            //        var contentHeight = iFrame.contentWindow.document.body.scrollHeight;
-            //        if (contentHeight !== $(iFrame).height()) {
-            //            $(iFrame).css("height", iFrame.contentWindow.document.body.scrollHeight + "px");
-            //        }
-            //    }, 100);
-            //});
-
             $("pre").attr("class", "brush: js, toolbar: false");
             SyntaxHighlighter.all();
         });
