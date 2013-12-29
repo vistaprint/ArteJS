@@ -423,6 +423,12 @@ $.Arte.Toolbar.configuration.buttons.fontSize.options = [
     { display: "Larger", value: "arte-font-weight-20" }
 ];
             </pre>
+            <h4>Skinning the toolbar</h4>
+            There are two ways to skin the toolbar
+            <ul>
+                <li>Overwrite the <a href="https://github.com/vistaprint/ArteJS/blob/gh-pages/Demos/CommonFiles/CSS/toolbar.css">default styles</a></li>
+                <li>Update the <a href="https://github.com/vistaprint/ArteJS/blob/master/Toolbar/Configuration.js#L248">configuration</a> to use your classes. </li>
+            </ul>
             <h1>Project details</h1>
             <h2>Project file structure</h2>
             <strong>/Editor</strong>
@@ -473,7 +479,6 @@ $.Arte.Toolbar.configuration.buttons.fontSize.options = [
             $("pre").attr("class", "brush: js, toolbar: false");
             SyntaxHighlighter.all();
         });
-
     </script>
 
 </body>

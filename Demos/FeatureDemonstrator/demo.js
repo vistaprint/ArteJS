@@ -18,9 +18,9 @@
         "undo", "redo",
         "fontSize",
         //"fontFamily", 
-        "color"
+        "color",
         //"backgroundColor",
-        //"insertLink"
+        "insertLink"
     ];
 
 

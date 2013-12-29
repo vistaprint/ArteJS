@@ -136,9 +136,9 @@
     background-image: url("../Content/Icons/link_add.png");  
 }
 
-.disabled
+.diabled
 {
-    opacity: .5;
+    background-color: gray;
 }
 
 .selected
@@ -156,8 +156,37 @@ select
 {
     position: absolute;
     text-align: center;
+    top: 0;
     width: 100%;
-    bottom:0px;
+    height: 100%;
+    display:none;
+    background-color:rgba(0, 0, 0, 0.5);
+}
+
+.content-wrapper
+{
+    position: relative;
+    top: 50%;
+}
+
+.dialog-content,
+.ok-cancel,
+.text-to-show,
+.url-input
+{
+    display: inline-block;
+}
+
+.text-to-show,
+.url-input {
+    background-color: white;
+    padding: 0px 5px;
+}
+
+.text-to-show input,
+.url-input input{
+    height: auto;
+    margin: 0px;
 }
 
 .insert-dialog
