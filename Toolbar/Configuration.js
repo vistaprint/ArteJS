@@ -258,12 +258,16 @@
             },
             "dialog": {
                 "container": "inline-dialog",
-                "button" : "btn",
+                "contentWrapper": "content-wrapper",
+                "content": "dialog-content",
+                "okCancel": "ok-cancel",
+                "label": "label",
+                "button": "btn",
                 "insertLink":
                 {
                     "button": "btn",
-                    "label": "",
-                    "input": ""
+                    "textToShow": "text-to-show",
+                    "urlInput": "url-input"
                 },
                 "insertImage":
                     {

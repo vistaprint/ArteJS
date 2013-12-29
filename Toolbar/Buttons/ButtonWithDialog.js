@@ -5,20 +5,25 @@
         //$.extend(this, new $.Arte.Toolbar.Button(toolbar, buttonName, config));
         var dialogClasses = $.Arte.Toolbar.configuration.classes.dialog;
         //var me = this;
-        this.executeCommand = function() {
-            me.showPopup();
+        this.executeCommand = function () {
+            if (me.isEnabled()) {
+                me.showPopup();
+            }
         };
 
-        function getDialogContent() {
-           var dialogContent = me.getDialogContent();
-           $("<a>").attr("href", "#").addClass(dialogClasses.button + " ok").html("&#x2713").appendTo(dialogContent);
-           $("<a>").attr("href", "#").addClass(dialogClasses.button + " cancel").html("&#x2717").appendTo(dialogContent);
-            return dialogContent;
+        this.getOkCancelControl = function()
+        {
+            var wrapper = $("<div>").addClass(dialogClasses.okCancel);
+            $("<a>").attr("href", "#").addClass(dialogClasses.button + " ok").html("&#x2713").appendTo(wrapper);
+            $("<a>").attr("href", "#").addClass(dialogClasses.button + " cancel").html("&#x2717").appendTo(wrapper);
+            return wrapper;
         }
-
+        
         this.showPopup = function() {
             var dialogContainer = $("." + dialogClasses.container);
-            dialogContainer.append(getDialogContent());
+            var contentWrapper = $("<div>").addClass(dialogClasses.contentWrapper).appendTo(dialogContainer);
+            contentWrapper.append(me.getDialogContent());
+            contentWrapper.append(me.getOkCancelControl());
             dialogContainer.on("mousedown ", function (e) {
                 e.stopPropagation();
             });
@@ -26,24 +31,31 @@
 
             me.addContent();
 
-            dialogContainer.find(".ok").on("click", function() {
+            contentWrapper.find(".ok").on("click", function () {
                 rangy.restoreSelection(savedSelection);
                 me.onOk();
                 me.closePopup();
             });
 
-            dialogContainer.find(".cancel").on("click", function() {
+            contentWrapper.find(".cancel").on("click", function () {
                 rangy.restoreSelection(savedSelection);
                 me.closePopup();
             });
             
-            dialogContainer.show();
+            dialogContainer.show({
+                duration: 200,
+                complete: function () {
+                    contentWrapper.css("margin-top", -1 * contentWrapper.height() / 2);
+                }
+            });
         };
 
-        this.closePopup = function() {
-            $("." + dialogClasses.container).children().each(function() {
+        this.closePopup = function () {
+            var dialogContainer = $("." + dialogClasses.container);
+            dialogContainer.children().each(function() {
                 this.remove();
             });
+            dialogContainer.hide();
         };
         return me;
     };
@@ -63,19 +75,23 @@
         };
         
         this.getDialogContent = function() {
-            var dialogContent = $("<div>").addClass("input-prepend input-append");
-            $("<span>").html("Text to Show: ").addClass(insertLinkClasses.label).appendTo(dialogContent);
-            $("<input>").addClass(insertLinkClasses.input + " textToShow").attr({ type: "text" }).appendTo(dialogContent).css({ height: "auto" });
-            $("<span>").html("Url: ").addClass(insertLinkClasses.label).appendTo(dialogContent);
-            $("<input>").addClass(insertLinkClasses.input + " url").attr({ type: "text" }).appendTo(dialogContent).css({ height: "auto" });
+            var textToShow = $("<div>").addClass(dialogClasses.insertLink.textToShow);
+            $("<span>").html("Text to Show: ").addClass(dialogClasses.label).appendTo(textToShow);
+            $("<input>").addClass(insertLinkClasses.input + " textToShow").attr({ type: "text" }).appendTo(textToShow);
+            
+            var urlInput = $("<div>").addClass(dialogClasses.insertLink.urlInput);
+            $("<span>").html("Url: ").addClass(dialogClasses.label).appendTo(urlInput);
+            $("<input>").addClass(insertLinkClasses.input + " url").attr({ type: "text" }).appendTo(urlInput);
+            
+            var dialogContent = $("<div>").addClass(dialogClasses.content).append(textToShow).append(urlInput);
             return dialogContent;
         };
 
         this.onOk = function() {
-            var selectedcontent = rangy.getSelection().toHtml();
-            var contentToInsert = $("." + dialogClasses.container + " .url").val();
-            if (contentToInsert) {
-                var html = $("<a>").attr("href", contentToInsert).html(selectedcontent || contentToInsert);
+            var textToShow = $("." + dialogClasses.container + " ." + dialogClasses.insertLink.textToShow + " input").val();
+            var url = $("." + dialogClasses.container + " ." + dialogClasses.insertLink.urlInput + " input").val();
+            if (url) {
+                var html = $("<a>").attr("href", url).html(textToShow || url);
                 insertContent(html.get(0).outerHTML);
             }
         };

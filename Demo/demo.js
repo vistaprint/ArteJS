@@ -127,7 +127,7 @@
                 },
                 "dialog":
                 {
-                    "insertLink": {
+                   "insertLink": {
                         "label": "add-on",
                         "input": "input-medium"
                     }
