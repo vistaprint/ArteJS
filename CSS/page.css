@@ -4,7 +4,7 @@
     line-height: 30px;
 }
 
-.inner{
+#header_wrap .inner{
     max-width: 860px;
 }
 
@@ -54,4 +54,37 @@ UL span
 table
 {
     margin-bottom: 0px;
+}
+
+.content
+{
+    min-width: 800px;
+}
+
+#toc
+{
+    display: inline-block;
+    vertical-align: top;
+    width: 225px;
+    border: 1px black solid;
+    position: absolute;
+    margin-left: 0px;
+}
+#main_content_wrap
+{
+    display: inline-block;
+    width: auto;
+    margin-left: 225px;
+}
+
+#main_content_wrap .inner
+{
+    padding: 10px 40px;
+    max-width: inherit;
+}
+
+.fixed
+{
+    position: fixed !important;
+    top: 0px;
 }
