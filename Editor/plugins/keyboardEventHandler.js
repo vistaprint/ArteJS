@@ -2,11 +2,9 @@
 /**
 * @fileoverview: A plugin to handle the keyboard events
 */
-(function(pluginManager)
-{
+(function (pluginManager) {
     // Plugin
-    var KeyboardEventHandler = function()
-    {
+    var KeyboardEventHandler = function () {
         var keyCodeLookup = {
             8: "BackSpace",
             13: "Enter",
@@ -30,16 +28,14 @@
         * Fires before text has been altered
         * @param {Event} e
         */
-        var onKeyPressHandler = function()
-        {
+        var onKeyPressHandler = function () {
         };
 
         /**
         * Construct a key string based on the keyboard commands
         * @param {keyboard event} keyboardEvent
         */
-        var getKey = function(keyboardEvent)
-        {
+        var getKey = function (keyboardEvent) {
             var key = keyboardEvent.ctrlKey ? "CTRL+" : "";
             key += keyboardEvent.altKey ? "AlT+" : "";
 
@@ -52,14 +48,12 @@
         * Fires before text has been altered
         * @param {Event} e
         */
-        var onKeyDownHandler = function(e, data)
-        {
+        var onKeyDownHandler = function (e, data) {
             var textArea = data.textArea;
             var event = data.originalEvent;
             var key = getKey(event);
 
-            switch (key)
-            {
+            switch (key) {
                 case "CTRL+B":
                     textArea.bold();
                     event.preventDefault(); // Browsers shouldn't handle this command  
@@ -72,20 +66,19 @@
                     textArea.underline();
                     event.preventDefault();
                     break;
-                case "CTRL:A":
-                case "CTRL+V":
-                case "CTRL+ArrowDown":
-                case "CTRL+ArrowLeft":
-                case "CTRL+ArrowRight":
-                case "CTRL+ArrowUp":
-                case "ArrowDown":
-                case "ArrowLeft":
-                case "ArrowRight":
-                case "ArrowUp":
-                    setTimeout(function()
-                    {
-                        textArea.triggerEvent($.Arte.constants.eventNames.onselectionchange);
-                    }, 10);
+                case "Enter":
+                    event.stopPropagation();
+                    event.preventDefault();
+
+                    // Create a new line element using default block tag.
+                    var newElement = $("<" + $.Arte.configuration.defaultBlockTag + ">").html("&nbsp;");
+                    var range = rangy.getSelection().getRangeAt(0);
+                    range.insertNode(newElement.get(0));
+
+                    var newRange = rangy.createRangyRange();
+                    newRange.selectNodeContents(newElement.get(0));
+                    var selection = rangy.getSelection();
+                    selection.setSingleRange(newRange);
                     break;
             }
         };
@@ -94,30 +87,28 @@
         * Fires after a key event completes, and text has been altered.
         * @param {Event} e
         */
-        var onKeyUpHandler = function(e, data)
-        {
+        var onKeyUpHandler = function(e, data) {
             var textArea = data.textArea;
             var event = data.originalEvent;
             var key = getKey(event);
-            switch (key)
-            {
-                case "Enter":
-                    var range = rangy.getSelection().getRangeAt(0);
-                    var element = range.commonAncestorContainer.nodeType === $.Arte.constants.nodeType.TEXT ?
-                        $(range.commonAncestorContainer.parentNode) : $(range.commonAncestorContainer);
-                    var result = $.Arte.dom.convertDivsToP(element).get(0);
-                    
-                    var children = result.childNodes;
-                    var selection = rangy.getSelection();
-                    selection.setSingleRange(rangy.util.createRangeFromElements(children[0], children[children.length - 1]));
-                    selection.collapseToStart();
-                    break;
+
+            switch (key) {
+            case "CTRL:A":
+            case "CTRL+V":
+            case "CTRL+ArrowDown":
+            case "CTRL+ArrowLeft":
+            case "CTRL+ArrowRight":
+            case "CTRL+ArrowUp":
+            case "ArrowDown":
+            case "ArrowLeft":
+            case "ArrowRight":
+            case "ArrowUp":
+                textArea.triggerEvent($.Arte.constants.eventNames.onselectionchange);
             }
         };
 
         return {
-            init: function(textArea)
-            {
+            init: function (textArea) {
                 textArea.$element.on({
                     "onkeydown": onKeyDownHandler,
                     "onkeypress": onKeyPressHandler,
