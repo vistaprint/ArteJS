@@ -27,7 +27,7 @@ var ArteKeyboardEventTestData = [
         },
         op: function (arte)
         {
-            arte.$element.trigger("onkeydown", {
+            arte.$element.trigger("onkeyup", {
                 textArea: arte,
                 originalEvent: {
                     keyCode: 40,
