@@ -1,6 +1,9 @@
 'use strict';
 
 module.exports = function (grunt) {
+    var arteVersion = "v0.2";
+    var toolbarVersion = "v0.2";
+    var rangyVersion = 'v1.2.3';
     // Project configuration.
     grunt.initConfig({
         jshint: {
@@ -35,11 +38,11 @@ module.exports = function (grunt) {
         concat: {
             RangyDebug: {
                 src: ['Editor/lib/rangy-1.2.3/**/*.js'],
-                dest: 'Release/v0.1/rangy.debug.js'
+                dest: 'Release/rangy.' + rangyVersion + '.debug.js'
             },
             RangyRelease: {
                 src: ['Build/Editor/lib/rangy-1.2.3/**/*.js'],
-                dest: 'Release/v0.1/rangy.min.js'
+                dest: 'Release/rangy.' + rangyVersion + '.min.js'
             },
             EditorDebug: {
                 src: ['Editor/core/Arte.js',
@@ -55,7 +58,7 @@ module.exports = function (grunt) {
                 'Editor/lib/rangy-extensions/rangy-extensions.js',
                 'Editor/plugins/**/*.js'
             ],
-                dest: 'Release/v0.1/arte.debug.js'
+                dest: 'Release/arte.' + arteVersion + '.debug.js'
             },
             EditorRelease: {
                 src: ['Build/Editor/core/Arte.js',
@@ -70,7 +73,7 @@ module.exports = function (grunt) {
                 'Build/Editor/lib/rangy-extensions/rangy-extensions.js',
                 'Build/Editor/plugins/**/*.js'
             ],
-                dest: 'Release/v0.1/arte.min.js'
+                dest: 'Release/arte.' + arteVersion + 'min.js'
             },
             ToolbarDebug: {
                 src: [
@@ -79,13 +82,12 @@ module.exports = function (grunt) {
                 'Toolbar/Buttons/*.js',
                 'Toolbar/*.js'
             ],
-                dest: "Release/v0.1/Toolbar.debug.js"
+                dest: 'Release/Toolbar.' + toolbarVersion + '.debug.js'
             },
             ToolbarRelease: {
                 src: ['Build/Toolbar/**/*.js'],
-                dest: "Release/v0.1/Toolbar.min.js"
+                dest: 'Release/Toolbar.' + toolbarVersion + '.min.js'
             }
-
         },
 
         qunit: {
