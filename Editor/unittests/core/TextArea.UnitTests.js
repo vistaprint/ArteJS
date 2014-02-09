@@ -4,6 +4,7 @@
         module(suiteName + ".getValue");
         unitTestHelper.executeTestCollectionSimple(ArteTextAreaTestData.getValue, function (testData)
         {
+            $.Arte.configuration.handleUnsanctionedTagsOnGetValue = false;
             var value = $(TEST_ELEMENT_SELECTOR).Arte(testData.options).Arte("value")[0];
             return unitTestHelper.isEqual({
                 name: suiteName + ".getValue" + testData.name,
@@ -16,6 +17,7 @@
         module(suiteName + ".settValue");
         unitTestHelper.executeTestCollectionSimple(ArteTextAreaTestData.setValue, function (testData)
         {
+            $.Arte.configuration.handleUnsanctionedTagsOnGetValue = false;
             $(TEST_ELEMENT_SELECTOR).Arte(testData.options).Arte("value", testData.value);
             var value = $(TEST_ELEMENT_SELECTOR).Arte("value")[0];
             return unitTestHelper.isEqual({

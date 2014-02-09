@@ -22,6 +22,7 @@
     module(suiteName + ".convertDivToP");
     unitTestHelper.executeTestCollection(convertDivToPTestData, function(testData)
     {
+        $.Arte.configuration.handleUnsanctionedTagsOnGetValue = false;
         $.Arte.dom.convertDivsToP($("#editableDiv").children());
     });
 
@@ -29,6 +30,11 @@
     unitTestHelper.executeTestCollection(removeEmptyElementsTestData, function(testData)
     {
         $.Arte.dom.removeEmptyElements($("#editableDiv"));
+    });
+
+    module(suiteName + ".handleUnsanctionedElements");
+    unitTestHelper.executeTestCollection(handleUnsanctionedElementsTestData, function (testData) {
+        $.Arte.dom.handleUnsanctionedElements($("#editableDiv").contents());
     });
 });
 
@@ -401,3 +407,21 @@ var convertDivToPTestData = [
 
 // TODO: Implement these tests.
 var removeEmptyElementsTestData = [];
+
+var handleUnsanctionedElementsTestData = [
+    {
+        name: "removeBTag",
+        rawContent: "<b>ABCD</b>",
+        expectedContent: "<span style='font-weight: bold;'>ABCD</span>"
+    },
+    {
+        name: "removeBIUTags",
+        rawContent: "<b>bold<i>bold italic</i></b><i>Italic</i><u>underlined <i>italic underlined</i> also underlined</u>",
+        expectedContent: "<span style='font-weight: bold'>bold<span style='font-style: italic;'>bold italic</span></span><span style='font-style: italic'>Italic</span><span style='text-decoration: underline'>underlined <span style='font-style: italic'>italic underlined</span> also underlined</span>"
+    },
+    {
+        name: "removeDivTag",
+        rawContent: "<div>ABCD</div>",
+        expectedContent: "<p>ABCD</p>"
+    }
+];

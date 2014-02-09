@@ -5,6 +5,7 @@
 
     unitTestHelper.executeTestCollectionSimple(ArtePasteHandlerTestData, function (testData)
     {
+        $.Arte.configuration.handleUnsanctionedTagsOnGetValue = false;
         $(TEST_ELEMENT_SELECTOR).Arte({
             value: "test ..."
         });

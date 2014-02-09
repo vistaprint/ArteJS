@@ -128,11 +128,19 @@
         "value": function (value) {
             var constants = $.Arte.constants;
             var op = this.editorType === constants.editorTypes.richText ? "html" : "val";
-            this.currentValue = this.$el[op]();
+           
             if (typeof (value) === "undefined") {
+                if ($.Arte.configuration.handleUnsanctionedTagsOnGetValue) {
+                    // Save current selection
+                    var savedSelection = rangy.saveSelection();
+                    $.Arte.dom.handleUnsanctionedElements(this.$el.contents());
+                    rangy.restoreSelection(savedSelection);
+                }
+                this.currentValue = this.$el[op]();
                 return this.currentValue;
             }
 
+            this.currentValue = this.$el[op]();
             // Set the inner text 
             this.$el[op](value);
             this.triggerEvent(constants.eventNames.onvaluechange, { newValue: value, oldValue: this.currentValue });

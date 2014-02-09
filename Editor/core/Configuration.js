@@ -134,6 +134,7 @@
         */
         pollIntervalInMs: 350,
 
+        handleUnsanctionedTagsOnGetValue: true
     };
 
     /*

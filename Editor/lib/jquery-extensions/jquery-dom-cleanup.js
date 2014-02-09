@@ -15,6 +15,36 @@
     var util = $.Arte.util;
 
     $.extend(configuration, {
+        supportedTags: {
+            "P": 1,
+            "UL": 1,
+            "OL": 1,
+            "LI": 1,
+            "SPAN": 1,
+            "BR": 1 // Chrome add BR to keep a space
+        },
+        
+        invalidTagHandlers: {
+            "B": {
+                applierTagName: "span",
+                styleName: "font-weight",
+                styleValue: "bold"
+            },
+            "I": {
+                applierTagName: "span",
+                styleName: "font-style",
+                styleValue: "italic"
+            },
+            "U": {
+                applierTagName: "span",
+                styleName: "text-decoration",
+                styleValue: "underline"
+            },
+            "DIV": {
+                applierTagName: "P"
+            }
+        },
+
         /**
     * A set of tagNames to which a style/class can be styled.  If a tagName is not styleable, the styles/classes will be applied to all of its 
     * children or the parent depending on the markup.
@@ -449,8 +479,36 @@
         removeRedundantMarkup(jNodes);
     };
 
+
+
+    /*
+    * Remove all unsanctioned tags
+    */
+    var handleUnsanctionedElements = function (nodes) {
+        nodes.each(function () {
+            if (this.nodeType == $.Arte.constants.nodeType.TEXT)
+            {
+                return;
+            }
+
+            var $this = $(this);
+            handleUnsanctionedElements($this.contents());
+
+            var tagName = $this.prop("tagName");
+            if (configuration.supportedTags[tagName]) { // Current tag is supported; do nothing
+                return;
+            }
+
+            // Unsupported tags, construct a replacement node
+            var invalidTagHandlerConfig = configuration.invalidTagHandlers[tagName] || { tagName: "P" /* Just wrap the content in a P tag*/ };
+            var newNode = $.Arte.dom.createContainer(invalidTagHandlerConfig).html($this.html());
+            $this.replaceWith(newNode);
+        });
+    };
+
     // Public API
     dom.cleanup = cleanup;
+    dom.handleUnsanctionedElements = handleUnsanctionedElements;
     dom.convertDivsToP = function (element)
     {
         var result = $();

@@ -66,20 +66,6 @@
                     textArea.underline();
                     event.preventDefault();
                     break;
-                case "Enter":
-                    event.stopPropagation();
-                    event.preventDefault();
-
-                    // Create a new line element using default block tag.
-                    var newElement = $("<" + $.Arte.configuration.defaultBlockTag + ">").html("&nbsp;");
-                    var range = rangy.getSelection().getRangeAt(0);
-                    range.insertNode(newElement.get(0));
-
-                    var newRange = rangy.createRangyRange();
-                    newRange.selectNodeContents(newElement.get(0));
-                    var selection = rangy.getSelection();
-                    selection.setSingleRange(newRange);
-                    break;
             }
         };
 
