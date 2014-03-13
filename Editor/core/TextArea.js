@@ -140,10 +140,15 @@
                 return this.currentValue;
             }
 
-            this.currentValue = this.$el[op]();
+            if (this.currentValue === value) {
+                return;
+            }
+
+            var oldValue = this.$el[op]();
+            this.currentValue = value;
             // Set the inner text 
             this.$el[op](value);
-            this.triggerEvent(constants.eventNames.onvaluechange, { newValue: value, oldValue: this.currentValue });
+            this.triggerEvent(constants.eventNames.onvaluechange, { newValue: this.currentValue, oldValue: oldValue });
         },
         // Get outerHtml of the contentEditable
         "outerValue": function (value) {
@@ -153,7 +158,11 @@
                 return clone.html();
             }
             var newElement = $(value);
-
+            
+            if ($.Arte.dom.isEqual(this.$el, newElement)) { 
+                return;
+            }
+            
             this.$el.removeAttr("style"); // Clear the styles
             this.$el.attr("style", newElement.attr("style"));
 

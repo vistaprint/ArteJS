@@ -83,7 +83,6 @@ var ArteInsertCommandeTestData = [
         rawContent: "<span id='span'>span</span>Test",
         contentToInsert: "Content",
         beforeCommand: function (textArea) {
-            debugger;
             var currentValue = $.Arte.configuration.requireFocus;
             textArea.on("onbeforeinsert", function (e, data)
             {

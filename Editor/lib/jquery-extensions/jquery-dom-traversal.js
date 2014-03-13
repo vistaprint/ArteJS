@@ -541,6 +541,60 @@
             }
 
             return false;
+        },
+        
+        isEqual: function(jNode1, jNode2) {
+            if (!jNode1.get(0) || !jNode2.get(0)) {
+                return false;
+            }
+            
+            var isEqual = true;
+
+            // Attributes to check when comparing the nodes
+            var attributes = ["style", "id", "class"];
+
+            //compare node
+            if (jNode1.prop('tagName') === jNode2.prop('tagName')) {
+                //compare attributes
+                $.each(attributes, function (index, attrib) {
+                    if (attrib === "style") {
+                        isEqual = $.Arte.dom.hasSameStyle(jNode1, jNode2);
+                    }
+                    else if (attrib === "class") {
+                        isEqual = $.Arte.dom.hasSameClass(jNode1, jNode2);
+                    }
+                    else {
+                        var thisAttr = jNode1.attr(attrib) && $.trim(jNode1.attr(attrib));
+                        var thatAttr = jNode2.attr(attrib) && $.trim(jNode2.attr(attrib));
+
+                        isEqual = thisAttr === thatAttr;
+                    }
+                    return isEqual;
+                });
+
+                if (isEqual) {
+                    //check children nodes
+                    var noEmptyTextNodesFilter = function (index, node) {
+                        return !$(node).is(":emptyText");
+                    };
+                    var thisContent = jNode1.contents().filter(noEmptyTextNodesFilter);
+                    var thatContent = jNode2.contents().filter(noEmptyTextNodesFilter);
+
+                    // has same child count
+                    isEqual = thisContent.length === thatContent.length;
+
+                    for (var i = 0, l = thisContent.length; i < l && isEqual; i++) {
+                        isEqual = thisContent[i].nodeType === 3 ?
+                            $.trim(thisContent[i].nodeValue) === $.trim(thatContent[i].nodeValue) :
+                            $.Arte.dom.isEqual($(thisContent[i]), $(thatContent[i]));
+                    }
+                }
+            }
+            else {
+                isEqual = false;
+            }
+
+            return isEqual;
         }
     });
 
