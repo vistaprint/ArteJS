@@ -97,16 +97,12 @@
             mouseup: function (e) {
                 me.triggerEvent(eventNames.onselectionchange);
                 me.triggerEvent(eventNames.onmouseup, { originalEvent: e });
-                e.stopPropagation();
             },
             mousedown: function (e) {
                 me.triggerEvent(eventNames.onmousedown, { originalEvent: e });
-                e.stopPropagation();
             },
             click: function (e) {
                 me.triggerEvent(eventNames.onclick, { originalEvent: e });
-                e.stopPropagation();
-                e.preventDefault();
             },
             paste: function (e) {
                 setTimeout(function () {

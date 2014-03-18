@@ -143,6 +143,11 @@
         // Toolbar configuration
         $(".requireEditorFocus").prop("checked", $.Arte.Toolbar.configuration.requireEditorFocus);
 
+        // Supress the mouse events
+        $(".editor").on("mousedown mouseup click", function(e) {
+            e.stopPropagation();
+        });
+
         createEditorAndToolbar();
     });
 })();
