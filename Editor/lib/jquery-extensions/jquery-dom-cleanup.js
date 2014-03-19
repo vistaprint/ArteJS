@@ -15,40 +15,10 @@
     var util = $.Arte.util;
 
     $.extend(configuration, {
-        supportedTags: {
-            "P": 1,
-            "UL": 1,
-            "OL": 1,
-            "LI": 1,
-            "SPAN": 1,
-            "BR": 1 // Chrome add BR to keep a space
-        },
-        
-        invalidTagHandlers: {
-            "B": {
-                applierTagName: "span",
-                styleName: "font-weight",
-                styleValue: "bold"
-            },
-            "I": {
-                applierTagName: "span",
-                styleName: "font-style",
-                styleValue: "italic"
-            },
-            "U": {
-                applierTagName: "span",
-                styleName: "text-decoration",
-                styleValue: "underline"
-            },
-            "DIV": {
-                applierTagName: "P"
-            }
-        },
-
         /**
-    * A set of tagNames to which a style/class can be styled.  If a tagName is not styleable, the styles/classes will be applied to all of its 
-    * children or the parent depending on the markup.
-    */
+        * A set of tagNames to which a style/class can be styled.  If a tagName is not styleable, the styles/classes will be applied to all of its 
+        * children or the parent depending on the markup.
+        */
         styleableTags: {
             SPAN: 1,
             DIV: 1,
@@ -57,32 +27,84 @@
             UL: 1,
             OL: 1
         },
-
-        /**
-        * During the cleanup phase, the elements with tagName specified with Key can be merged with the parent element specified by the values
-        * For example, A SPAN can be merged with SPAN/DIV/P/LI while a LI can't be merged with anything
-        */
-        mergableTags: {
-            SPAN: { SPAN: 1, DIV: 1, P: 1, LI: 1 },
-            DIV: { DIV: 1, P: 1, LI: 1 },
-            P: { DIV: 1, P: 1, LI: 1 },
-            LI: {},
-            OL: {},
-            UL: {},
-            B: { B: 1 },
-            U: { U: 1 },
-            I: { I: 1 },
-            STRONG: { STRONG: 1 },
-            SUB: { SUB: 1 },
-            SUP: { SUP: 1 },
-            H1: { H2: 1, H3: 1, H4: 1, H5: 1, H6: 1 },
-            H2: { H1: 1, H3: 1, H4: 1, H5: 1, H6: 1 },
-            H3: { H1: 1, H2: 1, H4: 1, H5: 1, H6: 1 },
-            H4: { H1: 1, H2: 1, H3: 1, H5: 1, H6: 1 },
-            H5: { H1: 1, H2: 1, H3: 1, H4: 1, H6: 1 },
-            H6: { H1: 1, H2: 1, H3: 1, H4: 1, H5: 1 }
+        supportedTags: {
+            "P": 1,
+            "UL": 1,
+            "OL": 1,
+            "LI": 1,
+            "SPAN": 1,
+            "BR": 1 // Chrome add BR to keep a space
         }
     });
+
+    $.extend(configuration, {
+        cleanup: {
+            options:{
+                removeNonPrintableCharacters: true,
+                removeEmptyElements: true,
+                removeRedundantDom: true,
+                mergeAdjunctLists: true
+            },
+
+
+            invalidTagHandlers: {
+                "B": {
+                    applierTagName: "span",
+                    styleName: "font-weight",
+                    styleValue: "bold"
+                },
+                "I": {
+                    applierTagName: "span",
+                    styleName: "font-style",
+                    styleValue: "italic"
+                },
+                "U": {
+                    applierTagName: "span",
+                    styleName: "text-decoration",
+                    styleValue: "underline"
+                },
+                "DIV": {
+                    applierTagName: "P"
+                }
+            },
+
+            /**
+            * During the cleanup phase, the elements with tagName specified with Key can be merged with the parent element specified by the values
+            * For example, A SPAN can be merged with SPAN/DIV/P/LI while a LI can't be merged with anything
+            */
+            mergableTags: {
+                SPAN: { SPAN: 1, DIV: 1, P: 1, LI: 1 },
+                DIV: { DIV: 1, P: 1, LI: 1 },
+                P: { DIV: 1, P: 1, LI: 1 },
+                LI: {},
+                OL: {},
+                UL: {},
+                B: { B: 1 },
+                U: { U: 1 },
+                I: { I: 1 },
+                STRONG: { STRONG: 1 },
+                SUB: { SUB: 1 },
+                SUP: { SUP: 1 },
+                H1: { H2: 1, H3: 1, H4: 1, H5: 1, H6: 1 },
+                H2: { H1: 1, H3: 1, H4: 1, H5: 1, H6: 1 },
+                H3: { H1: 1, H2: 1, H4: 1, H5: 1, H6: 1 },
+                H4: { H1: 1, H2: 1, H3: 1, H5: 1, H6: 1 },
+                H5: { H1: 1, H2: 1, H3: 1, H4: 1, H6: 1 },
+                H6: { H1: 1, H2: 1, H3: 1, H4: 1, H5: 1 }
+            },
+            /**
+            * Collection of invalid characters and character ranges
+            */
+            invalidCharacterRegex: [
+                '\u0000-\u001F', // Control Characters
+                '\u0080-\u009F', // Latin-Supllement many control characters in this range
+                '\u2000-\u200F', // Invisible Puntuation
+                '\uE000-\uF8FF' // Private use
+            ]
+        }
+    });
+
+    var cleanupConfig = configuration.cleanup;
 
     /**
     * Merge adjunct lists within the set of matched element
@@ -289,7 +311,7 @@
             //Find out which nodes are candidates for evaluation to merge up with the parent
             // don't evaluate the text nodes or the block nodes with siblings
             var $this = $(this);
-            var mergableTags = configuration.mergableTags[$this.prop("tagName")];
+            var mergableTags = cleanupConfig.mergableTags[$this.prop("tagName")];
 
             return $this.is(":element") &&
                 (!$this.is(":block") || contentNodes.length === 1) && // The only block child
@@ -443,25 +465,15 @@
     };
 
     /**
-    * Convert the divs to P (some browsers produce div when creating new line).
+    * Remove the empty characters from the HTML dom.
     */
-    
-    var convertDivsToP = function (element) {
-        var pElement = element;
-        if (element.prop("tagName") === constants.tagName.DIV) {
-            pElement = $("<p>").html(element.html());
-            // maintain the attributes from the p element
-            $.each(["style", "id", "class"], function (index, attribute) {
-                var attrValue = element.attr(attribute);
-                if (attrValue) {
-                    pElement.attr(attribute, attrValue);
-                }
-            });
-
-            element.before(pElement);
-            element.remove();
-        }
-        return pElement;
+    var invalidCharacterRegex;
+    var removeNonPrintableCharacters = function() {
+        var topElement = $(topEditableParent);
+        var html = topElement.html();
+        invalidCharacterRegex = invalidCharacterRegex || new RegExp("[" + cleanupConfig.invalidCharacterRegex.join('') + "]", 'g');
+        var cleanHtml = html.replace(invalidCharacterRegex, '');
+        topElement.html(cleanHtml);
     };
 
     /**
@@ -469,17 +481,22 @@
     * @param
     */
     var topEditableParent;
-    var cleanup = function(jNodes, options)
-    {
-
+    var cleanup = function(jNodes, options) {
         topEditableParent = (options && options.topEditableParent) ? options.topEditableParent : dom.getTopEditableParent(jNodes).get(0);
         handleRangySelectionMarkers(jNodes);
-        removeEmptyElements(jNodes, options);
-        mergeAdjunctLists(jNodes);
-        removeRedundantMarkup(jNodes);
+        if (cleanupConfig.options.removeNonPrintableCharacters) {
+            removeNonPrintableCharacters();
+        }
+        if (cleanupConfig.options.removeEmptyElements) {
+            removeEmptyElements(jNodes, options);
+        }
+        if (cleanupConfig.options.removeRedundantDom) {
+            mergeAdjunctLists(jNodes);
+        }
+        if (cleanupConfig.options.mergeAdjunctLists) {
+            removeRedundantMarkup(jNodes);
+        }
     };
-
-
 
     /*
     * Remove all unsanctioned tags
@@ -500,7 +517,7 @@
             }
 
             // Unsupported tags, construct a replacement node
-            var invalidTagHandlerConfig = configuration.invalidTagHandlers[tagName] || { tagName: "P" /* Just wrap the content in a P tag*/ };
+            var invalidTagHandlerConfig = cleanupConfig.invalidTagHandlers[tagName] || { tagName: "P" /* Just wrap the content in a P tag*/ };
             var newNode = $.Arte.dom.createContainer(invalidTagHandlerConfig).html($this.html());
             $this.replaceWith(newNode);
         });
@@ -509,17 +526,4 @@
     // Public API
     dom.cleanup = cleanup;
     dom.handleUnsanctionedElements = handleUnsanctionedElements;
-    dom.convertDivsToP = function (element)
-    {
-        var result = $();
-        element.each(function () {
-            var $this = $(this);
-            $this.children().each(function () {
-                var $this = $(this);
-                convertDivsToP($this);
-            });
-            result.push(convertDivsToP($this).get(0));
-        });
-        return result;
-    };
 })(jQuery);

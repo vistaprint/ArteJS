@@ -19,13 +19,6 @@
         $.Arte.dom.cleanup($("#editableDiv"));
     });
 
-    module(suiteName + ".convertDivToP");
-    unitTestHelper.executeTestCollection(convertDivToPTestData, function(testData)
-    {
-        $.Arte.configuration.handleUnsanctionedTagsOnGetValue = false;
-        $.Arte.dom.convertDivsToP($("#editableDiv").children());
-    });
-
     module(suiteName + ".removeEmptyElements");
     unitTestHelper.executeTestCollection(removeEmptyElementsTestData, function(testData)
     {
@@ -35,6 +28,11 @@
     module(suiteName + ".handleUnsanctionedElements");
     unitTestHelper.executeTestCollection(handleUnsanctionedElementsTestData, function (testData) {
         $.Arte.dom.handleUnsanctionedElements($("#editableDiv").contents());
+    });
+    
+    module(suiteName + ".removeNonPrintableMarkup");
+    unitTestHelper.executeTestCollection(removeNonPrintableCharactersTestData, function (testData) {
+        $.Arte.dom.cleanup($("#editableDiv"));
     });
 });
 
@@ -377,34 +375,6 @@ var tagBasedStylesCleanupTestData = [
     }
 ];
 
-var convertDivToPTestData = [
- {
-     name: "convertDivToPNegative",
-     rawContent: "some text <span> some text in span </span <p>already in p</p> some other text at end",
-     expectedContent: "some text <span> some text in span </span <p>already in p</p> some other text at end"
- },
-        {
-            name: "convertDivToP",
-            rawContent: "<div>ABC</div>",
-            expectedContent: "<p>ABC</p>"
-        },
-        {
-            name: "convertSiblingAndParentDivsToP",
-            rawContent: "<div>ABC <div> DEF </div> <div> GHI </div> JKL </div> <div> MNO </div>",
-            expectedContent: "<p>ABC <p> DEF </p> <p> GHI </p> JKL </p> <p> MNO </p>"
-        },
-        {
-            name: "convertDivToPWithAttributes",
-            rawContent: "<div id='a' style='font-weight:bold'>ABC</div>",
-            expectedContent: "<p id='a' style='font-weight:bold'>ABC</p>"
-        },
-        {
-            name: "convertSiblingAndParentDivsToPWithAttributes",
-            rawContent: "<div class='x' style='font-weight:bold'>ABC <div class='x' style='font-weight:bold'> DEF </div> <div class='x' style='font-weight:bold'> GHI </div> JKL </div> <div class='x' style='font-weight:bold'> MNO </div>",
-            expectedContent: "<p class='x' style='font-weight:bold'>ABC <p class='x' style='font-weight:bold'> DEF </p> <p class='x' style='font-weight:bold'> GHI </p> JKL </p> <p class='x' style='font-weight:bold'> MNO </p>"
-        }
-    ];
-
 // TODO: Implement these tests.
 var removeEmptyElementsTestData = [];
 
@@ -425,3 +395,21 @@ var handleUnsanctionedElementsTestData = [
         expectedContent: "<p>ABCD</p>"
     }
 ];
+
+var removeNonPrintableCharactersTestData = [
+    {
+        name: "removeControlCharactersSimple",
+        rawContent: "\u0015ABC\u0085xyz\u2004",
+        expectedContent: "ABCxyz"
+    },
+    {
+        name: "removeControlCharactersAllUnicode",
+        rawContent: "\u0015\u0041\u0042\u0043\u0085\u0078\u0079\u007A\u2004",
+        expectedContent: "ABCxyz"
+    },
+    {
+        name: "removeControlCharactersFromHtml",
+        rawContent: "<div><span style='font-weight:bold'>\u0015</span>\u0041\u0042\u0043\u0085\u0078\u0079\u007A<div>\u2004</div></div>",
+        expectedContent: "ABCxyz"
+    }
+]
