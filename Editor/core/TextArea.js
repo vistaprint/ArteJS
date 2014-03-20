@@ -29,7 +29,7 @@
                         me.triggerEvent(eventNames.onvaluechange, { newValue: newValue, oldValue: me.currentValue });
                         me.currentValue = newValue;
                     }
-                }, options.pollIntervalInMs);
+                }, configuration.pollIntervalInMs);
             }
         };
 
