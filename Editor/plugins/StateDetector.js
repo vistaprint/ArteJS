@@ -4,6 +4,7 @@
 (function(pluginManager)
 {
     var constants = $.Arte.constants;
+    var util = $.Arte.util;
 
     var getValue = function(nodes, commandOptions)
     {
@@ -43,7 +44,16 @@
         var tag = commandOptions.tagName;
         if (tag && (tag === constants.tagName.OL || tag === constants.tagName.UL))
         {
-            return $.Arte.dom.listSurrounded(nodes, { singleList: true, tagName: tag });
+            var surroundedByCorrectListType = $.Arte.dom.listSurrounded(nodes, { singleList: true, tagName: tag });
+            if(!surroundedByCorrectListType)
+            {
+                //If not a text node maybe this is a parent node - check to see if the any of the direct children are OL/LI
+                var directChildrenHaveCorrectListType = nodes.children().length && util.any(nodes.children(), function(index, node)
+                {
+                    return  $.Arte.dom.hasCommandApplied($(node), commandOptions.commandName);
+                });
+            }
+            return surroundedByCorrectListType || directChildrenHaveCorrectListType;
         }
         var nodesWithStyleValue = $.Arte.dom.closestWithCommandValue(nodes, commandOptions);
         return nodesWithStyleValue.length === nodes.length;
