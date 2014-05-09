@@ -14,7 +14,7 @@
         });
     });
 
-    module(suiteName + ".settValue");
+    module(suiteName + ".setValue");
     unitTestHelper.executeTestCollectionSimple(ArteTextAreaTestData.setValue, function (testData)
     {
         $.Arte.configuration.handleUnsanctionedTagsOnGetValue = false;
@@ -173,6 +173,22 @@ var ArteTextAreaTestData = {
                     }
                 });
                 arte.$el.trigger("focus");
+                arte.$el.trigger("blur");
+
+                return true;
+            }
+        },
+        {
+            name: "blurWithChangedValue",
+            assertionCount: 2,
+            op: function(arte) {
+                arte.on({
+                    "onvaluechange": function(e, data) {
+                        ok(true, "onvaluechange called");
+                    }
+                });
+                arte.$el.trigger("focus");
+                arte.$el.html("xyz");
                 arte.$el.trigger("blur");
 
                 return true;

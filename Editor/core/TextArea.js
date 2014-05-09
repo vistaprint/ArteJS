@@ -19,17 +19,19 @@
         //Timer used to check for changes to the value, selection, and focus of the textarea
         var pollTimer = null;
 
+        var handleValueChange = function() {
+            if (me.outerValue() != me.currentValue) {
+                var newValue = me.outerValue();
+                me.triggerEvent(eventNames.onvaluechange, { newValue: newValue, oldValue: me.currentValue });
+                me.currentValue = newValue;
+            }
+        }
+
         // Uses polling to trigger value change as user can change the value of the text field in multiple ways.
         // for example (keyboard, IME input, paste, multi-stroke keyboard, and context menu).
         var startPollingForValueChange = function () {
             if (!pollTimer) {
-                pollTimer = setInterval(function () {
-                    if (me.outerValue() != me.currentValue) {
-                        var newValue = me.outerValue();
-                        me.triggerEvent(eventNames.onvaluechange, { newValue: newValue, oldValue: me.currentValue });
-                        me.currentValue = newValue;
-                    }
-                }, configuration.pollIntervalInMs);
+                pollTimer = setInterval(handleValueChange, configuration.pollIntervalInMs);
             }
         };
 
@@ -83,6 +85,7 @@
                 e.stopPropagation();
             },
             blur: function (e) {
+                handleValueChange(); // Flush any changes that occurred between the last poll and now.
                 isFocused = false;
                 me.triggerEvent(eventNames.onselectionchange);
                 me.triggerEvent(eventNames.onblur, { originalEvent: e });
