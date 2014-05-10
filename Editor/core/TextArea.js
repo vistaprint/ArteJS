@@ -14,22 +14,28 @@
         this.editorType = options.editorType || constants.editorTypes.richText;
 
         //Stores the internal value (innerHTML) of the field
-        this.currentValue = "";
+        this._currentValue = "";
+        //Store the outer value for comparison of value changes
+        this._currentOuterValue = "";
 
         //Timer used to check for changes to the value, selection, and focus of the textarea
         var pollTimer = null;
+
+        var handleValueChange = function() {
+            var oldOuterValue = me._currentOuterValue;
+            var newOuterValue = me.outerValue(); // This will set this._currentOuterValue
+            if (newOuterValue != oldOuterValue) {
+                var oldValue = me._currentValue;
+                var newValue = me.value(); // This sets this._currentValue
+                me.triggerEvent(eventNames.onvaluechange, { newValue: newValue, oldValue: this._currentValue, src: "internal" });
+            }
+        }
 
         // Uses polling to trigger value change as user can change the value of the text field in multiple ways.
         // for example (keyboard, IME input, paste, multi-stroke keyboard, and context menu).
         var startPollingForValueChange = function () {
             if (!pollTimer) {
-                pollTimer = setInterval(function () {
-                    if (me.outerValue() != me.currentValue) {
-                        var newValue = me.outerValue();
-                        me.triggerEvent(eventNames.onvaluechange, { newValue: newValue, oldValue: me.currentValue });
-                        me.currentValue = newValue;
-                    }
-                }, configuration.pollIntervalInMs);
+                pollTimer = setInterval(handleValueChange, configuration.pollIntervalInMs);
             }
         };
 
@@ -83,6 +89,7 @@
                 e.stopPropagation();
             },
             blur: function (e) {
+                handleValueChange(); // Flush any changes that occurred between the last poll and now.
                 isFocused = false;
                 me.triggerEvent(eventNames.onselectionchange);
                 me.triggerEvent(eventNames.onblur, { originalEvent: e });
@@ -113,7 +120,7 @@
         $.Arte.pluginManager.init(me);
 
         me.value(initialValues.value);
-        me.currentValue = me.outerValue();
+        me.outerValue(); // This sets the internal this._currentOuterValue
 
         me.$element.on(options.on);
         me.triggerEvent(eventNames.oncreate);
@@ -121,7 +128,7 @@
 
     $.extend($.Arte.TextArea.prototype, {
         // Get innerHtml of the contentEditable element    
-        "value": function (value) {
+        "value": function (value, options) {
             var constants = $.Arte.constants;
             var op = this.editorType === constants.editorTypes.richText ? "html" : "val";
            
@@ -132,26 +139,27 @@
                     $.Arte.dom.handleUnsanctionedElements(this.$el.contents());
                     rangy.restoreSelection(savedSelection);
                 }
-                this.currentValue = this.$el[op]();
-                return this.currentValue;
+                this._currentValue = this.$el[op]();
+                return this._currentValue;
             }
 
-            if (this.currentValue === value) {
+            if (this._currentValue === value && (!options || !options.forceApply)) {
                 return;
             }
 
-            var oldValue = this.$el[op]();
-            this.currentValue = value;
+            var oldValue = this._currentValue;
+            this._currentValue = value;
             // Set the inner text 
             this.$el[op](value);
-            this.triggerEvent(constants.eventNames.onvaluechange, { newValue: this.currentValue, oldValue: oldValue });
+            this.triggerEvent(constants.eventNames.onvaluechange, { newValue: this._currentValue, oldValue: oldValue, src: "external" });
         },
         // Get outerHtml of the contentEditable
         "outerValue": function (value) {
             if (typeof (value) === "undefined") {
                 var clone = this.$element.clone();
                 clone.children().removeAttr("contenteditable");
-                return clone.html();
+                this._currentOuterValue = clone.html();
+                return this._currentOuterValue;
             }
             var newElement = $(value);
             
@@ -165,7 +173,8 @@
             this.$el.removeAttr("class");
             this.$el.attr("class", newElement.attr("class"));
 
-            this.value(newElement.html());
+            this.value(newElement.html(), { forceApply: true });
+            this._currentOuterValue = this.outerValue();
         },
         "focus": function () {
             var me = this;

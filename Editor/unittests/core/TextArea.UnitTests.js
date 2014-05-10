@@ -14,7 +14,7 @@
         });
     });
 
-    module(suiteName + ".settValue");
+    module(suiteName + ".setValue");
     unitTestHelper.executeTestCollectionSimple(ArteTextAreaTestData.setValue, function (testData)
     {
         $.Arte.configuration.handleUnsanctionedTagsOnGetValue = false;
@@ -27,7 +27,6 @@
             doNotApplyAttributes: true
         });
     });
-
 
     module(suiteName + ".getOuterValue");
     unitTestHelper.executeTestCollectionSimple(ArteTextAreaTestData.getOuterValue, function (testData)
@@ -179,6 +178,22 @@ var ArteTextAreaTestData = {
             }
         },
         {
+            name: "blurWithChangedValue",
+            assertionCount: 2,
+            op: function(arte) {
+                arte.on({
+                    "onvaluechange": function(e, data) {
+                        ok(true, "onvaluechange called");
+                    }
+                });
+                arte.$el.trigger("focus");
+                arte.$el.html("xyz");
+                arte.$el.trigger("blur");
+
+                return true;
+            }
+        },
+        {
             name: "keydown",
             assertionCount: 2,
             op: function(arte) {
@@ -298,7 +313,7 @@ var ArteTextAreaTestData = {
             op: function(arte) {
                 arte.value("xyz");
                 var handler = function(e, data) {
-                    ok(true, "click called");
+                    ok(true, "onvaluechange called");
                 };
                 arte.on("onvaluechange", handler);
                 arte.value("xyz");
@@ -306,12 +321,12 @@ var ArteTextAreaTestData = {
             }
         },
         {
-            name: "valueChangedNotCalledWithSameContent",
+            name: "valueChangedNotCalledWithSameNestedContent",
             assertionCount: 1,
             op: function(arte) {
                 arte.value("<b>ABCD</b>");
                 var handler = function(e, data) {
-                    ok(true, "click called");
+                    ok(true, "onvaluechange called");
                 };
                 arte.on("onvaluechange", handler);
                 arte.value("<b>ABCD</b>");
@@ -335,12 +350,12 @@ var ArteTextAreaTestData = {
             name: "valueChanged_outerValueChanged",
             assertionCount: 2,
             op: function (arte) {
-                arte.outerValue("<div style='font-weight:bold;, font-size:10px'>xyz</div>");
+                arte.outerValue("<div style='font-weight:bold; font-size:10px'>xyz</div>");
                 var handler = function (e, data) {
-                    ok(true, "click called");
+                    ok(true, "onvaluechange called");
                 };
                 arte.on("onvaluechange", handler);
-                arte.value("<div style='font-weight:bold;'>xyz</div>");
+                arte.outerValue("<div style='font-weight:bold;'>xyz</div>");
                 return true;
             }
         },
@@ -348,12 +363,12 @@ var ArteTextAreaTestData = {
             name: "valueChanged_outerValueNotChanged",
             assertionCount: 1,
             op: function (arte) {
-                arte.outerValue("<div style='font-weight:bold;, font-size:10px'>xyz</div>");
+                arte.outerValue("<div style='font-weight:bold; font-size:10px'>xyz</div>");
                 var handler = function (e, data) {
-                    ok(true, "click called");
+                    ok(true, "onvaluechange called");
                 };
                 arte.on("onvaluechange", handler);
-                arte.outerValue("<div style='font-weight:bold;, font-size:10px'>xyz</div>");
+                arte.outerValue("<div style='font-weight:bold; font-size:10px'>xyz</div>");
                 return true;
             }
         }
