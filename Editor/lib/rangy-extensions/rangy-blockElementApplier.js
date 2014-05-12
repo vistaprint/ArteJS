@@ -1,9 +1,7 @@
 ﻿/*global Arte:false*/
 
-rangy.createModule("BlockElementApplier", function(api)
+rangy.createModule("BlockElementApplier", ["WrappedSelection", "WrappedRange"], function(api)
 {
-    api.requireModules(["WrappedSelection", "WrappedRange"]);
-
     var dom = $.Arte.dom;
     var constants = $.Arte.constants;
 
