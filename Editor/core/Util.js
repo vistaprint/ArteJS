@@ -99,7 +99,9 @@
                 }
 
                 // In case we don't have a valid selection, 
-                selectedNodes.push(this.$el.get(0));
+                range = rangy.createRangyRange();
+                range.selectNodeContents(this.$el.get(0));         
+                selectedNodes = rangy.util.getTextNodes(range);
             }
             else if (isSelectionInElement)
             {
