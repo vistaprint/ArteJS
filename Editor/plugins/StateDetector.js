@@ -4,7 +4,6 @@
 (function(pluginManager)
 {
     var constants = $.Arte.constants;
-    var util = $.Arte.util;
 
     var getValue = function(nodes, commandOptions)
     {
