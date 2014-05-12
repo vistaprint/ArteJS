@@ -1,7 +1,5 @@
-﻿rangy.createModule("InlineElementApplier", function(api)
+﻿rangy.createModule("InlineElementApplier", ["WrappedSelection", "WrappedRange"], function(api)
 {
-    api.requireModules(["WrappedSelection", "WrappedRange"]);
-
     var dom = $.Arte.dom;
     var configuration = $.Arte.configuration;
     var constants = $.Arte.constants;
@@ -154,7 +152,7 @@
             endMarker.remove();
         }
 
-        range = rangy.getSelection().getRangeAt(0);
+        var range = rangy.getSelection().getRangeAt(0);
         if (range)
         {
             toggleRange(range, inlineOptions);
