@@ -1,9 +1,9 @@
 'use strict';
 
 module.exports = function (grunt) {
-    var arteVersion = "v0.2";
-    var toolbarVersion = "v0.2";
-    var rangyVersion = 'v1.2.3';
+    var arteVersion = "0.2";
+    var toolbarVersion = "0.2";
+    var rangyVersion = '1.3alpha.804';
     // Project configuration.
     grunt.initConfig({
         jshint: {
@@ -37,11 +37,11 @@ module.exports = function (grunt) {
 
         concat: {
             RangyDebug: {
-                src: ['Editor/lib/rangy-1.2.3/**/*.js'],
+                src: ['Editor/lib/rangy-' + rangyVersion + '/**/*.js'],
                 dest: 'Release/rangy.' + rangyVersion + '.debug.js'
             },
             RangyRelease: {
-                src: ['Build/Editor/lib/rangy-1.2.3/**/*.js'],
+                src: ['Build/Editor/lib/rangy-' + rangyVersion + '/**/*.js'],
                 dest: 'Release/rangy.' + rangyVersion + '.min.js'
             },
             EditorDebug: {
@@ -73,7 +73,7 @@ module.exports = function (grunt) {
                 'Build/Editor/lib/rangy-extensions/rangy-extensions.js',
                 'Build/Editor/plugins/**/*.js'
             ],
-                dest: 'Release/arte.' + arteVersion + 'min.js'
+                dest: 'Release/arte.' + arteVersion + '.min.js'
             },
             ToolbarDebug: {
                 src: [
