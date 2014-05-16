@@ -51,7 +51,7 @@
 
     var getState = function(selectedNodes, commandName, options)
     {
-        if (!selectedNodes.length)
+        if (!selectedNodes || !selectedNodes.length)
         {
             return null;
         }
