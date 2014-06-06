@@ -114,5 +114,61 @@ var valueStateDetectorTestData = [
             return result;
         }
 
+    },
+    {
+        name: "getMultiState",
+        rawContent: "<span id='span' style='font-family: arial'>data</span>",
+        elementId: 'span',
+        operation: function(arte)
+        {           
+            $.Arte.dom.cleanup(arte.$el);
+            return arte.getAllStates("fontFamily");
+        },
+        evaluateResult: function(result)
+        {
+            return result[0] === 'arial';
+        }
+    },
+    {
+        name: "getAllSelectionStatesForSpecificProperty",
+        rawContent: "<div id='div'><span style='font-family: arial'>data</span><span style='font-family: courier'>data</span></div>",
+        elementId: 'div',
+        operation: function(arte)
+        {
+            $.Arte.dom.cleanup(arte.$el);
+            return arte.getAllStates("fontFamily");
+        },
+        evaluateResult: function(result)
+        {
+            return result.length === 2 && result[0] === 'arial' && result[1] === 'courier';
+        }
+    },
+    {
+        name: "getAllSelectionStatesValues",
+        rawContent: "<div id='div'><b><span>data</span></b><span>data</span></div>",
+        elementId: 'div',
+        operation: function(arte)
+        {
+            $.Arte.dom.cleanup(arte.$el);
+            return arte.getAllStates("bold");
+        },
+        evaluateResult: function(result)
+        {
+            return result.length === 2 && result[0] && !result[1];
+        }
+    },
+    {
+        name: "getMultiStateAllProperties",
+        rawContent: "<div id='div'><b><span style='font-family: arial'>data</span></b><span style='font-family: courier'>data</span></div>",
+        elementId: 'div',
+        operation: function(arte)
+        {
+            $.Arte.dom.cleanup(arte.$el);
+            return arte.getAllStates();
+        },
+        evaluateResult: function(result)
+        {
+            return result.length === 2 && result[0].fontFamily === 'arial' && result[0].bold && result[1].fontFamily === "courier" && !result[1].bold;
+        }
     }
 ];
