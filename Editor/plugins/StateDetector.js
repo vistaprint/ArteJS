@@ -67,27 +67,49 @@
         return commandConfig.acceptsParams ? getValue(selectedNodes, commandOptions) : isApplied(selectedNodes, commandOptions);
     };
 
+    var getSelectedNodesState = function(selectedNodes, commandName) {
+        if (commandName)
+        {
+            return getState(selectedNodes, commandName);
+        }
+        else
+        {
+            var result = {};
+            $.each($.Arte.configuration.commands, function(name, config)
+            {
+                if ($.isPlainObject(config) && config.commandType && config.commandType != constants.commandType.other)
+                {
+                    result[name] = getState(selectedNodes, name);
+                }
+            });
+            return result;
+        }
+    };
+
     // Extend the prototype of the TextArea to expose the public API
     $.extend($.Arte.TextArea.prototype, {
         getState: function(commandName)
         {
             var selectedNodes = $.Arte.util.getSelectedTextNodes.apply(this, [true]);
-            if (commandName)
-            {
-                return getState(selectedNodes, commandName);
-            }
-            else
-            {
-                var result = {};
-                $.each($.Arte.configuration.commands, function(name, config)
-                {
-                    if ($.isPlainObject(config) && config.commandType && config.commandType != constants.commandType.other)
-                    {
-                        result[name] = getState(selectedNodes, name);
-                    }
-                });
-                return result;
-            }
+            return getSelectedNodesState(selectedNodes, commandName);
+        },
+        
+        /**
+        * Get an array of all the states found within the current selection
+        * (ie: if the current selection has both a bold and a non-bold component, get two results representing that)
+        * @param {commandName} string. Optional. If provided, only result the state of the given command (ie: fontFamily, bold, etc)
+        */
+        getAllStates: function(commandName)
+        {
+            var selectedNodes = $.Arte.util.getSelectedTextNodes.apply(this, [true]);
+            var results = [];
+
+            $.each(selectedNodes, function() {
+                var selectedNode = $(this);
+                results.push(getSelectedNodesState(selectedNode, commandName));
+            });
+
+            return results;
         }
     });
 
