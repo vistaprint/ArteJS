@@ -27,7 +27,7 @@
             if (newOuterValue != oldOuterValue) {
                 var oldValue = me._currentValue;
                 var newValue = me.value(); // This sets this._currentValue
-                me.triggerEvent(eventNames.onvaluechange, { newValue: newValue, oldValue: this._currentValue, src: "internal" });
+                me.triggerEvent(eventNames.onvaluechange, { newValue: newValue, oldValue: oldValue, src: "internal" });
             }
         }
 
