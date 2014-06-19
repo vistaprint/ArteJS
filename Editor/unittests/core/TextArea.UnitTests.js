@@ -52,7 +52,7 @@
             doNotApplyAttributes: true
         });
     });
-    
+
     module(suiteName + ".events");
     unitTestHelper.executeAsyncTestCollectionSimple(ArteTextAreaTestData.events, function (testData)
     {
@@ -300,6 +300,21 @@ var ArteTextAreaTestData = {
             op: function(arte) {
                 var handler = function(e, data) {
                     ok(true, "onvaluechange called");
+                };
+                arte.on("onvaluechange", handler);
+                arte.value("xyz");
+
+                return true;
+            }
+        },
+        {
+            name: "valueChangedWithCorrectNewValueAndOldValue",
+            assertionCount: 3,
+            op: function(arte) {
+                arte.value("abc");
+                var handler = function(e, data) {
+                    ok(data.newValue === "xyz");
+                    ok(data.oldValue === "abc");
                 };
                 arte.on("onvaluechange", handler);
                 arte.value("xyz");
