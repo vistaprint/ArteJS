@@ -56,7 +56,7 @@
         $.each(initialValues.classes, function (index, className) {
             me.$el.addClass(className);
         });
-        
+
         me.$element.attr(configuration.textFieldIdentifier, "1");
 
         /*
@@ -68,6 +68,10 @@
         * Listen for the dom events on the text area or the content editable element.
         */
         me.$el.on({
+            input: function (e) {
+                handleValueChange(); //Autocorrect, don't wait for the next tick or it will be too late
+                e.stopPropagation();
+            },
             keydown: function (e) {
                 me.triggerEvent(eventNames.onkeydown, { originalEvent: e });
                 e.stopPropagation();
@@ -127,11 +131,11 @@
     };
 
     $.extend($.Arte.TextArea.prototype, {
-        // Get innerHtml of the contentEditable element    
+        // Get innerHtml of the contentEditable element
         "value": function (value, options) {
             var constants = $.Arte.constants;
             var op = this.editorType === constants.editorTypes.richText ? "html" : "val";
-           
+
             if (typeof (value) === "undefined") {
                 if ($.Arte.configuration.handleUnsanctionedTagsOnGetValue) {
                     // Save current selection
@@ -149,7 +153,7 @@
 
             var oldValue = this._currentValue;
             this._currentValue = value;
-            // Set the inner text 
+            // Set the inner text
             this.$el[op](value);
             this.triggerEvent(constants.eventNames.onvaluechange, { newValue: this._currentValue, oldValue: oldValue, src: "external" });
         },
@@ -162,11 +166,11 @@
                 return this._currentOuterValue;
             }
             var newElement = $(value);
-            
-            if ($.Arte.dom.isEqual(this.$el, newElement)) { 
+
+            if ($.Arte.dom.isEqual(this.$el, newElement)) {
                 return;
             }
-            
+
             this.$el.removeAttr("style"); // Clear the styles
             this.$el.attr("style", newElement.attr("style"));
 
@@ -199,13 +203,13 @@
             this.$el.off();
             this.$el.removeAttr("contentEditable");
             this.triggerEvent($.Arte.constants.eventNames.ondestroy);
-            
+
             if (options && options.removeContent) {
                 this.$element.empty();
             }
         },
         /**
-        *  on/off methods to support attaching events handler using a rich text instance 
+        *  on/off methods to support attaching events handler using a rich text instance
         */
         on: function (type, handler) {
             this.$element.on(type, handler);
