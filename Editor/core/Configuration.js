@@ -63,6 +63,7 @@
         * List of events raised by Arte
         */
         eventNames: {
+            "oninput": "oninput",
             "onfocus": "onfocus",
             "onblur": "onblur",
             "onvaluechange": "onvaluechange",
@@ -122,7 +123,7 @@
         */
         rangySelectionBoundaryClassName: "rangySelectionBoundary",
 
-        /* 
+        /*
         * Default tags to use when applying a rich text command
         * These can be over-ridden in the command configuration for each command
         */
@@ -161,20 +162,20 @@
     };
 
     var configuration = $.Arte.configuration;
-    
+
     /*
     * ArteJS command configuration
     * Command configuration specifies how a command can be applied and how can we identify if that command has been applied
     */
     $.Arte.configuration.commands = {
-        /* 
+        /*
         * Bold command be applied using a tag (B), a style (font-weight=bold), or a class (arte-font-weight-bold)
         * command configuration specifies how to apply command in each case
         */
         bold: {
             // Bold command is inline; it can be applied to a selection
             commandType: constants.commandType.inline,
-            // The following three properties are used to identify if bold command is applied 
+            // The following three properties are used to identify if bold command is applied
             tagName: constants.tagName.B,
             styleName: "font-weight",
             classNameRegex: new RegExp(configuration.classNameSpace + "-font-weight-[\\S]+"),
