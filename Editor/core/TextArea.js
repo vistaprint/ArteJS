@@ -70,6 +70,7 @@
         me.$el.on({
             input: function (e) {
                 handleValueChange(); //Autocorrect, don't wait for the next tick or it will be too late
+                me.triggerEvent(eventNames.oninput, { originalEvent: e });
                 e.stopPropagation();
             },
             keydown: function (e) {

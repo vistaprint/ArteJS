@@ -194,6 +194,22 @@ var ArteTextAreaTestData = {
             }
         },
         {
+            name: "input",
+            assertionCount: 3,
+            op: function(arte) {
+                arte.on("oninput", function(e, data) {
+                    ok(true, "oninput called");
+                });
+                arte.on("onvaluechange", function(e, data) {
+                    ok(true, "onvaluechange called");
+                });
+                arte.value("xyz");
+                arte.$el.trigger("input");
+
+                return true;
+            }
+        },
+        {
             name: "keydown",
             assertionCount: 2,
             op: function(arte) {
