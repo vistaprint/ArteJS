@@ -10,7 +10,7 @@
         me.$element = $(options.element);
         me.element = me.$element.get(0);
         // The _container that contains the editable $el. It's needed to deal with getting $el's outer value.
-        me._container = me.element
+        me._container = me.element;
 
         // Create a mix-in of the user provided values and configuration defined default values
         var initialValues = $.extend({}, configuration.initialValues, options);
