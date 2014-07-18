@@ -1,9 +1,4 @@
-﻿/**
-* @fileoverview: UndoManager plugin is a naive implementation to manage undo/redo information from a text area
-* TODO: Evaluate https://code.google.com/p/google-diff-match-patch/ for computing diffs.
-*/
-
-(function(pluginManager)
+﻿(function(pluginManager)
 {
     $.Arte.configuration.pasteHandler = {
         attributes: {
