@@ -6,15 +6,18 @@
         var configuration = $.Arte.configuration;
         var constants = $.Arte.constants;
 
+        // Backwards compatibility. Use _container instead.
         me.$element = $(options.element);
+        me.element = me.$element.get(0);
+        // The _container that contains the editable $el. It's needed to deal with getting $el's outer value.
+        me._container = me.element
+
         // Create a mix-in of the user provided values and configuration defined default values
         var initialValues = $.extend({}, configuration.initialValues, options);
 
         var eventNames = constants.eventNames;
         this.editorType = options.editorType || constants.editorTypes.richText;
 
-        //Stores the internal value (innerHTML) of the field
-        this._currentValue = "";
         //Store the outer value for comparison of value changes
         this._currentOuterValue = "";
 
@@ -22,12 +25,23 @@
         var pollTimer = null;
 
         var handleValueChange = function() {
+            var newOuterValue = me._container.innerHTML;
             var oldOuterValue = me._currentOuterValue;
-            var newOuterValue = me.outerValue(); // This will set this._currentOuterValue
-            if (newOuterValue != oldOuterValue) {
-                var oldValue = me._currentValue;
-                var newValue = me.value(); // This sets this._currentValue
-                me.triggerEvent(eventNames.onvaluechange, { newValue: newValue, oldValue: oldValue, src: "internal" });
+
+            if (newOuterValue !== oldOuterValue) {                
+                var contents = me.$el.contents();
+                if ($.Arte.dom.hasUnsanctionedElements(contents)) {
+                    var savedSelection;
+                    if (isFocused) {
+                        savedSelection = rangy.saveSelection();   
+                    } 
+                    $.Arte.dom.handleUnsanctionedElements(contents);
+                    if (isFocused) {
+                        rangy.restoreSelection(savedSelection);
+                    }
+                }                
+                me._currentOuterValue = me._container.innerHTML;
+                me.triggerEvent(eventNames.onvaluechange, { newValue: me.value(), src: "internal" });
             }
         }
 
@@ -39,25 +53,34 @@
             }
         };
 
-        // Construct a dom element to host richtext editor or use if one already exist
-        if (me.$element.children().length === 0) {
-            me.$el = (me.editorType === constants.editorTypes.richText) ?
-                $("<div>").attr({ contentEditable: "true" }) :
-                me.$el = $("<textarea>").css({ height: "100%", width: "100%", padding: "0px", border: "0px" });
-            me.$element.append(me.$el);
-        }
-        else {
-            me.$el = me.$element.children().first();
-            if (me.$el.is("div")) {
-                me.$el.attr({ contentEditable: "true" });
+        // Construct a dom element to host richtext editor
+        if (!me.element.hasChildNodes()) {        
+            if (me.editorType === constants.editorTypes.richText) {
+                me.el = document.createElement("div");
+                me.el.setAttribute("contenteditable", "true");
+            } else {
+                me.el = document.createElement("textarea");
+                me.el.style.height = "100%";
+                me.el.style.width = "100%";
+                me.el.style.padding = 0;
+                me.el.style.border = 0;
+            }   
+            me._container.appendChild(me.el);
+            me.$el = $(me.el);
+        // Use an existing DIV or TEXTAREA if it already exists
+        } else {
+            me.el = me._container.childNodes[0];
+            if (me.el.tagName === "DIV") {
+                me.el.setAttribute("contenteditable", "true");
+            } else if (me.el.tagName !== "TEXTAREA") {
+                throw new Error("Cannot make element editable");
             }
+            me.$el = $(me.el);
         }
-        me.$el.css(initialValues.styles);
-        $.each(initialValues.classes, function (index, className) {
-            me.$el.addClass(className);
-        });
 
-        me.$element.attr(configuration.textFieldIdentifier, "1");
+        me.$el.css(initialValues.styles);
+        me.el.setAttribute("class", initialValues.classes.join(" "));
+        me._container.setAttribute(configuration.textFieldIdentifier, "1");
 
         /*
         * Whether the element has the focus
@@ -68,11 +91,6 @@
         * Listen for the dom events on the text area or the content editable element.
         */
         me.$el.on({
-            input: function (e) {
-                handleValueChange(); //Autocorrect, don't wait for the next tick or it will be too late
-                me.triggerEvent(eventNames.oninput, { originalEvent: e });
-                e.stopPropagation();
-            },
             keydown: function (e) {
                 me.triggerEvent(eventNames.onkeydown, { originalEvent: e });
                 e.stopPropagation();
@@ -125,61 +143,42 @@
         $.Arte.pluginManager.init(me);
 
         me.value(initialValues.value);
-        me.outerValue(); // This sets the internal this._currentOuterValue
 
-        me.$element.on(options.on);
+        $(me._container).on(options.on);
         me.triggerEvent(eventNames.oncreate);
     };
 
     $.extend($.Arte.TextArea.prototype, {
         // Get innerHtml of the contentEditable element
-        "value": function (value, options) {
+        "value": function(value) {
             var constants = $.Arte.constants;
-            var op = this.editorType === constants.editorTypes.richText ? "html" : "val";
+            var prop = this.editorType === constants.editorTypes.richText ? "innerHTML" : "value";
+            var currentValue = this.el[prop];
 
-            if (typeof (value) === "undefined") {
-                if ($.Arte.configuration.handleUnsanctionedTagsOnGetValue) {
-                    // Save current selection
-                    var savedSelection = rangy.saveSelection();
-                    $.Arte.dom.handleUnsanctionedElements(this.$el.contents());
-                    rangy.restoreSelection(savedSelection);
-                }
-                this._currentValue = this.$el[op]();
-                return this._currentValue;
+            if (typeof(value) === "undefined") {
+                return currentValue;
             }
 
-            if (this._currentValue === value && (!options || !options.forceApply)) {
+            if (currentValue === value) {
                 return;
             }
 
-            var oldValue = this._currentValue;
-            this._currentValue = value;
-            // Set the inner text
-            this.$el[op](value);
-            this.triggerEvent(constants.eventNames.onvaluechange, { newValue: this._currentValue, oldValue: oldValue, src: "external" });
+            this.el[prop] = value;
+            this._currentOuterValue = this._container.innerHTML;
+            this.triggerEvent(constants.eventNames.onvaluechange, { newValue: value, src: "external" });
         },
-        // Get outerHtml of the contentEditable
+        // Get outerHtml of the contentEditable element
         "outerValue": function (value) {
             if (typeof (value) === "undefined") {
                 var clone = this.$element.clone();
                 clone.children().removeAttr("contenteditable");
-                this._currentOuterValue = clone.html();
-                return this._currentOuterValue;
-            }
-            var newElement = $(value);
-
-            if ($.Arte.dom.isEqual(this.$el, newElement)) {
-                return;
+                return clone.html();
             }
 
-            this.$el.removeAttr("style"); // Clear the styles
-            this.$el.attr("style", newElement.attr("style"));
-
-            this.$el.removeAttr("class");
-            this.$el.attr("class", newElement.attr("class"));
-
-            this.value(newElement.html(), { forceApply: true });
-            this._currentOuterValue = this.outerValue();
+            var newElement = $(value)[0];
+            this.el.setAttribute("style", newElement.getAttribute("style") || "");
+            this.el.setAttribute("class", newElement.getAttribute("class") || "");
+            this.value(newElement.innerHTML);
         },
         "focus": function () {
             var me = this;
@@ -188,7 +187,6 @@
                 $.Arte.util.moveCursorToEndOfElement(me.$el.get(0));
                 me.triggerEvent($.Arte.constants.eventNames.onselectionchange);
             };
-
             me.$el.on("focus", focusHandler);
             me.$el.focus();
         },

@@ -80,6 +80,7 @@
         return testData.evaluateResult(arte);
     });
 
+    module(suiteName + ".toggleStyleOnElement");
     unitTestHelper.executeTestCollectionSimple(toggleStyleOnElementTestData, function(testData)
     {
         $(TEST_ELEMENT_SELECTOR).Arte(testData.options); // use default options
@@ -107,8 +108,6 @@ var commandsWithNoSelectionTestData = [
     {
         name: "fontStyle",
         commandName: "italic",
-        /* For some commands, the actual command is decided at the runtime.  AltCommandName property is set to 
-        define the actual command that is expected to run. */
         altCommandName: "fontStyle"
     },
     {
