@@ -157,10 +157,9 @@ module.exports = function (grunt) {
 
     // Default task.
     grunt.registerTask('default', ['build']);
-    grunt.registerTask('travis', ['build']);
-    grunt.registerTask('verify', ['jshint:jslint', 'connect', 'qunit']);
+    grunt.registerTask('travis', ['verify', 'build']);
+    grunt.registerTask('verify', ['clean', 'jshint:jslint', 'uglify', 'concat', 'connect', 'qunit']);
     grunt.registerTask('analysis', ['plato']);
-    grunt.registerTask('build', ['clean', 'uglify', 'concat', 'verify']);
+    grunt.registerTask('build', ['clean', 'uglify', 'concat']);
     grunt.registerTask('all', ['build', 'analysis']);
-
 };
