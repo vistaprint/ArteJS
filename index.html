@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html>
-
 <head>
     <meta charset='utf-8' />
     <meta http-equiv="X-UA-Compatible" content="chrome=1" />
-    <meta name="description" content="Artejs : A powerful, extensible, flexible, cross-browser rich text editor" />
+    <meta name="description" content="ArteJS : A powerful, extensible, flexible, cross-browser rich text editor" />
 
     <link rel="stylesheet" type="text/css" href="CSS/3rdParty/Tocify/jquery.tocify.css" />
     <link rel="stylesheet" type="text/css" media="screen" href="CSS/stylesheet.css" />
@@ -14,9 +13,8 @@
     <script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
     <script src="http://alexgorbatchev.com/pub/sh/current/scripts/shAutoloader.js" type="text/javascript"></script>
     <script src="http://agorbatchev.typepad.com/pub/sh/3_0_83/scripts/shbrushjscript.js" type="text/javascript"></script>
-    <title>Artejs</title>
+    <title>ArteJS</title>
 </head>
-
 <body>
 
     <!-- HEADER -->
@@ -24,7 +22,7 @@
         <header class="inner">
             <a id="forkme_banner" href="https://github.com/vistaprint/ArteJS">View on GitHub</a>
 
-            <h1 id="project_title">Artejs</h1>
+            <h1 id="project_title">ArteJS</h1>
             <p id="project_tagline">A powerful, extensible, flexible, cross-browser rich text editor</p>
 
             <section id="downloads">
@@ -166,11 +164,11 @@ $(".editor").fontSize(10); // Change fontsize of the selected text to 10px
 
                 <a name="events"></a>
                 <h2>Events</h2>
-                ArteJS raises a rich collection of events to interact with the editor.  
+                ArteJS raises a rich collection of events to interact with the editor.
             <pre>
-                // Listening to the events 
-                $(selector).on('eventName', function(e, data) {...}); or
-                editorInstance.on('eventName', function(e, data) {...});
+                // Listening to the events
+                $(selector).on('eventname', function(e, data) {...}); // or
+                editorInstance.on('eventname', function(e, data) {...});
             </pre>
                 <h4>Events raised by editor</h4>
                 <ul>
@@ -223,7 +221,7 @@ $(".editor").fontSize(10); // Change fontsize of the selected text to 10px
                     <li>value <span>Get the innerHtml of the editor.</span></li>
                     <li>outerValue <span>Get the outerHtml of the editor.</span></li>
                     <li>focus <span>Set focus to the editor.</span></li>
-                    <li>destroy <span>Remove the editor from dom.</span></li>
+                    <li>destroy <span>Remove the editor from DOM.</span></li>
                     <li>on <span>Attach an event listener to the editor.</span></li>
                     <li>off <span>Remove the event listener from the editor.</span></li>
                     <li>toggleStyleOnElement <span>Apply style to the editor</span></li>
@@ -238,12 +236,12 @@ $(".editor").fontSize(10); // Change fontsize of the selected text to 10px
 
                 <h5>Insert plugin</h5>
                 <ul>
-                    <li>insert <span>Insert html content into the editor.</span></li>
+                    <li>insert <span>Insert HTML content into the editor.</span></li>
                 </ul>
 
                 <h5>UndoManager plugin</h5>
                 <ul>
-                    <li>hasUndo <span>Whethere the editor has undo information.</span></li>
+                    <li>hasUndo <span>Whether the editor has undo information.</span></li>
                     <li>hasRedo <span>Whether the editor has redo information.</span></li>
                     <li>undo <span>Undo</span></li>
                     <li>redo <span>Redo</span></li>
@@ -298,17 +296,17 @@ $(selector).Arte().each(function(){
                 <h4>Changing the way a rich text command is applied</h4>
                 <pre>
 // Many rich text commands can be applied using a tagName, style and class.  For example, bold command be applied as either
-// style (font-weight), class (with font-weight), tags (b or strong).  RTE allows us to choose how a rich text command 
+// style (font-weight), class (with font-weight), tags (b or strong).  Arte allows us to choose how a rich text command
 // is applied using the following mechanism:
 // 1) Supplied in the command options ({commandAttrType = "styleName" | "className" | "tagName"})
 // 2) Inferred from the values in the options ({className = "..."})
-// 3) Using default attribute type specified in the configuration file (RTE.configuration.commandAttrType)
+// 3) Using default attribute type specified in the configuration file (Arte.configuration.commandAttrType)
 
 // Arte configuration allows setting the commandAttrType globally or can be changed for each command.
 // For the commands that can only be applied one way (e.g. H1, BlockQuotes, etc.) the commandAttrType is ignored.
 
 // Bold is applied based on the global configuration
-$(selector).Arte("bold");  
+$(selector).Arte("bold");
 
 // Override the global configuration to apply bold using B/Strong tag
 $(selector).Arte("bold", { tagName: "B" });
@@ -329,17 +327,17 @@ var value = $(selector).Arte("value");
 $(selector).Arte("value", "This can be any <b>valid</b> html fragment.");
 
 // Get the array of outer html of all rich text editors associated with this selector
-var outerValues = $(selector).RTE("outerValue");
-$(selector).RTE("value", "<div style='font-weight: bold'>This can only be a <span style='font-weight: bold'>single html element</span> </div>");
+var outerValues = $(selector).Arte("outerValue");
+$(selector).Arte("value", "<div style='font-weight: bold'>This can only be a <span style='font-weight: bold'>single html element</span> </div>");
             </pre>
 
                 <h4>Interacting with rich text command</h4>
                 <pre>
-//Suppose we want to ensure that only valid values are used in rich text commands (e.g. a whitelist 
-// for font-size and font-family) or we need to translate some command values (e.g. convert 
-// color from CMYk to RGB).  This can be achieved by listening to onBeforeCommand event
-$("#editor").RTE("on", {
-    "onBeforeCommand": function (e, data) {
+// Suppose we want to ensure that only valid values are used in rich text commands (e.g. a whitelist
+// for font-size and font-family) or we need to translate some command values (e.g. convert
+// color from CMYk to RGB). This can be achieved by listening to the `onbeforecommand` event
+$("#editor").Arte("on", {
+    "onbeforecommand": function (e, data) {
         switch (data.commandName) {
             case "fontSize":
                 switch (data.commandValue) {
@@ -466,7 +464,7 @@ $.Arte.Toolbar.configuration.buttons.fontSize.options = [
     <!-- FOOTER  -->
     <div id="footer_wrap" class="outer">
         <footer class="inner">
-            <p class="copyright">Artejs maintained by <a href="https://github.com/vistaprint">vistaprint</a></p>
+            <p class="copyright">ArteJS maintained by <a href="https://github.com/vistaprint">vistaprint</a></p>
             <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
         </footer>
     </div>
@@ -493,7 +491,6 @@ $.Arte.Toolbar.configuration.buttons.fontSize.options = [
                 }
             });
         });
-
     </script>
 
 </body>
