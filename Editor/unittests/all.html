@@ -11,16 +11,39 @@
     <script type="text/javascript" src="unitTestsHelper.js"></script>
 
     <!--Files To Test-->
-    <script type="text/javascript" src="../../Release/rangy.1.3alpha.804.debug.js"></script>
-    <script type="text/javascript" src="../../Release/arte.0.2.debug.js"></script>
 
+    <script type="text/javascript" src="../../Editor/lib/rangy-1.3alpha.804/rangy-core.js"></script>
+    <script type="text/javascript" src="../../Editor/lib/rangy-1.3alpha.804/rangy-selectionsaverestore.js"></script>
+
+    <script type="text/javascript" src="../../Editor/core/Arte.js"></script>
+    <script type="text/javascript" src="../../Editor/core/TextArea.js"></script>
+    <script type="text/javascript" src="../../Editor/core/Configuration.js"></script>
+    <script type="text/javascript" src="../../Editor/core/Commands.js"></script>
+    <script type="text/javascript" src="../../Editor/core/PluginManager.js"></script>
+    <script type="text/javascript" src="../../Editor/core/Util.js"></script>
+
+    <script type="text/javascript" src="../../Editor/lib/jquery-extensions/jquery-dom-manipulation.js"></script>
+    <script type="text/javascript" src="../../Editor/lib/jquery-extensions/jquery-dom-traversal.js"></script>
+    <script type="text/javascript" src="../../Editor/lib/jquery-extensions/jquery-dom-cleanup.js"></script>
+
+    <script type="text/javascript" src="../../Editor/lib/rangy-extensions/rangy-blockElementApplier.js"></script>
+    <script type="text/javascript" src="../../Editor/lib/rangy-extensions/rangy-elementApplierOptions.js"></script>
+    <script type="text/javascript" src="../../Editor/lib/rangy-extensions/rangy-extensions.js"></script>
+    <script type="text/javascript" src="../../Editor/lib/rangy-extensions/rangy-inlineElementApplier.js"></script>
+    <script type="text/javascript" src="../../Editor/lib/rangy-extensions/richtextCommandApplier.js"></script>
+
+
+    <script type="text/javascript" src="../../Editor/plugins/InsertCommand.js"></script>
+    <script type="text/javascript" src="../../Editor/plugins/keyboardEventHandler.js"></script>
+    <script type="text/javascript" src="../../Editor/plugins/pasteHandler.js"></script>
+    <script type="text/javascript" src="../../Editor/plugins/StateDetector.js"></script>
+    <script type="text/javascript" src="../../Editor/plugins/UndoManager.js"></script>
 
     <!-- Add the test element id and selector-->
     <script type="text/javascript">
         TEST_ELEMENT_ID = "test-element";
         TEST_ELEMENT_SELECTOR = "#" + TEST_ELEMENT_ID;
-    </script>
-    
+    </script>    
     
 </head>
 <body>
@@ -32,7 +55,6 @@
     <!-- If you need to do DOM manipulation, do it in this element !-->
     <div id="test-element"></div>
     <div id="qunit-fixture">test markup, will be hidden</div>
-
 
     <!-- End of files being tested !-->
     <!-- Core Test cases -->

@@ -141,7 +141,7 @@ var ArtePasteHandlerTestData = [
      },
      {
          name: "actualContentFromMsWord2",
-         rawContent: '<div id="s">af<img alt="Try Advanced Editing" src="http://devhsingh.vistaprint.net/sf/_langid-1/_/vp/images/b09/studio/adv-editing-callout/adv-editing-callout-001.jpg" style="width:111px;height:33px;"></div>',
+         rawContent: '<div id="s">af<img alt="Try Advanced Editing" style="width:111px;height:33px;"></div>',
          expectedContent: "<div id='s'>af</div>"
      },
      {

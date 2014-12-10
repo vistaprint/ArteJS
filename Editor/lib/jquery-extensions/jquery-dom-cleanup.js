@@ -42,10 +42,9 @@
             options:{
                 removeNonPrintableCharacters: true,
                 removeEmptyElements: true,
-                removeRedundantDom: true,
-                mergeAdjunctLists: true
+                removeRedundantMarkup: true,
+                mergeAdjacentLists: true
             },
-
 
             invalidTagHandlers: {
                 "B": {
@@ -92,12 +91,13 @@
                 H5: { H1: 1, H2: 1, H3: 1, H4: 1, H6: 1 },
                 H6: { H1: 1, H2: 1, H3: 1, H4: 1, H5: 1 }
             },
+
             /**
             * Collection of invalid characters and character ranges
             */
             invalidCharacterRegex: [
                 '\u0000-\u001F', // Control Characters
-                '\u0080-\u009F', // Latin-Supllement many control characters in this range
+                '\u0080-\u009F', // Latin-Supplement many control characters in this range
                 '\u2000-\u200F', // Invisible Puntuation
                 '\uE000-\uF8FF' // Private use
             ]
@@ -106,39 +106,33 @@
 
     var cleanupConfig = configuration.cleanup;
 
+    var mergeLists = function(tagName, lists) {
+        var filter = function(index, node) {
+            return !$(node).is(":emptyTextOrRangySpan");
+        };
+        // Start from the last element in the list and start merging backward
+        while (lists.length) {
+            var currentList = $(lists[lists.length - 1]);
+            lists.splice(lists.length - 1, 1);
+            var prevNode = dom.prevSiblingIncludingTextNodes(currentList, filter);
+
+            // If the previous element has same list tagName, merge both of these elements
+            if (prevNode && prevNode.prop("tagName") === tagName) {
+                // Move the current node's li children to previous node
+                currentList.children().appendTo(prevNode);
+                currentList.remove();
+            }
+        }
+    };
+
     /**
-    * Merge adjunct lists within the set of matched element
+    * Merge adjacent lists within the set of matched element
     * For example <ul><li>1</li><ul><ul><li>2</li></ul> => <ul><li>1</li><li>2</li></ul>
     */
-    var mergeAdjunctLists = function(jNodes)
-    {
-        var mergeLists = function(lists)
-        {
-            var tagName = $(lists[0]).prop("tagName");
-            var filter = function(index, node)
-            {
-                return !$(node).is(":emptyTextOrRangySpan");
-            };
-            // Start from the last element in the list and start merging backward
-            while (lists.length)
-            {
-                var currentList = $(lists[lists.length - 1]);
-                lists.splice(lists.length - 1, 1);
-                var prevNode = dom.prevSiblingIncludingTextNodes(currentList, filter);
-
-                // If the previous elements has same list tagName, merge both of these elements
-                if (prevNode && prevNode.prop("tagName") === tagName)
-                {
-                    // Move the current node's li children to previous node
-                    currentList.children().appendTo(prevNode);
-                    currentList.remove();
-                }
-            }
-        };
-        jNodes.each(function()
-        {
-            mergeLists($(this).find(constants.tagName.OL));
-            mergeLists($(this).find(constants.tagName.UL));
+    var mergeAdjacentLists = function(jNodes) {        
+        jNodes.each(function() {
+            mergeLists(constants.tagName.OL, $(this).find(constants.tagName.OL));
+            mergeLists(constants.tagName.UL, $(this).find(constants.tagName.UL));
         });
     };
 
@@ -199,12 +193,13 @@
     * 3. if any of the JElement's parents have the same style or class applied, remove it from jElement
     * @param {jElement} jElement
     */
-    var bubbleStylesFromChildren = function(jElement)
+    var bubbleStylesFromChildren = function(jElement, options)
     {
         var contentNodes = getContentNodes(jElement);
 
+        // If we can't apply styles to jElement, don't process further
         if (!configuration.styleableTags[jElement.prop("tagName")])
-        {  // If we can't apply styles to jElement, don't process further
+        {  
             return false;
         }
 
@@ -245,7 +240,7 @@
                 $.each(styles, function(styleName, styleValue)
                 {
                     var commandConfig = util.getCommandConfig({ styleName: styleName });
-                    var styleOptions = { commandName: commandConfig.commandName, styleName: styleName, styleValue: styleValue, topEditableParent: topEditableParent };
+                    var styleOptions = { commandName: commandConfig.commandName, styleName: styleName, styleValue: styleValue, topEditableParent: options.topEditableParent };
                     // If all of the children have a style value applied, push it to the node
                     if (dom.closestWithCommandValue(contentNodes, styleOptions).length === contentNodes.length)
                     {
@@ -303,7 +298,7 @@
     * 3) Mix of block/non-block children => remove the markup of non-block children all the styles/classes are applied
     * 4) otherwise no-op
     */
-    var mergeChildrenWithSelf = function(node)
+    var mergeChildrenWithSelf = function(node, options)
     {
         var contentNodes = getContentNodes(node);
         var candidateNodes = contentNodes.filter(function()
@@ -334,7 +329,7 @@
                 return parentWithStyle.get(0) && (dom.getStyles(parentWithStyle)[styleName] === styleValue);
             });
 
-            var parents = $this.parentsUntil(topEditableParent.parentNode);
+            var parents = $this.parentsUntil(options.topEditableParent.parentNode);
             var allClassesApplied = util.all(classes, function(index, className)
             {
                 return parents.hasClass(className);
@@ -349,7 +344,7 @@
     };
 
     /***/
-    var removeRedundantStylesfromParent = function(jElement)
+    var removeRedundantStylesfromParent = function(jElement, options)
     {
         var contentNodes = getContentNodes(jElement);
         // If parent has a style that is applied to all of the children, remove it
@@ -359,7 +354,7 @@
             var removeStyle = util.all(contentNodes, function(index, contentNode)
             {
                 return dom.getStyles($(contentNode))[styleName];
-            }) || dom.closestWithCommandValue(jElement.parent(), { styleName: styleName, styleValue: styleValue, topEditableParent: topEditableParent }).length > 0;
+            }) || dom.closestWithCommandValue(jElement.parent(), { styleName: styleName, styleValue: styleValue, topEditableParent: options.topEditableParent }).length > 0;
 
             if (removeStyle)
             {
@@ -390,75 +385,65 @@
     * 3) Merge the children
     * 4) Unwrap the children
     */
-    var removeRedundantMarkup = function(jNodes)
-    {
-        jNodes.each(function()
-        {
+    var removeRedundantMarkup = function(jNodes, options) {
+        jNodes.each(function() {
             // Do not merge with the content editable element or the text nodes with the parent
             var $this = $(this);
-
-            if (!$this.is(":element"))
-            {
+            if (!$this.is(":element")) {
                 return;
             }
-            var nodes = getContentNodes($this);
-            removeRedundantMarkup(nodes);
 
-            // Step 1: Push the styles towards to top
-            bubbleStylesFromChildren($this);
+            var nodes = getContentNodes($this);
+            removeRedundantMarkup(nodes, options);
+
+            // Step 1: Push the styles towards the top
+            bubbleStylesFromChildren($this, options);
 
             // Step 2: If the parent has a style that is explicitly applied to all of its children, remove the style from the parent
-            removeRedundantStylesfromParent($this);
+            removeRedundantStylesfromParent($this, options);
 
             // Step 3: Try to merge all of the siblings
-            mergeChildren($this);
+            mergeChildren($this, options);
 
             // Step 4: Check if we can merge any of the children with the parent node by removing the redundant html
-            mergeChildrenWithSelf($this);
+            mergeChildrenWithSelf($this, options);
         });
     };
 
+    var processEmptyElement = function(jNode) {
+        var parent = jNode.parent();
+        if (jNode.is(":block") &&
+                dom.nextSiblingIncludingTextNodes(jNode).length &&
+                dom.prevSiblingIncludingTextNodes(jNode).length)
+        {
+            // If a div has next and prev, empty div is acting like a line break
+            // add a line break.
+            jNode.before("<br />");
+        }
+        jNode.remove();
+        if (parent.is(":empty")) {
+            processEmptyElement(parent);
+        }
+    };
+
     /*
-    * Clean up: Recursively remove the empty elements until there are not empty element left
+    * Clean up: Recursively remove the empty elements until there are not empty elements left
     * For example: <div> <div> <div> </div> </div> </div>
     */
-    var removeEmptyElements = function(jNodes)
-    {
-        var hasEmptyElements = true;
-
-        var processEmptyElemenet = function()
-        {
-            var element = $(this);
-
-            if (element.is(":block") &&
-                    dom.nextSiblingIncludingTextNodes(element).length &&
-                    dom.prevSiblingIncludingTextNodes(element).length)
-            {
-                // If a div has next and prev, empty div is acting like a line break
-                // add a line break.
-                element.before("<br />");
-            }
-            element.remove();
-        };
-
-        while (hasEmptyElements)
-        {
-            // Exclude the <br/> and rangy selection marker spans
-            var emptyElements = jNodes.find(":empty").not("br").not(":rangySpan");
-            hasEmptyElements = emptyElements.length > 0;
-            emptyElements.each(processEmptyElemenet);
-        }
+    var removeEmptyElements = function(jNodes) {
+        // Exclude the <br/> and rangy selection marker spans
+        var emptyElements = jNodes.find(":empty").not("br").not(":rangySpan");
+        emptyElements.each(function() {
+            processEmptyElement($(this));
+        });
     };
 
     /**
     * If rangy selection marker span is the only child of some element, remove that element 
     */
-    var handleRangySelectionMarkers = function(jNodes)
-    {
-        jNodes.find("." + configuration.rangySelectionBoundaryClassName).each(function()
-        {
-            if ($(this).parent().contents().length === 1)
-            {
+    var handleRangySelectionMarkers = function(jNodes) {        
+        jNodes.find("." + configuration.rangySelectionBoundaryClassName).each(function() {
+            if ($(this).parent().contents().length === 1) {
                 $(this).unwrap();
             }
         });
@@ -468,50 +453,68 @@
     * Remove the empty characters from the HTML dom.
     */
     var invalidCharacterRegex;
-    var removeNonPrintableCharacters = function() {
-        var topElement = $(topEditableParent);
-        var html = topElement.html();
-        invalidCharacterRegex = invalidCharacterRegex || new RegExp("[" + cleanupConfig.invalidCharacterRegex.join('') + "]", 'g');
-        var cleanHtml = html.replace(invalidCharacterRegex, '');
-        topElement.html(cleanHtml);
+    var removeNonPrintableCharacters = function(options) {
+        var html = options.topEditableParent.innerHTML;
+        invalidCharacterRegex = invalidCharacterRegex || new RegExp("[" + cleanupConfig.invalidCharacterRegex.join("") + "]", "g");
+        options.topEditableParent.innerHTML = html.replace(invalidCharacterRegex, "");
     };
 
     /**
-    * Remove the redundant markup
-    * @param
+    * Remove any redundant markup
     */
-    var topEditableParent;
     var cleanup = function(jNodes, options) {
-        topEditableParent = (options && options.topEditableParent) ? options.topEditableParent : dom.getTopEditableParent(jNodes).get(0);
+        options = $.extend({}, cleanupConfig.options, options);
+        if (!options.topEditableParent) {
+            options.topEditableParent = dom.getTopEditableParent(jNodes).get(0);
+        }
         handleRangySelectionMarkers(jNodes);
-        if (cleanupConfig.options.removeNonPrintableCharacters) {
-            removeNonPrintableCharacters();
+        if (options.removeNonPrintableCharacters) {
+            removeNonPrintableCharacters(options);
         }
-        if (cleanupConfig.options.removeEmptyElements) {
-            removeEmptyElements(jNodes, options);
+        if (options.removeEmptyElements) {
+            removeEmptyElements(jNodes);
         }
-        if (cleanupConfig.options.removeRedundantDom) {
-            mergeAdjunctLists(jNodes);
+        if (options.mergeAdjacentLists) {
+            mergeAdjacentLists(jNodes);
         }
-        if (cleanupConfig.options.mergeAdjunctLists) {
-            removeRedundantMarkup(jNodes);
+        if (options.removeRedundantMarkup) {
+            removeRedundantMarkup(jNodes, options);
         }
+    };
+
+    /*
+    * Check if there are any unsanctioned tags
+    */
+    var hasUnsanctionedElements = function(jNodes) {
+        var hasUnsanctionedTags = false;
+        for (var i = 0; i < jNodes.length; i++) {
+            var node = jNodes[i];
+            if (node.nodeType == $.Arte.constants.nodeType.TEXT) {
+                continue;
+            }
+            if (!configuration.supportedTags[node.tagName]) {
+                return true;
+            }
+            if (hasUnsanctionedElements($(node).contents())) {
+                return true;
+            }
+        };
+        return false;
     };
 
     /*
     * Remove all unsanctioned tags
     */
-    var handleUnsanctionedElements = function (nodes) {
-        nodes.each(function () {
-            if (this.nodeType == $.Arte.constants.nodeType.TEXT)
-            {
+    var handleUnsanctionedElements = function(jNodes) {
+        jNodes.each(function() {
+            if (this.nodeType == $.Arte.constants.nodeType.TEXT) {
                 return;
             }
 
             var $this = $(this);
             handleUnsanctionedElements($this.contents());
 
-            var tagName = $this.prop("tagName");
+            var tagName = this.tagName;
             if (configuration.supportedTags[tagName]) { // Current tag is supported; do nothing
                 return;
             }
@@ -524,6 +527,8 @@
     };
 
     // Public API
-    dom.cleanup = cleanup;
+    dom.hasUnsanctionedElements = hasUnsanctionedElements;
     dom.handleUnsanctionedElements = handleUnsanctionedElements;
+    dom.cleanup = cleanup;
+
 })(jQuery);

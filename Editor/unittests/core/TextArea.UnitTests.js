@@ -134,16 +134,14 @@ var ArteTextAreaTestData = {
             options: {
                 value: "test"
             },
-            value: "<div>test</div>",
-            expectedContent: "test"
+            value: "<div>test</div>"
         },
         {
             name: "htmlValue",
             options: {
                 value: "test"
             },
-            value: "<div style='font-weight:bold; font-size: 10px;' class='arte-font-weight-bold'>This is rich <b>text</b> <span>area</span></div>",
-            expectedContent: "<div style='font-weight:bold; font-size: 10px;' class='arte-font-weight-bold'>This is rich <b>text</b> <span>area</span></div>"
+            value: "<div style='font-weight:bold; font-size: 10px;' class='arte-font-weight-bold'>This is rich <b>text</b> <span>area</span></div>"
         }
     ],
     events: [
@@ -178,7 +176,7 @@ var ArteTextAreaTestData = {
             }
         },
         {
-            name: "blurWithChangedValue",
+            name: "valuechange_fromBlur",
             assertionCount: 2,
             op: function(arte) {
                 arte.on({
@@ -189,22 +187,6 @@ var ArteTextAreaTestData = {
                 arte.$el.trigger("focus");
                 arte.$el.html("xyz");
                 arte.$el.trigger("blur");
-
-                return true;
-            }
-        },
-        {
-            name: "input",
-            assertionCount: 3,
-            op: function(arte) {
-                arte.on("oninput", function(e, data) {
-                    ok(true, "oninput called");
-                });
-                arte.on("onvaluechange", function(e, data) {
-                    ok(true, "onvaluechange called");
-                });
-                arte.value("xyz");
-                arte.$el.trigger("input");
 
                 return true;
             }
@@ -311,7 +293,7 @@ var ArteTextAreaTestData = {
             }
         },
         {
-            name: "valueChanged",
+            name: "valuechange_fromValue",
             assertionCount: 2,
             op: function(arte) {
                 var handler = function(e, data) {
@@ -324,22 +306,7 @@ var ArteTextAreaTestData = {
             }
         },
         {
-            name: "valueChangedWithCorrectNewValueAndOldValue",
-            assertionCount: 3,
-            op: function(arte) {
-                arte.value("abc");
-                var handler = function(e, data) {
-                    ok(data.newValue === "xyz");
-                    ok(data.oldValue === "abc");
-                };
-                arte.on("onvaluechange", handler);
-                arte.value("xyz");
-
-                return true;
-            }
-        },
-        {
-            name: "valueChangedNotCalledWithSameContent",
+            name: "valuechange_notCalledWithSameContent",
             assertionCount: 1,
             op: function(arte) {
                 arte.value("xyz");
@@ -352,7 +319,7 @@ var ArteTextAreaTestData = {
             }
         },
         {
-            name: "valueChangedNotCalledWithSameNestedContent",
+            name: "valuechange_notCalledWithSameNestedContent",
             assertionCount: 1,
             op: function(arte) {
                 arte.value("<b>ABCD</b>");
@@ -365,7 +332,7 @@ var ArteTextAreaTestData = {
             }
         },
         {
-            name: "valueChanged_outerValue",
+            name: "valuechange_outerValue",
             assertionCount: 2,
             op: function (arte) {
                 var handler = function (e, data) {
@@ -378,28 +345,15 @@ var ArteTextAreaTestData = {
             }
         },
         {
-            name: "valueChanged_outerValueChanged",
-            assertionCount: 2,
-            op: function (arte) {
-                arte.outerValue("<div style='font-weight:bold; font-size:10px'>xyz</div>");
-                var handler = function (e, data) {
-                    ok(true, "onvaluechange called");
-                };
-                arte.on("onvaluechange", handler);
-                arte.outerValue("<div style='font-weight:bold;'>xyz</div>");
-                return true;
-            }
-        },
-        {
-            name: "valueChanged_outerValueNotChanged",
+            name: "valuechange_notCalledIfOuterValueChangedButValueDidNot",
             assertionCount: 1,
             op: function (arte) {
                 arte.outerValue("<div style='font-weight:bold; font-size:10px'>xyz</div>");
                 var handler = function (e, data) {
-                    ok(true, "onvaluechange called");
+                    ok(false, "onvaluechange called");
                 };
                 arte.on("onvaluechange", handler);
-                arte.outerValue("<div style='font-weight:bold; font-size:10px'>xyz</div>");
+                arte.outerValue("<div style='font-weight:bold;'>xyz</div>");
                 return true;
             }
         }
