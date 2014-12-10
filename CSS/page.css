@@ -40,9 +40,9 @@ td .container{
     width: 100%
 }
 
-UL span
+ul span
 {
-    color: lightgrey;
+    color: #ccc;
     font-style: italic;
 }
 
