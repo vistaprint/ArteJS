@@ -1,18 +1,15 @@
 ﻿/**
-* @fileoverview: StateDetector detects the command state of user selection
-*/
-(function(pluginManager)
-{
+ * @fileoverview: StateDetector detects the command state of user selection
+ */
+(function(pluginManager) {
     var constants = $.Arte.constants;
 
-    var getValue = function(nodes, commandOptions)
-    {
+    var getValue = function(nodes, commandOptions) {
         var styleValue = null;
         var hasSameValue = true;
 
         var nodesWithCommand = $.Arte.dom.closestWithCommand(nodes, commandOptions);
-        if (nodes.length !== nodesWithCommand.length)
-        {
+        if (nodes.length !== nodesWithCommand.length) {
             // Not all nodes have this command applied
             return null;
         }
@@ -20,16 +17,13 @@
         // All nodes should have same style applied
         var commandValue = $.Arte.dom.getCommandValue(nodesWithCommand.first(), commandOptions);
 
-        nodesWithCommand.each(function()
-        {
+        nodesWithCommand.each(function() {
             hasSameValue = $.Arte.dom.hasCommandValue($(this), commandValue);
             return hasSameValue;
         });
 
-        if (hasSameValue)
-        {
-            for (var value in commandValue)
-            {
+        if (hasSameValue) {
+            for (var value in commandValue) {
                 styleValue = commandValue[value];
             }
         }
@@ -37,22 +31,21 @@
         return styleValue;
     };
 
-    var isApplied = function(nodes, commandOptions)
-    {
+    var isApplied = function(nodes, commandOptions) {
         // Special case for OL/UL: Check if the text nodes are surrounded by LIs and the LIs belong to same OL/LI parent
         var tag = commandOptions.tagName;
-        if (tag && (tag === constants.tagName.OL || tag === constants.tagName.UL))
-        {
-            return $.Arte.dom.listSurrounded(nodes, { singleList: true, tagName: tag });
+        if (tag && (tag === constants.tagName.OL || tag === constants.tagName.UL)) {
+            return $.Arte.dom.listSurrounded(nodes, {
+                singleList: true,
+                tagName: tag
+            });
         }
         var nodesWithStyleValue = $.Arte.dom.closestWithCommandValue(nodes, commandOptions);
         return nodesWithStyleValue.length === nodes.length;
     };
 
-    var getState = function(selectedNodes, commandName, options)
-    {
-        if (!selectedNodes || !selectedNodes.length)
-        {
+    var getState = function(selectedNodes, commandName, options) {
+        if (!selectedNodes || !selectedNodes.length) {
             return null;
         }
         var commandConfig = $.Arte.configuration.commands[commandName];
@@ -68,17 +61,12 @@
     };
 
     var getSelectedNodesState = function(selectedNodes, commandName) {
-        if (commandName)
-        {
+        if (commandName) {
             return getState(selectedNodes, commandName);
-        }
-        else
-        {
+        } else {
             var result = {};
-            $.each($.Arte.configuration.commands, function(name, config)
-            {
-                if ($.isPlainObject(config) && config.commandType && config.commandType != constants.commandType.other)
-                {
+            $.each($.Arte.configuration.commands, function(name, config) {
+                if ($.isPlainObject(config) && config.commandType && config.commandType != constants.commandType.other) {
                     result[name] = getState(selectedNodes, name);
                 }
             });
@@ -88,19 +76,17 @@
 
     // Extend the prototype of the TextArea to expose the public API
     $.extend($.Arte.TextArea.prototype, {
-        getState: function(commandName)
-        {
+        getState: function(commandName) {
             var selectedNodes = $.Arte.util.getSelectedTextNodes.apply(this, [true]);
             return getSelectedNodesState(selectedNodes, commandName);
         },
-        
+
         /**
-        * Get an array of all the states found within the current selection
-        * (ie: if the current selection has both a bold and a non-bold component, get two results representing that)
-        * @param {commandName} string. Optional. If provided, only result the state of the given command (ie: fontFamily, bold, etc)
-        */
-        getAllStates: function(commandName)
-        {
+         * Get an array of all the states found within the current selection
+         * (ie: if the current selection has both a bold and a non-bold component, get two results representing that)
+         * @param {commandName} string. Optional. If provided, only result the state of the given command (ie: fontFamily, bold, etc)
+         */
+        getAllStates: function(commandName) {
             var selectedNodes = $.Arte.util.getSelectedTextNodes.apply(this, [true]);
             var results = [];
 
@@ -113,14 +99,13 @@
         }
     });
 
-    var stateDetector = function()
-    {
+    var stateDetector = function() {
         return {
             /**
-            * A callback method for when a Arte is initialized
-            * @param {TextArea} textArea.  An instance of a Arte text area
-            */
-            init: function() { }
+             * A callback method for when a Arte is initialized
+             * @param {TextArea} textArea.  An instance of a Arte text area
+             */
+            init: function() {}
         };
     };
 

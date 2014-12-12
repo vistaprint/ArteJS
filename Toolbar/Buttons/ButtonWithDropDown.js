@@ -1,19 +1,20 @@
-﻿(function ($) {
-    $.Arte.Toolbar.ButtonWithDropDown = function (toolbar, buttonName, config) {
+﻿(function($) {
+    $.Arte.Toolbar.ButtonWithDropDown = function(toolbar, buttonName, config) {
         var classes = $.Arte.Toolbar.configuration.classes;
         $.Arte.Toolbar.Button.call(this, toolbar, buttonName, config);
         var me = this;
-        this.render = function (parent) {    
+        this.render = function(parent) {
             var element = $("<select>").addClass(classes.select).addClass(this.name);
 
-            $.each(config.options, function (index, option) {
-                var display, value;
+            $.each(config.options, function(index, option) {
+                var display;
+                var value;
                 if ($.isPlainObject(option)) {
                     display = option.display;
                     value = option.value;
                 } else {
                     display = option;
-                    value = typeof (option) === "string" ? option.toLowerCase() : option;
+                    value = typeof(option) === "string" ? option.toLowerCase() : option;
                 }
 
                 switch (buttonName) {
@@ -37,30 +38,34 @@
                 element.append($("<option>").attr("value", value).html(display));
             });
             element.appendTo(toolbar.$el);
-            
+
             element.on({
-                change: function () {
+                change: function() {
                     me.executeCommand.apply(me, [this.value]);
                 },
-                click: function (e) {
+                click: function(e) {
                     e.preventDefault();
                     e.stopPropagation();
                 },
-                mousedown: function (e) {
+                mousedown: function(e) {
                     e.stopPropagation();
                 },
-                mouseover: function (e) { me.showTooltip(e); },
-                mouseout: function (e) { me.hideTooltip(e); }
+                mouseover: function(e) {
+                    me.showTooltip(e);
+                },
+                mouseout: function(e) {
+                    me.hideTooltip(e);
+                }
             });
 
             this.$el = element;
         };
-        this.unrender = function () {
+        this.unrender = function() {
             me.$el.off();
             me.$el.remove();
         };
 
-        this.refresh = function (state) {
+        this.refresh = function(state) {
             if (this.isApplicable()) {
                 this.$el.show();
             } else {

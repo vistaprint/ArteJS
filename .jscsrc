@@ -1,0 +1,11 @@
+{
+    "preset": "google",
+    "validateQuoteMarks": "\"",
+    "validateIndentation": 4,
+    "maximumLineLength": {
+        "value": 140
+    },
+    "disallowSpacesInFunctionDeclaration": {
+    	"beforeOpeningRoundBrace": true
+    }
+}

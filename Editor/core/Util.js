@@ -1,26 +1,23 @@
 ﻿/**
-* @fileoverview: Various utility functions
-*/
-(function($)
-{
-    $.Arte = $.Arte || { };
+ * @fileoverview: Various utility functions
+ */
+(function($) {
+    $.Arte = $.Arte || {};
     $.Arte.util = {
-    /* 
-        * Ensure that if there is a user selection, it is inside of the selected element.   
-        */
-        isSelectionInElement : function(jElement)
-        {
+        /*
+         * Ensure that if there is a user selection, it is inside of the selected element.
+         */
+        isSelectionInElement: function(jElement) {
             var selection = rangy.getSelection();
             var range = selection.getAllRanges()[0];
             return range &&
                 (range.startContainer === jElement.get(0) || jElement.has(range.startContainer).length !== 0);
         },
-        /* 
-        * Move cursor to the end of the input element
-        * @param {htmlElement} element
-        */
-        moveCursorToEndOfElement : function(element)
-        {
+        /*
+         * Move cursor to the end of the input element
+         * @param {htmlElement} element
+         */
+        moveCursorToEndOfElement: function(element) {
             var range = new rangy.createRangyRange();
             range.selectNodeContents(element);
             range.collapse();
@@ -30,13 +27,12 @@
         },
 
         /*
-        * Evaluates if all elements in the collection match the condition specified in the callback function
-        * @param {Array|Object} collection of objects to evaluate
-        * @param {function} callback a function that returns true/false for each object
-        * @return {boolean} whether the callback returns true for all objects in the collection
-        */
-        all : function(collection, callback)
-        {
+         * Evaluates if all elements in the collection match the condition specified in the callback function
+         * @param {Array|Object} collection of objects to evaluate
+         * @param {function} callback a function that returns true/false for each object
+         * @return {boolean} whether the callback returns true for all objects in the collection
+         */
+        all: function(collection, callback) {
             var result = true;
             $.each(collection, function(key, value) {
                 result = callback(key, value);
@@ -45,13 +41,12 @@
             return result;
         },
         /*
-        * Evaluates if any elements in the collection match the condition specified in the callback function
-        * @param {Array|Object} collection of objects to evaluate
-        * @param {function} callback a function that returns true/false for each object
-        * @return {boolean} whether the callback returns true for any objects in the collection
-        */
-        any : function(collection, callback)
-        {
+         * Evaluates if any elements in the collection match the condition specified in the callback function
+         * @param {Array|Object} collection of objects to evaluate
+         * @param {function} callback a function that returns true/false for each object
+         * @return {boolean} whether the callback returns true for any objects in the collection
+         */
+        any: function(collection, callback) {
             var result = true;
             $.each(collection, function(key, value) {
                 result = callback(key, value);
@@ -60,27 +55,24 @@
             return result;
         },
         /*
-        * Filter a collection based on the result of the callback function
-        * @param {Array|Object} collection of objects to evaluate
-        * @param {function} callback a function that returns true/false for each object
-        * @return {Array} a collection of values that satisfy the condition in callback function
-        */
-        filterCollection : function(collection, callback)
-        {
+         * Filter a collection based on the result of the callback function
+         * @param {Array|Object} collection of objects to evaluate
+         * @param {function} callback a function that returns true/false for each object
+         * @return {Array} a collection of values that satisfy the condition in callback function
+         */
+        filterCollection: function(collection, callback) {
             var result = [];
             $.each(collection, function(key, value) {
-                if (callback(key, value))
-                {
-                    result.push(collection.length ? value: key);
+                if (callback(key, value)) {
+                    result.push(collection.length ? value : key);
                 }
             });
             return result;
         },
         /**
-        * Returns selected text nodes
-        */
-        getSelectedTextNodes : function(allowCollapsedSelection)
-        {
+         * Returns selected text nodes
+         */
+        getSelectedTextNodes: function(allowCollapsedSelection) {
             var selectedNodes = $();
             var range;
             // Is there a user selection
@@ -88,23 +80,19 @@
             var isSelectionInElement = $.Arte.util.isSelectionInElement(this.$el);
 
             // User selection is collapsed or the selection is not valid (i.e. something outside of the text field is selected)
-            if (userSelection.isCollapsed || !isSelectionInElement)
-            {
-                if (allowCollapsedSelection && isSelectionInElement)
-                {
-                    // Get the parent of the node with the cursor 
+            if (userSelection.isCollapsed || !isSelectionInElement) {
+                if (allowCollapsedSelection && isSelectionInElement) {
+                    // Get the parent of the node with the cursor
                     range = userSelection.getRangeAt(0);
                     selectedNodes.push(range.startContainer);
                     return selectedNodes;
                 }
 
-                // In case we don't have a valid selection, 
+                // In case we don"t have a valid selection,
                 range = rangy.createRangyRange();
-                range.selectNodeContents(this.$el.get(0));         
+                range.selectNodeContents(this.$el.get(0));
                 selectedNodes = rangy.util.getTextNodes(range);
-            }
-            else if (isSelectionInElement)
-            {
+            } else if (isSelectionInElement) {
                 // We have a valid selection
                 range = userSelection.getAllRanges()[0];
                 selectedNodes = rangy.util.getTextNodes(range);
@@ -112,56 +100,45 @@
             return selectedNodes;
         },
         /*
-        * Identify the ArteJS command configuration from className, styleName or tagName
-        */
-        getCommandConfig: function(options)
-        {
+         * Identify the ArteJS command configuration from className, styleName or tagName
+         */
+        getCommandConfig: function(options) {
             var result = null;
             var commandAttrType = null;
-            var configuration = $.Arte.configuration, constants = $.Arte.constants;
-            
-            if (options && options.commandName)
-            {
+            var configuration = $.Arte.configuration;
+            var constants = $.Arte.constants;
+
+            if (options && options.commandName) {
                 return configuration.commands[options.commandName];
             }
 
             /* Infer the command from the properties in the options. */
-            for (var command in configuration.commands)
-            {
+            for (var command in configuration.commands) {
                 var commandConfig = configuration.commands[command];
 
-                if (options.className && commandConfig.classNameRegex && commandConfig.classNameRegex.test(options.className))
-                {
+                if (options.className && commandConfig.classNameRegex && commandConfig.classNameRegex.test(options.className)) {
                     result = commandConfig;
                     commandAttrType = constants.commandAttrType.className;
-                }
-                else if (options.styleName && options.styleName === commandConfig.styleName)
-                {
+                } else if (options.styleName && options.styleName === commandConfig.styleName) {
                     result = commandConfig;
                     commandAttrType = constants.commandAttrType.styleName;
-                }
-                else if (options.tagName && !(options.className || options.styleName))
-                {
-                    if ($.isPlainObject(commandConfig.tagName))
-                    {
-                        var hasTag = util.any(commandConfig.tagName, function(key, value)
-                        {
+                } else if (options.tagName && !(options.className || options.styleName)) {
+                    if ($.isPlainObject(commandConfig.tagName)) {
+                        var hasTag = util.any(commandConfig.tagName, function(key, value) {
                             return value === options.tagName;
                         });
-                        if (hasTag)
-                        {
+                        if (hasTag) {
                             result = commandConfig;
                         }
-                    }
-                    else if (options.tagName === commandConfig.tagName)
-                    {
+                    } else if (options.tagName === commandConfig.tagName) {
                         result = commandConfig;
                     }
                     commandAttrType = constants.commandAttrType.tagName;
                 }
-                if (result)
-                {
-                    return $.extend({ commandAttrType: commandAttrType }, result);
+                if (result) {
+                    return $.extend({
+                        commandAttrType: commandAttrType
+                    }, result);
                 }
             }
             return null;

@@ -1,5 +1,4 @@
-﻿(function(pluginManager)
-{
+﻿(function(pluginManager) {
     $.Arte.configuration.pasteHandler = {
         attributes: {
             "id": 1,
@@ -22,7 +21,7 @@
             "OL": 1,
             "LI": 1,
             "SPAN": 1
-            // What to do with tags not in this list
+                // What to do with tags not in this list
         },
         nodeType: {
             "1": 1, // Text
@@ -53,25 +52,21 @@
     var configuration = $.Arte.configuration.pasteHandler;
     var classNameSpace = $.Arte.configuration.classNameSpace;
 
-    var getReplacementNode = function(jNode)
-    {
+    var getReplacementNode = function(jNode) {
         var nodeType = jNode.get(0).nodeType;
-        if (!configuration.nodeType[nodeType])
-        { // Remove unsupported nodes
+        if (!configuration.nodeType[nodeType]) { // Remove unsupported nodes
             jNode.remove();
             return null;
         }
 
         // Additional node type based processing
-        if (nodeType == $.Arte.constants.nodeType.TEXT)
-        {
+        if (nodeType == $.Arte.constants.nodeType.TEXT) {
             var nodeValue = jNode.get(0).nodeValue;
             // Remove the html comment text
             nodeValue = nodeValue.replace(/<!--[\S\s]*?-->/ig, "");
 
             // Remove empty nodes
-            if (nodeValue === "" || !nodeValue.match(/\S+/ig) || nodeValue.match(/^[\xA0]+$/ig))
-            {
+            if (nodeValue === "" || !nodeValue.match(/\S+/ig) || nodeValue.match(/^[\xA0]+$/ig)) {
                 jNode.remove();
                 return null;
             }
@@ -81,50 +76,37 @@
             return null;
         }
         var content = jNode.html();
-        if (!content)
-        {
+        if (!content) {
             jNode.remove();
             return null;
         }
 
         var tagName = jNode.prop("tagName");
-        if (configuration.tag[tagName])
-        {
+        if (configuration.tag[tagName]) {
             // This is a supported tag, remove unsupported attributes
             var attr = jNode.prop("attributes");
-            for (var i = 0; i < attr.length; i++)
-            {
-                if (!configuration.attributes[attr[i].name])
-                {
-                    try
-                    {
+            for (var i = 0; i < attr.length; i++) {
+                if (!configuration.attributes[attr[i].name]) {
+                    try {
                         // IE7 returns events/properties as attributes, removing those throw exception
                         jNode.removeAttr(attr[i].name);
-                    }
-                    catch (e)
-                    {
-                    }
+                    } catch (e) {}
                 }
             }
 
             // Remove unrecognized class
             var classes = $.Arte.dom.getClasses(jNode);
-            $.each(classes, function(index, className)
-            {
-                if (className.indexOf(classNameSpace) !== 0)
-                {
+            $.each(classes, function(index, className) {
+                if (className.indexOf(classNameSpace) !== 0) {
                     jNode.removeClass(className);
                 }
             });
 
             var cssText = "";
-            $.each($.Arte.dom.getStyles(jNode), function(style, value)
-            {
+            $.each($.Arte.dom.getStyles(jNode), function(style, value) {
                 var keepStyle = configuration.style[style];
-                if (keepStyle)
-                {
-                    switch (style)
-                    {
+                if (keepStyle) {
+                    switch (style) {
                         case "font-size":
                             keepStyle = value.match(/\d+\s?px/);
                             break;
@@ -136,8 +118,7 @@
                     }
                 }
 
-                if (keepStyle)
-                {
+                if (keepStyle) {
                     cssText += style + ": " + value + "; ";
                 }
             });
@@ -147,21 +128,20 @@
         }
 
         // Unsupported tags, construct a replacement node
-        var invalidTagHandlerConfig = configuration.invalidTagHandlers[jNode.prop("tagName")] || { tagName: "DIV" /* Just wrap the content in a div*/ };
+        var invalidTagHandlerConfig = configuration.invalidTagHandlers[jNode.prop("tagName")] || {
+            tagName: "DIV" /* Just wrap the content in a div*/
+        };
         var newNode = $.Arte.dom.createContainer(invalidTagHandlerConfig).html(jNode.html());
         return newNode;
     };
 
-    var handleUnsanctionedTags = function(nodes)
-    {
-        nodes.each(function()
-        {
+    var handleUnsanctionedTags = function(nodes) {
+        nodes.each(function() {
             var $this = $(this);
             handleUnsanctionedTags($this.contents());
 
             var replacementNode = getReplacementNode($this);
-            if (replacementNode)
-            {
+            if (replacementNode) {
                 $this.replaceWith(replacementNode);
             }
         });
@@ -173,18 +153,16 @@
         "onhandlepaste": "onhandlepaste"
     });
 
-    var pasteHandler = function()
-    {
+    var pasteHandler = function() {
         return {
-            init: function(textArea)
-            {
+            init: function(textArea) {
                 textArea.$element.on({
-                    "onpaste": function(e, data)
-                    {
-                        var options = { execute: true };
+                    "onpaste": function(e, data) {
+                        var options = {
+                            execute: true
+                        };
                         textArea.triggerEvent($.Arte.constants.eventNames.onbeforehandlepaste, options);
-                        if (!options.execute)
-                        {
+                        if (!options.execute) {
                             return;
                         }
                         handleUnsanctionedTags(data.textArea.$el.children());
