@@ -135,7 +135,22 @@ module.exports = function(grunt) {
             },
             src: ["Build", "Release"]
         },
-
+        copy: {
+            qunit: {
+                files: [
+                    {
+                        expand: true,
+                        cwd: "node_modules/qunitjs/qunit",
+                        src: ["qunit.*"],
+                        dest: "Editor/unittests/dependencies/QUnit/"
+                    },
+                ]
+            },
+            jquery: {
+                src: "node_modules/jquery/jquery.js",
+                dest: "Editor/unittests/dependencies/jquery.js"
+            }
+        },
         plato: {
             all: {
                 options: {
