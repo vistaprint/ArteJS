@@ -1,5 +1,5 @@
 ﻿/* File overview: configuration for the toolbar */
-(function ($) {
+(function($) {
     $.Arte.Toolbar = $.Arte.Toolbar || {};
     var buttonBase = $.Arte.Toolbar.Button;
     var buttonWithDropDown = $.Arte.Toolbar.ButtonWithDropDown;
@@ -222,13 +222,12 @@
             },
             "toolbarLineBreak": {
                 // Inserts a line break into the toolbar.
-                js: function () {
+                js: function() {
                     return {
-                        render: function (parentElement) {
+                        render: function(parentElement) {
                             $("<div>").appendTo(parentElement);
                         },
-                        refresh: function () {
-                        }
+                        refresh: function() {}
                     };
                 }
             },
@@ -263,19 +262,16 @@
                 "okCancel": "ok-cancel",
                 "label": "label",
                 "button": "btn",
-                "insertLink":
-                {
+                "insertLink": {
                     "button": "btn",
                     "textToShow": "text-to-show",
                     "urlInput": "url-input"
                 },
-                "insertImage":
-                    {
+                "insertImage": {
 
-                    }
+                }
             },
-            "tooltip":
-            {
+            "tooltip": {
                 "container": "tooltip"
             }
         }

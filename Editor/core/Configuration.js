@@ -1,8 +1,7 @@
 ﻿/*
 * This file lists the configuration and constants used by ArteJS
 */
-(function($)
-{
+(function($) {
     $.Arte = $.Arte || {};
 
     $.Arte.constants = {
@@ -333,11 +332,9 @@
         }
     };
 
-    (function()
-    {
+    (function() {
         // Include the commandName in each command configuration
-        $.each(configuration.commands, function(key, value)
-        {
+        $.each(configuration.commands, function(key, value) {
             value.commandName = key;
         });
     })();

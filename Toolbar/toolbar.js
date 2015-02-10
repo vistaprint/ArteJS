@@ -6,7 +6,7 @@
         var result = $();
         this.each(function() {
             var toolbar = $(this).data("ArteToolbar");
-            if (options && typeof (options) === "string") {
+            if (options && typeof(options) === "string") {
                 // Most likely this is a method call
                 var methodName = options;
                 if (this.constructor === $.Arte.Toolbar) {
@@ -19,10 +19,11 @@
 
                 var returnValue = toolbar[methodName].call(toolbar);
                 result.push(returnValue);
-            }
-            else {
+            } else {
                 if (!toolbar) {
-                    $.extend(options, { element: $(this) });
+                    $.extend(options, {
+                        element: $(this)
+                    });
                     toolbar = new $.Arte.Toolbar(options);
                     $(this).data("ArteToolbar", toolbar);
                 }
@@ -32,14 +33,13 @@
         return result;
     };
 
-
-    $.Arte.Toolbar = function (options) {
+    $.Arte.Toolbar = function(options) {
         var me = this;
-        
+
         me.$el = options.element;
 
         me.$el.on({
-            "click mousedown mouseup": function (e) {
+            "click mousedown mouseup": function(e) {
                 e.stopPropagation();
                 e.preventDefault();
             }
@@ -47,7 +47,7 @@
 
         // Clear the selection if user clicks outside of the editor
         $("body").on({
-            click: function () {
+            click: function() {
                 me.selectionManager.clear();
                 me.refresh();
             }
@@ -55,32 +55,32 @@
 
         var buttons = [];
         // Initialize and render each of the button
-        $.each(options.buttons, function (index, buttonName) {
+        $.each(options.buttons, function(index, buttonName) {
             var config = $.Arte.Toolbar.configuration.buttons[buttonName];
             var button = new config.js(me, buttonName, config);
             button.render();
 
             buttons.push(button);
         });
-        
+
         // Create the containers for the inline dialog and tooltip
         var classes = $.Arte.Toolbar.configuration.classes;
         $("<div>").addClass(classes.dialog.container).appendTo(me.$el);
         $("<div>").addClass(classes.tooltip.container).appendTo(me.$el);
 
         // public api
-        this.refresh = function () {
+        this.refresh = function() {
             var selectedField = me.selectionManager.getSelectedEditors()[0];
             var state = (selectedField) ? selectedField.getState() : {};
-            $.each(buttons, function () {
+            $.each(buttons, function() {
                 this.refresh(state);
             });
         };
 
-        this.destroy = function () {
+        this.destroy = function() {
             me.$el.removeData("ArteToolbar");
 
-            $.each(buttons, function () {
+            $.each(buttons, function() {
                 this.unrender();
             });
             $("." + classes.dialog.container).remove();
@@ -90,7 +90,9 @@
 
         // Setup the selection manager
         me.selectionManager = new $.Arte.Toolbar.SelectionManager();
-        me.selectionManager.initialize({ editor: options.editor });
+        me.selectionManager.initialize({
+            editor: options.editor
+        });
         me.selectionManager.on({
             selectionchanged: me.refresh
         });

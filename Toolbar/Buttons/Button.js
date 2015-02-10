@@ -1,6 +1,6 @@
 ﻿/// dependencies: Toolbar
-(function ($) {
-    $.Arte.Toolbar.Button = function (toolbar, buttonName, config) {
+(function($) {
+    $.Arte.Toolbar.Button = function(toolbar, buttonName, config) {
         var me = this;
         me.element = null;
         me.commandName = config.commandName;
@@ -8,22 +8,21 @@
         var classes = configuration.classes;
         var buttonClasses = classes.button;
 
-        this.isApplicable = function ()
-        {
+        this.isApplicable = function() {
             var editors = toolbar.selectionManager.getEditors(config.supportedTypes);
             return editors && editors.length;
         }
 
-        this.isEnabled = function () {
+        this.isEnabled = function() {
             if (!configuration.requireEditorFocus) {
                 return true;
             }
-            
+
             var selectedEditors = toolbar.selectionManager.getSelectedEditors(config.supportedTypes);
             return (selectedEditors && selectedEditors.length);
         };
 
-        this.executeCommand = function (commandValue) {
+        this.executeCommand = function(commandValue) {
             if (this.isEnabled()) {
                 var commandAttrType = (config && config.commandAttrType) ?
                     config.commandAttrType :
@@ -47,24 +46,28 @@
                     selectedEditors = toolbar.selectionManager.getEditors();
                 }
 
-                $.each(selectedEditors, function () {
+                $.each(selectedEditors, function() {
                     this[commandOptions.commandName].call(this, commandOptions);
                 });
                 toolbar.refresh();
             }
         };
 
-        this.render = function () {
+        this.render = function() {
             var inner = $("<span>").addClass(buttonName).addClass(buttonClasses.inner);
             me.$el = $("<a>").attr("href", "#").addClass(buttonClasses.outer).html(inner);
             me.$el.on({
-                mouseover: function (e) { me.showTooltip(e); },
-                mouseout: function (e) { me.hideTooltip(e); },
-                mousedown: function (e) {
+                mouseover: function(e) {
+                    me.showTooltip(e);
+                },
+                mouseout: function(e) {
+                    me.hideTooltip(e);
+                },
+                mousedown: function(e) {
                     e.preventDefault();
                     e.stopPropagation();
                 },
-                click: function (e) {
+                click: function(e) {
                     me.executeCommand.apply(me);
                     e.preventDefault();
                     e.stopPropagation();
@@ -74,12 +77,12 @@
             me.$el.appendTo(toolbar.$el);
         };
 
-        this.unrender = function () {
+        this.unrender = function() {
             me.$el.off();
             me.$el.remove();
         };
 
-        var isApplied = function (state) {
+        var isApplied = function(state) {
             if (config.commandName === "textAlign") {
                 var defaultValue = config.commandValue[$.Arte.Toolbar.configuration.commandAttrType] ||
                     config.commandValue[$.Arte.Toolbar.configuration.altCommandAttrType];
@@ -88,12 +91,10 @@
             return state;
         };
 
-        this.refresh = function (state) {
-            if (this.isApplicable())
-            {
+        this.refresh = function(state) {
+            if (this.isApplicable()) {
                 this.$el.show();
-            } else
-            {
+            } else {
                 this.$el.hide();
                 return;
             }
@@ -109,7 +110,7 @@
             }
         };
 
-        this.showTooltip = function (mouseEvent) {
+        this.showTooltip = function(mouseEvent) {
             if (me.$el.hasClass(buttonClasses.disabled)) {
                 return;
             }
@@ -122,10 +123,13 @@
             var x = mouseEvent.pageX - elementOffset.left + 15;
             var y = mouseEvent.pageY - elementOffset.top + 5;
 
-            tooltip.css({ top: y, left: x });
+            tooltip.css({
+                top: y,
+                left: x
+            });
             tooltip.show();
         };
-        this.hideTooltip = function (mouseEvent) {
+        this.hideTooltip = function(mouseEvent) {
             if (me.$el.hasClass(buttonClasses.disabled)) {
                 return;
             }

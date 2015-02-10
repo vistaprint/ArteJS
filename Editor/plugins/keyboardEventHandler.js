@@ -1,10 +1,10 @@
 ﻿/*global Arte:false*/
 /**
-* @fileoverview: A plugin to handle the keyboard events
-*/
-(function (pluginManager) {
+ * @fileoverview: A plugin to handle the keyboard events
+ */
+(function(pluginManager) {
     // Plugin
-    var KeyboardEventHandler = function () {
+    var KeyboardEventHandler = function() {
         var keyCodeLookup = {
             8: "BackSpace",
             13: "Enter",
@@ -25,17 +25,16 @@
         };
 
         /**
-        * Fires before text has been altered
-        * @param {Event} e
-        */
-        var onKeyPressHandler = function () {
-        };
+         * Fires before text has been altered
+         * @param {Event} e
+         */
+        var onKeyPressHandler = function() {};
 
         /**
-        * Construct a key string based on the keyboard commands
-        * @param {keyboard event} keyboardEvent
-        */
-        var getKey = function (keyboardEvent) {
+         * Construct a key string based on the keyboard commands
+         * @param {keyboard event} keyboardEvent
+         */
+        var getKey = function(keyboardEvent) {
             var key = keyboardEvent.ctrlKey ? "CTRL+" : "";
             key += keyboardEvent.altKey ? "AlT+" : "";
 
@@ -45,10 +44,10 @@
         };
 
         /**
-        * Fires before text has been altered
-        * @param {Event} e
-        */
-        var onKeyDownHandler = function (e, data) {
+         * Fires before text has been altered
+         * @param {Event} e
+         */
+        var onKeyDownHandler = function(e, data) {
             var textArea = data.textArea;
             var event = data.originalEvent;
             var key = getKey(event);
@@ -56,7 +55,7 @@
             switch (key) {
                 case "CTRL+B":
                     textArea.bold();
-                    event.preventDefault(); // Browsers shouldn't handle this command  
+                    event.preventDefault(); // Browsers shouldn't handle this command
                     break;
                 case "CTRL+I":
                     textArea.italic();
@@ -70,31 +69,31 @@
         };
 
         /**
-        * Fires after a key event completes, and text has been altered.
-        * @param {Event} e
-        */
+         * Fires after a key event completes, and text has been altered.
+         * @param {Event} e
+         */
         var onKeyUpHandler = function(e, data) {
             var textArea = data.textArea;
             var event = data.originalEvent;
             var key = getKey(event);
 
             switch (key) {
-            case "CTRL:A":
-            case "CTRL+V":
-            case "CTRL+ArrowDown":
-            case "CTRL+ArrowLeft":
-            case "CTRL+ArrowRight":
-            case "CTRL+ArrowUp":
-            case "ArrowDown":
-            case "ArrowLeft":
-            case "ArrowRight":
-            case "ArrowUp":
-                textArea.triggerEvent($.Arte.constants.eventNames.onselectionchange);
+                case "CTRL:A":
+                case "CTRL+V":
+                case "CTRL+ArrowDown":
+                case "CTRL+ArrowLeft":
+                case "CTRL+ArrowRight":
+                case "CTRL+ArrowUp":
+                case "ArrowDown":
+                case "ArrowLeft":
+                case "ArrowRight":
+                case "ArrowUp":
+                    textArea.triggerEvent($.Arte.constants.eventNames.onselectionchange);
             }
         };
 
         return {
-            init: function (textArea) {
+            init: function(textArea) {
                 textArea.$element.on({
                     "onkeydown": onKeyDownHandler,
                     "onkeypress": onKeyPressHandler,

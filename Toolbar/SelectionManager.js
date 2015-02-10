@@ -1,4 +1,4 @@
-﻿(function ($) {
+﻿(function($) {
     $.Arte.Toolbar = $.Arte.Toolbar || {};
     $.Arte.Toolbar.SelectionManager = function() {
         var editors = $();
@@ -18,7 +18,7 @@
 
         this.getSelectedEditors = function(types) {
             if (types) {
-                return $.Arte.util.filterCollection(selectedEditors, function (index, textField) {
+                return $.Arte.util.filterCollection(selectedEditors, function(index, textField) {
                     return $.Arte.util.any(types, function(i, type) {
                         return textField.editorType === type;
                     });
@@ -28,10 +28,10 @@
             return selectedEditors;
         };
 
-        this.getEditors = function (types) {
+        this.getEditors = function(types) {
             if (types) {
-                return $.Arte.util.filterCollection(editors, function (index, textField) {
-                    return $.Arte.util.any(types, function (i, type) {
+                return $.Arte.util.filterCollection(editors, function(index, textField) {
+                    return $.Arte.util.any(types, function(i, type) {
                         return textField.editorType === type;
                     });
                 });

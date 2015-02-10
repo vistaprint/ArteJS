@@ -1,56 +1,55 @@
 ﻿(function($) {
-    $.Arte.Toolbar.ButtonWithDialog = function (toolbar, buttonName, config) {
+    $.Arte.Toolbar.ButtonWithDialog = function(toolbar, buttonName, config) {
         var me = this;
         $.Arte.Toolbar.Button.call(this, toolbar, buttonName, config);
-        //$.extend(this, new $.Arte.Toolbar.Button(toolbar, buttonName, config));
+
         var dialogClasses = $.Arte.Toolbar.configuration.classes.dialog;
-        //var me = this;
-        this.executeCommand = function () {
+
+        this.executeCommand = function() {
             if (me.isEnabled()) {
                 me.showPopup();
             }
         };
 
-        this.getOkCancelControl = function()
-        {
+        this.getOkCancelControl = function() {
             var wrapper = $("<div>").addClass(dialogClasses.okCancel);
             $("<a>").attr("href", "#").addClass(dialogClasses.button + " ok").html("&#x2713").appendTo(wrapper);
             $("<a>").attr("href", "#").addClass(dialogClasses.button + " cancel").html("&#x2717").appendTo(wrapper);
             return wrapper;
         }
-        
+
         this.showPopup = function() {
             var dialogContainer = $("." + dialogClasses.container);
             var contentWrapper = $("<div>").addClass(dialogClasses.contentWrapper).appendTo(dialogContainer);
             contentWrapper.append(me.getDialogContent());
             contentWrapper.append(me.getOkCancelControl());
-            dialogContainer.on("mousedown ", function (e) {
+            dialogContainer.on("mousedown ", function(e) {
                 e.stopPropagation();
             });
             var savedSelection = rangy.saveSelection();
 
             me.addContent();
 
-            contentWrapper.find(".ok").on("click", function () {
+            contentWrapper.find(".ok").on("click", function() {
                 rangy.restoreSelection(savedSelection);
                 me.onOk();
                 me.closePopup();
             });
 
-            contentWrapper.find(".cancel").on("click", function () {
+            contentWrapper.find(".cancel").on("click", function() {
                 rangy.restoreSelection(savedSelection);
                 me.closePopup();
             });
-            
+
             dialogContainer.show({
                 duration: 200,
-                complete: function () {
+                complete: function() {
                     contentWrapper.css("margin-top", -1 * contentWrapper.height() / 2);
                 }
             });
         };
 
-        this.closePopup = function () {
+        this.closePopup = function() {
             var dialogContainer = $("." + dialogClasses.container);
             dialogContainer.children().each(function() {
                 this.remove();
@@ -67,22 +66,28 @@
         var insertLinkClasses = dialogClasses.insertLink;
         var me = this;
         $.Arte.Toolbar.ButtonWithDialog.call(this, toolbar, buttonName, config);
-        
+
         var insertContent = function(contentToInsert) {
-            $.each(toolbar.selectionManager.getSelectedEditors(), function () {
-                this.insert.call(this, { commandValue: contentToInsert });
+            $.each(toolbar.selectionManager.getSelectedEditors(), function() {
+                this.insert.call(this, {
+                    commandValue: contentToInsert
+                });
             });
         };
-        
+
         this.getDialogContent = function() {
             var textToShow = $("<div>").addClass(dialogClasses.insertLink.textToShow);
             $("<span>").html("Text to Show: ").addClass(dialogClasses.label).appendTo(textToShow);
-            $("<input>").addClass(insertLinkClasses.input + " textToShow").attr({ type: "text" }).appendTo(textToShow);
-            
+            $("<input>").addClass(insertLinkClasses.input + " textToShow").attr({
+                type: "text"
+            }).appendTo(textToShow);
+
             var urlInput = $("<div>").addClass(dialogClasses.insertLink.urlInput);
             $("<span>").html("Url: ").addClass(dialogClasses.label).appendTo(urlInput);
-            $("<input>").addClass(insertLinkClasses.input + " url").attr({ type: "text" }).appendTo(urlInput);
-            
+            $("<input>").addClass(insertLinkClasses.input + " url").attr({
+                type: "text"
+            }).appendTo(urlInput);
+
             var dialogContent = $("<div>").addClass(dialogClasses.content).append(textToShow).append(urlInput);
             return dialogContent;
         };
@@ -96,31 +101,41 @@
             }
         };
 
-        this.addContent = function () {
+        this.addContent = function() {
             $("." + dialogClasses.container + " .textToShow").val(rangy.getSelection().toHtml());
         };
 
     };
 })(jQuery);
 
-(function () {
-    $.Arte.Toolbar.InsertImage = function (toolbar, buttonName, config) {
+(function() {
+    $.Arte.Toolbar.InsertImage = function(toolbar, buttonName, config) {
         var dialogClasses = $.Arte.Toolbar.configuration.classes.dialog;
         var insertLinkClasses = dialogClasses.insertLink;
         $.Arte.Toolbar.ButtonWithDialog.call(this, toolbar, buttonName, config);
 
-        var insertContent = function (contentToInsert) {
-            $.each(toolbar.selectionManager.getSelectedEditors(), function () {
-                this.insert.call(this, { commandValue: contentToInsert });
+        var insertContent = function(contentToInsert) {
+            $.each(toolbar.selectionManager.getSelectedEditors(), function() {
+                this.insert.call(this, {
+                    commandValue: contentToInsert
+                });
             });
         };
 
-        this.getDialogContent = function () {
+        this.getDialogContent = function() {
             var dialogContent = $("<div>").addClass("input-prepend input-append");
             $("<span>").html("Text to Show: ").addClass(insertLinkClasses.label).appendTo(dialogContent);
-            $("<input>").addClass(insertLinkClasses.input + " textToShow").attr({ type: "text" }).appendTo(dialogContent).css({ height: "auto" });
+            $("<input>").addClass(insertLinkClasses.input + " textToShow").attr({
+                type: "text"
+            }).appendTo(dialogContent).css({
+                height: "auto"
+            });
             $("<span>").html("Url: ").addClass(insertLinkClasses.label).appendTo(dialogContent);
-            $("<input>").addClass(insertLinkClasses.input + " url").attr({ type: "text" }).appendTo(dialogContent).css({ height: "auto" });
+            $("<input>").addClass(insertLinkClasses.input + " url").attr({
+                type: "text"
+            }).appendTo(dialogContent).css({
+                height: "auto"
+            });
             return dialogContent;
         };
 
@@ -132,7 +147,7 @@
             }
         };
 
-        this.addContent = function () {
+        this.addContent = function() {
             $("." + dialogClasses.container + " .textToShow").val(rangy.getSelection().toHtml());
         };
     };

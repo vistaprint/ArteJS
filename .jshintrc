@@ -10,7 +10,7 @@
   "jquery": true,
   "browser": true,
   "globals": {
-	"rangy": true,
-	"Arte": true
+    "rangy": true,
+    "Arte": true
   }
 }
