@@ -107,6 +107,9 @@
             var commandAttrType = null;
             var configuration = $.Arte.configuration;
             var constants = $.Arte.constants;
+            var verifyTag = function(key, value) {
+                return value === options.tagName;
+            };
 
             if (options && options.commandName) {
                 return configuration.commands[options.commandName];
@@ -124,10 +127,7 @@
                     commandAttrType = constants.commandAttrType.styleName;
                 } else if (options.tagName && !(options.className || options.styleName)) {
                     if ($.isPlainObject(commandConfig.tagName)) {
-                        var hasTag = util.any(commandConfig.tagName, function(key, value) {
-                            return value === options.tagName;
-                        });
-                        if (hasTag) {
+                        if ($.Arte.util.any(commandConfig.tagName, verifyTag)) {
                             result = commandConfig;
                         }
                     } else if (options.tagName === commandConfig.tagName) {

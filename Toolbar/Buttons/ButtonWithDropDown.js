@@ -3,7 +3,7 @@
         var classes = $.Arte.Toolbar.configuration.classes;
         $.Arte.Toolbar.Button.call(this, toolbar, buttonName, config);
         var me = this;
-        this.render = function(parent) {
+        this.render = function() {
             var element = $("<select>").addClass(classes.select).addClass(this.name);
 
             $.each(config.options, function(index, option) {

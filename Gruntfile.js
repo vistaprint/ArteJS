@@ -1,6 +1,7 @@
-"use strict";
-
+/*jshint node:true*/
 module.exports = function(grunt) {
+    "use strict";
+
     var arteVersion = "0.3";
     var toolbarVersion = "0.3";
     var rangyVersion = "1.3alpha.804";
@@ -10,39 +11,26 @@ module.exports = function(grunt) {
     if (grunt.option("plugins")) {
         pluginsToBuildDebug = grunt.option("plugins").split(",").map(function(plugin) {
             return "Editor/plugins/" + plugin + ".js";
-        })
+        });
         pluginsToBuildRelease = grunt.option("plugins").split(",").map(function(plugin) {
             return "Build/Editor/plugins/" + plugin + ".min.js";
-        })
+        });
     }
 
     // Project configuration.
     grunt.initConfig({
         jshint: {
-            jslint: {
-                options: {
-                    jshintrc: ".jshintrc",
-                    reporter: "jslint",
-                    reporterOutput: "reports/jshint_jslint.xml"
-                },
-                src: [
-                    "<%=baseDir%>/Editor/core/**/*.js",
-                    "<%=baseDir%>/Editor/lib/extensions/*.js",
-                    "<%=baseDir%>/Editor/plugins/*.js",
-                    "<%=baseDir%>/toolbar/**/*.js"
-                ]
+            options: {
+                jshintrc: true
             },
-            development: {
-                options: {
-                    jshintrc: ".jshintrc"
-                },
-                src: [
-                    "<%=baseDir%>/Editor/core/**/*.js",
-                    "<%=baseDir%>/Editor/lib/extensions/*.js",
-                    "<%=baseDir%>/Editor/plugins/*.js",
-                    "<%=baseDir%>/Editor/toolbar/**/*.js"
-                ]
-            }
+            all: [
+                "Gruntfile.js",
+                "<%=baseDir%>/Editor/core/**/*.js",
+                "<%=baseDir%>/Editor/lib/extensions/*.js",
+                "<%=baseDir%>/Editor/plugins/*.js",
+                "<%=baseDir%>/Editor/toolbar/**/*.js",
+                "<%=baseDir%>/Toolbar/**/*.js"
+            ]
         },
         jscs: {
 
@@ -212,7 +200,7 @@ module.exports = function(grunt) {
     // Default task.
     grunt.registerTask("default", ["build"]);
     grunt.registerTask("travis", ["verify", "build"]);
-    grunt.registerTask("verify", ["clean", "jscs:soft", "jshint:jslint", "uglify", "concat", "connect", "qunit"]);
+    grunt.registerTask("verify", ["clean", "jscs:soft", "jshint", "uglify", "concat", "connect", "qunit"]);
     grunt.registerTask("analysis", ["plato"]);
     grunt.registerTask("build", ["clean", "uglify", "concat"]);
     grunt.registerTask("all", ["build", "analysis"]);

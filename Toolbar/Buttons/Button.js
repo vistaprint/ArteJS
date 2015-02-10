@@ -11,7 +11,7 @@
         this.isApplicable = function() {
             var editors = toolbar.selectionManager.getEditors(config.supportedTypes);
             return editors && editors.length;
-        }
+        };
 
         this.isEnabled = function() {
             if (!configuration.requireEditorFocus) {
@@ -129,7 +129,7 @@
             });
             tooltip.show();
         };
-        this.hideTooltip = function(mouseEvent) {
+        this.hideTooltip = function() {
             if (me.$el.hasClass(buttonClasses.disabled)) {
                 return;
             }
