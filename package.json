@@ -15,7 +15,7 @@
     "node": ">=0.8.0"
   },
   "scripts": {
-    "test": "grunt verify",
+    "test": "grunt",
     "start": "open ./Demo/Demo.html"
   },
   "dependencies": {},

@@ -25,54 +25,25 @@ module.exports = function(grunt) {
             },
             all: [
                 "Gruntfile.js",
-                "<%=baseDir%>/Editor/core/**/*.js",
-                "<%=baseDir%>/Editor/lib/extensions/*.js",
-                "<%=baseDir%>/Editor/plugins/*.js",
-                "<%=baseDir%>/Editor/toolbar/**/*.js",
-                "<%=baseDir%>/Toolbar/**/*.js"
+                "Editor/core/**/*.js",
+                "Editor/lib/extensions/*.js",
+                "Editor/plugins/*.js",
+                "Editor/toolbar/**/*.js",
+                "Toolbar/**/*.js"
             ]
         },
         jscs: {
-
-          all: {
-            config: ".jscsrc",
-            files: [{
-              expand: true,
-              cwd: "src",
-              src: [
-                "../Gruntfile.js",
-                "../Editor/core/*.js",
-                "../Editor/plugins/*.js",
-                "../Toolbar/**/*.js"
-              ]
-            }]
-          },
-
-          soft: {
-            config: ".jscsrc",
             options: {
-              force: true
+                config: ".jscsrc"
             },
-            files: [{
-              expand: true,
-              cwd: "src",
-              src: [
-                "../Gruntfile.js",
-                "../Editor/core/*.js",
-                "../Editor/plugins/*.js",
-                "../Toolbar/**/*.js"
-              ]
-            }]
-          }
-
+            all: [
+                "<%= jshint.all %>"
+            ]
         },
 
         uglify: {
-            options: {
-            },
             build: {
                 expand: true,
-                cwd: "<%=baseDir%>",
                 src: [
                     "Editor/Core/**/*.js",
                     "Editor/Plugins/**/*.js",
@@ -175,16 +146,15 @@ module.exports = function(grunt) {
                 },
                 files: {
                     "reports/plato": [
-                        "<%=baseDir%>/Editor/core/**/*.js",
-                        "<%=baseDir%>/Editor/lib/rangy-extensions/*.js",
-                        "<%=baseDir%>/Editor/lib/jquery-extensions/*.js",
-                        "<%=baseDir%>/Editor/plugins/*.js",
-                        "<%=baseDir%>/Editor/toolbar/**/*.js"
+                        "Editor/core/**/*.js",
+                        "Editor/lib/rangy-extensions/*.js",
+                        "Editor/lib/jquery-extensions/*.js",
+                        "Editor/plugins/*.js",
+                        "Editor/toolbar/**/*.js"
                     ]
                 }
             }
-        },
-        baseDir: "./"
+        }
     });
 
     // These plugins provide necessary tasks.
@@ -198,10 +168,9 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks("grunt-plato");
 
     // Default task.
-    grunt.registerTask("default", ["build"]);
-    grunt.registerTask("travis", ["verify", "build"]);
-    grunt.registerTask("verify", ["clean", "jscs:soft", "jshint", "uglify", "concat", "connect", "qunit"]);
+    grunt.registerTask("default", ["clean", "jscs", "jshint", "build", "connect", "qunit"]);
+    grunt.registerTask("build", ["uglify", "concat"]);
+    grunt.registerTask("travis", ["copy", "default"]);
     grunt.registerTask("analysis", ["plato"]);
-    grunt.registerTask("build", ["clean", "uglify", "concat"]);
-    grunt.registerTask("all", ["build", "analysis"]);
+    grunt.registerTask("all", ["build", "plato"]);
 };
