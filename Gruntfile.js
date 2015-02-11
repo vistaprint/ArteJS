@@ -116,7 +116,7 @@ module.exports = function(grunt) {
             all: {
                 options: {
                     urls: [
-                        "http://localhost:8000/Editor/unittests/all.html"
+                        "http://localhost:8000/tests/all.html"
                     ]
                 }
             }
@@ -142,13 +142,13 @@ module.exports = function(grunt) {
                         expand: true,
                         cwd: "node_modules/qunitjs/qunit",
                         src: ["qunit.*"],
-                        dest: "Editor/unittests/dependencies/QUnit/"
+                        dest: "tests/dependencies/QUnit/"
                     },
                 ]
             },
             jquery: {
                 src: "node_modules/jquery/jquery.js",
-                dest: "Editor/unittests/dependencies/jquery.js"
+                dest: "tests/dependencies/jquery.js"
             }
         },
         plato: {

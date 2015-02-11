@@ -12,4 +12,4 @@
 /Dependencies
 /Pages
 *.user
-/Editor/unittests/dependencies
+tests/dependencies
