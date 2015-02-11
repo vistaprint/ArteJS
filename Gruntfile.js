@@ -2,6 +2,8 @@
 module.exports = function(grunt) {
     "use strict";
 
+    require("load-grunt-tasks")(grunt);
+
     var arteVersion = "0.3";
     var toolbarVersion = "0.3";
     var rangyVersion = "1.3alpha.804";
@@ -156,16 +158,6 @@ module.exports = function(grunt) {
             }
         }
     });
-
-    // These plugins provide necessary tasks.
-    grunt.loadNpmTasks("grunt-contrib-jshint");
-    grunt.loadNpmTasks("grunt-contrib-uglify");
-    grunt.loadNpmTasks("grunt-contrib-concat");
-    grunt.loadNpmTasks("grunt-contrib-clean");
-    grunt.loadNpmTasks("grunt-contrib-qunit");
-    grunt.loadNpmTasks("grunt-contrib-connect");
-    grunt.loadNpmTasks("grunt-jscs");
-    grunt.loadNpmTasks("grunt-plato");
 
     // Default task.
     grunt.registerTask("default", ["clean", "jscs", "jshint", "build", "connect", "qunit"]);
