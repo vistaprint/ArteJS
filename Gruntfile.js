@@ -111,23 +111,24 @@ module.exports = function(grunt) {
                 dest: "Release/Toolbar." + toolbarVersion + ".min.js"
             }
         },
-
         qunit: {
-            all: {
-                options: {
-                    urls: [
-                        "http://localhost:8000/tests/all.html"
-                    ]
+            options: {
+                coverage: {
+                    timeout: 30000,
+                    src: [
+                        "Editor/core/**/*.js",
+                        "Editor/plugins/**/*.js",
+                        "Editor/lib/**/*.js",
+                        "Toolbar/**/*.js",
+                        "!Editor/lib/rangy-1.3alpha.804/**"
+                    ],
+                    instrumentedFiles: "reports/temp/",
+                    htmlReport: "reports/coverage",
+                    linesThresholdPct: 85
+
                 }
-            }
-        },
-        connect: {
-            server: {
-                options: {
-                    port: 8000,
-                    base: "."
-                }
-            }
+            },
+            all: ["tests/all.html"]
         },
         clean: {
             options: {
@@ -175,7 +176,7 @@ module.exports = function(grunt) {
     });
 
     // Default task.
-    grunt.registerTask("default", ["clean", "jscs", "jshint", "build", "connect", "qunit"]);
+    grunt.registerTask("default", ["clean", "jscs", "jshint", "build", "qunit"]);
     grunt.registerTask("build", ["uglify", "concat"]);
     grunt.registerTask("travis", ["copy", "default"]);
     grunt.registerTask("analysis", ["plato"]);
