@@ -25,22 +25,22 @@ module.exports = function(grunt) {
             options: {
                 jshintrc: true
             },
+            gruntfile: ["Gruntfile.js"],
             all: [
-                "Gruntfile.js",
                 "Editor/core/**/*.js",
-                "Editor/lib/extensions/*.js",
-                "Editor/plugins/*.js",
+                "Editor/lib/**/*.js",
+                "Editor/plugins/**/*.js",
                 "Editor/toolbar/**/*.js",
-                "Toolbar/**/*.js"
+                "Toolbar/**/*.js",
+                "!Editor/lib/rangy-1.3alpha.804/**"
             ]
         },
         jscs: {
             options: {
                 config: ".jscsrc"
             },
-            all: [
-                "<%= jshint.all %>"
-            ]
+            gruntfile: ["Gruntfile.js"],
+            all: ["<%= jshint.all %>"]
         },
 
         uglify: {
@@ -115,13 +115,7 @@ module.exports = function(grunt) {
             options: {
                 coverage: {
                     timeout: 30000,
-                    src: [
-                        "Editor/core/**/*.js",
-                        "Editor/plugins/**/*.js",
-                        "Editor/lib/**/*.js",
-                        "Toolbar/**/*.js",
-                        "!Editor/lib/rangy-1.3alpha.804/**"
-                    ],
+                    src: ["<%= jshint.all %>"],
                     instrumentedFiles: "reports/temp/",
                     htmlReport: "reports/coverage",
                     linesThresholdPct: 85
