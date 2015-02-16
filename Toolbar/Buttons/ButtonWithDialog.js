@@ -16,7 +16,7 @@
             $("<a>").attr("href", "#").addClass(dialogClasses.button + " ok").html("&#x2713").appendTo(wrapper);
             $("<a>").attr("href", "#").addClass(dialogClasses.button + " cancel").html("&#x2717").appendTo(wrapper);
             return wrapper;
-        }
+        };
 
         this.showPopup = function() {
             var dialogContainer = $("." + dialogClasses.container);
@@ -64,7 +64,7 @@
     $.Arte.Toolbar.InsertLink = function(toolbar, buttonName, config) {
         var dialogClasses = $.Arte.Toolbar.configuration.classes.dialog;
         var insertLinkClasses = dialogClasses.insertLink;
-        var me = this;
+
         $.Arte.Toolbar.ButtonWithDialog.call(this, toolbar, buttonName, config);
 
         var insertContent = function(contentToInsert) {

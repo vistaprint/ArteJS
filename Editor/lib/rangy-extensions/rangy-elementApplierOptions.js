@@ -1,10 +1,7 @@
-﻿(function($)
-{
+(function($) {
     $.Arte = $.Arte || {};
-    $.Arte.ElementApplierOptions = function(initOptions)
-    {
-        if (initOptions._isProcessed)
-        {
+    $.Arte.ElementApplierOptions = function(initOptions) {
+        if (initOptions._isProcessed) {
             // Options object is already processed
             return initOptions;
         }
@@ -15,8 +12,7 @@
         this.commandName = "";
         this.commandAttrType = initOptions.commandAttrType;
         this.textArea = null;
-        switch (this.commandAttrType)
-        {
+        switch (this.commandAttrType) {
             case constants.commandAttrType.className:
                 this.classNameRegex = "";
                 this.className = "";
@@ -27,34 +23,28 @@
                 break;
         }
 
-        for (var prop in initOptions)
-        {
+        for (var prop in initOptions) {
             this[prop] = initOptions[prop];
         }
 
-        if (this.tagName)
-        {
+        if (this.tagName) {
             this.tagName = $("<" + this.tagName + ">").prop("tagName");
         }
 
         this.attr = {};
-        if (this.commandAttrType == constants.commandAttrType.className)
-        {
+        if (this.commandAttrType == constants.commandAttrType.className) {
             this.attr["class"] = this.className;
         }
 
-        if (this.commandAttrType == constants.commandAttrType.styleName)
-        {
+        if (this.commandAttrType == constants.commandAttrType.styleName) {
             // Construct a style string, so that we can easily apply/remove this from an element
             var div = $("<div>").css(this.styleName, this.styleValue);
             this.attr.style = div[0].style.cssText;
         }
 
-        if (!this.commandName)
-        {
+        if (!this.commandName) {
             var commandConfig = $.Arte.util.getCommandConfig(this);
-            if (commandConfig)
-            {
+            if (commandConfig) {
                 this.commandName = commandConfig.commandName;
                 this.commandAttrType = commandConfig.commandAttrType;
             }

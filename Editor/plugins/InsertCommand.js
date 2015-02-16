@@ -1,5 +1,4 @@
-﻿/*global Arte:false*/
-/**
+﻿/**
  * @fileoverview: A plugin to add command to insert and/or replace content
  */
 (function(pluginManager) {

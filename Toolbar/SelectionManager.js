@@ -4,18 +4,6 @@
         var editors = $();
         var selectedEditors = [];
 
-        var isValidSelection = function() {
-            var userSelection = rangy.getSelection();
-            var range = userSelection.getAllRanges()[0];
-            if (range) {
-                var textFields = this.getSelectedFields();
-                return $.Arte.util.any(textFields, function(index, textField) {
-                    return textField.$el.get(0) === range.startContainer || textField.$el.has(range.startContainer).get(0);
-                });
-            }
-            return false;
-        };
-
         this.getSelectedEditors = function(types) {
             if (types) {
                 return $.Arte.util.filterCollection(selectedEditors, function(index, textField) {

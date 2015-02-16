@@ -1,6 +1,9 @@
-"use strict";
-
+/*jshint node:true*/
 module.exports = function(grunt) {
+    "use strict";
+
+    require("load-grunt-tasks")(grunt);
+
     var arteVersion = "0.3";
     var toolbarVersion = "0.3";
     var rangyVersion = "1.3alpha.804";
@@ -10,81 +13,39 @@ module.exports = function(grunt) {
     if (grunt.option("plugins")) {
         pluginsToBuildDebug = grunt.option("plugins").split(",").map(function(plugin) {
             return "Editor/plugins/" + plugin + ".js";
-        })
+        });
         pluginsToBuildRelease = grunt.option("plugins").split(",").map(function(plugin) {
             return "Build/Editor/plugins/" + plugin + ".min.js";
-        })
+        });
     }
 
     // Project configuration.
     grunt.initConfig({
         jshint: {
-            jslint: {
-                options: {
-                    jshintrc: ".jshintrc",
-                    reporter: "jslint",
-                    reporterOutput: "reports/jshint_jslint.xml"
-                },
-                src: [
-                    "<%=baseDir%>/Editor/core/**/*.js",
-                    "<%=baseDir%>/Editor/lib/extensions/*.js",
-                    "<%=baseDir%>/Editor/plugins/*.js",
-                    "<%=baseDir%>/toolbar/**/*.js"
-                ]
+            options: {
+                jshintrc: true
             },
-            development: {
-                options: {
-                    jshintrc: ".jshintrc"
-                },
-                src: [
-                    "<%=baseDir%>/Editor/core/**/*.js",
-                    "<%=baseDir%>/Editor/lib/extensions/*.js",
-                    "<%=baseDir%>/Editor/plugins/*.js",
-                    "<%=baseDir%>/Editor/toolbar/**/*.js"
-                ]
-            }
+            gruntfile: ["Gruntfile.js"],
+            all: [
+                "Editor/core/**/*.js",
+                "Editor/lib/**/*.js",
+                "Editor/plugins/**/*.js",
+                "Editor/toolbar/**/*.js",
+                "Toolbar/**/*.js",
+                "!Editor/lib/rangy-1.3alpha.804/**"
+            ]
         },
         jscs: {
-
-          all: {
-            config: ".jscsrc",
-            files: [{
-              expand: true,
-              cwd: "src",
-              src: [
-                "../Gruntfile.js",
-                "../Editor/core/*.js",
-                "../Editor/plugins/*.js",
-                "../Toolbar/**/*.js"
-              ]
-            }]
-          },
-
-          soft: {
-            config: ".jscsrc",
             options: {
-              force: true
+                config: ".jscsrc"
             },
-            files: [{
-              expand: true,
-              cwd: "src",
-              src: [
-                "../Gruntfile.js",
-                "../Editor/core/*.js",
-                "../Editor/plugins/*.js",
-                "../Toolbar/**/*.js"
-              ]
-            }]
-          }
-
+            gruntfile: ["Gruntfile.js"],
+            all: ["<%= jshint.all %>"]
         },
 
         uglify: {
-            options: {
-            },
             build: {
                 expand: true,
-                cwd: "<%=baseDir%>",
                 src: [
                     "Editor/Core/**/*.js",
                     "Editor/Plugins/**/*.js",
@@ -150,23 +111,18 @@ module.exports = function(grunt) {
                 dest: "Release/Toolbar." + toolbarVersion + ".min.js"
             }
         },
-
         qunit: {
-            all: {
-                options: {
-                    urls: [
-                        "http://localhost:8000/Editor/unittests/all.html"
-                    ]
+            options: {
+                coverage: {
+                    timeout: 30000,
+                    src: ["<%= jshint.all %>"],
+                    instrumentedFiles: "reports/temp/",
+                    htmlReport: "reports/coverage",
+                    linesThresholdPct: 85
+
                 }
-            }
-        },
-        connect: {
-            server: {
-                options: {
-                    port: 8000,
-                    base: "."
-                }
-            }
+            },
+            all: ["tests/all.html"]
         },
         clean: {
             options: {
@@ -174,7 +130,22 @@ module.exports = function(grunt) {
             },
             src: ["Build", "Release"]
         },
-
+        copy: {
+            qunit: {
+                files: [
+                    {
+                        expand: true,
+                        cwd: "node_modules/qunitjs/qunit",
+                        src: ["qunit.*"],
+                        dest: "tests/dependencies/QUnit/"
+                    },
+                ]
+            },
+            jquery: {
+                src: "node_modules/jquery/jquery.js",
+                dest: "tests/dependencies/jquery.js"
+            }
+        },
         plato: {
             all: {
                 options: {
@@ -187,34 +158,21 @@ module.exports = function(grunt) {
                 },
                 files: {
                     "reports/plato": [
-                        "<%=baseDir%>/Editor/core/**/*.js",
-                        "<%=baseDir%>/Editor/lib/rangy-extensions/*.js",
-                        "<%=baseDir%>/Editor/lib/jquery-extensions/*.js",
-                        "<%=baseDir%>/Editor/plugins/*.js",
-                        "<%=baseDir%>/Editor/toolbar/**/*.js"
+                        "Editor/core/**/*.js",
+                        "Editor/lib/rangy-extensions/*.js",
+                        "Editor/lib/jquery-extensions/*.js",
+                        "Editor/plugins/*.js",
+                        "Editor/toolbar/**/*.js"
                     ]
                 }
             }
-        },
-        baseDir: "./"
+        }
     });
 
-    // These plugins provide necessary tasks.
-    grunt.loadNpmTasks("grunt-contrib-jshint");
-    grunt.loadNpmTasks("grunt-contrib-uglify");
-    grunt.loadNpmTasks("grunt-contrib-copy");
-    grunt.loadNpmTasks("grunt-contrib-concat");
-    grunt.loadNpmTasks("grunt-contrib-clean");
-    grunt.loadNpmTasks("grunt-contrib-qunit");
-    grunt.loadNpmTasks("grunt-contrib-connect");
-    grunt.loadNpmTasks("grunt-jscs");
-    grunt.loadNpmTasks("grunt-plato");
-
     // Default task.
-    grunt.registerTask("default", ["build"]);
-    grunt.registerTask("travis", ["verify", "build"]);
-    grunt.registerTask("verify", ["clean", "jscs:soft", "jshint:jslint", "uglify", "concat", "connect", "qunit"]);
+    grunt.registerTask("default", ["clean", "jscs", "jshint", "build", "qunit"]);
+    grunt.registerTask("build", ["uglify", "concat"]);
+    grunt.registerTask("travis", ["copy", "default"]);
     grunt.registerTask("analysis", ["plato"]);
-    grunt.registerTask("build", ["clean", "uglify", "concat"]);
-    grunt.registerTask("all", ["build", "analysis"]);
+    grunt.registerTask("all", ["build", "plato"]);
 };

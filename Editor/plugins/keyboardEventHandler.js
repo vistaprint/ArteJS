@@ -1,5 +1,4 @@
-﻿/*global Arte:false*/
-/**
+﻿/**
  * @fileoverview: A plugin to handle the keyboard events
  */
 (function(pluginManager) {

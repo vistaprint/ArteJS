@@ -46,7 +46,7 @@
                     src: "internal"
                 });
             }
-        }
+        };
 
         // Uses polling to trigger value change as user can change the value of the text field in multiple ways.
         // for example (keyboard, IME input, paste, multi-stroke keyboard, and context menu).

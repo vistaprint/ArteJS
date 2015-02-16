@@ -1,9 +1,7 @@
-﻿/*global Arte:false*/
-
 /**
-* @fileoverview: Various dom manipulation function used by Arte
-*/
-(function ($) {
+ * @fileoverview: Various dom manipulation function used by Arte
+ */
+(function($) {
     $.Arte = $.Arte || {};
     $.Arte.dom = $.Arte.dom || {};
     var dom = $.Arte.dom;
@@ -11,12 +9,12 @@
     var constants = $.Arte.constants;
 
     /**
-    * wrap elements/nodes
-    * In addition, if there is a rangySelectionBoundary span before or after the nodes to wrap, 
-    * include them in the wrap container
-    */
+     * wrap elements/nodes
+     * In addition, if there is a rangySelectionBoundary span before or after the nodes to wrap,
+     * include them in the wrap container
+     */
     $.extend(dom, {
-        wrapWithOptions: function (jNodes, options) {
+        wrapWithOptions: function(jNodes, options) {
             var wrapContainer = $();
             if (jNodes.length > 0) {
                 wrapContainer = dom.createContainer(options);
@@ -27,7 +25,7 @@
                 var rangyEndTag = dom.nextSiblingIncludingTextNodes(jNodes.last());
 
                 jNodes.first().before(wrapContainer);
-                jNodes.each(function () {
+                jNodes.each(function() {
                     wrapContainer.append(this);
                 });
 
@@ -39,21 +37,21 @@
         },
 
         /*
-        * unwrap the elements/nodes
-        * Unwrap each element in the jQuery selection and add br tag at the end if specified.
-        */
-        unwrapWithOptions: function (jNodes, options) {
+         * unwrap the elements/nodes
+         * Unwrap each element in the jQuery selection and add br tag at the end if specified.
+         */
+        unwrapWithOptions: function(jNodes, options) {
             var children = $();
 
-            jNodes.each(function () {
+            jNodes.each(function() {
                 var $this = $(this);
 
                 // While unwrapping a block element, don't lose the line breaks before or after
-                // For example: unwrapping the div in abc<div>elementToUnwrap</div>otherContent 
-                // should result in abc<br/>elementToUnwrap<br/>otherContent to maintain visual 
+                // For example: unwrapping the div in abc<div>elementToUnwrap</div>otherContent
+                // should result in abc<br/>elementToUnwrap<br/>otherContent to maintain visual
                 // consistency
 
-                var filter = function (index, node) {
+                var filter = function(index, node) {
                     return !$(node).is(":emptyTextOrRangySpan");
                 };
 
@@ -74,11 +72,15 @@
 
                 // If this node has any styles, we should maintain them
                 if (options && options.maintainStyles) {
-                    var newContainer = dom.wrapWithOptions(contents, { applierTagName: "span", attr: { style: $this.attr("style")} });
+                    var newContainer = dom.wrapWithOptions(contents, {
+                        applierTagName: "span",
+                        attr: {
+                            style: $this.attr("style")
+                        }
+                    });
                     newContainer.unwrap();
                     children = children.add(newContainer);
-                }
-                else {
+                } else {
                     contents.first().unwrap();
                     children = children.add(contents);
                 }
@@ -88,11 +90,11 @@
         },
 
         /**
-        * Surround a set of nodes with a block element.  If a block parent exist, apply the styles
-        * to the existing block if there are attributes, or update the tagName of the block parent.
-        */
-        wrapWithBlock: function (jNodes, blockOptions) {
-            // Get a block Parent for this range. 
+         * Surround a set of nodes with a block element.  If a block parent exist, apply the styles
+         * to the existing block if there are attributes, or update the tagName of the block parent.
+         */
+        wrapWithBlock: function(jNodes, blockOptions) {
+            // Get a block Parent for this range.
             var blockParent = dom.closestWithAtMostOneBlockChild(jNodes, blockOptions.topEditableParent);
             var tagName = blockParent.prop("tagName");
             var nodesToWrap;
@@ -100,22 +102,19 @@
             // LI is a special case as we never want to wrap a LI with anything (except )
             if (!blockParent.first().is(":block") || // top parent is not a block element
                 blockOptions.applierTagName === constants.tagName.LI || // want to wrap the nodes with LI
-                    !configuration.styleableTags[tagName]) {
+                !configuration.styleableTags[tagName]) {
                 nodesToWrap = blockParent;
-            }
-            else if (tagName === blockOptions.applierTagName ||
+            } else if (tagName === blockOptions.applierTagName ||
                 (configuration.styleableTags[tagName] && configuration.styleableTags[blockOptions.applierTagName])) {
                 if (blockOptions.styleName) {
                     blockParent.css(blockOptions.styleName, blockOptions.styleValue);
-                }
-                else if (blockOptions.className) {
+                } else if (blockOptions.className) {
                     blockParent.addClass(blockOptions.className);
                 } else {
                     // e.g. wrapping a LI with a OL.
                     nodesToWrap = blockParent;
                 }
-            }
-            else {
+            } else {
                 nodesToWrap = jNodes;
             }
 
@@ -130,34 +129,37 @@
         },
 
         /*
-        * block unsurround 
-        */
-        unwrapBlock: function (jNodes, blockOptions) {
+         * block unsurround
+         */
+        unwrapBlock: function(jNodes, blockOptions) {
             var blockParent = dom.closestWithCommand(jNodes, blockOptions);
             if (!blockParent.length) {
                 return jNodes;
             }
 
             // In this case the blockParent has multiple styles or is the contentEditable, only remove the styles
-            if (!$.isEmptyObject(dom.getStyles(blockParent)) || dom.getClasses(blockParent).length > 0 || blockParent.attr("contentEditable")) {
+            if (!$.isEmptyObject(dom.getStyles(blockParent)) ||
+                    dom.getClasses(blockParent).length > 0 ||
+                    blockParent.attr("contentEditable")) {
                 if (blockOptions.styleName) {
                     return blockParent.css(blockOptions.styleName, "");
                 } else if (blockOptions.className) {
                     return blockParent.removeClass(blockOptions.className);
                 }
-            }
-            else {
-                return dom.unwrapWithOptions(blockParent, { "insertBr": true });
+            } else {
+                return dom.unwrapWithOptions(blockParent, {
+                    "insertBr": true
+                });
             }
         },
 
         /**
-        * Create a dom element with options
-        * @param {object} a set of dom element creation options
-        *                 tagName, attr, styleName+styleValue, className
-        * @return {jNode} A jQuery element  
-        */
-        createContainer: function (options) {
+         * Create a dom element with options
+         * @param {object} a set of dom element creation options
+         *                 tagName, attr, styleName+styleValue, className
+         * @return {jNode} A jQuery element
+         */
+        createContainer: function(options) {
             var tagName = options.applierTagName || "div";
             var newElement = $("<" + tagName + ">");
             if (options.attr) {

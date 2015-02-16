@@ -12,3 +12,4 @@
 /Dependencies
 /Pages
 *.user
+tests/dependencies

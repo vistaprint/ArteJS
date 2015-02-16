@@ -1,5 +1,4 @@
-﻿/*global Arte:false*/
-/// @dependencies: Arte.js, TextArea.js
+﻿/// @dependencies: Arte.js, TextArea.js
 /**
  * @fileoverview extends Arte prototype to add rich text commands
  */
