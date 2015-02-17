@@ -1,7 +1,7 @@
-﻿$(document).ready(function () {
+$(document).ready(function() {
     var suiteName = "Arte.TextArea";
     module(suiteName + ".commands");
-    unitTestHelper.executeAsyncTestCollectionSimple(simpleEventsTest, function (testData) {
+    unitTestHelper.executeAsyncTestCollectionSimple(simpleEventsTest, function(testData) {
         $(TEST_ELEMENT_SELECTOR).Arte({
             styles: {}
         }); // use default options
@@ -19,17 +19,14 @@ var simpleEventsTest = [
         name: "commandEvents",
         assertionCount: 3,
         events: {
-            "onbeforecommand": function (event, data)
-            {
+            "onbeforecommand": function(event, data) {
                 ok(true, "beforeCommand");
             },
-            "oncommand": function (event, data)
-            {
+            "oncommand": function(event, data) {
                 ok(true, "command");
             }
         },
-        op: function ()
-        {
+        op: function() {
             $(TEST_ELEMENT_SELECTOR).Arte("bold");
             return true;
         }
@@ -38,13 +35,11 @@ var simpleEventsTest = [
         name: "valueChangeEvent",
         assertionCount: 2,
         events: {
-            "onvaluechange": function (event, data)
-            {
+            "onvaluechange": function(event, data) {
                 ok(true, "valueChange");
             }
         },
-        op: function ()
-        {
+        op: function() {
             $(TEST_ELEMENT_SELECTOR).Arte("value", "<div>XYZ</div>");
             return true;
         }

@@ -1,10 +1,8 @@
-﻿$(document).ready(function()
-{
+$(document).ready(function() {
     var suiteName = "Arte.TextArea";
 
     module(suiteName + ".commands");
-    unitTestHelper.executeTestCollectionSimple(commandsWithNoSelectionTestData, function(testData)
-    {
+    unitTestHelper.executeTestCollectionSimple(commandsWithNoSelectionTestData, function(testData) {
         $(TEST_ELEMENT_SELECTOR).Arte({
             styles: {}
         }); // use default options
@@ -19,39 +17,28 @@
         var commandConfig = $.Arte.configuration.commands[testData.commandName];
 
         var arte = $(TEST_ELEMENT_SELECTOR).data("Arte");
-        var commandAttrType = commandConfig.commandAttrType || function()
-        {
+        var commandAttrType = commandConfig.commandAttrType || function() {
             var attrType = $.Arte.configuration.commandAttrType;
-            if (!options)
-            {
+            if (!options) {
                 return attrType;
             }
 
-            if (options.commandAttrType)
-            {
+            if (options.commandAttrType) {
                 attrType = options.commandAttrType;
-            }
-            else
-            {
-                if (options.styleName)
-                {
+            } else {
+                if (options.styleName) {
                     attrType = commandAttr.styleName;
-                }
-                else if (options.className)
-                {
+                } else if (options.className) {
                     attrType = commandAttr.className;
-                }
-                else if (options.tagName)
-                {
+                } else if (options.tagName) {
                     attrType = commandAttr.tagName;
                 }
             }
             return attrType;
-        } ();
+        }();
         var isApplied = false;
         // Based on the command attribute, check if a command is applied.
-        switch (commandAttrType)
-        {
+        switch (commandAttrType) {
             case $.Arte.constants.commandAttrType.styleName:
                 var styleName = commandConfig.styleName;
                 isApplied = $.Arte.dom.getStyles(arte.$el)[styleName];
@@ -69,8 +56,7 @@
     });
 
     module(suiteName + ".commandsOnPlainTextField");
-    unitTestHelper.executeTestCollectionSimple(commandOnPlainTextTestData, function(testData)
-    {
+    unitTestHelper.executeTestCollectionSimple(commandOnPlainTextTestData, function(testData) {
         $(TEST_ELEMENT_SELECTOR).Arte({
             editorType: $.Arte.constants.editorTypes.plainText
         }); // use default options
@@ -81,8 +67,7 @@
     });
 
     module(suiteName + ".toggleStyleOnElement");
-    unitTestHelper.executeTestCollectionSimple(toggleStyleOnElementTestData, function(testData)
-    {
+    unitTestHelper.executeTestCollectionSimple(toggleStyleOnElementTestData, function(testData) {
         $(TEST_ELEMENT_SELECTOR).Arte(testData.options); // use default options
 
         var arte = $(TEST_ELEMENT_SELECTOR).Arte().get(0);
@@ -96,14 +81,16 @@ var commandsWithNoSelectionTestData = [
     {
         name: "fontWeight",
         commandName: "bold",
-        /* For some commands, the actual command is decided at the runtime.  AltCommandName property is set to 
+        /* For some commands, the actual command is decided at the runtime.  AltCommandName property is set to
         define the actual command that is expected to run. */
         altCommandName: "fontWeight"
     },
     {
         name: "bold",
         commandName: "bold",
-        commandOptions: { tagName: "B" }
+        commandOptions: {
+            tagName: "B"
+        }
     },
     {
         name: "fontStyle",
@@ -113,7 +100,9 @@ var commandsWithNoSelectionTestData = [
     {
         name: "italic",
         commandName: "italic",
-        commandOptions: { tagName: "I" }
+        commandOptions: {
+            tagName: "I"
+        }
     },
     {
         name: "textDecoration",
@@ -123,7 +112,9 @@ var commandsWithNoSelectionTestData = [
     {
         name: "underline",
         commandName: "underline",
-        commandOptions: { tagName: "U" }
+        commandOptions: {
+            tagName: "U"
+        }
     },
     {
         name: "blockquote",
@@ -172,32 +163,45 @@ var commandsWithNoSelectionTestData = [
     {
         name: "fontSize",
         commandName: "fontSize",
-        commandOptions: { commandValue: "10px" }
+        commandOptions: {
+            commandValue: "10px"
+        }
     },
     {
         name: "fontFamily",
         commandName: "fontFamily",
-        commandOptions: { commandValue: "arial" }
+        commandOptions: {
+            commandValue: "arial"
+        }
     },
     {
         name: "color",
         commandName: "color",
-        commandOptions: { commandValue: "red" }
+        commandOptions: {
+            commandValue: "red"
+        }
     },
     {
         name: "textAlignLeft",
         commandName: "textAlign",
-        commandOptions: { commandValue: "left" }
+        commandOptions: {
+            commandValue: "left"
+        }
     },
     {
         name: "textAlignRight",
         commandName: "textAlign",
-        commandOptions: { commandValue: "right" }
+        commandOptions: {
+            commandValue: "right"
+        }
     },
     {
         name: "textAlignRightClass",
         commandName: "textAlign",
-        commandOptions: { commandAttrType: $.Arte.constants.commandAttrType.className, commandValue: "arte-text-align-right" }
+        commandOptions: {
+            commandAttrType: $.Arte.constants.commandAttrType.className,
+            commandValue: "arte-text-align-right"
+        }
     }
 ];
 
@@ -205,9 +209,11 @@ var commandOnPlainTextTestData = [
     {
         name: "bold",
         commandName: "bold",
-        commandOptions: { styleName: "font-weight", styleValue: "bold" },
-        evaluateResult: function(arte)
-        {
+        commandOptions: {
+            styleName: "font-weight",
+            styleValue: "bold"
+        },
+        evaluateResult: function(arte) {
             return $.Arte.dom.getStyles(arte.$el)["font-weight"];
         }
     }
@@ -219,20 +225,26 @@ var toggleStyleOnElementTestData = [
         options: {
             styles: {}
         },
-        commandOptions: { styleName: "font-weight", styleValue: "bold" },
-        evaluateResult: function(arte)
-        {
+        commandOptions: {
+            styleName: "font-weight",
+            styleValue: "bold"
+        },
+        evaluateResult: function(arte) {
             return $.Arte.dom.getStyles(arte.$el)["font-weight"];
         }
     },
     {
         name: "toggleStyleOnElementRemove",
         options: {
-            styles: { "font-weight": "bold" }
+            styles: {
+                "font-weight": "bold"
+            }
         },
-        commandOptions: { styleName: "font-weight", styleValue: "bold" },
-        evaluateResult: function(arte)
-        {
+        commandOptions: {
+            styleName: "font-weight",
+            styleValue: "bold"
+        },
+        evaluateResult: function(arte) {
             return $.Arte.dom.getStyles(arte.$el)["font-weight"] === undefined;
         }
     },
@@ -240,9 +252,10 @@ var toggleStyleOnElementTestData = [
         name: "toggleStyleOnElementClass",
         options: {
         },
-        commandOptions: { className: "arte-font-weight-bold" },
-        evaluateResult: function(arte)
-        {
+        commandOptions: {
+            className: "arte-font-weight-bold"
+        },
+        evaluateResult: function(arte) {
             return arte.$el.hasClass("arte-font-weight-bold");
         }
     },
@@ -251,9 +264,10 @@ var toggleStyleOnElementTestData = [
         options: {
             classes: ["arte-font-weight-bold"]
         },
-        commandOptions: { className: "arte-font-weight-bold" },
-        evaluateResult: function(arte)
-        {
+        commandOptions: {
+            className: "arte-font-weight-bold"
+        },
+        evaluateResult: function(arte) {
             return !arte.$el.hasClass("arte-font-weight-bold");
         }
     }

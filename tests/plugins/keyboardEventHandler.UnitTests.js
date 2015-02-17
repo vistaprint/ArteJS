@@ -1,10 +1,8 @@
-﻿$(document).ready(function ()
-{
+$(document).ready(function() {
     var suiteName = "Arte.Plugins.KeyboardEvents";
     module(suiteName);
 
-    unitTestHelper.executeAsyncTestCollectionSimple(ArteKeyboardEventTestData, function (testData)
-    {
+    unitTestHelper.executeAsyncTestCollectionSimple(ArteKeyboardEventTestData, function(testData) {
         $(TEST_ELEMENT_SELECTOR).Arte({
             value: "test",
             on: testData.events
@@ -20,19 +18,17 @@ var ArteKeyboardEventTestData = [
         name: "commandEvents",
         assertionCount: 2,
         events: {
-            "onselectionchange": function (event, data)
-            {
+            "onselectionchange": function(event, data) {
                 ok(true, "selectionchanged");
             }
         },
-        op: function (arte)
-        {
+        op: function(arte) {
             arte.$element.trigger("onkeyup", {
                 textArea: arte,
                 originalEvent: {
                     keyCode: 40,
                     ctrlKey: true,
-                    preventDefault: function() { }
+                    preventDefault: function() {}
                 }
             });
             return true;
@@ -41,10 +37,8 @@ var ArteKeyboardEventTestData = [
     {
         name: "Ctrl+B",
         assertionCount: 2,
-        op: function (arte)
-        {
-            arte.bold = function ()
-            {
+        op: function(arte) {
+            arte.bold = function() {
                 ok(true, "bold called.");
             };
             arte.$element.trigger("onkeydown", {
@@ -52,7 +46,7 @@ var ArteKeyboardEventTestData = [
                 originalEvent: {
                     keyCode: 66,
                     ctrlKey: true,
-                    preventDefault: function () { }
+                    preventDefault: function() {}
                 }
             });
             return true;
@@ -61,10 +55,8 @@ var ArteKeyboardEventTestData = [
     {
         name: "Ctrl+I",
         assertionCount: 2,
-        op: function (arte)
-        {
-            arte.italic = function ()
-            {
+        op: function(arte) {
+            arte.italic = function() {
                 ok(true, "italic called.");
             };
             arte.$element.trigger("onkeydown", {
@@ -72,7 +64,7 @@ var ArteKeyboardEventTestData = [
                 originalEvent: {
                     keyCode: 73,
                     ctrlKey: true,
-                    preventDefault: function() { }
+                    preventDefault: function() {}
                 }
             });
             return true;
@@ -82,10 +74,8 @@ var ArteKeyboardEventTestData = [
     {
         name: "Ctrl+U",
         assertionCount: 2,
-        op: function (arte)
-        {
-            arte.underline = function ()
-            {
+        op: function(arte) {
+            arte.underline = function() {
                 ok(true, "underline called.");
             };
             arte.$element.trigger("onkeydown", {
@@ -93,7 +83,7 @@ var ArteKeyboardEventTestData = [
                 originalEvent: {
                     keyCode: 85,
                     ctrlKey: true,
-                    preventDefault: function() { }
+                    preventDefault: function() {}
                 }
             });
             return true;
@@ -102,9 +92,8 @@ var ArteKeyboardEventTestData = [
 
     {
         name: "EnterMouseUp",
-        assertionCount: 2   ,
-        op: function (arte)
-        {
+        assertionCount: 2,
+        op: function(arte) {
             // TODO: Need to rewrite this test.
             //var currentFunc = $.Arte.dom.convertDivsToP;
             //$.Arte.dom.convertDivsToP = function ()

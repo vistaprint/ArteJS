@@ -1,9 +1,7 @@
-﻿$(document).ready(function ()
-{
+$(document).ready(function() {
     var suiteName = "Arte.TextArea";
     module(suiteName + ".getValue");
-    unitTestHelper.executeTestCollectionSimple(ArteTextAreaTestData.getValue, function (testData)
-    {
+    unitTestHelper.executeTestCollectionSimple(ArteTextAreaTestData.getValue, function(testData) {
         $.Arte.configuration.handleUnsanctionedTagsOnGetValue = false;
         var value = $(TEST_ELEMENT_SELECTOR).Arte(testData.options).Arte("value")[0];
         return unitTestHelper.isEqual({
@@ -15,8 +13,7 @@
     });
 
     module(suiteName + ".setValue");
-    unitTestHelper.executeTestCollectionSimple(ArteTextAreaTestData.setValue, function (testData)
-    {
+    unitTestHelper.executeTestCollectionSimple(ArteTextAreaTestData.setValue, function(testData) {
         $.Arte.configuration.handleUnsanctionedTagsOnGetValue = false;
         $(TEST_ELEMENT_SELECTOR).Arte(testData.options).Arte("value", testData.value);
         var value = $(TEST_ELEMENT_SELECTOR).Arte("value")[0];
@@ -29,8 +26,7 @@
     });
 
     module(suiteName + ".getOuterValue");
-    unitTestHelper.executeTestCollectionSimple(ArteTextAreaTestData.getOuterValue, function (testData)
-    {
+    unitTestHelper.executeTestCollectionSimple(ArteTextAreaTestData.getOuterValue, function(testData) {
         $(TEST_ELEMENT_SELECTOR).Arte(testData.options).Arte("value", testData.value);
         var value = $(TEST_ELEMENT_SELECTOR).Arte("outerValue")[0];
         return unitTestHelper.isEqual({
@@ -42,7 +38,7 @@
     });
 
     module(suiteName + ".setOuterValue");
-    unitTestHelper.executeTestCollectionSimple(ArteTextAreaTestData.setOuterValue, function (testData) {
+    unitTestHelper.executeTestCollectionSimple(ArteTextAreaTestData.setOuterValue, function(testData) {
         $(TEST_ELEMENT_SELECTOR).Arte(testData.options).Arte("outerValue", testData.value);
         var value = $(TEST_ELEMENT_SELECTOR).Arte("outerValue")[0];
         return unitTestHelper.isEqual({
@@ -54,8 +50,7 @@
     });
 
     module(suiteName + ".events");
-    unitTestHelper.executeAsyncTestCollectionSimple(ArteTextAreaTestData.events, function (testData)
-    {
+    unitTestHelper.executeAsyncTestCollectionSimple(ArteTextAreaTestData.events, function(testData) {
         $(TEST_ELEMENT_SELECTOR).Arte({});
         var arte = $(TEST_ELEMENT_SELECTOR).Arte().get(0);
         return testData.op(arte);
@@ -334,8 +329,8 @@ var ArteTextAreaTestData = {
         {
             name: "valuechange_outerValue",
             assertionCount: 2,
-            op: function (arte) {
-                var handler = function (e, data) {
+            op: function(arte) {
+                var handler = function(e, data) {
                     ok(true, "onvaluechange called");
                 };
                 arte.on("onvaluechange", handler);
@@ -347,9 +342,9 @@ var ArteTextAreaTestData = {
         {
             name: "valuechange_notCalledIfOuterValueChangedButValueDidNot",
             assertionCount: 1,
-            op: function (arte) {
+            op: function(arte) {
                 arte.outerValue("<div style='font-weight:bold; font-size:10px'>xyz</div>");
-                var handler = function (e, data) {
+                var handler = function(e, data) {
                     ok(false, "onvaluechange called");
                 };
                 arte.on("onvaluechange", handler);
@@ -359,5 +354,4 @@ var ArteTextAreaTestData = {
         }
     ]
 };
-
 

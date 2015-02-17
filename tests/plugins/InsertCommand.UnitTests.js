@@ -1,20 +1,19 @@
-﻿$(document).ready(function ()
-{
+$(document).ready(function() {
     var suiteName = "Arte.Plugins.InsertCommand";
     module(suiteName);
 
-    unitTestHelper.executeTestCollectionSimple(ArteInsertCommandeTestData   , function (testData)
-    {
+    unitTestHelper.executeTestCollectionSimple(ArteInsertCommandeTestData, function(testData) {
         $(TEST_ELEMENT_SELECTOR).Arte({
             value: testData.rawContent
         });
         var arte = $(TEST_ELEMENT_SELECTOR).Arte().get(0);
-        if (testData.beforeCommand)
-        {
+        if (testData.beforeCommand) {
             testData.beforeCommand(arte);
         }
 
-        arte.insert({ commandValue: testData.contentToInsert });
+        arte.insert({
+            commandValue: testData.contentToInsert
+        });
 
         var value = arte.value();
 
@@ -39,8 +38,7 @@ var ArteInsertCommandeTestData = [
         name: "insertAtEnd",
         rawContent: "Test",
         contentToInsert: "Content",
-        beforeCommand: function (textArea)
-        {
+        beforeCommand: function(textArea) {
             $.Arte.util.moveCursorToEndOfElement(textArea.$el.get(0));
         },
         expectedContent: "Test<span>Content</span>"
@@ -49,8 +47,7 @@ var ArteInsertCommandeTestData = [
         name: "insertInTheMiddle",
         rawContent: "<span id='span'>span</span>Test",
         contentToInsert: "Content",
-        beforeCommand: function (textArea)
-        {
+        beforeCommand: function(textArea) {
             $.Arte.util.moveCursorToEndOfElement($("#span").get(0));
         },
         expectedContent: "<span id='span'>span<span>Content</span></span>Test"
@@ -59,9 +56,10 @@ var ArteInsertCommandeTestData = [
         name: "replaceNodeContent",
         rawContent: "<span id='span'>span</span>Test",
         contentToInsert: "Content",
-        beforeCommand: function (textArea)
-        {
-            unitTestHelper.createSelection({ rangeContentId: "span" });
+        beforeCommand: function(textArea) {
+            unitTestHelper.createSelection({
+                rangeContentId: "span"
+            });
         },
         expectedContent: "<span id='span'><span>Content</span></span>Test"
     },
@@ -69,10 +67,8 @@ var ArteInsertCommandeTestData = [
         name: "cancelReplace",
         rawContent: "<span id='span'>span</span>Test",
         contentToInsert: "Content",
-        beforeCommand: function (textArea)
-        {
-            textArea.on("onbeforeinsert", function (e, data)
-            {
+        beforeCommand: function(textArea) {
+            textArea.on("onbeforeinsert", function(e, data) {
                 data.execute = false;
             });
         },
@@ -82,16 +78,14 @@ var ArteInsertCommandeTestData = [
         name: "noOp",
         rawContent: "<span id='span'>span</span>Test",
         contentToInsert: "Content",
-        beforeCommand: function (textArea) {
+        beforeCommand: function(textArea) {
             var currentValue = $.Arte.configuration.requireFocus;
-            textArea.on("onbeforeinsert", function (e, data)
-            {
+            textArea.on("onbeforeinsert", function(e, data) {
                 $.Arte.configuration.requireFocus = true;
             });
-            
+
             // Restore the value
-            textArea.on("onafterinsert", function (e, data)
-            {
+            textArea.on("onafterinsert", function(e, data) {
                 $.Arte.configuration.requireFocus = currentValue;
             });
         },

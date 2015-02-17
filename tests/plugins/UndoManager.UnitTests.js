@@ -1,16 +1,13 @@
-﻿$(document).ready(function ()
-{
+$(document).ready(function() {
     var suiteName = "Arte.Plugins.UndoManager";
     module(suiteName + "");
 
-    unitTestHelper.executeTestCollectionSimple(ArteUndoManagerTestData.HasUndoRedo, function (testData)
-    {
+    unitTestHelper.executeTestCollectionSimple(ArteUndoManagerTestData.HasUndoRedo, function(testData) {
         $(TEST_ELEMENT_SELECTOR).Arte(testData.options);
         return testData.op();
     });
 
-    unitTestHelper.executeTestCollectionSimple(ArteUndoManagerTestData.UndoRedo, function (testData)
-    {
+    unitTestHelper.executeTestCollectionSimple(ArteUndoManagerTestData.UndoRedo, function(testData) {
         $(TEST_ELEMENT_SELECTOR).Arte(testData.options);
         return testData.op();
     });
@@ -23,8 +20,7 @@ var ArteUndoManagerTestData = {
             options: {
                 value: "This is rich text area"
             },
-            op: function ()
-            {
+            op: function() {
                 return !$(TEST_ELEMENT_SELECTOR).Arte().get(0).hasUndo();
             }
         },
@@ -33,8 +29,7 @@ var ArteUndoManagerTestData = {
             options: {
                 value: "This is rich area"
             },
-            op: function ()
-            {
+            op: function() {
                 var arte = $(TEST_ELEMENT_SELECTOR).Arte().get(0);
 
                 // Change content
@@ -47,8 +42,7 @@ var ArteUndoManagerTestData = {
             options: {
                 value: "This is rich area"
             },
-            op: function ()
-            {
+            op: function() {
                 var arte = $(TEST_ELEMENT_SELECTOR).Arte().get(0);
 
                 // Change content
@@ -63,8 +57,7 @@ var ArteUndoManagerTestData = {
             options: {
                 value: "This is rich area"
             },
-            op: function ()
-            {
+            op: function() {
                 var arte = $(TEST_ELEMENT_SELECTOR).Arte().get(0);
 
                 // Change content
@@ -72,8 +65,7 @@ var ArteUndoManagerTestData = {
                 arte.value("another value");
                 arte.undo();
                 var result = arte.hasRedo();
-                if (!result)
-                {
+                if (!result) {
                     return result;
                 }
                 arte.redo();
@@ -87,8 +79,7 @@ var ArteUndoManagerTestData = {
             options: {
                 value: "This is rich text area"
             },
-            op: function ()
-            {
+            op: function() {
                 var arte = $(TEST_ELEMENT_SELECTOR).Arte().get(0);
                 var value = arte.value();
                 arte.undo();
@@ -100,8 +91,7 @@ var ArteUndoManagerTestData = {
             options: {
                 value: "This is rich area"
             },
-            op: function ()
-            {
+            op: function() {
                 var arte = $(TEST_ELEMENT_SELECTOR).Arte().get(0);
                 var originalValue = arte.value();
                 // change value;
@@ -116,8 +106,7 @@ var ArteUndoManagerTestData = {
             options: {
                 value: "This is rich area"
             },
-            op: function ()
-            {
+            op: function() {
                 var arte = $(TEST_ELEMENT_SELECTOR).Arte().get(0);
 
                 var value1 = "value1";
@@ -128,8 +117,7 @@ var ArteUndoManagerTestData = {
                 arte.redo();
 
                 var result = arte.value() === value1;
-                if (!result)
-                {
+                if (!result) {
                     return result;
                 }
 
@@ -144,8 +132,7 @@ var ArteUndoManagerTestData = {
                 value: "This is rich area"
             },
 
-            op: function ()
-            {
+            op: function() {
                 var arte = $(TEST_ELEMENT_SELECTOR).Arte().get(0);
 
                 var value1 = "value1";
@@ -157,8 +144,7 @@ var ArteUndoManagerTestData = {
 
                 // Perform Undo
                 var result = arte.value() === value1;
-                if (!result)
-                {
+                if (!result) {
                     return result;
                 }
 
@@ -172,16 +158,14 @@ var ArteUndoManagerTestData = {
                 value: "This is rich area"
             },
 
-            op: function ()
-            {
+            op: function() {
                 var arte = $(TEST_ELEMENT_SELECTOR).Arte().get(0);
 
                 var value1 = "value1";
                 // Change content
                 arte.value(value1);
 
-                arte.on("onbeforeundo", function (e, data)
-                {
+                arte.on("onbeforeundo", function(e, data) {
                     data.execute = false;
                 });
 
@@ -191,4 +175,4 @@ var ArteUndoManagerTestData = {
             }
         }
     ]
-};    
+};
