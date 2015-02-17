@@ -8,7 +8,7 @@
     <script>
         (function() {
             var item, i, script,
-                source = "dependencies/jquery",
+                source = "dependencies/jquery-1.9.1",
                 parts = location.search
                     .substr(1)
                     .split("&");
@@ -16,7 +16,7 @@
             for (i = 0; i < parts.length; i++) {
                 item = parts[i].split("=");
                 if (item[0] === "jquery" && item[1]) {
-                    source += "-" + item[1];
+                    source = "dependencies/jquery-" + item[1];
                     break;
                 }
             }
