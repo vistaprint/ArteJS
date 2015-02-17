@@ -86,7 +86,8 @@ module.exports = function(grunt) {
 
                 }
             },
-            all: ["tests/all.html"]
+            all: ["tests/all.html"],
+            single: ["tests/index.html"]
         },
         copy: {
             qunit: {
@@ -99,10 +100,6 @@ module.exports = function(grunt) {
                     },
                 ]
             },
-            jquery: {
-                src: "node_modules/jquery/jquery.js",
-                dest: "tests/dependencies/jquery.js"
-            },
             rangy: {
                 files: [
                     {
@@ -114,9 +111,33 @@ module.exports = function(grunt) {
                             "lib/rangy-selectionsaverestore.js"
                         ],
                         dest: "external/rangy/"
-                    },
+                    }
+                ]
+            },
+            qunitComposite: {
+                files: [
+                    {
+                        expand: true,
+                        cwd: "node_modules/qunit-composite",
+                        src: ["qunit-composite.*"],
+                        dest: "tests/dependencies/QUnit/"
+                    }
                 ]
             }
+        },
+        curl: {
+            // "Latest" - the most downloaded version of jQuery
+            "tests/dependencies/jquery.js": "http://code.jquery.com/jquery-latest.min.js",
+
+            // Specific versions
+            "tests/dependencies/jquery-1.11.2.js": "http://code.jquery.com/jquery-1.11.2.js",
+            "tests/dependencies/jquery-1.10.2.js": "http://code.jquery.com/jquery-1.10.2.js",
+            "tests/dependencies/jquery-1.9.1.js": "http://code.jquery.com/jquery-1.9.1.js",
+            "tests/dependencies/jquery-1.8.3.js": "http://code.jquery.com/jquery-1.8.3.js",
+            "tests/dependencies/jquery-1.7.2.js": "http://code.jquery.com/jquery-1.7.2.js",
+
+            // jQuery 2.x - IE9+
+            "tests/dependencies/jquery-2.1.3.js": "http://code.jquery.com/jquery-2.1.3.js",
         },
         plato: {
             all: {
@@ -136,9 +157,9 @@ module.exports = function(grunt) {
     });
 
     // Default task.
-    grunt.registerTask("default", ["jscs", "jshint", "build", "qunit"]);
+    grunt.registerTask("default", ["jscs", "jshint", "build", "qunit:single"]);
     grunt.registerTask("build", ["concat", "uglify"]);
-    grunt.registerTask("travis", ["copy", "default"]);
+    grunt.registerTask("travis", ["copy", "curl", "default"]);
     grunt.registerTask("analysis", ["plato"]);
     grunt.registerTask("all", ["build", "plato"]);
 };
