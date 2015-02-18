@@ -276,7 +276,3 @@ var unitTestHelper = {
         return isEqual;
     };
 })(jQuery);
-
-setInterval(function() {
-    location.reload();
-}, 300000);
