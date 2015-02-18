@@ -12,8 +12,7 @@ module.exports = function(grunt) {
             },
             gruntfile: ["Gruntfile.js"],
             all: [
-                "Editor/**/*.js",
-                "Toolbar/**/*.js",
+                "src/**/*.js"
             ]
         },
         jscs: {
@@ -52,26 +51,26 @@ module.exports = function(grunt) {
 
             editor: {
                 src: [
-                    "Editor/core/Arte.js",
-                    "Editor/core/TextArea.js",
-                    "Editor/core/Configuration.js",
-                    "Editor/core/PluginManager.js",
-                    "Editor/core/Commands.js",
-                    "Editor/core/Util.js",
+                    "src/editor/core/Arte.js",
+                    "src/editor/core/TextArea.js",
+                    "src/editor/core/Configuration.js",
+                    "src/editor/core/PluginManager.js",
+                    "src/editor/core/Commands.js",
+                    "src/editor/core/Util.js",
 
-                    "Editor/lib/jquery-extensions/*.js",
-                    "Editor/lib/rangy-extensions/*.js",
-                    "Editor/plugins/*.js"
+                    "src/editor/lib/jquery-extensions/*.js",
+                    "src/editor/lib/rangy-extensions/*.js",
+                    "src/editor/plugins/*.js"
                 ],
                 dest: "dist/arte.editor.js"
             },
 
             toolbar: {
                 src: [
-                    "Toolbar/toolbar.js",
-                    "Toolbar/Buttons/*.js",
-                    "Toolbar/Configuration.js",
-                    "Toolbar/SelectionManager.js"
+                    "src/toolbar/toolbar.js",
+                    "src/toolbar/Buttons/*.js",
+                    "src/toolbar/Configuration.js",
+                    "src/toolbar/SelectionManager.js"
                 ],
                 dest: "dist/arte.toolbar.js"
             }
@@ -130,10 +129,7 @@ module.exports = function(grunt) {
                     exclude: /ThirdParty/
                 },
                 files: {
-                    "reports/plato": [
-                        "Editor/**/*.js",
-                        "Toolbar/**/*.js"
-                    ]
+                    "reports/plato": ["src/**/*.js"]
                 }
             }
         }
