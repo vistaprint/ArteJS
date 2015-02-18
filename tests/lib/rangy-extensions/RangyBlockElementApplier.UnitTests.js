@@ -416,12 +416,4 @@ function complexBlockSetSurroundUnitTests() {
             $.Arte.dom.cleanup($("[contenteditable='true']"));
         });
     });
-
-    //    QUnit.test(complexBlockSetSurroundUnitTestsData.wrapWithSpanBetweenOlAndSelection.name, function () {
-    //        executeTest(complexBlockSetSurroundUnitTestsData.wrapWithSpanBetweenOlAndSelection, function (data) {
-    //            // create a range from second text node
-    //            var range = createRange(data);
-    //            rangy.toggleSurroundRangeSet(range, { tagName: "ol" });
-    //        });
-    //    });
 }
