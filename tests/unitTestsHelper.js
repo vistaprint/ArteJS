@@ -13,9 +13,7 @@ var unitTestHelper = {
         }
     },
     /* Teardown, remove the content from the test element */
-    teardown: function() {
-        $(TEST_ELEMENT_SELECTOR).replaceWith($("<div>").attr("id", TEST_ELEMENT_ID));
-    },
+    teardown: function() {},
     /* Compare the result of the rich text operation. */
     isEqual: function(options) {
         var isEqual = false;
@@ -173,18 +171,13 @@ var unitTestHelper = {
     },
     /* Simple wrapper around qunit test that calls the callback for each test specified by testDataCollection */
     executeTestCollectionSimple: function(testDataCollection, callback) {
-        function test(testData) {
+        function createTest(testData) {
             QUnit.test(testData.name, function(assert) {
-                var result = false;
-                if (callback) {
-                    result = callback(testData);
-                }
-                assert.ok(result);
-                unitTestHelper.teardown();
+                assert.ok(callback(testData));
             });
         }
         for (var i = 0; i < testDataCollection.length; i++) {
-            test(testDataCollection[i]);
+            createTest(testDataCollection[i]);
         }
     },
     /* Simple wrapper around qunit async test that calls the callback for each test specified by testDataCollection */

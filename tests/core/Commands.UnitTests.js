@@ -1,66 +1,72 @@
 $(document).ready(function() {
     var suiteName = "Arte.TextArea";
 
-    QUnit.module(suiteName + ".commands");
-    unitTestHelper.executeTestCollectionSimple(commandsWithNoSelectionTestData, function(testData) {
-        $(TEST_ELEMENT_SELECTOR).Arte({
-            styles: {}
-        }); // use default options
+    QUnit.module(suiteName + ".commands", {
+        beforeEach: function() {
+            $(TEST_ELEMENT_SELECTOR).Arte({
+                styles: {}
+            }); // use default options
 
-        $.Arte.configuration.requireFocus = false;
+            $.Arte.configuration.requireFocus = false;
+        }
+    });
+
+    unitTestHelper.executeTestCollectionSimple(commandsWithNoSelectionTestData, function(testData) {
+        var options = testData.commandOptions;
+        var element = $(TEST_ELEMENT_SELECTOR);
 
         // Execute the command
-        var options = testData.commandOptions;
-        $(TEST_ELEMENT_SELECTOR).Arte(testData.commandName, options);
+        element.Arte(testData.commandName, options);
 
         // Verify that command is properly applied
         var commandConfig = $.Arte.configuration.commands[testData.commandName];
 
-        var arte = $(TEST_ELEMENT_SELECTOR).data("Arte");
-        var commandAttrType = commandConfig.commandAttrType || function() {
-            var attrType = $.Arte.configuration.commandAttrType;
-            if (!options) {
-                return attrType;
-            }
+        var arte = element.data("Arte");
 
-            if (options.commandAttrType) {
-                attrType = options.commandAttrType;
-            }
-            return attrType;
-        }();
-        var isApplied = false;
-        // Based on the command attribute, check if a command is applied.
-        switch (commandAttrType) {
-            case $.Arte.constants.commandAttrType.styleName:
+        var commandAttrTypes = {
+            styleName: function() {
                 var styleName = commandConfig.styleName;
-                isApplied = $.Arte.dom.getStyles(arte.$el)[styleName];
-                break;
-            case $.Arte.constants.commandAttrType.className:
-                isApplied = $.Arte.dom.hasClassWithPattern(arte.$el, commandConfig.classNameRegex);
-                break;
-            case $.Arte.constants.commandAttrType.tagName:
-                var tagName = $.isPlainObject(commandConfig.tagName) ? commandConfig.tagName[commandAttrType] : commandConfig.tagName;
-                isApplied = arte.$el.find(tagName).length !== 0;
-                break;
+                return $.Arte.dom.getStyles(arte.$el)[styleName];
+            },
+            className: function() {
+                return $.Arte.dom.hasClassWithPattern(arte.$el, commandConfig.classNameRegex);
+            },
+            tagName: function() {
+                var tagName = $.isPlainObject(commandConfig.tagName) ?
+                        commandConfig.tagName[commandAttrType] :
+                        commandConfig.tagName;
+                return arte.$el.find(tagName).length !== 0;
+            }
+        };
+
+        var commandAttrType = commandConfig.commandAttrType;
+
+        if (!commandAttrType) {
+            commandAttrType = options ? options.commandAttrType : $.Arte.configuration.commandAttrType;
         }
 
-        return isApplied;
+        return commandAttrTypes[commandAttrType]();
     });
 
     QUnit.module(suiteName + ".commandsOnPlainTextField");
-    unitTestHelper.executeTestCollectionSimple(commandOnPlainTextTestData, function(testData) {
+    QUnit.test("bold", function(assert) {
         $(TEST_ELEMENT_SELECTOR).Arte({
             editorType: $.Arte.constants.editorTypes.plainText
-        }); // use default options
+        });
 
         var arte = $(TEST_ELEMENT_SELECTOR).Arte().get(0);
-        arte[testData.commandName](testData.commandOptions);
-        return testData.evaluateResult(arte);
+
+        arte.bold({
+            styleName: "font-weight",
+            styleValue: "bold"
+        });
+
+        assert.ok($.Arte.dom.getStyles(arte.$el)["font-weight"]);
     });
 
     QUnit.module(suiteName + ".toggleStyleOnElement");
     unitTestHelper.executeTestCollectionSimple(toggleStyleOnElementTestData, function(testData) {
-        $(TEST_ELEMENT_SELECTOR).Arte(testData.options); // use default options
+        $(TEST_ELEMENT_SELECTOR).Arte(testData.options);
 
         var arte = $(TEST_ELEMENT_SELECTOR).Arte().get(0);
         arte.toggleStyleOnElement(testData.commandOptions);
@@ -72,10 +78,7 @@ $(document).ready(function() {
 var commandsWithNoSelectionTestData = [
     {
         name: "fontWeight",
-        commandName: "bold",
-        /* For some commands, the actual command is decided at the runtime.  AltCommandName property is set to
-        define the actual command that is expected to run. */
-        altCommandName: "fontWeight"
+        commandName: "bold"
     },
     {
         name: "bold",
@@ -86,8 +89,7 @@ var commandsWithNoSelectionTestData = [
     },
     {
         name: "fontStyle",
-        commandName: "italic",
-        altCommandName: "fontStyle"
+        commandName: "italic"
     },
     {
         name: "italic",
@@ -98,8 +100,7 @@ var commandsWithNoSelectionTestData = [
     },
     {
         name: "textDecoration",
-        commandName: "underline",
-        altCommandName: "textDecoration"
+        commandName: "underline"
     },
     {
         name: "underline",
@@ -193,20 +194,6 @@ var commandsWithNoSelectionTestData = [
         commandOptions: {
             commandAttrType: $.Arte.constants.commandAttrType.className,
             commandValue: "arte-text-align-right"
-        }
-    }
-];
-
-var commandOnPlainTextTestData = [
-    {
-        name: "bold",
-        commandName: "bold",
-        commandOptions: {
-            styleName: "font-weight",
-            styleValue: "bold"
-        },
-        evaluateResult: function(arte) {
-            return $.Arte.dom.getStyles(arte.$el)["font-weight"];
         }
     }
 ];
