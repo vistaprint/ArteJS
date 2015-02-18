@@ -606,8 +606,7 @@ var nextSiblingIncludingTextNodesTestData = [
         rawContent: sampleContent.join(""),
         elementId: "span",
         evaluateResult: function(result) {
-            // TODO: Did you mean to return a conditional instead of an assignment?
-            return result.get(0).nodeValue = "Another Text Node";
+            return result.get(0).nodeValue === "Another Text Node";
         }
     },
     {
