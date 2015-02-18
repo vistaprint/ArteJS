@@ -158,52 +158,55 @@ var unitTestHelper = {
     * Performs executeTest for each test specified by testDataCollection.
     */
     executeTestCollection: function(testDataCollection, callback) {
-        for (var i = 0; i < testDataCollection.length; i++) {
-            (function(testData) {
-                QUnit.test(testData.name, function() {
-                    unitTestHelper.executeTest(testData, function(testData) {
-                        if (callback) {
-                            callback(testData);
-                        }
-                    });
+        function test(testData) {
+            QUnit.test(testData.name, function() {
+                unitTestHelper.executeTest(testData, function(testData) {
+                    if (callback) {
+                        callback(testData);
+                    }
                 });
-            })(testDataCollection[i]);
+            });
+        }
+        for (var i = 0; i < testDataCollection.length; i++) {
+            test(testDataCollection[i]);
         }
     },
     /* Simple wrapper around qunit test that calls the callback for each test specified by testDataCollection */
     executeTestCollectionSimple: function(testDataCollection, callback) {
+        function test(testData) {
+            QUnit.test(testData.name, function(assert) {
+                var result = false;
+                if (callback) {
+                    result = callback(testData);
+                }
+                assert.ok(result);
+                unitTestHelper.teardown();
+            });
+        }
         for (var i = 0; i < testDataCollection.length; i++) {
-            (function(testData) {
-                QUnit.test(testData.name, function(assert) {
-                    var result = false;
-                    if (callback) {
-                        result = callback(testData);
-                    }
-                    assert.ok(result);
-                    unitTestHelper.teardown();
-                });
-            })(testDataCollection[i]);
+            test(testDataCollection[i]);
         }
     },
     /* Simple wrapper around qunit async test that calls the callback for each test specified by testDataCollection */
     executeAsyncTestCollectionSimple: function(testDataCollection, callback) {
+        function test(testData) {
+            QUnit.test(testData.name, testData.assertionCount, function(assert) {
+                var result = false;
+                var done = assert.async();
+                if (callback) {
+                    result = callback(testData);
+                }
+                assert.ok(result, "Test returned true");
+
+                setTimeout(function() {
+                    done();
+                    unitTestHelper.teardown();
+                }, 50);
+
+            });
+        }
         for (var i = 0; i < testDataCollection.length; i++) {
-            (function(testData) {
-                QUnit.test(testData.name, testData.assertionCount, function(assert) {
-                    var result = false;
-                    var done = assert.async();
-                    if (callback) {
-                        result = callback(testData);
-                    }
-                    assert.ok(result, "Test returned true");
-
-                    setTimeout(function() {
-                        done();
-                        unitTestHelper.teardown();
-                    }, 50);
-
-                });
-            })(testDataCollection[i]);
+            test(testDataCollection[i]);
         }
     },
     executeTestWithOp: function(testDataCollection) {
