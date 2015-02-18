@@ -25,14 +25,6 @@ $(document).ready(function() {
 
             if (options.commandAttrType) {
                 attrType = options.commandAttrType;
-            } else {
-                if (options.styleName) {
-                    attrType = commandAttr.styleName;
-                } else if (options.className) {
-                    attrType = commandAttr.className;
-                } else if (options.tagName) {
-                    attrType = commandAttr.tagName;
-                }
             }
             return attrType;
         }();
