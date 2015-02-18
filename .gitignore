@@ -3,8 +3,7 @@
 /Arte.*
 *Resharper*
 /bin
-/Build
-/Release
+/dist
 /Obj
 /*.csproj
 /*.sln
