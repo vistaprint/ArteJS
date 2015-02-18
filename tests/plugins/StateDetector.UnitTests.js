@@ -14,7 +14,7 @@ var valueStateDetectorTestData = [
     {
         name: "detectNodesEmpty",
         rawContent: "",
-        elementId: 'span',
+        elementId: "span",
         operation: function(arte) {
             return arte.getState("fontSize") || arte.getState("fontFamily") || arte.getState("bold") || arte.getState("italic");
         },
@@ -25,7 +25,7 @@ var valueStateDetectorTestData = [
     {
         name: "detectNegative",
         rawContent: "<span id='span'>data</span>",
-        elementId: 'span',
+        elementId: "span",
         operation: function(arte) {
             return arte.getState("fontSize") || arte.getState("fontFamily") || arte.getState("bold") || arte.getState("italic");
         },
@@ -36,7 +36,7 @@ var valueStateDetectorTestData = [
     {
         name: "detectSimpleStyle",
         rawContent: "<span id='span' style='font-family: arial'>data</span>",
-        elementId: 'span',
+        elementId: "span",
         operation: function(arte) {
             // push the styles up to the parent
             $.Arte.dom.cleanup(arte.$el);
@@ -44,14 +44,14 @@ var valueStateDetectorTestData = [
             return arte.getState("fontFamily");
         },
         evaluateResult: function(result) {
-            return result === 'arial';
+            return result === "arial";
         }
     },
     // TODO: ValueStateDetector doesn't support the classes yet.
     {
         name: "detectSimpleClassNegative",
         rawContent: "<span id='span' class='arte-font-size-10'>data</span>",
-        elementId: 'span',
+        elementId: "span",
         operation: function(arte) {
             // push the styles up to the parent
             $.Arte.dom.cleanup(arte.$el);
@@ -65,7 +65,7 @@ var valueStateDetectorTestData = [
     {
         name: "detectSimpleClass",
         rawContent: "<span id='span' class='arte-font-family-XXX arte-font-weight-bold'>data</span>",
-        elementId: 'span',
+        elementId: "span",
         operation: function(arte) {
             // push the styles up to the parent
             $.Arte.dom.cleanup(arte.$el);
@@ -79,7 +79,7 @@ var valueStateDetectorTestData = [
     {
         name: "detectTag",
         rawContent: "<b><span id='span'>data</span></b>",
-        elementId: 'span',
+        elementId: "span",
         operation: function(arte) {
             unitTestHelper.createSelection({
                 rangeContentId: "span"
@@ -93,7 +93,7 @@ var valueStateDetectorTestData = [
     {
         name: "detectUl",
         rawContent: "<ol><li><span id='span'>data</span></li></ol>",
-        elementId: 'span',
+        elementId: "span",
         operation: function(arte) {
             unitTestHelper.createSelection({
                 rangeContentId: "span"
@@ -108,31 +108,31 @@ var valueStateDetectorTestData = [
     {
         name: "getMultiState",
         rawContent: "<span id='span' style='font-family: arial'>data</span>",
-        elementId: 'span',
+        elementId: "span",
         operation: function(arte) {
             $.Arte.dom.cleanup(arte.$el);
             return arte.getAllStates("fontFamily");
         },
         evaluateResult: function(result) {
-            return result[0] === 'arial';
+            return result[0] === "arial";
         }
     },
     {
         name: "getAllSelectionStatesForSpecificProperty",
         rawContent: "<div id='div'><span style='font-family: arial'>data</span><span style='font-family: courier'>data</span></div>",
-        elementId: 'div',
+        elementId: "div",
         operation: function(arte) {
             $.Arte.dom.cleanup(arte.$el);
             return arte.getAllStates("fontFamily");
         },
         evaluateResult: function(result) {
-            return result.length === 2 && result[0] === 'arial' && result[1] === 'courier';
+            return result.length === 2 && result[0] === "arial" && result[1] === "courier";
         }
     },
     {
         name: "getAllSelectionStatesValues",
         rawContent: "<div id='div'><b><span>data</span></b><span>data</span></div>",
-        elementId: 'div',
+        elementId: "div",
         operation: function(arte) {
             $.Arte.dom.cleanup(arte.$el);
             return arte.getAllStates("bold");
@@ -144,13 +144,14 @@ var valueStateDetectorTestData = [
     {
         name: "getMultiStateAllProperties",
         rawContent: "<div id='div'><b><span style='font-family: arial'>data</span></b><span style='font-family: courier'>data</span></div>",
-        elementId: 'div',
+        elementId: "div",
         operation: function(arte) {
             $.Arte.dom.cleanup(arte.$el);
             return arte.getAllStates();
         },
         evaluateResult: function(result) {
-            return result.length === 2 && result[0].fontFamily === 'arial' && result[0].bold && result[1].fontFamily === "courier" && !result[1].bold;
+            return result.length === 2 && result[0].fontFamily === "arial" &&
+                result[0].bold && result[1].fontFamily === "courier" && !result[1].bold;
         }
     }
 ];

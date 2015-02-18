@@ -37,20 +37,20 @@ $(document).ready(function() {
 });
 
 var sampleContent = [
-    'Text Node',
-    '<span id="span">Content in Span</span>',
-    '<div id="div">Content in Div</div>',
-    '<ol id="ol"><li id="li1">Li 1</li><li id="li2">Li 2</li><li id="li3"><div id="div" style="text-align: left;">Li 3</div></li></ol>',
-    '<ol id="ol2"><li id="li4">Li 4</li></ol>',
-    '<div id="divWithStyle" style="text-align: left;">Text Node</div>',
-    '<div id="divWithSpan" style="text-align: left;"><span id="span">Content in Span</span></div>',
-    '<div id="divWithDiv" style="text-align: left;"><div id="div2">Content in Div</div></div>'
+    "Text Node",
+    "<span id='span'>Content in Span</span>",
+    "<div id='div'>Content in Div</div>",
+    "<ol id='ol'><li id='li1'>Li 1</li><li id='li2'>Li 2</li><li id='li3'><div id='div' style='text-align: left;'>Li 3</div></li></ol>",
+    "<ol id='ol2'><li id='li4'>Li 4</li></ol>",
+    "<div id='divWithStyle' style='text-align: left;'>Text Node</div>",
+    "<div id='divWithSpan' style='text-align: left;'><span id='span'>Content in Span</span></div>",
+    "<div id='divWithDiv' style='text-align: left;'><div id='div2'>Content in Div</div></div>"
 ];
 
 var wrapWithBlockTestData = [
     {
         name: "textNode",
-        rawContent: sampleContent.join(''),
+        rawContent: sampleContent.join(""),
         targetElement: function() {
             return $("#editableDiv").contents().filter(function() {
                 return this.nodeType === 3 && $.trim(this.nodeType) !== "";
@@ -68,7 +68,7 @@ var wrapWithBlockTestData = [
     },
     {
         name: "spanWithInnerText",
-        rawContent: sampleContent.join(''),
+        rawContent: sampleContent.join(""),
         elementId: "span",
         options: {
             tagName: $.Arte.constants.tagName.DIV,
@@ -82,7 +82,7 @@ var wrapWithBlockTestData = [
     },
     {
         name: "divWithInnerText",
-        rawContent: sampleContent.join(''),
+        rawContent: sampleContent.join(""),
         elementId: "div",
         options: {
             tagName: $.Arte.constants.tagName.DIV,
@@ -96,7 +96,7 @@ var wrapWithBlockTestData = [
     },
     {
         name: "liInnerText",
-        rawContent: sampleContent.join(''),
+        rawContent: sampleContent.join(""),
         targetElement: function() {
             return $("#li1").contents().filter(function() {
                 return this.nodeType === 3 && $.trim(this.nodeType) !== "";
@@ -114,7 +114,7 @@ var wrapWithBlockTestData = [
     },
     {
         name: "applyStyleToOlWithOneLi",
-        rawContent: sampleContent.join(''),
+        rawContent: sampleContent.join(""),
         options: {
             applierTagName: $.Arte.constants.tagName.DIV,
             styleName: "text-align",
@@ -132,7 +132,7 @@ var wrapWithBlockTestData = [
     },
     {
         name: "wrapWithLi",
-        rawContent: sampleContent.join(''),
+        rawContent: sampleContent.join(""),
         options: {
             applierTagName: $.Arte.constants.tagName.LI,
             styleName: "text-align",
@@ -145,7 +145,7 @@ var wrapWithBlockTestData = [
         },
         evaluateResult: function(result) {
             var style = $("<div/>").css("text-align", "left").attr("style");
-            return result.is("li") && result.children().has('div') && result.attr("style") === style;
+            return result.is("li") && result.children().has("div") && result.attr("style") === style;
         }
     }
 ];
@@ -153,7 +153,7 @@ var wrapWithBlockTestData = [
 var unwrapBlockTestData = [
     {
         name: "textNode",
-        rawContent: sampleContent.join(''),
+        rawContent: sampleContent.join(""),
         targetElement: function() {
             return $("#editableDiv").contents().filter(function() {
                 return this.nodeType === 3 && $.trim(this.nodeType) !== "";
@@ -170,7 +170,7 @@ var unwrapBlockTestData = [
     },
     {
         name: "divWithInnerTextUnwrap",
-        rawContent: sampleContent.join(''),
+        rawContent: sampleContent.join(""),
         elementId: "divWithStyle",
         options: {
             commandName: "textAlign",
@@ -182,7 +182,7 @@ var unwrapBlockTestData = [
     },
     {
         name: "divWithInnerSpan",
-        rawContent: sampleContent.join(''),
+        rawContent: sampleContent.join(""),
         elementId: "divWithSpan",
         options: {
             commandName: "textAlign",
@@ -194,7 +194,7 @@ var unwrapBlockTestData = [
     },
     {
         name: "divWithInnerDivOuterSelected",
-        rawContent: sampleContent.join(''),
+        rawContent: sampleContent.join(""),
         elementId: "divWithDiv",
         options: {
             commandName: "textAlign",
@@ -206,7 +206,7 @@ var unwrapBlockTestData = [
     },
     {
         name: "divWithInnerDivInnerSelected",
-        rawContent: sampleContent.join(''),
+        rawContent: sampleContent.join(""),
         elementId: "div2",
         options: {
             commandName: "textAlign",
@@ -219,7 +219,7 @@ var unwrapBlockTestData = [
     },
     {
         name: "divWithInnerDivInnerSelected2",
-        rawContent: sampleContent.join(''),
+        rawContent: sampleContent.join(""),
         elementId: "divWithStyle",
         options: {
             commandName: "textAlign",
@@ -234,7 +234,7 @@ var unwrapBlockTestData = [
 var wrapWithOptionsTestData = [
     {
         name: "wrapWithSpan",
-        rawContent: sampleContent.join(''),
+        rawContent: sampleContent.join(""),
         elementId: "span",
         options: {
             applierTagName: "span",
@@ -243,12 +243,12 @@ var wrapWithOptionsTestData = [
         },
         evaluateResult: function(result) {
             var styles = $.Arte.dom.getStyles(result);
-            return result.is("span") && styles["font-weight"] === 'bold';
+            return result.is("span") && styles["font-weight"] === "bold";
         }
     },
     {
         name: "wrapWithDiv",
-        rawContent: sampleContent.join(''),
+        rawContent: sampleContent.join(""),
         elementId: "span",
         options: {
             applierTagName: "div",
@@ -257,12 +257,12 @@ var wrapWithOptionsTestData = [
         },
         evaluateResult: function(result) {
             var styles = $.Arte.dom.getStyles(result);
-            return result.is("div") && styles["font-weight"] === 'bold';
+            return result.is("div") && styles["font-weight"] === "bold";
         }
     },
     {
         name: "wrapWithB",
-        rawContent: sampleContent.join(''),
+        rawContent: sampleContent.join(""),
         elementId: "span",
         options: {
             applierTagName: "b"
@@ -273,7 +273,7 @@ var wrapWithOptionsTestData = [
     },
     {
         name: "wrapWithDivAndRangyTags",
-        rawContent: sampleContent.join(''),
+        rawContent: sampleContent.join(""),
         options: {
             applierTagName: "span"
         },
@@ -293,7 +293,7 @@ var wrapWithOptionsTestData = [
 var unWrapWithOptionsTestData = [
     {
         name: "unwrapDiv",
-        rawContent: sampleContent.join(''),
+        rawContent: sampleContent.join(""),
         elementId: "divWithStyle",
         evaluateResult: function(result) {
             return result.get(0).nodeType === $.Arte.constants.nodeType.TEXT;
@@ -301,19 +301,19 @@ var unWrapWithOptionsTestData = [
     },
     {
         name: "unwrapDivMaintainStyles",
-        rawContent: sampleContent.join(''),
+        rawContent: sampleContent.join(""),
         elementId: "divWithStyle",
         options: {
             maintainStyles: 1
         },
         evaluateResult: function(result) {
             var styles = $.Arte.dom.getStyles(result);
-            return result.is("span") && styles['text-align'] === 'left';
+            return result.is("span") && styles["text-align"] === "left";
         }
     },
     {
         name: "unwrapDivInsertBr",
-        rawContent: sampleContent.join(''),
+        rawContent: sampleContent.join(""),
         elementId: "div",
         options: {
             insertBr: 1
@@ -324,22 +324,22 @@ var unWrapWithOptionsTestData = [
     },
     {
         name: "unwrapDivInsertBrNeg",
-        rawContent: sampleContent.join(''),
+        rawContent: sampleContent.join(""),
         elementId: "divWithStyle",
         options: {
             insertBr: 1
         },
         evaluateResult: function(result) {
-            return result.get(0).nodeType === $.Arte.constants.nodeType.TEXT
-                && !result.prev().is("br")
-                && !result.next().is("br");
+            return result.get(0).nodeType === $.Arte.constants.nodeType.TEXT &&
+                !result.prev().is("br") &&
+                !result.next().is("br");
         }
     }
 ];
 var createContainerTestData = [
     {
         name: "span",
-        rawContent: sampleContent.join(''),
+        rawContent: sampleContent.join(""),
         elementId: "span",
         operation: function() {
             return $.Arte.dom.createContainer({
@@ -352,7 +352,7 @@ var createContainerTestData = [
     },
     {
         name: "spanWithStyle",
-        rawContent: sampleContent.join(''),
+        rawContent: sampleContent.join(""),
         elementId: "span",
         operation: function() {
             return $.Arte.dom.createContainer({
@@ -368,7 +368,7 @@ var createContainerTestData = [
     },
     {
         name: "divWithClass",
-        rawContent: sampleContent.join(''),
+        rawContent: sampleContent.join(""),
         elementId: "span",
         operation: function() {
             return $.Arte.dom.createContainer({
@@ -382,7 +382,7 @@ var createContainerTestData = [
     },
     {
         name: "divWithClassAndStyles",
-        rawContent: sampleContent.join(''),
+        rawContent: sampleContent.join(""),
         elementId: "span",
         operation: function() {
             return $.Arte.dom.createContainer({
@@ -399,7 +399,7 @@ var createContainerTestData = [
     },
     {
         name: "divWithAttr",
-        rawContent: sampleContent.join(''),
+        rawContent: sampleContent.join(""),
         elementId: "span",
         operation: function() {
             return $.Arte.dom.createContainer({

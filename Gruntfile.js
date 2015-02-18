@@ -11,8 +11,10 @@ module.exports = function(grunt) {
                 jshintrc: true
             },
             gruntfile: ["Gruntfile.js"],
-            all: [
-                "src/**/*.js"
+            all: ["src/**/*.js"],
+            tests: [
+                "tests/**/*.js",
+                "!tests/dependencies/**/*.js"
             ]
         },
         jscs: {
@@ -20,7 +22,8 @@ module.exports = function(grunt) {
                 config: ".jscsrc"
             },
             gruntfile: ["Gruntfile.js"],
-            all: ["<%= jshint.all %>"]
+            all: ["<%= jshint.all %>"],
+            tests: ["<%= jshint.tests %>"]
         },
         uglify: {
             all: {

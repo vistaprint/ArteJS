@@ -31,7 +31,6 @@ $(document).ready(function() {
     });
 });
 
-
 var stylesCleanupTestData = [
     {
         name: "mergeTwoSiblings",
@@ -115,12 +114,14 @@ var stylesCleanupTestData = [
     },
     {
         name: "mergeSpansWithMultipleStylesWithParentDivWithMultipleStyles",
-        rawContent: "<div id='s' style='color: red; font-weight: bold;'><span style='color: red; font-weight: bold;'>abc</span></div>",
+        rawContent: "<div id='s' style='color: red; font-weight: bold;'>" +
+            "<span style='color: red; font-weight: bold;'>abc</span></div>",
         expectedContent: "<div id='s' style='color: red; font-weight: bold;'>abc</div>"
     },
     {
         name: "mergeMultipleSpansWithStylesWithParentDivWithMultipleStyles",
-        rawContent: "<div id='s' style='color: red; font-weight: bold;'><span style='color: red; '>abc</span><span style='font-weight: bold;'>def</span></div>",
+        rawContent: "<div id='s' style='color: red; font-weight: bold;'><span style='color: red; '>abc</span>" +
+            "<span style='font-weight: bold;'>def</span></div>",
         expectedContent: "<div id='s' style='color: red; font-weight: bold;'>abcdef</div>"
     },
     {
@@ -151,12 +152,14 @@ var stylesCleanupTestData = [
     },
     {
         name: "mergeSpanWithGrandParentDivWithMultipleChildren",
-        rawContent: "<div id='s' style='color: red; font-weight:bold;'><div><span style='color:red;'>abc</span></div><div>def</div></div>",
+        rawContent: "<div id='s' style='color: red; font-weight:bold;'><div><span style='color:red;'>abc</span></div>" +
+            "<div>def</div></div>",
         expectedContent: "<div id='s' style='color: red; font-weight:bold;'><div>abc</div><div>def</div></div>"
     },
     {
         name: "mergeSpanWithGrandParentDivWithMultipleMixedChildren",
-        rawContent: "<div id='s' style='color: red; font-weight:bold;'><div><span style='color:red;'>abc</span></div><span>def</span></div>",
+        rawContent: "<div id='s' style='color: red; font-weight:bold;'><div><span style='color:red;'>abc</span></div>" +
+            "<span>def</span></div>",
         expectedContent: "<div id='s' style='color: red; font-weight:bold;'><div>abc</div>def</div>"
     },
     // Other tests
@@ -198,12 +201,14 @@ var stylesCleanupTestData = [
     },
     {
         name: "mergeSiblingSpansStyleWithParentStyle",
-        rawContent: "<div id='s' style='color: red;'><span style='color: blue;'>ABC</span><span style='color:blue'>DEF</span></div>",
+        rawContent: "<div id='s' style='color: red;'><span style='color: blue;'>ABC</span>" +
+            "<span style='color:blue'>DEF</span></div>",
         expectedContent: "<div id='s' style='color: blue;'>ABCDEF</div>"
     },
     {
         name: "mergeSiblingSpansStyleWithParentStyleRemoveRedundantStyle",
-        rawContent: "<div id='s' style='color: red;'><span style='color: blue;'>ABC</span><span style='color:red'>DEF</span></div>",
+        rawContent: "<div id='s' style='color: red;'><span style='color: blue;'>ABC</span>" +
+            "<span style='color:red'>DEF</span></div>",
         expectedContent: "<div id='s' style='color: red;'><span style='color: blue'>ABC</span>DEF</div>"
     },
     {
@@ -223,17 +228,20 @@ var stylesCleanupTestData = [
     },
     {
         name: "mergeSpanWithDifferentStylesInsideDivWithMultipleLiParent",
-        rawContent: "<div><ol><li><div><span style='color:red;'>abc</span></div></li><li><div><span style='color:black;'>abc</span></div></li></ol></div>",
+        rawContent: "<div><ol><li><div><span style='color:red;'>abc</span></div></li>" +
+            "<li><div><span style='color:black;'>abc</span></div></li></ol></div>",
         expectedContent: "<div><ol><li style='color:red;'>abc</li><li style='color:black;'>abc</li></ol></div>"
     },
     {
         name: "mergeSpanWithsameStylesInsideDivWithMultipleLiParent",
-        rawContent: "<div><ol><li><div><span style='color:red;'>abc</span></div></li><li><div><span style='color:red;'>abc</span></div></li></ol></div>",
+        rawContent: "<div><ol><li><div><span style='color:red;'>abc</span></div></li><li><div>" +
+            "<span style='color:red;'>abc</span></div></li></ol></div>",
         expectedContent: "<div style='color:red;'><ol><li>abc</li><li>abc</li></ol></div>"
     },
     {
         name: "mergeSpanWithsameStylesInsideDivWithMultipleLiParent",
-        rawContent: "<div><ol><li><div><span style='color:red; font-weight:bold'>abc</span></div></li><li><div><span style='color:red;'>abc</span></div></li></ol></div>",
+        rawContent: "<div><ol><li><div><span style='color:red; font-weight:bold'>abc</span></div></li>" +
+            "<li><div><span style='color:red;'>abc</span></div></li></ol></div>",
         expectedContent: "<div style='color:red;'><ol><li style='font-weight:bold'>abc</li><li>abc</li></ol></div>"
     }
 ];
@@ -256,7 +264,8 @@ var classCleanupTestData = [
     },
     {
         name: "removeRedundantClasses",
-        rawContent: "<div class='arte-font-weight-bold'><span class='arte-font-weight-bold'>abc</span><span class='arte-font-weight-bold'>def</span></div>",
+        rawContent: "<div class='arte-font-weight-bold'><span class='arte-font-weight-bold'>abc</span>" +
+            "<span class='arte-font-weight-bold'>def</span></div>",
         expectedContent: "<div class='arte-font-weight-bold'>abcdef</div>"
     },
     {
@@ -266,11 +275,11 @@ var classCleanupTestData = [
     },
     {
         name: "removeClassFromParentMultipleSiblings",
-        rawContent: "<div class='arte-font-size-10'><span class='arte-font-size-20'>abc</span><span class='arte-font-size-30'>def</span></div>",
+        rawContent: "<div class='arte-font-size-10'><span class='arte-font-size-20'>abc</span>" +
+            "<span class='arte-font-size-30'>def</span></div>",
         expectedContent: "<div><span class='arte-font-size-20'>abc</span><span class='arte-font-size-30'>def</span></div>"
     }
 ];
-
 
 var tagBasedStylesCleanupTestData = [
     {
@@ -382,7 +391,9 @@ var handleUnsanctionedElementsTestData = [
     {
         name: "removeBIUTags",
         rawContent: "<b>bold<i>bold italic</i></b><i>Italic</i><u>underlined <i>italic underlined</i> also underlined</u>",
-        expectedContent: "<span style='font-weight: bold'>bold<span style='font-style: italic;'>bold italic</span></span><span style='font-style: italic'>Italic</span><span style='text-decoration: underline'>underlined <span style='font-style: italic'>italic underlined</span> also underlined</span>"
+        expectedContent: "<span style='font-weight: bold'>bold<span style='font-style: italic;'>bold italic</span></span>" +
+            "<span style='font-style: italic'>Italic</span><span style='text-decoration: underline'>underlined " +
+            "<span style='font-style: italic'>italic underlined</span> also underlined</span>"
     },
     {
         name: "removeDivTag",
@@ -404,7 +415,8 @@ var removeNonPrintableCharactersTestData = [
     },
     {
         name: "removeControlCharactersFromHtml",
-        rawContent: "<div><span style='font-weight:bold'>\u0015</span>\u0041\u0042\u0043\u0085\u0078\u0079\u007A<div>\u2004</div></div>",
+        rawContent: "<div><span style='font-weight:bold'>" +
+            "\u0015</span>\u0041\u0042\u0043\u0085\u0078\u0079\u007A<div>\u2004</div></div>",
         expectedContent: "ABCxyz"
     }
 ]

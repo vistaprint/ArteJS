@@ -60,158 +60,157 @@ $(document).ready(function() {
     unitTestHelper.executeTestWithOpSimple(otherTestScenariosTestData);
 });
 
-
 // Unit tests with simple selection
 var simpleSelectionUnitTestData = [{
 
-    name: 'makeBold',
-    commandName: 'bold',
+    name: "makeBold",
+    commandName: "bold",
     options: {
         styleName: "font-weight",
         styleValue: "bold",
         commandAttrType: $.Arte.constants.commandAttrType.styleName,
         applierTagName: "span"
     },
-    rawContent: 'SomeText',
-    expectedContent: '<div style="font-weight: bold;" >SomeText</div>'
+    rawContent: "SomeText",
+    expectedContent: "<div style=\"font-weight: bold;\" >SomeText</div>"
     }, {
     // Selects all of the content within the element with contentId = r
-    name: 'makeBoldContentInsideDiv',
-    commandName: 'bold',
+    name: "makeBoldContentInsideDiv",
+    commandName: "bold",
     options: {
         styleName: "font-weight",
         styleValue: "bold",
         commandAttrType: $.Arte.constants.commandAttrType.styleName,
         applierTagName: "span"
     },
-    rangeContentId: 's',
-    rawContent: '<div id="s">SomeText</div>',
-    expectedContent: '<div style="font-weight: bold;" >SomeText</div>'
+    rangeContentId: "s",
+    rawContent: "<div id=\"s\">SomeText</div>",
+    expectedContent: "<div style=\"font-weight: bold;\" >SomeText</div>"
     }, {
     // Selects all of the content within the element with contentId = r
-    name: 'makeBoldContentBetweenDivs',
-    commandName: 'bold',
+    name: "makeBoldContentBetweenDivs",
+    commandName: "bold",
     options: {
         styleName: "font-weight",
         styleValue: "bold",
         commandAttrType: $.Arte.constants.commandAttrType.styleName,
         applierTagName: "span"
     },
-    startAfterId: 's',
-    endBeforeId: 'e',
-    rawContent: '<div id="s">Line 1</div> SomeText <div id="e">Line 2 </div>',
-    expectedContent: '<div id="s">Line 1</div><span style="font-weight: bold;" >SomeText</span><div id="e">Line 2 </div>'
+    startAfterId: "s",
+    endBeforeId: "e",
+    rawContent: "<div id=\"s\">Line 1</div> SomeText <div id=\"e\">Line 2 </div>",
+    expectedContent: "<div id=\"s\">Line 1</div><span style=\"font-weight: bold;\" >SomeText</span><div id=\"e\">Line 2 </div>"
     }, {
     // Selects all of the content within the element with contentId = r
-    name: 'makeBoldContentWithDivs',
-    commandName: 'bold',
+    name: "makeBoldContentWithDivs",
+    commandName: "bold",
     options: {
         styleName: "font-weight",
         styleValue: "bold",
         commandAttrType: $.Arte.constants.commandAttrType.styleName,
         applierTagName: "span"
     },
-    startBeforeId: 's',
-    endAfterId: 'e',
-    rawContent: '<div id="s">Line 1</div> SomeText <div id="e">Line 2 </div>',
-    expectedContent: '<div style="font-weight: bold;"><div id="s">Line 1</div>SomeText<div id="e">Line 2</div></div>'
+    startBeforeId: "s",
+    endAfterId: "e",
+    rawContent: "<div id=\"s\">Line 1</div> SomeText <div id=\"e\">Line 2 </div>",
+    expectedContent: "<div style=\"font-weight: bold;\"><div id=\"s\">Line 1</div>SomeText<div id=\"e\">Line 2</div></div>"
     }, {
 
-    name: 'makeItalic',
-    commandName: 'italic',
+    name: "makeItalic",
+    commandName: "italic",
     options: {
         styleName: "font-style",
         styleValue: "italic",
         commandAttrType: $.Arte.constants.commandAttrType.styleName,
         applierTagName: "span"
     },
-    rawContent: 'SomeText',
-    expectedContent: '<div style="font-style: italic;" >SomeText</div>'
+    rawContent: "SomeText",
+    expectedContent: "<div style=\"font-style: italic;\" >SomeText</div>"
     }, {
     // Selects all of the content within the element with contentId = r
-    name: 'makeItalicContentInsideDiv',
-    commandName: 'italic',
+    name: "makeItalicContentInsideDiv",
+    commandName: "italic",
     options: {
         styleName: "font-style",
         styleValue: "italic",
         commandAttrType: $.Arte.constants.commandAttrType.styleName,
         applierTagName: "span"
     },
-    rangeContentId: 's',
-    rawContent: '<div id="s">SomeText</div>',
-    expectedContent: '<div style="font-style: italic;" >SomeText</div>'
+    rangeContentId: "s",
+    rawContent: "<div id=\"s\">SomeText</div>",
+    expectedContent: "<div style=\"font-style: italic;\" >SomeText</div>"
     }, {
     // Selects all of the content within the element with contentId = r
-    name: 'makeItalicContentBetweenDivs',
-    commandName: 'italic',
+    name: "makeItalicContentBetweenDivs",
+    commandName: "italic",
     options: {
         styleName: "font-style",
         styleValue: "italic",
         commandAttrType: $.Arte.constants.commandAttrType.styleName,
         applierTagName: "span"
     },
-    startAfterId: 's',
-    endBeforeId: 'e',
-    rawContent: '<div id="s">Line 1</div> SomeText <div id="e">Line 2 </div>',
-    expectedContent: '<div id="s">Line 1</div><span style="font-style: italic;" >SomeText</span><div id="e">Line 2 </div>'
+    startAfterId: "s",
+    endBeforeId: "e",
+    rawContent: "<div id=\"s\">Line 1</div> SomeText <div id=\"e\">Line 2 </div>",
+    expectedContent: "<div id=\"s\">Line 1</div><span style=\"font-style: italic;\" >SomeText</span><div id=\"e\">Line 2 </div>"
     }, {
     // Selects all of the content within the element with contentId = r
-    name: 'makeItalicContentWithDivs',
-    commandName: 'italic',
+    name: "makeItalicContentWithDivs",
+    commandName: "italic",
     options: {
         styleName: "font-style",
         styleValue: "italic",
         commandAttrType: $.Arte.constants.commandAttrType.styleName,
         applierTagName: "span"
     },
-    startBeforeId: 's',
-    endAfterId: 'e',
-    rawContent: '<div id="s">Line 1</div> SomeText <div id="e">Line 2 </div>',
-    expectedContent: '<div style="font-style: italic;"><div id="s">Line 1</div>SomeText<div id="e">Line 2</div></div>'
+    startBeforeId: "s",
+    endAfterId: "e",
+    rawContent: "<div id=\"s\">Line 1</div> SomeText <div id=\"e\">Line 2 </div>",
+    expectedContent: "<div style=\"font-style: italic;\"><div id=\"s\">Line 1</div>SomeText<div id=\"e\">Line 2</div></div>"
     }, {
-    name: 'createUnorderedListWithLineBreaks',
+    name: "createUnorderedListWithLineBreaks",
     options: {
         applierTagName: "UL"
     },
-    commandName: 'unorderedList',
-    rawContent: 'Line 1<br/>Line 2<br/>Line3',
-    expectedContent: '<ul><li>Line 1</li><li>Line 2</li><li>Line3</li></ul>'
+    commandName: "unorderedList",
+    rawContent: "Line 1<br/>Line 2<br/>Line3",
+    expectedContent: "<ul><li>Line 1</li><li>Line 2</li><li>Line3</li></ul>"
     }, {
 
-    name: 'createUnorderedListWithDivs',
-    commandName: 'unorderedList',
+    name: "createUnorderedListWithDivs",
+    commandName: "unorderedList",
     options: {
         applierTagName: "UL"
     },
-    rawContent: '<div>Line 1</div> <div>Line 2</div> <div>Line 3</div>',
-    expectedContent: '<ul><li>Line 1</li><li>Line 2</li><li>Line 3</li></ul>'
+    rawContent: "<div>Line 1</div> <div>Line 2</div> <div>Line 3</div>",
+    expectedContent: "<ul><li>Line 1</li><li>Line 2</li><li>Line 3</li></ul>"
     }, {
 
-    name: 'createOrderedListWithLineBreaks',
-    commandName: 'orderedList',
+    name: "createOrderedListWithLineBreaks",
+    commandName: "orderedList",
     options: {
         applierTagName: "OL"
     },
-    rawContent: 'Line 1<br/>Line 2<br/>Line3',
-    expectedContent: '<ol><li>Line 1</li><li>Line 2</li><li>Line3</li></ol>'
+    rawContent: "Line 1<br/>Line 2<br/>Line3",
+    expectedContent: "<ol><li>Line 1</li><li>Line 2</li><li>Line3</li></ol>"
     }, {
 
-    name: 'createOrderedListWithDivs2',
-    commandName: 'orderedList',
+    name: "createOrderedListWithDivs2",
+    commandName: "orderedList",
     options: {
         applierTagName: "OL"
     },
-    rawContent: '<div>Line 1</div> SomeText',
-    expectedContent: '<ol><li>Line 1</li><li>SomeText</li></ol>'
+    rawContent: "<div>Line 1</div> SomeText",
+    expectedContent: "<ol><li>Line 1</li><li>SomeText</li></ol>"
     }, {
 
-    name: 'createOrderedListWithSpans',
-    commandName: 'orderedList',
+    name: "createOrderedListWithSpans",
+    commandName: "orderedList",
     options: {
         applierTagName: "OL"
     },
-    rawContent: '<span>Text 1</span><span>Text 2</span>',
-    expectedContent: '<ol><li>Text 1Text 2</li></ol>'
+    rawContent: "<span>Text 1</span><span>Text 2</span>",
+    expectedContent: "<ol><li>Text 1Text 2</li></ol>"
     }
 
 ];
@@ -221,77 +220,77 @@ var textSelectionUnitTestOptions = {
 
 var textSelectionUnitTestData = [{
 
-    name: 'makePartOfTextBold',
-    commandName: 'bold',
+    name: "makePartOfTextBold",
+    commandName: "bold",
     options: {
         styleName: "font-weight",
         styleValue: "bold",
         commandAttrType: $.Arte.constants.commandAttrType.styleName,
         applierTagName: "span"
     },
-    rawContent: 'SomeText',
+    rawContent: "SomeText",
     selection: function(arte) {
         var node = arte.$el.get(0).firstChild;
         unitTestHelper.createSelectionFromTextNodes(node, node, 2, 6); // range includes "meTe" from SomeText
     },
-    expectedContent: 'So<span style="font-weight: bold;" >meTe</span>xt'
+    expectedContent: "So<span style=\"font-weight: bold;\" >meTe</span>xt"
     }, {
 
-    name: 'makePartOfTextAcrossSpansBold',
-    commandName: 'bold',
+    name: "makePartOfTextAcrossSpansBold",
+    commandName: "bold",
     options: {
         styleName: "font-weight",
         styleValue: "bold",
         commandAttrType: $.Arte.constants.commandAttrType.styleName,
         applierTagName: "span"
     },
-    rawContent: '<span id="s1">SomeText</span><span id="s2">Other Test</span>',
+    rawContent: "<span id=\"s1\">SomeText</span><span id=\"s2\">Other Test</span>",
     selection: function() {
         var node = $("#s1").contents()[0];
         var node2 = $("#s2").contents()[0];
         unitTestHelper.createSelectionFromTextNodes(node, node2, 2, 2); // range includes "meText" from span1 and "Ot" from span2
     },
-    expectedContent: 'So<span style="font-weight: bold; ">meText</span><span style="font-weight:bold">Ot</span>her Test'
+    expectedContent: "So<span style=\"font-weight: bold; \">meText</span><span style=\"font-weight:bold\">Ot</span>her Test"
     }, {
 
-    name: 'toggleBoldOnPartOfText',
-    commandName: 'bold',
+    name: "toggleBoldOnPartOfText",
+    commandName: "bold",
     options: {
         styleName: "font-weight",
         styleValue: "bold",
         commandAttrType: $.Arte.constants.commandAttrType.styleName,
         applierTagName: "span"
     },
-    rawContent: '<span id="s1" style="font-weight: bold;" >Line One</span>',
+    rawContent: "<span id=\"s1\" style=\"font-weight: bold;\" >Line One</span>",
     selection: function(arte) {
         var node = $("#s1").contents()[0];
         unitTestHelper.createSelectionFromTextNodes(node, node, 2, 7); // range includes "ne On"
     },
-    expectedContent: '<span style="font-weight: bold;" >Li</span>ne On<span style="font-weight: bold;" >e</span>'
+    expectedContent: "<span style=\"font-weight: bold;\" >Li</span>ne On<span style=\"font-weight: bold;\" >e</span>"
     }, {
 
-    name: 'toggleBoldOnPartOfTextAcrossSpans',
-    commandName: 'bold',
+    name: "toggleBoldOnPartOfTextAcrossSpans",
+    commandName: "bold",
     options: {
         styleName: "font-weight",
         styleValue: "bold",
         commandAttrType: $.Arte.constants.commandAttrType.styleName,
         applierTagName: "span"
     },
-    rawContent: '<span id="s1" style="font-weight: bold;" >Line One</span><span id="s2">Line Two</span>',
+    rawContent: "<span id=\"s1\" style=\"font-weight: bold;\" >Line One</span><span id=\"s2\">Line Two</span>",
     selection: function(arte) {
         var node = $("#s1").contents()[0];
         var node2 = $("#s2").contents()[0];
         unitTestHelper.createSelectionFromTextNodes(node, node2, 2, 3); // range includes "ne On" from s1 and "Lin" from s2
     },
-    expectedContent: '<span id="s1" style="font-weight: bold;" >Line One</span><span style="font-weight: bold;">Lin</span>e Two'
+    expectedContent: "<span id=\"s1\" style=\"font-weight: bold;\" >Line One</span><span style=\"font-weight: bold;\">Lin</span>e Two"
 }];
 
 var simpleSelectionMultiCommandTestData = [
     //    {
     //
-    //        name: 'toggleBold',
-    //        rawContent: 'SomeText',
+    //        name: "toggleBold",
+    //        rawContent: "SomeText",
     //        op: function(arte)
     //        {
     //            // Execute the rich text command
@@ -307,12 +306,12 @@ var simpleSelectionMultiCommandTestData = [
     //                textArea: arte
     //            });
     //        },
-    //        expectedContent: 'SomeText'
+    //        expectedContent: "SomeText"
     //    },
     //    {
     //
-    //        name: 'makeBoldAndRightAlign',
-    //        rawContent: 'SomeText',
+    //        name: "makeBoldAndRightAlign",
+    //        rawContent: "SomeText",
     //        op: function(arte)
     //        {
     //            // Execute the rich text command
@@ -332,8 +331,8 @@ var simpleSelectionMultiCommandTestData = [
     //    },
     //    {
     //
-    //        name: 'makeBoldCenterAlignAndMakeOrderedList',
-    //        rawContent: 'SomeText',
+    //        name: "makeBoldCenterAlignAndMakeOrderedList",
+    //        rawContent: "SomeText",
     //        op: function(arte)
     //        {
     //            // Execute the rich text command
@@ -358,8 +357,8 @@ var simpleSelectionMultiCommandTestData = [
     //    },
     //    {
     //
-    //        name: 'makeOrderedListMakeUnOrderedList',
-    //        rawContent: 'SomeText',
+    //        name: "makeOrderedListMakeUnOrderedList",
+    //        rawContent: "SomeText",
     //        op: function(arte)
     //        {
     //            $.Arte.RichTextCommandApplier.createAndExecute({
@@ -376,8 +375,8 @@ var simpleSelectionMultiCommandTestData = [
     //    },
     //    {
     //
-    //        name: 'rightAlignMakeOrderedListMakeBoldLeftAlignMakeOrderedListMakeBoldLeftAlign',
-    //        rawContent: 'SomeText',
+    //        name: "rightAlignMakeOrderedListMakeBoldLeftAlignMakeOrderedListMakeBoldLeftAlign",
+    //        rawContent: "SomeText",
     //        op: function(arte)
     //        {
     //            $.Arte.RichTextCommandApplier.createAndExecute({
@@ -409,11 +408,11 @@ var simpleSelectionMultiCommandTestData = [
     //                textArea: arte
     //            });
     //        },
-    //        expectedContent: 'SomeText'
+    //        expectedContent: "SomeText"
     //    },
     //    {
     //
-    //        name: 'toggleUnorderedList',
+    //        name: "toggleUnorderedList",
     //        rawContent: 'Line 1<br/>Line 2<br/>Line3',
     //        op: function(arte)
     //        {
@@ -431,7 +430,7 @@ var simpleSelectionMultiCommandTestData = [
     //    },
     //    {
     //
-    //        name: 'toggleOrderedList',
+    //        name: "toggleOrderedList",
     //        rawContent: 'Line 1<br/>Line 2<br/>Line3',
     //        op: function(arte)
     //        {
@@ -448,8 +447,8 @@ var simpleSelectionMultiCommandTestData = [
     //        expectedContent: 'Line 1<br/>Line 2<br/>Line3'
     //    },
     {
-        name: 'rightAlignCenterAlign',
-        rawContent: 'SomeText',
+        name: "rightAlignCenterAlign",
+        rawContent: "SomeText",
         op: function(arte) {
             var options = {
                 commandName: "textAlign",
@@ -464,10 +463,10 @@ var simpleSelectionMultiCommandTestData = [
                 styleValue: "center"
             }));
         },
-        expectedContent: '<div style="text-align: center;">SomeText</div>'
+        expectedContent: "<div style=\"text-align: center;\">SomeText</div>"
     }, {
-    name: 'centerAlignRightAlign',
-    rawContent: 'SomeText',
+    name: "centerAlignRightAlign",
+    rawContent: "SomeText",
     op: function(arte) {
         var options = {
             commandName: "textAlign",
@@ -484,10 +483,10 @@ var simpleSelectionMultiCommandTestData = [
             styleValue: "right"
         }));
     },
-    expectedContent: '<div style="text-align: right;">SomeText</div>'
+    expectedContent: "<div style=\"text-align: right;\">SomeText</div>"
     }, {
-    name: 'rightAlignLeftAlign',
-    rawContent: 'SomeText',
+    name: "rightAlignLeftAlign",
+    rawContent: "SomeText",
     op: function(arte) {
         var options = {
             commandName: "textAlign",
@@ -504,10 +503,10 @@ var simpleSelectionMultiCommandTestData = [
             styleValue: "left"
         }));
     },
-    expectedContent: '<div style="text-align: left;">SomeText</div>'
+    expectedContent: "<div style=\"text-align: left;\">SomeText</div>"
     }, {
-    name: 'leftAlignRightAlign',
-    rawContent: 'SomeText',
+    name: "leftAlignRightAlign",
+    rawContent: "SomeText",
     op: function(arte) {
         var options = {
             commandName: "textAlign",
@@ -524,10 +523,10 @@ var simpleSelectionMultiCommandTestData = [
             styleValue: "right"
         }));
     },
-    expectedContent: '<div style="text-align: right;">SomeText</div>'
+    expectedContent: "<div style=\"text-align: right;\">SomeText</div>"
     }, {
-    name: 'centerAlignLeftAlign',
-    rawContent: 'SomeText',
+    name: "centerAlignLeftAlign",
+    rawContent: "SomeText",
     op: function(arte) {
         var options = {
             commandName: "textAlign",
@@ -544,10 +543,10 @@ var simpleSelectionMultiCommandTestData = [
             styleValue: "left"
         }));
     },
-    expectedContent: '<div style="text-align: left;">SomeText</div>'
+    expectedContent: "<div style=\"text-align: left;\">SomeText</div>"
     }, {
-    name: 'leftAlignCenterAlign',
-    rawContent: 'SomeText',
+    name: "leftAlignCenterAlign",
+    rawContent: "SomeText",
     op: function(arte) {
         var options = {
             commandName: "textAlign",
@@ -564,10 +563,10 @@ var simpleSelectionMultiCommandTestData = [
             styleValue: "center"
         }));
     },
-    expectedContent: '<div style="text-align: center;">SomeText</div>'
+    expectedContent: "<div style=\"text-align: center;\">SomeText</div>"
     }, {
-    name: 'leftAlignRightAlignCenterAlign',
-    rawContent: 'SomeText',
+    name: "leftAlignRightAlignCenterAlign",
+    rawContent: "SomeText",
     op: function(arte) {
         var options = {
             commandName: "textAlign",
@@ -587,10 +586,10 @@ var simpleSelectionMultiCommandTestData = [
             styleValue: "center"
         }));
     },
-    expectedContent: '<div style="text-align: center;">SomeText</div>'
+    expectedContent: "<div style=\"text-align: center;\">SomeText</div>"
     }, {
-    name: 'rightAlignLeftAlignCenterAlign',
-    rawContent: 'SomeText',
+    name: "rightAlignLeftAlignCenterAlign",
+    rawContent: "SomeText",
     op: function(arte) {
         var options = {
             commandName: "textAlign",
@@ -610,10 +609,10 @@ var simpleSelectionMultiCommandTestData = [
             styleValue: "center"
         }));
     },
-    expectedContent: '<div style="text-align: center;">SomeText</div>'
+    expectedContent: "<div style=\"text-align: center;\">SomeText</div>"
     }, {
-    name: 'centerAlignRightAlignLeftAlign',
-    rawContent: 'SomeText',
+    name: "centerAlignRightAlignLeftAlign",
+    rawContent: "SomeText",
     op: function(arte) {
         var options = {
             commandName: "textAlign",
@@ -633,10 +632,10 @@ var simpleSelectionMultiCommandTestData = [
             styleValue: "left"
         }));
     },
-    expectedContent: '<div style="text-align: left;">SomeText</div>'
+    expectedContent: "<div style=\"text-align: left;\">SomeText</div>"
     }, {
-    name: 'toggleRightAlign',
-    rawContent: 'SomeText',
+    name: "toggleRightAlign",
+    rawContent: "SomeText",
     op: function(arte) {
         var options = {
             commandName: "textAlign",
@@ -653,10 +652,10 @@ var simpleSelectionMultiCommandTestData = [
             styleValue: "right"
         }));
     },
-    expectedContent: 'SomeText'
+    expectedContent: "SomeText"
     }, {
-    name: 'toggleLeftAlign',
-    rawContent: 'SomeText',
+    name: "toggleLeftAlign",
+    rawContent: "SomeText",
     op: function(arte) {
         var options = {
             commandName: "textAlign",
@@ -673,10 +672,10 @@ var simpleSelectionMultiCommandTestData = [
             styleValue: "left"
         }));
     },
-    expectedContent: 'SomeText'
+    expectedContent: "SomeText"
     }, {
-    name: 'leftAlignRightAlignRightAlign',
-    rawContent: 'SomeText',
+    name: "leftAlignRightAlignRightAlign",
+    rawContent: "SomeText",
     op: function(arte) {
         var options = {
             commandName: "textAlign",
@@ -696,10 +695,10 @@ var simpleSelectionMultiCommandTestData = [
             styleValue: "right"
         }));
     },
-    expectedContent: 'SomeText'
+    expectedContent: "SomeText"
     }, {
-    name: 'toggleOrderedListOnNestedOrderedList',
-    rawContent: '<ol><li><ol><li>Line 2</li></ol></li><ol>',
+    name: "toggleOrderedListOnNestedOrderedList",
+    rawContent: "<ol><li><ol><li>Line 2</li></ol></li><ol>",
     op: function(arte) {
         var options = {
             commandName: "orderedList",
@@ -709,16 +708,17 @@ var simpleSelectionMultiCommandTestData = [
         $.Arte.RichTextCommandApplier.createAndExecute(options);
         $.Arte.RichTextCommandApplier.createAndExecute(options);
     },
-    expectedContent: 'Line 2'
+    expectedContent: "Line 2"
     },
     /**
      * Note: the following test presents a scenarios that is not possible to create using the UI
      * So, block element applier looks at each block that includes the text node and wraps the it into a li
-     * the lis are created around a number if it is doesn't have a suitable block parent <li>2</li> or around the suitable parent like <li><div>1</div></li>
+     * the lis are created around a number if it is doesn't have a suitable block parent <li>2</li> or around
+     * the suitable parent like <li><div>1</div></li>
      */
     {
-        name: 'createUnorderedListOnDivaster',
-        rawContent: '<div>1</div><div>2<div>3</div>4<div><div>5</div>6</div><div>7</div></div>',
+        name: "createUnorderedListOnDivaster",
+        rawContent: "<div>1</div><div>2<div>3</div>4<div><div>5</div>6</div><div>7</div></div>",
         op: function(arte) {
             var options = {
                 commandName: "unorderedList",
@@ -727,10 +727,10 @@ var simpleSelectionMultiCommandTestData = [
             };
             $.Arte.RichTextCommandApplier.createAndExecute(options);
         },
-        expectedContent: '<ul><li>1</li><li>2</li><li>3</li><li>4</li><li>5</li><li>6</li><li>7</li></ul>'
+        expectedContent: "<ul><li>1</li><li>2</li><li>3</li><li>4</li><li>5</li><li>6</li><li>7</li></ul>"
     }, {
-    name: 'toggleUnorderedListOnListItemWithOrderedList',
-    rawContent: '<li><div><ol><li>Line 1</li></ol></div></li>',
+    name: "toggleUnorderedListOnListItemWithOrderedList",
+    rawContent: "<li><div><ol><li>Line 1</li></ol></div></li>",
     op: function(arte) {
         var options = {
             commandName: "unorderedList",
@@ -740,10 +740,10 @@ var simpleSelectionMultiCommandTestData = [
         $.Arte.RichTextCommandApplier.createAndExecute(options);
 
     },
-    expectedContent: '<li><ul><li>Line 1</li></ul></li>'
+    expectedContent: "<li><ul><li>Line 1</li></ul></li>"
     }, {
-    name: 'toggleListSeveralTimes',
-    rawContent: '<div>Line 1</div><div>Line 2</div><span>Line 3</span>',
+    name: "toggleListSeveralTimes",
+    rawContent: "<div>Line 1</div><div>Line 2</div><span>Line 3</span>",
     op: function(arte) {
         var options = {
             commandName: "unorderedList",
@@ -758,13 +758,13 @@ var simpleSelectionMultiCommandTestData = [
         $.Arte.RichTextCommandApplier.createAndExecute(options);
         $.Arte.RichTextCommandApplier.createAndExecute(options);
     },
-    expectedContent: 'Line 1<br/>Line 2<br/>Line 3'
+    expectedContent: "Line 1<br/>Line 2<br/>Line 3"
     }
 ];
 
 var richTextComplexSelectionMultiCommandsTestData = [{
-    name: 'rightAlignCenterAlignPartOfText',
-    rawContent: '<span id="s1" style="font-weight: bold;">Line One</span><br/>Line Two',
+    name: "rightAlignCenterAlignPartOfText",
+    rawContent: "<span id=\"s1\" style=\"font-weight: bold;\">Line One</span><br/>Line Two",
     selection: function() {
         var node = $("#s1").contents()[0];
         unitTestHelper.createSelectionFromTextNodes(node, node, 2, 6); // range includes "ne On"
@@ -775,17 +775,17 @@ var richTextComplexSelectionMultiCommandsTestData = [{
             styleName: "text-align",
             styleValue: "right",
             textArea: arte,
-            applierTagName: 'P'
+            applierTagName: "P"
         };
         $.Arte.RichTextCommandApplier.createAndExecute(options);
         $.Arte.RichTextCommandApplier.createAndExecute($.extend(options, {
             styleValue: "center"
         }));
     },
-    expectedContent: '<p style="text-align: center; font-weight: bold;">Line One</p>Line Two'
+    expectedContent: "<p style=\"text-align: center; font-weight: bold;\">Line One</p>Line Two"
     }, {
-    name: 'leftAlignPartOfTextAcrossSpans',
-    rawContent: '<span id="s1" style="font-weight: bold;">Line One</span><span id="s2">Line Two</span>',
+    name: "leftAlignPartOfTextAcrossSpans",
+    rawContent: "<span id=\"s1\" style=\"font-weight: bold;\">Line One</span><span id=\"s2\">Line Two</span>",
     selection: function() {
         // Give a text node, select a subset of the text
         var node = $("#s1").contents()[0];
@@ -798,14 +798,15 @@ var richTextComplexSelectionMultiCommandsTestData = [{
             styleName: "text-align",
             styleValue: "left",
             textArea: arte,
-            applierTagName: 'P'
+            applierTagName: "P"
         };
         $.Arte.RichTextCommandApplier.createAndExecute(options);
     },
-    expectedContent: '<div style="text-align: left;"><span id="s1" style="font-weight: bold;">Line One</span>Line Two</div>'
+    expectedContent: "<div style=\"text-align: left;\"><span id=\"s1\" style=\"font-weight: bold;\">Line One</span>Line Two</div>"
     }, {
-    name: 'toggleLeftAlignOnPartOfTextAcrossSpans',
-    rawContent: '<span id="s1" style="font-weight: bold;" >Line One</span><span><span id="s2"style="font-weight: bold;" >Lin</span>e Two</span>',
+    name: "toggleLeftAlignOnPartOfTextAcrossSpans",
+    rawContent: "<span id=\"s1\" style=\"font-weight: bold;\" >Line One</span><span>" +
+        "<span id=\"s2\"style=\"font-weight: bold;\" >Lin</span>e Two</span>",
     selection: function() {
         var node = $("#s1").contents()[0];
         var node2 = $("#s2").contents()[0];
@@ -817,15 +818,16 @@ var richTextComplexSelectionMultiCommandsTestData = [{
             styleName: "text-align",
             styleValue: "left",
             textArea: arte,
-            applierTagName: 'P'
+            applierTagName: "P"
         };
         $.Arte.RichTextCommandApplier.createAndExecute(options);
     },
 
-    expectedContent: '<div style="text-align: left;"><span id="s1" style="font-weight: bold;" >Line One</span><span id="s2" style="font-weight: bold;" >Lin</span>e Two</div>'
+    expectedContent: "<div style=\"text-align: left;\"><span id=\"s1\" style=\"font-weight: bold;\" >Line One</span>" +
+        "<span id=\"s2\" style=\"font-weight: bold;\" >Lin</span>e Two</div>"
     }, {
-    name: 'toggleLeftAlignOnPartOfTextAcrossSpans2',
-    rawContent: '<span id="s1" style="font-weight: bold;">Line One</span><span id="s2">Line Two</span>',
+    name: "toggleLeftAlignOnPartOfTextAcrossSpans2",
+    rawContent: "<span id=\"s1\" style=\"font-weight: bold;\">Line One</span><span id=\"s2\">Line Two</span>",
     selection: function() {
         var node = $("#s1").contents()[0];
         unitTestHelper.createSelectionFromTextNodes(node, node, 2, 6); // range includes "ne On"
@@ -836,16 +838,16 @@ var richTextComplexSelectionMultiCommandsTestData = [{
             styleName: "text-align",
             styleValue: "left",
             textArea: arte,
-            applierTagName: 'P'
+            applierTagName: "P"
         };
         $.Arte.RichTextCommandApplier.createAndExecute(options);
         $.Arte.RichTextCommandApplier.createAndExecute(options);
     },
 
-    expectedContent: '<span id="s1" style="font-weight: bold;">Line One</span>Line Two'
+    expectedContent: "<span id=\"s1\" style=\"font-weight: bold;\">Line One</span>Line Two"
     }, {
-    name: 'toggleRightAlignOnPartOfTextAcrossSpans',
-    rawContent: '<span id="s1" style="font-weight: bold;">Line One</span><span id="s2">Line Two</span>',
+    name: "toggleRightAlignOnPartOfTextAcrossSpans",
+    rawContent: "<span id=\"s1\" style=\"font-weight: bold;\">Line One</span><span id=\"s2\">Line Two</span>",
     selection: function() {
         var node = $("#s1").contents()[0];
         var node2 = $("#s2").contents()[0];
@@ -857,16 +859,16 @@ var richTextComplexSelectionMultiCommandsTestData = [{
             styleName: "text-align",
             styleValue: "right",
             textArea: arte,
-            applierTagName: 'P'
+            applierTagName: "P"
         };
         $.Arte.RichTextCommandApplier.createAndExecute(options);
         $.Arte.RichTextCommandApplier.createAndExecute(options);
     },
 
-    expectedContent: '<span id="s1" style="font-weight: bold;">Line One</span>Line Two'
+    expectedContent: "<span id=\"s1\" style=\"font-weight: bold;\">Line One</span>Line Two"
     }, {
-    name: 'toggleCenterAlignOnPartOfTextAcrossSpans',
-    rawContent: '<span id="s1" style="font-weight: bold;">Line One</span><span id="s2">Line Two</span>',
+    name: "toggleCenterAlignOnPartOfTextAcrossSpans",
+    rawContent: "<span id=\"s1\" style=\"font-weight: bold;\">Line One</span><span id=\"s2\">Line Two</span>",
     selection: function() {
         var node = $("#s1").contents()[0];
         var node2 = $("#s2").contents()[0];
@@ -878,16 +880,18 @@ var richTextComplexSelectionMultiCommandsTestData = [{
             styleName: "text-align",
             styleValue: "center",
             textArea: arte,
-            applierTagName: 'P'
+            applierTagName: "P"
         };
         $.Arte.RichTextCommandApplier.createAndExecute(options);
         $.Arte.RichTextCommandApplier.createAndExecute(options);
     },
 
-    expectedContent: '<span id="s1" style="font-weight: bold;">Line One</span>Line Two'
+    expectedContent: "<span id=\"s1\" style=\"font-weight: bold;\">Line One</span>Line Two"
     }, {
-    name: 'toggleOrderedListOnPartOfOrderedList',
-    rawContent: '<ol><li><span id="s1">Line 1</span></li><li><span id="s2">Line 2</span></li></ol> <span id="s3">ABC</span> <br/> <span id="s4">DEF</span><br/><ul><li><span id="s5">Line A</span></li><li><span id="s6">Line B</span></li></ul> <span id="s7">XYZ</span>',
+    name: "toggleOrderedListOnPartOfOrderedList",
+    rawContent: "<ol><li><span id=\"s1\">Line 1</span></li><li><span id=\"s2\">Line 2</span></li></ol> " +
+        "<span id=\"s3\">ABC</span> <br/> <span id=\"s4\">DEF</span><br/><ul><li><span id=\"s5\">Line A</span>" +
+        "</li><li><span id=\"s6\">Line B</span></li></ul> <span id=\"s7\">XYZ</span>",
     selection: function() {
         var node = $("#s1").contents()[0];
         var node2 = $("#s2").contents()[0];
@@ -897,14 +901,16 @@ var richTextComplexSelectionMultiCommandsTestData = [{
         var options = {
             commandName: "orderedList",
             textArea: arte,
-            applierTagName: 'OL'
+            applierTagName: "OL"
         };
         $.Arte.RichTextCommandApplier.createAndExecute(options);
     },
-    expectedContent: 'Line 1<br/>Line 2<br/> ABC <br/> DEF<br/><ul><li>Line A</li><li>Line B</li></ul>XYZ'
+    expectedContent: "Line 1<br/>Line 2<br/> ABC <br/> DEF<br/><ul><li>Line A</li><li>Line B</li></ul>XYZ"
     }, {
-    name: 'createUnorderedListFromPartOfOrderedList',
-    rawContent: '<ol><li><span id="s1">Line 1</span></li><li><span id="s2">Line 2</span></li></ol> <span id="s3">ABC</span> <br/> <span id="s4">DEF</span><br/><ul><li><span id="s5">Line A</span></li><li><span id="s6">Line B</span></li></ul> <span id="s7">XYZ</span>',
+    name: "createUnorderedListFromPartOfOrderedList",
+    rawContent: "<ol><li><span id=\"s1\">Line 1</span></li><li><span id=\"s2\">Line 2</span></li></ol> " +
+        "<span id=\"s3\">ABC</span> <br/> <span id=\"s4\">DEF</span><br/><ul><li><span id=\"s5\">Line A</span>" +
+        "</li><li><span id=\"s6\">Line B</span></li></ul> <span id=\"s7\">XYZ</span>",
     selection: function() {
         var node = $("#s1").contents()[0];
         var node2 = $("#s2").contents()[0];
@@ -914,15 +920,17 @@ var richTextComplexSelectionMultiCommandsTestData = [{
         var options = {
             commandName: "unorderedList",
             textArea: arte,
-            applierTagName: 'UL'
+            applierTagName: "UL"
         };
         $.Arte.RichTextCommandApplier.createAndExecute(options);
 
     },
-    expectedContent: '<ul><li>Line 1</li><li>Line 2</li></ul> ABC <br/> DEF<br/><ul><li>Line A</li><li>Line B</li></ul>XYZ'
+    expectedContent: "<ul><li>Line 1</li><li>Line 2</li></ul> ABC <br/> DEF<br/><ul><li>Line A</li><li>Line B</li></ul>XYZ"
     }, {
-    name: 'createUnorderedListFromOrderedListAndText',
-    rawContent: '<ol><li><span id="s1">Line 1</span></li><li><span id="s2">Line 2</span></li></ol><span id="s3">ABC</span><br/><span id="s4">DEF</span><br/><ul><li><span id="s5">Line A</span></li><li><span id="s6">Line B</span></li></ul> <span id="s7">XYZ</span>',
+    name: "createUnorderedListFromOrderedListAndText",
+    rawContent: "<ol><li><span id=\"s1\">Line 1</span></li><li><span id=\"s2\">Line 2</span></li></ol>" +
+        "<span id=\"s3\">ABC</span><br/><span id=\"s4\">DEF</span><br/><ul><li><span id=\"s5\">Line A</span></li><li>" +
+        "<span id=\"s6\">Line B</span></li></ul> <span id=\"s7\">XYZ</span>",
     selection: function() {
         var node = $("#s1").contents()[0];
         var node2 = $("#s3").contents()[0];
@@ -932,15 +940,17 @@ var richTextComplexSelectionMultiCommandsTestData = [{
         var options = {
             commandName: "unorderedList",
             textArea: arte,
-            applierTagName: 'UL'
+            applierTagName: "UL"
         };
         $.Arte.RichTextCommandApplier.createAndExecute(options);
     },
 
-    expectedContent: '<ul><li>Line 1</li><li>Line 2</li><li>ABC</li></ul>DEF<br/><ul><li>Line A</li><li>Line B</li></ul>XYZ'
+    expectedContent: "<ul><li>Line 1</li><li>Line 2</li><li>ABC</li></ul>DEF<br/><ul><li>Line A</li><li>Line B</li></ul>XYZ"
     }, {
-    name: 'toggleUnorderedListFromOrderedListAndText',
-    rawContent: '<ol><li><span id="s1">Line 1</span></li><li><span id="s2">Line 2</span></li></ol><span id="s4">DEF</span><ul><li><span id="s5">Line A</span></li><li><span id="s6">Line B</span></li></ul> <span id="s7">XYZ</span>',
+    name: "toggleUnorderedListFromOrderedListAndText",
+    rawContent: "<ol><li><span id=\"s1\">Line 1</span></li><li><span id=\"s2\">Line 2</span></li></ol>" +
+        "<span id=\"s4\">DEF</span><ul><li><span id=\"s5\">Line A</span></li><li><span id=\"s6\">Line B</span></li></ul> " +
+        "<span id=\"s7\">XYZ</span>",
     selection: function() {
         var node = $("#s1").contents()[0];
         var node2 = $("#s3").contents()[0];
@@ -950,14 +960,13 @@ var richTextComplexSelectionMultiCommandsTestData = [{
         var options = {
             commandName: "unorderedList",
             textArea: arte,
-            applierTagName: 'UL'
+            applierTagName: "UL"
         };
         $.Arte.RichTextCommandApplier.createAndExecute(options);
         $.Arte.RichTextCommandApplier.createAndExecute(options);
     },
-    expectedContent: 'Line 1<ol><li>Line 2</li></ol>DEF<ul><li>Line A</li><li>Line B</li></ul> XYZ'
+    expectedContent: "Line 1<ol><li>Line 2</li></ol>DEF<ul><li>Line A</li><li>Line B</li></ul> XYZ"
 }];
-
 
 var otherTestScenariosTestData = [{
     name: "invalidCommand",

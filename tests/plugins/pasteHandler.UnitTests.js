@@ -136,17 +136,24 @@ var ArtePasteHandlerTestData = [
     },
     {
         name: "actualContentFromMsWord1",
-        rawContent: "<div id='s'><p class=\"MsoNormal\"><a name=\"OLE_LINK2\"></a><a name=\"OLE_LINK1\">test<o:p></o:p></a></p><p class=\"MsoNormal\">abc<o:p></o:p></p></div>",
+        rawContent: "<div id='s'><p class=\"MsoNormal\"><a name=\"OLE_LINK2\"></a><a name=\"OLE_LINK1\">test<o:p></o:p>" +
+            "</a></p><p class=\"MsoNormal\">abc<o:p></o:p></p></div>",
         expectedContent: "<div id='s'><p><div>test</div></p><p>abc</p></div>"
     },
     {
         name: "actualContentFromMsWord2",
-        rawContent: '<div id="s">af<img alt="Try Advanced Editing" style="width:111px;height:33px;"></div>',
+        rawContent: "<div id='s'>af<img alt='Try Advanced Editing' style='width:111px;height:33px;'></div>",
         expectedContent: "<div id='s'>af</div>"
     },
     {
         name: "actualContentFromMsWord3",
-        rawContent: '<p style="TEXT-ALIGN: right"><p class="MsoListParagraphCxSpFirst" style="text-indent:-.25in;mso-list:l0 level1 lfo1"><!--[if !supportLists]-->1.<span style="font-weight: normal; font-size: 7pt; font-family: \'Times New Roman\'; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><!--[endif]-->ABC<o:p></o:p></p><p class="MsoListParagraphCxSpLast" style="text-indent:-.25in;mso-list:l0 level1 lfo1"><!--[if !supportLists]-->2.<span style="font-weight: normal; font-size: 7pt; font-family: \'Times New Roman\'; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><!--[endif]-->DEF<o:p></o:p></p></p>',
+        rawContent: "<p style='TEXT-ALIGN: right'>" +
+            "<p class='MsoListParagraphCxSpFirst' style='text-indent:-.25in;mso-list:l0 level1 lfo1'>" +
+            "<!--[if !supportLists]-->1.<span style='font-weight: normal; font-size: 7pt; font-family: \"Times New Roman\"; '>" +
+            "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><!--[endif]-->ABC<o:p></o:p>" +
+            "</p><p class='MsoListParagraphCxSpLast' style='text-indent:-.25in;mso-list:l0 level1 lfo1'>" +
+            "<!--[if !supportLists]-->2.<span style='font-weight: normal; font-size: 7pt; font-family: \"Times New Roman\"; '>" +
+            "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><!--[endif]-->DEF<o:p></o:p></p></p>",
         expectedContent: "<p>1.ABC</p><p>2.DEF</p>"
     }
 ];

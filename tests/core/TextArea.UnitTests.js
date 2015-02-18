@@ -136,7 +136,8 @@ var ArteTextAreaTestData = {
             options: {
                 value: "test"
             },
-            value: "<div style='font-weight:bold; font-size: 10px;' class='arte-font-weight-bold'>This is rich <b>text</b> <span>area</span></div>"
+            value: "<div style='font-weight:bold; font-size: 10px;' class='arte-font-weight-bold'>This is rich <b>text</b> " +
+                "<span>area</span></div>"
         }
     ],
     events: [
@@ -354,4 +355,3 @@ var ArteTextAreaTestData = {
         }
     ]
 };
-

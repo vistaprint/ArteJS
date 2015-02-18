@@ -4,7 +4,7 @@ $(document).ready(function() {
         var range = unitTestHelper.createRange(testData);
         rangy.toggleSurroundRange(range, testData.blockOptions);
         if (testData.cleanup) {
-            $.Arte.dom.cleanup($('[contenteditable="true"]'));
+            $.Arte.dom.cleanup($("[contenteditable='true']"));
         }
     });
     complexBlockSurroundUnitTests();
@@ -14,7 +14,7 @@ $(document).ready(function() {
         var range = unitTestHelper.createRange(testData);
         rangy.toggleSurroundRangeSet(range, testData.blockOptions);
         if (testData.cleanup) {
-            $.Arte.dom.cleanup($('[contenteditable="true"]'));
+            $.Arte.dom.cleanup($("[contenteditable='true']"));
         }
     });
 
@@ -31,128 +31,125 @@ var options = {
 
 var blockSurroundUnitTestData = [
     {
-        name: 'leftAlign',
-        rangeContentId: 'r ',
+        name: "leftAlign",
+        rangeContentId: "r ",
         blockOptions: options,
-        cleanup: 'true',
-        rawContent: '<p id="r">SomeText</p>',
-        expectedContent: '<div style="text-align: left">SomeText</div>'
+        cleanup: "true",
+        rawContent: "<p id=\"r\">SomeText</p>",
+        expectedContent: "<div style=\"text-align: left\">SomeText</div>"
     },
     {
-        name: 'leftAlignLineWithTextAroundSpan',
-        rangeContentId: 'r',
+        name: "leftAlignLineWithTextAroundSpan",
+        rangeContentId: "r",
         blockOptions: options,
-        cleanup: 'true',
-        rawContent: 'Line 1<span id="r"> Line 2 </span> Line 3',
-        expectedContent: '<div style="text-align: left;">Line 1 Line 2  Line 3</div>'
+        cleanup: "true",
+        rawContent: "Line 1<span id=\"r\"> Line 2 </span> Line 3",
+        expectedContent: "<div style=\"text-align: left;\">Line 1 Line 2  Line 3</div>"
     },
     {
-        name: 'leftAlignDiv',
-        rangeContentId: 'r',
+        name: "leftAlignDiv",
+        rangeContentId: "r",
         blockOptions: options,
-        cleanup: 'true',
-        rawContent: '<div id="r"> Line 2 </div>',
-        expectedContent: '<div style="text-align: left">Line 2</div>'
+        cleanup: "true",
+        rawContent: "<div id=\"r\"> Line 2 </div>",
+        expectedContent: "<div style=\"text-align: left\">Line 2</div>"
     },
     {
-        name: 'leftAlignDivWithSpan',
-        rangeContentId: 'r',
+        name: "leftAlignDivWithSpan",
+        rangeContentId: "r",
         blockOptions: options,
-        cleanup: 'true',
-        rawContent: '<div><span id="r">Line 2</span></div>',
-        expectedContent: '<div style="text-align: left">Line 2</div>'
+        cleanup: "true",
+        rawContent: "<div><span id=\"r\">Line 2</span></div>",
+        expectedContent: "<div style=\"text-align: left\">Line 2</div>"
     },
     {
         // Tests if the empty spaces are maintained around the html elements
-        name: 'leftAlignDivWithSpanAndSpaces',
-        rangeContentId: 'r',
+        name: "leftAlignDivWithSpanAndSpaces",
+        rangeContentId: "r",
         blockOptions: options,
-        cleanup: 'true',
-        rawContent: '<div> <span id="r"> Line 2 </span> </div>',
-        expectedContent: '<div style="text-align: left">  Line 2  </div>'
+        cleanup: "true",
+        rawContent: "<div> <span id=\"r\"> Line 2 </span> </div>",
+        expectedContent: "<div style=\"text-align: left\">  Line 2  </div>"
     },
 
     {
-        name: 'leftAlignDivInDivWithSpan',
-        rangeContentId: 'r',
+        name: "leftAlignDivInDivWithSpan",
+        rangeContentId: "r",
         blockOptions: options,
-        cleanup: 'true',
-        rawContent: '<div><div > <span id="r"> Line 2 </span> </div></div>',
-        expectedContent: '<div style="text-align: left"> Line 2 </div>'
+        cleanup: "true",
+        rawContent: "<div><div > <span id=\"r\"> Line 2 </span> </div></div>",
+        expectedContent: "<div style=\"text-align: left\"> Line 2 </div>"
     },
     {
-        name: 'centerAlign',
-        rangeContentId: 'r',
+        name: "centerAlign",
+        rangeContentId: "r",
         blockOptions: $.extend({}, options, {
             styleValue: "center"
         }),
-        cleanup: 'true',
-        rawContent: '<p id="r">SomeText</p>',
-        expectedContent: '<div style="text-align: center">SomeText</div>'
+        cleanup: "true",
+        rawContent: "<p id=\"r\">SomeText</p>",
+        expectedContent: "<div style=\"text-align: center\">SomeText</div>"
     },
     {
-        name: 'rightAlign',
-        rangeContentId: 'r',
+        name: "rightAlign",
+        rangeContentId: "r",
         blockOptions: $.extend({}, options, {
             styleValue: "right"
         }),
-        cleanup: 'true',
-        rawContent: '<p id="r">SomeText</p>',
-        expectedContent: '<div style="text-align: right">SomeText</div>'
+        cleanup: "true",
+        rawContent: "<p id=\"r\">SomeText</p>",
+        expectedContent: "<div style=\"text-align: right\">SomeText</div>"
     }
 ];
-
-
-
 
 function complexBlockSurroundUnitTests() {
     var complexBlockSurroundUnitTestData = {
         leftAlignLineWithBr: {
-            name: 'leftAlignLineWithBr',
+            name: "leftAlignLineWithBr",
             blockOptions: options,
-            cleanup: 'true',
-            rawContent: 'Line <br/>',
-            expectedContent: '<div style="text-align: left">Line </div>'
+            cleanup: "true",
+            rawContent: "Line <br/>",
+            expectedContent: "<div style=\"text-align: left\">Line </div>"
         },
         rightAlignLeftAlign: {
-            name: 'rightAlignLeftAlign',
+            name: "rightAlignLeftAlign",
             blockOptions: $.extend({}, options, {
                 styleValue: "right"
             }),
-            cleanup: 'true',
-            rangeContentId: 'editableDiv',
-            rawContent: '<p id="r">SomeText</p>',
-            expectedContent: '<div style="text-align: left">SomeText</div>'
+            cleanup: "true",
+            rangeContentId: "editableDiv",
+            rawContent: "<p id=\"r\">SomeText</p>",
+            expectedContent: "<div style=\"text-align: left\">SomeText</div>"
         },
         rightAlignCenterAlign: {
-            name: 'rightAlignCenterAlign',
-            rangeContentId: 'editableDiv',
+            name: "rightAlignCenterAlign",
+            rangeContentId: "editableDiv",
             blockOptions: $.extend({}, options, {
                 styleValue: "right"
             }),
-            cleanup: 'true',
-            rawContent: '<p id="r">SomeText</p>',
-            expectedContent: '<div style="text-align: center">SomeText</div>'
+            cleanup: "true",
+            rawContent: "<p id=\"r\">SomeText</p>",
+            expectedContent: "<div style=\"text-align: center\">SomeText</div>"
         },
         rightAlignRightAlign: {
-            name: 'rightAlignRightAlign',
-            rangeContentId: 'editableDiv ',
+            name: "rightAlignRightAlign",
+            rangeContentId: "editableDiv ",
             blockOptions: $.extend({}, options, {
                 styleValue: "right"
             }),
-            cleanup: 'true',
-            rawContent: '<p id="r">SomeText</p>',
-            expectedContent: '<div>SomeText</div>'
+            cleanup: "true",
+            rawContent: "<p id=\"r\">SomeText</p>",
+            expectedContent: "<div>SomeText</div>"
         },
         rightAlignDivWithTextSibling: {
-            name: 'rightAlignDivWithTextSibling',
-            rangeContentId: 'r',
+            name: "rightAlignDivWithTextSibling",
+            rangeContentId: "r",
             blockOptions: $.extend({}, options, {
                 styleValue: "right"
             }),
-            cleanup: 'true',
-            rawContent: '<div id="r"> SomeText </div>Line 6',
-            expectedContent: '<div><div id="r" style="text-align: right"> SomeText </div>Line 6</div>'
+            cleanup: "true",
+            rawContent: "<div id=\"r\"> SomeText </div>Line 6",
+            expectedContent: "<div><div id=\"r\" style=\"text-align: right\"> SomeText </div>Line 6</div>"
         }
     };
 
@@ -162,7 +159,7 @@ function complexBlockSurroundUnitTests() {
             var range = rangy.createRangyRange();
             range.selectNodeContents(nodes[0]);
             rangy.toggleSurroundRange(range, data.blockOptions);
-            $.Arte.dom.cleanup($('[contenteditable="true"]'));
+            $.Arte.dom.cleanup($("[contenteditable='true']"));
         });
     });
 
@@ -175,7 +172,7 @@ function complexBlockSurroundUnitTests() {
             });
             range = unitTestHelper.createRange(data);
             rangy.toggleSurroundRange(range, data.blockOptions);
-            $.Arte.dom.cleanup($('[contenteditable="true"]'));
+            $.Arte.dom.cleanup($("[contenteditable='true']"));
         });
     });
 
@@ -188,7 +185,7 @@ function complexBlockSurroundUnitTests() {
             });
             range = unitTestHelper.createRange(data);
             rangy.toggleSurroundRange(range, data.blockOptions);
-            $.Arte.dom.cleanup($('[contenteditable="true"]'));
+            $.Arte.dom.cleanup($("[contenteditable='true']"));
         });
     });
 
@@ -198,7 +195,7 @@ function complexBlockSurroundUnitTests() {
             rangy.toggleSurroundRange(range, data.blockOptions);
             range = unitTestHelper.createRange(data);
             rangy.toggleSurroundRange(range, data.blockOptions);
-            $.Arte.dom.cleanup($('[contenteditable="true"]'));
+            $.Arte.dom.cleanup($("[contenteditable='true']"));
         });
     });
 
@@ -206,33 +203,37 @@ function complexBlockSurroundUnitTests() {
         unitTestHelper.executeTest(complexBlockSurroundUnitTestData.rightAlignDivWithTextSibling, function(data) {
             var range = unitTestHelper.createRange(data);
             rangy.toggleSurroundRange(range, data.blockOptions);
-            $.Arte.dom.cleanup($('[contenteditable="true"]'));
+            $.Arte.dom.cleanup($("[contenteditable='true']"));
         });
     });
 }
 
 var blockSetSurroundHtml = function() {
-    return ['<ol>',
-        '<li id="l1">Line 1</li>',
-        '<li id="l2">Line 2</li>',
-        '</ol>',
-        '<div id="l3">Line 3</div>',
-        '<ol>',
-        '<li id="l4">Line 4</li>',
-        '<li id="l5">Line 5</li>',
-        '</ol>',
-        '<div id="l6">Line 6</div>',
-    '<div id="l7">Line 7</div>'];
+    return [
+        "<ol>",
+        "<li id=\"l1\">Line 1</li>",
+        "<li id=\"l2\">Line 2</li>",
+        "</ol>",
+        "<div id=\"l3\">Line 3</div>",
+        "<ol>",
+        "<li id=\"l4\">Line 4</li>",
+        "<li id=\"l5\">Line 5</li>",
+        "</ol>",
+        "<div id=\"l6\">Line 6</div>",
+        "<div id=\"l7\">Line 7</div>"
+    ];
 };
 
 var blockSetUnsurroundHtml = function() {
-    return ['<ol>',
-        '<li id="l1">Line 1</li>',
-        '<li id="l2">Line 2</li>',
-        '<li id="l3">Line 3</li>',
-        '<li id="l4">Line 4</li>',
-        '<li id="l5">Line 5</li>',
-    '</ol>'];
+    return [
+        "<ol>",
+        "<li id=\"l1\">Line 1</li>",
+        "<li id=\"l2\">Line 2</li>",
+        "<li id=\"l3\">Line 3</li>",
+        "<li id=\"l4\">Line 4</li>",
+        "<li id=\"l5\">Line 5</li>",
+        "</ol>"
+    ];
 };
 
 var defaultBlockSetOption = {
@@ -241,150 +242,157 @@ var defaultBlockSetOption = {
 var blockSetSurroundUnitTestsData = [
     // Wrap scenarios
     {
-        name: 'wrapSimple',
-        rawContent: blockSetSurroundHtml().join(' '),
-        startBeforeId: 'l7',
-        endAfterId: 'l7',
+        name: "wrapSimple",
+        rawContent: blockSetSurroundHtml().join(" "),
+        startBeforeId: "l7",
+        endAfterId: "l7",
         blockOptions: defaultBlockSetOption,
-        cleanup: 'true',
-        expectedContent: "<div>" + blockSetSurroundHtml().splice(0, 10).join(' ') + '<ol><li>Line 7</li></ol>' + "</div>"
+        cleanup: "true",
+        expectedContent: "<div>" + blockSetSurroundHtml().splice(0, 10).join(" ") + "<ol><li>Line 7</li></ol></div>"
     },
     {
-        name: 'wrapWithTwoSiblingLists',
-        rawContent: blockSetSurroundHtml().join(' '),
-        startBeforeId: 'l3',
-        endAfterId: 'l3',
+        name: "wrapWithTwoSiblingLists",
+        rawContent: blockSetSurroundHtml().join(" "),
+        startBeforeId: "l3",
+        endAfterId: "l3",
         blockOptions: defaultBlockSetOption,
-        cleanup: 'true',
-        expectedContent: "<div>" + blockSetSurroundHtml().splice(0, 3).join(' ') + '<li>Line 3</li>' + blockSetSurroundHtml().splice(6, 5).join(' ') + "</div>"
+        cleanup: "true",
+        expectedContent: "<div>" + blockSetSurroundHtml().splice(0, 3).join(" ") + "<li>Line 3</li>" +
+            blockSetSurroundHtml().splice(6, 5).join(" ") + "</div>"
     },
     {
-        name: 'wrapWithPartialSiblingLists',
-        rawContent: blockSetSurroundHtml().join(' '),
-        startBeforeId: 'l1',
-        endAfterId: 'l5',
+        name: "wrapWithPartialSiblingLists",
+        rawContent: blockSetSurroundHtml().join(" "),
+        startBeforeId: "l1",
+        endAfterId: "l5",
         blockOptions: defaultBlockSetOption,
-        cleanup: 'true',
-        expectedContent: "<div>" + blockSetSurroundHtml().splice(0, 3).join(' ') + '<li>Line 3</li>' + blockSetSurroundHtml().splice(6, 5).join(' ') + "</div>"
+        cleanup: "true",
+        expectedContent: "<div>" + blockSetSurroundHtml().splice(0, 3).join(" ") + "<li>Line 3</li>" +
+            blockSetSurroundHtml().splice(6, 5).join(" ") + "</div>"
     },
     {
-        name: 'wrapWithPartialSiblingLists2',
-        rawContent: blockSetSurroundHtml().join(' '),
-        startBeforeId: 'l2',
-        endAfterId: 'l4',
+        name: "wrapWithPartialSiblingLists2",
+        rawContent: blockSetSurroundHtml().join(" "),
+        startBeforeId: "l2",
+        endAfterId: "l4",
         blockOptions: defaultBlockSetOption,
-        cleanup: 'true',
-        expectedContent: "<div>" + blockSetSurroundHtml().splice(0, 3).join(' ') + '<li>Line 3</li>' + blockSetSurroundHtml().splice(6, 5).join(' ') + "</div>"
+        cleanup: "true",
+        expectedContent: "<div>" + blockSetSurroundHtml().splice(0, 3).join(" ") + "<li>Line 3</li>" +
+            blockSetSurroundHtml().splice(6, 5).join(" ") + "</div>"
     },
     {
-        name: 'wrapWithPartialSiblingListFront',
-        rawContent: blockSetSurroundHtml().join(' '),
-        startBeforeId: 'l2',
-        endAfterId: 'l3',
+        name: "wrapWithPartialSiblingListFront",
+        rawContent: blockSetSurroundHtml().join(" "),
+        startBeforeId: "l2",
+        endAfterId: "l3",
         blockOptions: defaultBlockSetOption,
-        cleanup: 'true',
-        expectedContent: "<div>" + blockSetSurroundHtml().splice(0, 3).join(' ') + '<li>Line 3</li>' + blockSetSurroundHtml().splice(6, 5).join(' ') + "</div>"
+        cleanup: "true",
+        expectedContent: "<div>" + blockSetSurroundHtml().splice(0, 3).join(" ") + "<li>Line 3</li>" +
+            blockSetSurroundHtml().splice(6, 5).join(" ") + "</div>"
     },
     {
-        name: 'wrapWithPartialSiblingListBack',
-        rawContent: blockSetSurroundHtml().join(' '),
-        startBeforeId: 'l3',
-        endAfterId: 'l4',
+        name: "wrapWithPartialSiblingListBack",
+        rawContent: blockSetSurroundHtml().join(" "),
+        startBeforeId: "l3",
+        endAfterId: "l4",
         blockOptions: defaultBlockSetOption,
-        cleanup: 'true',
-        expectedContent: "<div>" + blockSetSurroundHtml().splice(0, 3).join(' ') + '<li>Line 3</li>' + blockSetSurroundHtml().splice(6, 5).join(' ') + "</div>"
+        cleanup: "true",
+        expectedContent: "<div>" + blockSetSurroundHtml().splice(0, 3).join(" ") + "<li>Line 3</li>" +
+            blockSetSurroundHtml().splice(6, 5).join(" ") + "</div>"
     },
     {
-        name: 'wrapWithFullSiblingListFront',
-        rawContent: blockSetSurroundHtml().join(' '),
-        startBeforeId: 'l1',
-        endAfterId: 'l3',
+        name: "wrapWithFullSiblingListFront",
+        rawContent: blockSetSurroundHtml().join(" "),
+        startBeforeId: "l1",
+        endAfterId: "l3",
         blockOptions: defaultBlockSetOption,
-        cleanup: 'true',
-        expectedContent: "<div>" + blockSetSurroundHtml().splice(0, 3).join(' ') + '<li>Line 3</li>' + blockSetSurroundHtml().splice(6, 5).join(' ')
+        cleanup: "true",
+        expectedContent: "<div>" + blockSetSurroundHtml().splice(0, 3).join(" ") + "<li>Line 3</li>" +
+            blockSetSurroundHtml().splice(6, 5).join(" ")
     },
     {
-        name: 'wrapWithFullSiblingListBack',
-        rawContent: blockSetSurroundHtml().join(' '),
-        startBeforeId: 'l3',
-        endAfterId: 'l5',
+        name: "wrapWithFullSiblingListBack",
+        rawContent: blockSetSurroundHtml().join(" "),
+        startBeforeId: "l3",
+        endAfterId: "l5",
         blockOptions: defaultBlockSetOption,
-        cleanup: 'true',
-        expectedContent: "<div>" + blockSetSurroundHtml().splice(0, 3).join(' ') + '<li>Line 3</li>' + blockSetSurroundHtml().splice(6, 5).join(' ') + "</div>"
+        cleanup: "true",
+        expectedContent: "<div>" + blockSetSurroundHtml().splice(0, 3).join(" ") + "<li>Line 3</li>" +
+            blockSetSurroundHtml().splice(6, 5).join(" ") + "</div>"
     },
     {
-        name: 'wrapWithFullyEnclosedList',
-        rawContent: blockSetSurroundHtml().join(' '),
-        startBeforeId: 'l1',
-        endAfterId: 'l7',
+        name: "wrapWithFullyEnclosedList",
+        rawContent: blockSetSurroundHtml().join(" "),
+        startBeforeId: "l1",
+        endAfterId: "l7",
         blockOptions: defaultBlockSetOption,
-        cleanup: 'true',
-        expectedContent: "<div>" + blockSetSurroundHtml().splice(0, 3).join(' ') + '<li>Line 3</li>' + blockSetSurroundHtml().splice(6, 2).join(' ') +
-        '<li>Line 6</li>' + '<li>Line 7</li>' + '</ol>' + "</div>"
+        cleanup: "true",
+        expectedContent: "<div>" + blockSetSurroundHtml().splice(0, 3).join(" ") + "<li>Line 3</li>" +
+            blockSetSurroundHtml().splice(6, 2).join(" ") + "<li>Line 6</li><li>Line 7</li></ol></div>"
     },
     // Uhwrap scenarios
     {
-        name: 'unwrapWhole',
-        rawContent: blockSetUnsurroundHtml().join(' '),
-        startBeforeId: 'l1',
-        endAfterId: 'l5',
+        name: "unwrapWhole",
+        rawContent: blockSetUnsurroundHtml().join(" "),
+        startBeforeId: "l1",
+        endAfterId: "l5",
         blockOptions: defaultBlockSetOption,
-        cleanup: 'true',
-        expectedContent: "<div>" + 'Line 1 <br> Line 2 <br> Line 3 <br> Line 4 <br> Line 5' + "</div>"
+        cleanup: "true",
+        expectedContent: "<div>Line 1 <br> Line 2 <br> Line 3 <br> Line 4 <br> Line 5</div>"
     },
     {
-        name: 'unwrapPartialFront',
-        rawContent: blockSetUnsurroundHtml().join(' '),
-        startBeforeId: 'l1',
-        endAfterId: 'l2',
+        name: "unwrapPartialFront",
+        rawContent: blockSetUnsurroundHtml().join(" "),
+        startBeforeId: "l1",
+        endAfterId: "l2",
         blockOptions: defaultBlockSetOption,
-        cleanup: 'true',
-        expectedContent: "<div>" + 'Line 1 <br> Line 2 <ol>' + blockSetUnsurroundHtml().splice(3, 4).join(' ') + "</div>"
+        cleanup: "true",
+        expectedContent: "<div>Line 1 <br> Line 2 <ol>" + blockSetUnsurroundHtml().splice(3, 4).join(" ") + "</div>"
     },
     {
-        name: 'unwrapPartialBack',
-        rawContent: blockSetUnsurroundHtml().join(' '),
-        startBeforeId: 'l4',
-        endAfterId: 'l5',
+        name: "unwrapPartialBack",
+        rawContent: blockSetUnsurroundHtml().join(" "),
+        startBeforeId: "l4",
+        endAfterId: "l5",
         blockOptions: defaultBlockSetOption,
-        cleanup: 'true',
-        expectedContent: "<div>" + blockSetUnsurroundHtml().splice(0, 4).join(' ') + '</ol> Line 4 <br> Line 5' + "</div>"
+        cleanup: "true",
+        expectedContent: "<div>" + blockSetUnsurroundHtml().splice(0, 4).join(" ") + "</ol> Line 4 <br> Line 5</div>"
     },
     {
-        name: 'unwrapPartialMiddle',
-        rawContent: blockSetUnsurroundHtml().join(' '),
-        startBeforeId: 'l3',
-        endAfterId: 'l3',
+        name: "unwrapPartialMiddle",
+        rawContent: blockSetUnsurroundHtml().join(" "),
+        startBeforeId: "l3",
+        endAfterId: "l3",
         blockOptions: defaultBlockSetOption,
-        cleanup: 'true',
-        expectedContent: "<div>" + blockSetUnsurroundHtml().splice(0, 3).join(' ') + '</ol> Line 3 <ol>' + blockSetUnsurroundHtml().splice(4, 3).join(' ') + "</div>"
+        cleanup: "true",
+        expectedContent: "<div>" + blockSetUnsurroundHtml().splice(0, 3).join(" ") + "</ol> Line 3 <ol>" +
+            blockSetUnsurroundHtml().splice(4, 3).join(" ") + "</div>"
     }
 ];
-
 
 function complexBlockSetSurroundUnitTests() {
     var complexBlockSetSurroundUnitTestsData = {
         wrapWithBrBetweenTwoTextNodes: {
-            name: 'wrapWithBrBetweenTwoTextNodes',
+            name: "wrapWithBrBetweenTwoTextNodes",
             blockOptions: defaultBlockSetOption,
-            cleanup: 'true',
-            rawContent: 'Line 1 <br> Line 2 <br> <ol><li>Line 3</li></ol>',
-            expectedContent: "<div>" + '<ol><li>Line 1</li></ol> Line 2 <br> <ol><li>Line 3</li></ol>' + "</div>"
+            cleanup: "true",
+            rawContent: "Line 1 <br> Line 2 <br> <ol><li>Line 3</li></ol>",
+            expectedContent: "<div><ol><li>Line 1</li></ol> Line 2 <br> <ol><li>Line 3</li></ol></div>"
         },
         wrapWithBrBeforeOl: {
-            name: 'wrapWithBrBeforeOl',
+            name: "wrapWithBrBeforeOl",
             blockOptions: defaultBlockSetOption,
-            cleanup: 'true',
-            rawContent: 'Line 1 <br> Line 2 <br><ol><li>Line 3</li></ol>',
-            expectedContent: "<div>" + 'Line 1 <br><ol><li> Line 2 </li> <li>Line 3</li></ol>' + "</div>"
+            cleanup: "true",
+            rawContent: "Line 1 <br> Line 2 <br><ol><li>Line 3</li></ol>",
+            expectedContent: "<div>Line 1 <br><ol><li> Line 2 </li> <li>Line 3</li></ol></div>"
         },
         wrapWithSpanBetweenOlAndSelection: {
-            name: 'wrapWithSpanBetweenOlAndSelection',
-            rangeContentId: 'r',
+            name: "wrapWithSpanBetweenOlAndSelection",
+            rangeContentId: "r",
             blockOptions: defaultBlockSetOption,
-            cleanup: 'true',
-            rawContent: '<ol><li>SomeContent</li></ol> <span>a </span>  <span id="r">selection</span>',
-            expectedContent: "<div>" + '<ol><li>SomeContent</li><li> <span>a </span>  <span id="r">selection</span></li></ol>' + "</div>"
+            cleanup: "true",
+            rawContent: "<ol><li>SomeContent</li></ol> <span>a </span>  <span id=\"r\">selection</span>",
+            expectedContent: "<div><ol><li>SomeContent</li><li> <span>a </span>  <span id=\"r\">selection</span></li></ol></div>"
         }
     };
 
@@ -395,7 +403,7 @@ function complexBlockSetSurroundUnitTests() {
             var range = rangy.createRangyRange();
             range.selectNodeContents(nodes[0]);
             rangy.toggleSurroundRangeSet(range, data.blockOptions);
-            $.Arte.dom.cleanup($('[contenteditable="true"]'));
+            $.Arte.dom.cleanup($("[contenteditable='true']"));
         });
     });
     test(complexBlockSetSurroundUnitTestsData.wrapWithBrBeforeOl.name, function() {
@@ -405,7 +413,7 @@ function complexBlockSetSurroundUnitTests() {
             var range = rangy.createRangyRange();
             range.selectNodeContents(nodes[2]);
             rangy.toggleSurroundRangeSet(range, data.blockOptions);
-            $.Arte.dom.cleanup($('[contenteditable="true"]'));
+            $.Arte.dom.cleanup($("[contenteditable='true']"));
         });
     });
 

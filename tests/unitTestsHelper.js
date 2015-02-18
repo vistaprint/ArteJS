@@ -23,16 +23,17 @@ var unitTestHelper = {
         var expected = options.expectedContent;
         var actual = options.actualContent;
 
-        if (typeof (expected) === 'string') {
+        if (typeof (expected) === "string") {
             isEqual = expected === actual;
-        } else if (typeof (expected) === 'object' && expected.prop && expected.prop('nodeType')) {
+        } else if (typeof (expected) === "object" && expected.prop && expected.prop("nodeType")) {
             /**
             * During setup, we wrap the initial content with a content editable element.  If the top level expected element is a div,
             * add the content editable attribute or wrap the expected content into a contenteditable div for comparison.
             */
             if (!options.doNotApplyAttributes) {
                 var contents = expected.contents();
-                if (contents.get(0).nodeType === $.Arte.constants.nodeType.TEXT || contents.get(0).tagName !== "DIV" || contents.length > 1) {
+                if (contents.get(0).nodeType === $.Arte.constants.nodeType.TEXT ||
+                        contents.get(0).tagName !== "DIV" || contents.length > 1) {
                     expected = $("<div></div>").html(expected);
                 }
                 expected.children().first().attr({
@@ -233,7 +234,7 @@ var unitTestHelper = {
         var attributes = ["style", "id", "class"];
 
         //compare node
-        if (this.prop('tagName') === $node.prop('tagName')) {
+        if (this.prop("tagName") === $node.prop("tagName")) {
             //compare attributes
             var $currentNode = this;
             $.each(attributes, function(i, attrib) {
@@ -263,7 +264,9 @@ var unitTestHelper = {
                 isEqual = thisContent.length === thatContent.length;
 
                 for (var i = 0, l = thisContent.length; i < l && isEqual; i++) {
-                    isEqual = thisContent[i].nodeType === 3 ? $.trim(thisContent[i].nodeValue) === $.trim(thatContent[i].nodeValue) : $(thisContent[i]).compareNodes($(thatContent[i]));
+                    isEqual = thisContent[i].nodeType === 3 ?
+                        $.trim(thisContent[i].nodeValue) === $.trim(thatContent[i].nodeValue) :
+                        $(thisContent[i]).compareNodes($(thatContent[i]));
                 }
             }
         } else {
