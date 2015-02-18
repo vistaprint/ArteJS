@@ -1,10 +1,11 @@
+/*globals console*/
 var unitTestHelper = {
     /* Test Setup: Create a content editable div and set the initial content for the test*/
     setup: function(data) {
         var div = $("<div>").attr({
             contenteditable: true,
             id: "editableDiv"
-        }).html(data["rawContent"]);
+        }).html(data.rawContent);
         $(TEST_ELEMENT_SELECTOR).html(div);
 
         if (data.blockOptions) {
@@ -159,7 +160,7 @@ var unitTestHelper = {
     executeTestCollection: function(testDataCollection, callback) {
         for (var i = 0; i < testDataCollection.length; i++) {
             (function(testData) {
-                test(testData.name, function() {
+                QUnit.test(testData.name, function() {
                     unitTestHelper.executeTest(testData, function(testData) {
                         if (callback) {
                             callback(testData);
@@ -173,12 +174,12 @@ var unitTestHelper = {
     executeTestCollectionSimple: function(testDataCollection, callback) {
         for (var i = 0; i < testDataCollection.length; i++) {
             (function(testData) {
-                test(testData.name, function() {
+                QUnit.test(testData.name, function(assert) {
                     var result = false;
                     if (callback) {
                         result = callback(testData);
                     }
-                    ok(result);
+                    assert.ok(result);
                     unitTestHelper.teardown();
                 });
             })(testDataCollection[i]);
@@ -188,15 +189,16 @@ var unitTestHelper = {
     executeAsyncTestCollectionSimple: function(testDataCollection, callback) {
         for (var i = 0; i < testDataCollection.length; i++) {
             (function(testData) {
-                asyncTest(testData.name, testData.assertionCount, function() {
+                QUnit.test(testData.name, testData.assertionCount, function(assert) {
                     var result = false;
+                    var done = assert.async();
                     if (callback) {
                         result = callback(testData);
                     }
-                    ok(result, "Test returned true");
+                    assert.ok(result, "Test returned true");
 
                     setTimeout(function() {
-                        start();
+                        done();
                         unitTestHelper.teardown();
                     }, 50);
 

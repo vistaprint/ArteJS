@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    module("rangy.rangy.inlineElementApplier.simpleInlineCommands");
+    QUnit.module("rangy.rangy.inlineElementApplier.simpleInlineCommands");
     unitTestHelper.executeTestCollection(simpleInlineCommandsUnitTestData, function(testData) {
         $.extend(testData.options, {
             topEditableParent: $(TEST_ELEMENT_SELECTOR).find("[contenteditable=true]").get(0)
@@ -11,7 +11,7 @@ $(document).ready(function() {
         $.Arte.dom.cleanup($("[contenteditable='true']"));
     });
 
-    module("rangy.rangy.inlineElementApplier.complexInlineCommands");
+    QUnit.module("rangy.rangy.inlineElementApplier.complexInlineCommands");
     complexInlineCommandUnitTests();
 });
 
@@ -367,8 +367,8 @@ function complexInlineCommandUnitTests() {
             options: inlineOptionsWithFontFamily
         }
     };
-    module("rangy.rangy.inlineElementApplier.complexInlineCommands");
-    test(complexInlineCommandsUnitTestData.splitBoldNode.name, function() {
+    QUnit.module("rangy.rangy.inlineElementApplier.complexInlineCommands");
+    QUnit.test(complexInlineCommandsUnitTestData.splitBoldNode.name, function() {
         var testData = complexInlineCommandsUnitTestData.splitBoldNode;
         unitTestHelper.executeTest(testData, function() {
             var options = $.extend({}, testData.options, {
@@ -386,7 +386,7 @@ function complexInlineCommandUnitTests() {
             $.Arte.dom.cleanup($("[contenteditable='true']"));
         });
     });
-    test(complexInlineCommandsUnitTestData.splitBoldItalicNode.name, function() {
+    QUnit.test(complexInlineCommandsUnitTestData.splitBoldItalicNode.name, function() {
         var testData = complexInlineCommandsUnitTestData.splitBoldItalicNode;
         unitTestHelper.executeTest(testData, function() {
             var options = $.extend({}, testData.options, {
@@ -413,7 +413,7 @@ function complexInlineCommandUnitTests() {
             $.Arte.dom.cleanup($("[contenteditable='true']"));
         });
     });
-    test(complexInlineCommandsUnitTestData.changeFontFamilyOfSelection.name, function() {
+    QUnit.test(complexInlineCommandsUnitTestData.changeFontFamilyOfSelection.name, function() {
         var testData = complexInlineCommandsUnitTestData.changeFontFamilyOfSelection;
         unitTestHelper.executeTest(testData, function() {
             var options = $.extend({}, inlineOptionsWithFontFamily, {
@@ -433,7 +433,7 @@ function complexInlineCommandUnitTests() {
         });
     });
 
-    test(complexInlineCommandsUnitTestData.toggleFontFamilyOfSelection.name, function() {
+    QUnit.test(complexInlineCommandsUnitTestData.toggleFontFamilyOfSelection.name, function() {
         var testData = complexInlineCommandsUnitTestData.toggleFontFamilyOfSelection;
         unitTestHelper.executeTest(testData, function() {
             var options = $.extend({}, testData.options, {

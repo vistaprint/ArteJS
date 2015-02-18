@@ -1,32 +1,32 @@
 $(document).ready(function() {
     var suiteName = "jQuery-dom-cleanup";
-    module(suiteName + ".style");
-    unitTestHelper.executeTestCollection(stylesCleanupTestData, function(testData) {
+    QUnit.module(suiteName + ".style");
+    unitTestHelper.executeTestCollection(stylesCleanupTestData, function() {
         $.Arte.dom.cleanup($("#editableDiv"));
     });
 
-    module(suiteName + ".class");
-    unitTestHelper.executeTestCollection(classCleanupTestData, function(testData) {
+    QUnit.module(suiteName + ".class");
+    unitTestHelper.executeTestCollection(classCleanupTestData, function() {
         $.Arte.dom.cleanup($("#editableDiv"));
     });
 
-    module(suiteName + ".tag");
-    unitTestHelper.executeTestCollection(tagBasedStylesCleanupTestData, function(testData) {
+    QUnit.module(suiteName + ".tag");
+    unitTestHelper.executeTestCollection(tagBasedStylesCleanupTestData, function() {
         $.Arte.dom.cleanup($("#editableDiv"));
     });
 
-    module(suiteName + ".removeEmptyElements");
-    unitTestHelper.executeTestCollection(removeEmptyElementsTestData, function(testData) {
+    QUnit.module(suiteName + ".removeEmptyElements");
+    unitTestHelper.executeTestCollection(removeEmptyElementsTestData, function() {
         $.Arte.dom.removeEmptyElements($("#editableDiv"));
     });
 
-    module(suiteName + ".handleUnsanctionedElements");
-    unitTestHelper.executeTestCollection(handleUnsanctionedElementsTestData, function(testData) {
+    QUnit.module(suiteName + ".handleUnsanctionedElements");
+    unitTestHelper.executeTestCollection(handleUnsanctionedElementsTestData, function() {
         $.Arte.dom.handleUnsanctionedElements($("#editableDiv").contents());
     });
 
-    module(suiteName + ".removeNonPrintableMarkup");
-    unitTestHelper.executeTestCollection(removeNonPrintableCharactersTestData, function(testData) {
+    QUnit.module(suiteName + ".removeNonPrintableMarkup");
+    unitTestHelper.executeTestCollection(removeNonPrintableCharactersTestData, function() {
         $.Arte.dom.cleanup($("#editableDiv"));
     });
 });
@@ -419,4 +419,4 @@ var removeNonPrintableCharactersTestData = [
             "\u0015</span>\u0041\u0042\u0043\u0085\u0078\u0079\u007A<div>\u2004</div></div>",
         expectedContent: "ABCxyz"
     }
-]
+];

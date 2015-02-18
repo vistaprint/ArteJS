@@ -36,27 +36,27 @@ $(document).ready(function() {
         return result;
     };
 
-    module(suiteName + ".simpleSelection");
+    QUnit.module(suiteName + ".simpleSelection");
     unitTestHelper.executeTestCollectionSimple(simpleSelectionUnitTestData, function(testData) {
         return executeRichTextCommandTest(testData);
     });
 
-    module(suiteName + ".textSelection");
+    QUnit.module(suiteName + ".textSelection");
     unitTestHelper.executeTestCollectionSimple(textSelectionUnitTestData, function(testData) {
         return executeRichTextCommandTest(testData);
     });
 
-    module(suiteName + ".simpleSelectionMultiCommandTestData");
+    QUnit.module(suiteName + ".simpleSelectionMultiCommandTestData");
     unitTestHelper.executeTestCollectionSimple(simpleSelectionMultiCommandTestData, function(testData) {
         return executeRichTextCommandTest(testData);
     });
 
-    module(suiteName + ".richTextComplexSelectionMultiCommands");
+    QUnit.module(suiteName + ".richTextComplexSelectionMultiCommands");
     unitTestHelper.executeTestCollectionSimple(richTextComplexSelectionMultiCommandsTestData, function(testData) {
         return executeRichTextCommandTest(testData);
     });
 
-    module(suiteName + ".otherCommands");
+    QUnit.module(suiteName + ".otherCommands");
     unitTestHelper.executeTestWithOpSimple(otherTestScenariosTestData);
 });
 
@@ -214,9 +214,6 @@ var simpleSelectionUnitTestData = [{
     }
 
 ];
-var textSelectionUnitTestOptions = {
-    applierTagName: "span"
-};
 
 var textSelectionUnitTestData = [{
 
@@ -262,7 +259,7 @@ var textSelectionUnitTestData = [{
         applierTagName: "span"
     },
     rawContent: "<span id=\"s1\" style=\"font-weight: bold;\" >Line One</span>",
-    selection: function(arte) {
+    selection: function() {
         var node = $("#s1").contents()[0];
         unitTestHelper.createSelectionFromTextNodes(node, node, 2, 7); // range includes "ne On"
     },
@@ -278,7 +275,7 @@ var textSelectionUnitTestData = [{
         applierTagName: "span"
     },
     rawContent: "<span id=\"s1\" style=\"font-weight: bold;\" >Line One</span><span id=\"s2\">Line Two</span>",
-    selection: function(arte) {
+    selection: function() {
         var node = $("#s1").contents()[0];
         var node2 = $("#s2").contents()[0];
         unitTestHelper.createSelectionFromTextNodes(node, node2, 2, 3); // range includes "ne On" from s1 and "Lin" from s2

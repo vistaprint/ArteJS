@@ -1,6 +1,6 @@
 $(document).ready(function() {
     var suiteName = "Arte.TextArea";
-    module(suiteName + ".getValue");
+    QUnit.module(suiteName + ".getValue");
     unitTestHelper.executeTestCollectionSimple(ArteTextAreaTestData.getValue, function(testData) {
         $.Arte.configuration.handleUnsanctionedTagsOnGetValue = false;
         var value = $(TEST_ELEMENT_SELECTOR).Arte(testData.options).Arte("value")[0];
@@ -12,7 +12,7 @@ $(document).ready(function() {
         });
     });
 
-    module(suiteName + ".setValue");
+    QUnit.module(suiteName + ".setValue");
     unitTestHelper.executeTestCollectionSimple(ArteTextAreaTestData.setValue, function(testData) {
         $.Arte.configuration.handleUnsanctionedTagsOnGetValue = false;
         $(TEST_ELEMENT_SELECTOR).Arte(testData.options).Arte("value", testData.value);
@@ -25,7 +25,7 @@ $(document).ready(function() {
         });
     });
 
-    module(suiteName + ".getOuterValue");
+    QUnit.module(suiteName + ".getOuterValue");
     unitTestHelper.executeTestCollectionSimple(ArteTextAreaTestData.getOuterValue, function(testData) {
         $(TEST_ELEMENT_SELECTOR).Arte(testData.options).Arte("value", testData.value);
         var value = $(TEST_ELEMENT_SELECTOR).Arte("outerValue")[0];
@@ -37,7 +37,7 @@ $(document).ready(function() {
         });
     });
 
-    module(suiteName + ".setOuterValue");
+    QUnit.module(suiteName + ".setOuterValue");
     unitTestHelper.executeTestCollectionSimple(ArteTextAreaTestData.setOuterValue, function(testData) {
         $(TEST_ELEMENT_SELECTOR).Arte(testData.options).Arte("outerValue", testData.value);
         var value = $(TEST_ELEMENT_SELECTOR).Arte("outerValue")[0];
@@ -49,7 +49,7 @@ $(document).ready(function() {
         });
     });
 
-    module(suiteName + ".events");
+    QUnit.module(suiteName + ".events");
     unitTestHelper.executeAsyncTestCollectionSimple(ArteTextAreaTestData.events, function(testData) {
         $(TEST_ELEMENT_SELECTOR).Arte({});
         var arte = $(TEST_ELEMENT_SELECTOR).Arte().get(0);
@@ -145,7 +145,7 @@ var ArteTextAreaTestData = {
             name: "focus",
             assertionCount: 2,
             op: function(arte) {
-                arte.on("onfocus", function(e, data) {
+                arte.on("onfocus", function() {
                     ok(true, "onfocus called");
                 });
                 arte.focus();
@@ -158,10 +158,10 @@ var ArteTextAreaTestData = {
             assertionCount: 3,
             op: function(arte) {
                 arte.on({
-                    "onblur": function(e, data) {
+                    "onblur": function() {
                         ok(true, "onblur called");
                     },
-                    "onselectionchange": function(e, data) {
+                    "onselectionchange": function() {
                         ok(true, "selection changed called");
                     }
                 });
@@ -176,7 +176,7 @@ var ArteTextAreaTestData = {
             assertionCount: 2,
             op: function(arte) {
                 arte.on({
-                    "onvaluechange": function(e, data) {
+                    onvaluechange: function() {
                         ok(true, "onvaluechange called");
                     }
                 });
@@ -191,7 +191,7 @@ var ArteTextAreaTestData = {
             name: "keydown",
             assertionCount: 2,
             op: function(arte) {
-                arte.on("onkeydown", function(e, data) {
+                arte.on("onkeydown", function() {
                     ok(true, "keydown called");
                 });
                 arte.$el.trigger("keydown");
@@ -203,7 +203,7 @@ var ArteTextAreaTestData = {
             name: "keyup",
             assertionCount: 2,
             op: function(arte) {
-                arte.on("onkeyup", function(e, data) {
+                arte.on("onkeyup", function() {
                     ok(true, "keyup called");
                 });
                 arte.$el.trigger("keyup");
@@ -215,7 +215,7 @@ var ArteTextAreaTestData = {
             name: "keypress",
             assertionCount: 2,
             op: function(arte) {
-                arte.on("onkeypress", function(e, data) {
+                arte.on("onkeypress", function() {
                     ok(true, "keypress called");
                 });
                 arte.$el.trigger("keypress");
@@ -227,7 +227,7 @@ var ArteTextAreaTestData = {
             name: "mousedown",
             assertionCount: 2,
             op: function(arte) {
-                arte.on("onmousedown", function(e, data) {
+                arte.on("onmousedown", function() {
                     ok(true, "mousedown called");
                 });
                 arte.$el.trigger("mousedown");
@@ -239,7 +239,7 @@ var ArteTextAreaTestData = {
             name: "mouseup",
             assertionCount: 2,
             op: function(arte) {
-                arte.on("onmouseup", function(e, data) {
+                arte.on("onmouseup", function() {
                     ok(true, "mouseup called");
                 });
                 arte.$el.trigger("mouseup");
@@ -251,7 +251,7 @@ var ArteTextAreaTestData = {
             name: "click",
             assertionCount: 2,
             op: function(arte) {
-                arte.on("onclick", function(e, data) {
+                arte.on("onclick", function() {
                     ok(true, "click called");
                 });
                 arte.$el.trigger("click");
@@ -263,7 +263,7 @@ var ArteTextAreaTestData = {
             name: "paste",
             assertionCount: 2,
             op: function(arte) {
-                arte.on("onpaste", function(e, data) {
+                arte.on("onpaste", function() {
                     ok(true, "paste called");
                 });
                 arte.$el.trigger("paste");
@@ -275,7 +275,7 @@ var ArteTextAreaTestData = {
             name: "clickOff",
             assertionCount: 2,
             op: function(arte) {
-                var handler = function(e, data) {
+                var handler = function() {
                     ok(true, "click called");
                 };
 
@@ -292,7 +292,7 @@ var ArteTextAreaTestData = {
             name: "valuechange_fromValue",
             assertionCount: 2,
             op: function(arte) {
-                var handler = function(e, data) {
+                var handler = function() {
                     ok(true, "onvaluechange called");
                 };
                 arte.on("onvaluechange", handler);
@@ -306,7 +306,7 @@ var ArteTextAreaTestData = {
             assertionCount: 1,
             op: function(arte) {
                 arte.value("xyz");
-                var handler = function(e, data) {
+                var handler = function() {
                     ok(true, "onvaluechange called");
                 };
                 arte.on("onvaluechange", handler);
@@ -319,7 +319,7 @@ var ArteTextAreaTestData = {
             assertionCount: 1,
             op: function(arte) {
                 arte.value("<b>ABCD</b>");
-                var handler = function(e, data) {
+                var handler = function() {
                     ok(true, "onvaluechange called");
                 };
                 arte.on("onvaluechange", handler);
@@ -331,7 +331,7 @@ var ArteTextAreaTestData = {
             name: "valuechange_outerValue",
             assertionCount: 2,
             op: function(arte) {
-                var handler = function(e, data) {
+                var handler = function() {
                     ok(true, "onvaluechange called");
                 };
                 arte.on("onvaluechange", handler);
@@ -345,7 +345,7 @@ var ArteTextAreaTestData = {
             assertionCount: 1,
             op: function(arte) {
                 arte.outerValue("<div style='font-weight:bold; font-size:10px'>xyz</div>");
-                var handler = function(e, data) {
+                var handler = function() {
                     ok(false, "onvaluechange called");
                 };
                 arte.on("onvaluechange", handler);

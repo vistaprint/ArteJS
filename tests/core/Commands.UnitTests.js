@@ -1,7 +1,7 @@
 $(document).ready(function() {
     var suiteName = "Arte.TextArea";
 
-    module(suiteName + ".commands");
+    QUnit.module(suiteName + ".commands");
     unitTestHelper.executeTestCollectionSimple(commandsWithNoSelectionTestData, function(testData) {
         $(TEST_ELEMENT_SELECTOR).Arte({
             styles: {}
@@ -55,7 +55,7 @@ $(document).ready(function() {
         return isApplied;
     });
 
-    module(suiteName + ".commandsOnPlainTextField");
+    QUnit.module(suiteName + ".commandsOnPlainTextField");
     unitTestHelper.executeTestCollectionSimple(commandOnPlainTextTestData, function(testData) {
         $(TEST_ELEMENT_SELECTOR).Arte({
             editorType: $.Arte.constants.editorTypes.plainText
@@ -66,7 +66,7 @@ $(document).ready(function() {
         return testData.evaluateResult(arte);
     });
 
-    module(suiteName + ".toggleStyleOnElement");
+    QUnit.module(suiteName + ".toggleStyleOnElement");
     unitTestHelper.executeTestCollectionSimple(toggleStyleOnElementTestData, function(testData) {
         $(TEST_ELEMENT_SELECTOR).Arte(testData.options); // use default options
 

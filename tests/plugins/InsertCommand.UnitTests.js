@@ -1,6 +1,6 @@
 $(document).ready(function() {
     var suiteName = "Arte.Plugins.InsertCommand";
-    module(suiteName);
+    QUnit.module(suiteName);
 
     unitTestHelper.executeTestCollectionSimple(ArteInsertCommandeTestData, function(testData) {
         $(TEST_ELEMENT_SELECTOR).Arte({
@@ -47,7 +47,7 @@ var ArteInsertCommandeTestData = [
         name: "insertInTheMiddle",
         rawContent: "<span id='span'>span</span>Test",
         contentToInsert: "Content",
-        beforeCommand: function(textArea) {
+        beforeCommand: function() {
             $.Arte.util.moveCursorToEndOfElement($("#span").get(0));
         },
         expectedContent: "<span id='span'>span<span>Content</span></span>Test"
@@ -56,7 +56,7 @@ var ArteInsertCommandeTestData = [
         name: "replaceNodeContent",
         rawContent: "<span id='span'>span</span>Test",
         contentToInsert: "Content",
-        beforeCommand: function(textArea) {
+        beforeCommand: function() {
             unitTestHelper.createSelection({
                 rangeContentId: "span"
             });
@@ -80,12 +80,12 @@ var ArteInsertCommandeTestData = [
         contentToInsert: "Content",
         beforeCommand: function(textArea) {
             var currentValue = $.Arte.configuration.requireFocus;
-            textArea.on("onbeforeinsert", function(e, data) {
+            textArea.on("onbeforeinsert", function() {
                 $.Arte.configuration.requireFocus = true;
             });
 
             // Restore the value
-            textArea.on("onafterinsert", function(e, data) {
+            textArea.on("onafterinsert", function() {
                 $.Arte.configuration.requireFocus = currentValue;
             });
         },

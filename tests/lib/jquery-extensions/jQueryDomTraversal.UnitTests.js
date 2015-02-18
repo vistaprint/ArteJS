@@ -1,6 +1,6 @@
 $(document).ready(function() {
     var suiteName = "jQuery-dom-traversal";
-    module(suiteName + ".isBlock");
+    QUnit.module(suiteName + ".isBlock");
     unitTestHelper.executeTestCollectionSimple(isBlockTestData, function(testData) {
         unitTestHelper.setup(testData);
         var element = unitTestHelper.getElement(testData);
@@ -9,7 +9,7 @@ $(document).ready(function() {
         return testData.evaluateResult(result);
     });
 
-    module(suiteName + ".isElement");
+    QUnit.module(suiteName + ".isElement");
     unitTestHelper.executeTestCollectionSimple(isElementTestData, function(testData) {
         unitTestHelper.setup(testData);
         var element = unitTestHelper.getElement(testData);
@@ -18,7 +18,7 @@ $(document).ready(function() {
         return testData.evaluateResult(result);
     });
 
-    module(suiteName + ".isBlockChildren");
+    QUnit.module(suiteName + ".isBlockChildren");
     unitTestHelper.executeTestCollectionSimple(isBlockChildrenTestData, function(testData) {
         unitTestHelper.setup(testData);
         var element = unitTestHelper.getElement(testData);
@@ -27,7 +27,7 @@ $(document).ready(function() {
         return testData.evaluateResult(result);
     });
 
-    module(suiteName + ".closestWithAtMostOneBlockChild");
+    QUnit.module(suiteName + ".closestWithAtMostOneBlockChild");
     unitTestHelper.executeTestCollectionSimple(closestWithAtMostOneBlockChildTestData, function(testData) {
         unitTestHelper.setup(testData);
         var element = unitTestHelper.getElement(testData);
@@ -39,7 +39,7 @@ $(document).ready(function() {
         return testData.evaluateResult(result);
     });
 
-    module(suiteName + ".prevIncludingTextNodes");
+    QUnit.module(suiteName + ".prevIncludingTextNodes");
     unitTestHelper.executeTestCollectionSimple(prevSiblingIncludingTextNodesTestData, function(testData) {
         unitTestHelper.setup(testData);
         var element = unitTestHelper.getElement(testData);
@@ -51,7 +51,7 @@ $(document).ready(function() {
         return testData.evaluateResult(result);
     });
 
-    module(suiteName + ".nextIncludingTextNodes");
+    QUnit.module(suiteName + ".nextIncludingTextNodes");
     unitTestHelper.executeTestCollectionSimple(nextSiblingIncludingTextNodesTestData, function(testData) {
         unitTestHelper.setup(testData);
         var element = unitTestHelper.getElement(testData);
@@ -63,7 +63,7 @@ $(document).ready(function() {
         return testData.evaluateResult(result);
     });
 
-    module(suiteName + ".closestWithCommand");
+    QUnit.module(suiteName + ".closestWithCommand");
     unitTestHelper.executeTestCollectionSimple(closestWithCommandTestData, function(testData) {
         unitTestHelper.setup(testData);
         var element = unitTestHelper.getElement(testData);
@@ -75,7 +75,7 @@ $(document).ready(function() {
         return testData.evaluateResult(result);
     });
 
-    module(suiteName + ".closestWithCommandValue");
+    QUnit.module(suiteName + ".closestWithCommandValue");
     unitTestHelper.executeTestCollectionSimple(closestWithCommandValueTestData, function(testData) {
         unitTestHelper.setup(testData);
         var element = unitTestHelper.getElement(testData);
@@ -87,7 +87,7 @@ $(document).ready(function() {
         return testData.evaluateResult(result);
     });
 
-    module(suiteName + ".hasSameListParent");
+    QUnit.module(suiteName + ".hasSameListParent");
     unitTestHelper.executeTestCollectionSimple(hasSameListParentTestData, function(testData) {
         unitTestHelper.setup(testData);
         var element = unitTestHelper.getElement(testData);
@@ -99,7 +99,7 @@ $(document).ready(function() {
         return testData.evaluateResult(result);
     });
 
-    module(suiteName + ".getClasses");
+    QUnit.module(suiteName + ".getClasses");
     unitTestHelper.executeTestCollectionSimple(getClassesTestData, function(testData) {
         unitTestHelper.setup(testData);
         var element = unitTestHelper.getElement(testData);
@@ -111,7 +111,7 @@ $(document).ready(function() {
         return testData.evaluateResult(result);
     });
 
-    module(suiteName + ".getStyles");
+    QUnit.module(suiteName + ".getStyles");
     unitTestHelper.executeTestCollectionSimple(getStylesTestData, function(testData) {
         unitTestHelper.setup(testData);
         var element = unitTestHelper.getElement(testData);
@@ -123,7 +123,7 @@ $(document).ready(function() {
         return testData.evaluateResult(result);
     });
 
-    module(suiteName + ".hasClassWithPattern");
+    QUnit.module(suiteName + ".hasClassWithPattern");
     unitTestHelper.executeTestCollectionSimple(hasClassWithPatternTestData, function(testData) {
         unitTestHelper.setup(testData);
         var element = unitTestHelper.getElement(testData);
@@ -135,7 +135,7 @@ $(document).ready(function() {
         return testData.evaluateResult(result);
     });
 
-    module(suiteName + ".getClassWithPattern");
+    QUnit.module(suiteName + ".getClassWithPattern");
     unitTestHelper.executeTestCollectionSimple(getClassWithPatternTestData, function(testData) {
         unitTestHelper.setup(testData);
         var element = unitTestHelper.getElement(testData);
@@ -147,7 +147,7 @@ $(document).ready(function() {
         return testData.evaluateResult(result);
     });
 
-    module(suiteName + ".removeClassWithPattern");
+    QUnit.module(suiteName + ".removeClassWithPattern");
     unitTestHelper.executeTestCollectionSimple(removeClassWithPatternTestData, function(testData) {
         unitTestHelper.setup(testData);
         var element = unitTestHelper.getElement(testData);
@@ -159,7 +159,7 @@ $(document).ready(function() {
         return testData.evaluateResult(result);
     });
 
-    module(suiteName + ".allHaveClass");
+    QUnit.module(suiteName + ".allHaveClass");
     unitTestHelper.executeTestCollectionSimple(allHaveClassTestData, function(testData) {
         unitTestHelper.setup(testData);
         var element = unitTestHelper.getElement(testData);
@@ -171,7 +171,7 @@ $(document).ready(function() {
         return testData.evaluateResult(result);
     });
 
-    module(suiteName + ".hasSameStyles");
+    QUnit.module(suiteName + ".hasSameStyles");
     unitTestHelper.executeTestCollectionSimple(hasSameStylesTestData, function(testData) {
         unitTestHelper.setup(testData);
         var element = unitTestHelper.getElement(testData);
@@ -183,7 +183,7 @@ $(document).ready(function() {
         return testData.evaluateResult(result);
     });
 
-    module(suiteName + ".hasSameClasses");
+    QUnit.module(suiteName + ".hasSameClasses");
     unitTestHelper.executeTestCollectionSimple(hasSameClassesTestData, function(testData) {
         unitTestHelper.setup(testData);
         var element = unitTestHelper.getElement(testData);
@@ -195,7 +195,7 @@ $(document).ready(function() {
         return testData.evaluateResult(result);
     });
 
-    module(suiteName + ".hasSameStylesAndClasses");
+    QUnit.module(suiteName + ".hasSameStylesAndClasses");
     unitTestHelper.executeTestCollectionSimple(hasSameStylesAndClassesTestData, function(testData) {
         unitTestHelper.setup(testData);
         var element = unitTestHelper.getElement(testData);
@@ -606,6 +606,7 @@ var nextSiblingIncludingTextNodesTestData = [
         rawContent: sampleContent.join(""),
         elementId: "span",
         evaluateResult: function(result) {
+            // TODO: Did you mean to return a conditional instead of an assignment?
             return result.get(0).nodeValue = "Another Text Node";
         }
     },
@@ -705,7 +706,7 @@ var closestWithCommandTestData = [
         },
         evaluateResult: function(result) {
             var styles = $.Arte.dom.getStyles(result);
-            return result.length === 1 && styles["color"];
+            return result.length === 1 && styles.color;
         }
     },
     {
@@ -837,7 +838,7 @@ var closestWithCommandValueTestData = [
         },
         evaluateResult: function(result) {
             var styles = $.Arte.dom.getStyles(result);
-            return result.length === 1 && styles["color"] === "black";
+            return result.length === 1 && styles.color === "black";
         }
     },
     {
@@ -927,7 +928,7 @@ var hasSameListParentTestData = [
         name: "sameList",
         rawContent: sampleContent.join(""),
         elementId: "editableDiv",
-        op: function(jElement) {
+        op: function() {
             var selectedArray = $();
             selectedArray = selectedArray.add($("#spanInLi3"));
             selectedArray = selectedArray.add($("#li1"));
@@ -942,7 +943,7 @@ var hasSameListParentTestData = [
         name: "spansInTwoDifferentLists",
         rawContent: sampleContent.join(""),
         elementId: "editableDiv",
-        op: function(jElement) {
+        op: function() {
             var selectedArray = $();
             selectedArray = selectedArray.add($("#spanInLi3"));
             selectedArray = selectedArray.add($("#spanInLi22"));
@@ -957,7 +958,7 @@ var hasSameListParentTestData = [
         name: "twoDifferentLists",
         rawContent: sampleContent.join(""),
         elementId: "editableDiv",
-        op: function(jElement) {
+        op: function() {
             var selectedArray = $();
             selectedArray = selectedArray.add($("#li2"));
             selectedArray = selectedArray.add($("#spanInLi22"));
@@ -1031,11 +1032,13 @@ var getStylesTestData = [
             }).first();
         },
         evaluateResult: function(result) {
-            var count = 0;
             for (var key in result) {
-                count++;
+                if (result.hasOwnProperty(key)) {
+                    return false;
+                }
             }
-            return count === 0;
+
+            return true;
         }
     },
 
@@ -1045,11 +1048,13 @@ var getStylesTestData = [
         elementId: "span",
 
         evaluateResult: function(result) {
-            var count = 0;
             for (var key in result) {
-                count++;
+                if (result.hasOwnProperty(key)) {
+                    return false;
+                }
             }
-            return count === 0;
+
+            return true;
         }
     },
 
@@ -1181,7 +1186,7 @@ var removeClassWithPatternTestData = [
         options: {
             command: $.Arte.configuration.commands.bold
         },
-        evaluateResult: function(result) {
+        evaluateResult: function() {
             var command = $.Arte.configuration.commands.bold;
             return !$.Arte.dom.hasClassWithPattern($("#" + removeClassWithPatternTestData[0].elementId), command.classNameRegex);
         }
@@ -1193,7 +1198,7 @@ var removeClassWithPatternTestData = [
         options: {
             command: $.Arte.configuration.commands.italic
         },
-        evaluateResult: function(result) {
+        evaluateResult: function() {
             var command = $.Arte.configuration.commands.italic;
             return !$.Arte.dom.hasClassWithPattern($("#" + removeClassWithPatternTestData[1].elementId), command.classNameRegex);
         }
@@ -1205,7 +1210,7 @@ var removeClassWithPatternTestData = [
         options: {
             command: $.Arte.configuration.commands.fontSize
         },
-        evaluateResult: function(result) {
+        evaluateResult: function() {
             var command = $.Arte.configuration.commands.fontSize;
             return !$.Arte.dom.hasClassWithPattern($("#" + removeClassWithPatternTestData[2].elementId), command.classNameRegex);
         }

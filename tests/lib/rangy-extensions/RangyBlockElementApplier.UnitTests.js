@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    module("rangy.rangy.blockElementApplier.blockSurround");
+    QUnit.module("rangy.rangy.blockElementApplier.blockSurround");
     unitTestHelper.executeTestCollection(blockSurroundUnitTestData, function(testData) {
         var range = unitTestHelper.createRange(testData);
         rangy.toggleSurroundRange(range, testData.blockOptions);
@@ -9,7 +9,7 @@ $(document).ready(function() {
     });
     complexBlockSurroundUnitTests();
 
-    module("rangy.rangy.blockElementApplier.blockSetSurround");
+    QUnit.module("rangy.rangy.blockElementApplier.blockSetSurround");
     unitTestHelper.executeTestCollection(blockSetSurroundUnitTestsData, function(testData) {
         var range = unitTestHelper.createRange(testData);
         rangy.toggleSurroundRangeSet(range, testData.blockOptions);
@@ -153,7 +153,7 @@ function complexBlockSurroundUnitTests() {
         }
     };
 
-    test(complexBlockSurroundUnitTestData.leftAlignLineWithBr.name, function() {
+    QUnit.test(complexBlockSurroundUnitTestData.leftAlignLineWithBr.name, function() {
         unitTestHelper.executeTest(complexBlockSurroundUnitTestData.leftAlignLineWithBr, function(data) {
             var nodes = $("#editableDiv").contents();
             var range = rangy.createRangyRange();
@@ -163,7 +163,7 @@ function complexBlockSurroundUnitTests() {
         });
     });
 
-    test(complexBlockSurroundUnitTestData.rightAlignLeftAlign.name, function() {
+    QUnit.test(complexBlockSurroundUnitTestData.rightAlignLeftAlign.name, function() {
         unitTestHelper.executeTest(complexBlockSurroundUnitTestData.rightAlignLeftAlign, function(data) {
             var range = unitTestHelper.createRange(data);
             rangy.toggleSurroundRange(range, data.blockOptions);
@@ -176,7 +176,7 @@ function complexBlockSurroundUnitTests() {
         });
     });
 
-    test(complexBlockSurroundUnitTestData.rightAlignCenterAlign.name, function() {
+    QUnit.test(complexBlockSurroundUnitTestData.rightAlignCenterAlign.name, function() {
         unitTestHelper.executeTest(complexBlockSurroundUnitTestData.rightAlignCenterAlign, function(data) {
             var range = unitTestHelper.createRange(data);
             rangy.toggleSurroundRange(range, data.blockOptions);
@@ -189,7 +189,7 @@ function complexBlockSurroundUnitTests() {
         });
     });
 
-    test(complexBlockSurroundUnitTestData.rightAlignRightAlign.name, function() {
+    QUnit.test(complexBlockSurroundUnitTestData.rightAlignRightAlign.name, function() {
         unitTestHelper.executeTest(complexBlockSurroundUnitTestData.rightAlignRightAlign, function(data) {
             var range = unitTestHelper.createRange(data);
             rangy.toggleSurroundRange(range, data.blockOptions);
@@ -199,7 +199,7 @@ function complexBlockSurroundUnitTests() {
         });
     });
 
-    test(complexBlockSurroundUnitTestData.rightAlignDivWithTextSibling.name, function() {
+    QUnit.test(complexBlockSurroundUnitTestData.rightAlignDivWithTextSibling.name, function() {
         unitTestHelper.executeTest(complexBlockSurroundUnitTestData.rightAlignDivWithTextSibling, function(data) {
             var range = unitTestHelper.createRange(data);
             rangy.toggleSurroundRange(range, data.blockOptions);
@@ -396,7 +396,7 @@ function complexBlockSetSurroundUnitTests() {
         }
     };
 
-    test(complexBlockSetSurroundUnitTestsData.wrapWithBrBetweenTwoTextNodes.name, function() {
+    QUnit.test(complexBlockSetSurroundUnitTestsData.wrapWithBrBetweenTwoTextNodes.name, function() {
         unitTestHelper.executeTest(complexBlockSetSurroundUnitTestsData.wrapWithBrBetweenTwoTextNodes, function(data) {
             // create a range from first text node
             var nodes = $("#editableDiv").contents();
@@ -406,7 +406,7 @@ function complexBlockSetSurroundUnitTests() {
             $.Arte.dom.cleanup($("[contenteditable='true']"));
         });
     });
-    test(complexBlockSetSurroundUnitTestsData.wrapWithBrBeforeOl.name, function() {
+    QUnit.test(complexBlockSetSurroundUnitTestsData.wrapWithBrBeforeOl.name, function() {
         unitTestHelper.executeTest(complexBlockSetSurroundUnitTestsData.wrapWithBrBeforeOl, function(data) {
             // create a range from second text node
             var nodes = $("#editableDiv").contents();
@@ -417,7 +417,7 @@ function complexBlockSetSurroundUnitTests() {
         });
     });
 
-    //    test(complexBlockSetSurroundUnitTestsData.wrapWithSpanBetweenOlAndSelection.name, function () {
+    //    QUnit.test(complexBlockSetSurroundUnitTestsData.wrapWithSpanBetweenOlAndSelection.name, function () {
     //        executeTest(complexBlockSetSurroundUnitTestsData.wrapWithSpanBetweenOlAndSelection, function (data) {
     //            // create a range from second text node
     //            var range = createRange(data);

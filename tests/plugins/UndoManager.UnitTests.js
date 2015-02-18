@@ -1,6 +1,6 @@
 $(document).ready(function() {
     var suiteName = "Arte.Plugins.UndoManager";
-    module(suiteName + "");
+    QUnit.module(suiteName + "");
 
     unitTestHelper.executeTestCollectionSimple(ArteUndoManagerTestData.HasUndoRedo, function(testData) {
         $(TEST_ELEMENT_SELECTOR).Arte(testData.options);

@@ -18,15 +18,15 @@ $(document).ready(function() {
         jElement.remove();
     };
 
-    module("rangy.rangy-extensions");
+    QUnit.module("rangy.rangy-extensions");
 
-    test("rangy.splitByBlock", function() {
+    QUnit.test("rangy.splitByBlock", function(assert) {
         setUp();
 
         var range = rangy.createRangyRange();
         range.selectNodeContents($(".testRegion")[0]);
         var allRanges = range.splitByBlock();
-        equal(allRanges.length, 16, "");
+        assert.equal(allRanges.length, 16, "");
         tearDown();
     });
 });

@@ -1,6 +1,6 @@
 $(document).ready(function() {
     var suiteName = "Arte.StateDetector";
-    module(suiteName + ".valueStateDetector");
+    QUnit.module(suiteName + ".valueStateDetector");
     unitTestHelper.executeTestCollectionSimple(valueStateDetectorTestData, function(testData) {
         $(TEST_ELEMENT_SELECTOR).Arte({
             value: testData.rawContent

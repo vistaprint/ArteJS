@@ -1,6 +1,6 @@
 $(document).ready(function() {
     var suiteName = "Arte.TextArea";
-    module(suiteName + ".commands");
+    QUnit.module(suiteName + ".commands");
     unitTestHelper.executeAsyncTestCollectionSimple(simpleEventsTest, function(testData) {
         $(TEST_ELEMENT_SELECTOR).Arte({
             styles: {}
@@ -19,10 +19,10 @@ var simpleEventsTest = [
         name: "commandEvents",
         assertionCount: 3,
         events: {
-            "onbeforecommand": function(event, data) {
+            "onbeforecommand": function() {
                 ok(true, "beforeCommand");
             },
-            "oncommand": function(event, data) {
+            "oncommand": function() {
                 ok(true, "command");
             }
         },
@@ -35,7 +35,7 @@ var simpleEventsTest = [
         name: "valueChangeEvent",
         assertionCount: 2,
         events: {
-            "onvaluechange": function(event, data) {
+            "onvaluechange": function() {
                 ok(true, "valueChange");
             }
         },

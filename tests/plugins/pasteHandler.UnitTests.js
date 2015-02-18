@@ -1,6 +1,6 @@
 $(document).ready(function() {
     var suiteName = "Arte.Plugins.PasteHandler";
-    module(suiteName);
+    QUnit.module(suiteName);
 
     unitTestHelper.executeTestCollectionSimple(ArtePasteHandlerTestData, function(testData) {
         $.Arte.configuration.handleUnsanctionedTagsOnGetValue = false;

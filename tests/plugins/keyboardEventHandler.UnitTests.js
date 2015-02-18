@@ -1,6 +1,6 @@
 $(document).ready(function() {
     var suiteName = "Arte.Plugins.KeyboardEvents";
-    module(suiteName);
+    QUnit.module(suiteName);
 
     unitTestHelper.executeAsyncTestCollectionSimple(ArteKeyboardEventTestData, function(testData) {
         $(TEST_ELEMENT_SELECTOR).Arte({
@@ -18,7 +18,7 @@ var ArteKeyboardEventTestData = [
         name: "commandEvents",
         assertionCount: 2,
         events: {
-            "onselectionchange": function(event, data) {
+            "onselectionchange": function() {
                 ok(true, "selectionchanged");
             }
         },
@@ -93,7 +93,7 @@ var ArteKeyboardEventTestData = [
     {
         name: "EnterMouseUp",
         assertionCount: 2,
-        op: function(arte) {
+        op: function() {
             // TODO: Need to rewrite this test.
             //var currentFunc = $.Arte.dom.convertDivsToP;
             //$.Arte.dom.convertDivsToP = function ()

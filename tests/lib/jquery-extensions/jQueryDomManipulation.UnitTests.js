@@ -1,6 +1,6 @@
 $(document).ready(function() {
     var suiteName = "jQuery-dom-manipulation";
-    module(suiteName + ".wrapWithBlock");
+    QUnit.module(suiteName + ".wrapWithBlock");
     unitTestHelper.executeTestCollectionSimple(wrapWithBlockTestData, function(testData) {
         unitTestHelper.setup(testData);
         var element = unitTestHelper.getElement(testData);
@@ -8,7 +8,7 @@ $(document).ready(function() {
         return $.Arte.dom.closestWithAtMostOneBlockChild(result);
     });
 
-    module(suiteName + ".unwrapWithBlock");
+    QUnit.module(suiteName + ".unwrapWithBlock");
     unitTestHelper.executeTestCollectionSimple(unwrapBlockTestData, function(testData) {
         unitTestHelper.setup(testData);
         var element = unitTestHelper.getElement(testData);
@@ -16,7 +16,7 @@ $(document).ready(function() {
         return testData.evaluateResult(result);
     });
 
-    module(suiteName + ".wrapWithOptions");
+    QUnit.module(suiteName + ".wrapWithOptions");
     unitTestHelper.executeTestCollectionSimple(wrapWithOptionsTestData, function(testData) {
         unitTestHelper.setup(testData);
         var element = unitTestHelper.getElement(testData);
@@ -24,7 +24,7 @@ $(document).ready(function() {
         return testData.evaluateResult(result);
     });
 
-    module(suiteName + ".unWraprWithOptions");
+    QUnit.module(suiteName + ".unWraprWithOptions");
     unitTestHelper.executeTestCollectionSimple(unWrapWithOptionsTestData, function(testData) {
         unitTestHelper.setup(testData);
         var element = unitTestHelper.getElement(testData);
@@ -32,7 +32,7 @@ $(document).ready(function() {
         return testData.evaluateResult(result);
     });
 
-    module(suiteName + ".createContainer");
+    QUnit.module(suiteName + ".createContainer");
     unitTestHelper.executeTestWithOp(createContainerTestData);
 });
 
