@@ -12,12 +12,8 @@ module.exports = function(grunt) {
             },
             gruntfile: ["Gruntfile.js"],
             all: [
-                "Editor/core/**/*.js",
-                "Editor/lib/**/*.js",
-                "Editor/plugins/**/*.js",
-                "Editor/toolbar/**/*.js",
+                "Editor/**/*.js",
                 "Toolbar/**/*.js",
-                "!Editor/lib/rangy-1.3alpha.804/**"
             ]
         },
         jscs: {
@@ -48,8 +44,8 @@ module.exports = function(grunt) {
 
             rangy: {
                 src: [
-                    "Editor/lib/rangy-1.3alpha.804/rangy-core.js",
-                    "Editor/lib/rangy-1.3alpha.804/rangy-selectionsaverestore.js"
+                    "external/rangy/lib/rangy-core.js",
+                    "external/rangy/lib/rangy-selectionsaverestore.js"
                 ],
                 dest: "dist/rangy.js"
             },
@@ -107,6 +103,20 @@ module.exports = function(grunt) {
             jquery: {
                 src: "node_modules/jquery/jquery.js",
                 dest: "tests/dependencies/jquery.js"
+            },
+            rangy: {
+                files: [
+                    {
+                        expand: true,
+                        cwd: "node_modules/rangy",
+                        src: [
+                            "LICENSE",
+                            "lib/rangy-core.js",
+                            "lib/rangy-selectionsaverestore.js"
+                        ],
+                        dest: "external/rangy/"
+                    },
+                ]
             }
         },
         plato: {
@@ -121,11 +131,7 @@ module.exports = function(grunt) {
                 },
                 files: {
                     "reports/plato": [
-                        "Editor/core/**/*.js",
-                        "Editor/lib/rangy-extensions/*.js",
-                        "Editor/lib/jquery-extensions/*.js",
-                        "Editor/plugins/*.js",
-                        "Editor/toolbar/**/*.js",
+                        "Editor/**/*.js",
                         "Toolbar/**/*.js"
                     ]
                 }
