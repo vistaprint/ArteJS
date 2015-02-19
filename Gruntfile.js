@@ -4,21 +4,6 @@ module.exports = function(grunt) {
 
     require("load-grunt-tasks")(grunt);
 
-    var arteVersion = "0.3";
-    var toolbarVersion = "0.3";
-    var rangyVersion = "1.3alpha.804";
-
-    var pluginsToBuildDebug = ["Editor/plugins/**/*.js"];
-    var pluginsToBuildRelease = ["Build/Editor/plugins/**/*.min.js"];
-    if (grunt.option("plugins")) {
-        pluginsToBuildDebug = grunt.option("plugins").split(",").map(function(plugin) {
-            return "Editor/plugins/" + plugin + ".js";
-        });
-        pluginsToBuildRelease = grunt.option("plugins").split(",").map(function(plugin) {
-            return "Build/Editor/plugins/" + plugin + ".min.js";
-        });
-    }
-
     // Project configuration.
     grunt.initConfig({
         jshint: {
@@ -27,12 +12,7 @@ module.exports = function(grunt) {
             },
             gruntfile: ["Gruntfile.js"],
             all: [
-                "Editor/core/**/*.js",
-                "Editor/lib/**/*.js",
-                "Editor/plugins/**/*.js",
-                "Editor/toolbar/**/*.js",
-                "Toolbar/**/*.js",
-                "!Editor/lib/rangy-1.3alpha.804/**"
+                "src/**/*.js"
             ]
         },
         jscs: {
@@ -42,73 +22,57 @@ module.exports = function(grunt) {
             gruntfile: ["Gruntfile.js"],
             all: ["<%= jshint.all %>"]
         },
-
         uglify: {
-            build: {
-                expand: true,
-                src: [
-                    "Editor/Core/**/*.js",
-                    "Editor/Plugins/**/*.js",
-                    "Editor/Lib/**/*.js",
-                    "Toolbar/**/*.js"
-                ],
-                dest: "Build",
-                ext: ".min.js"
+            all: {
+                files: {
+                    "dist/arte.min.js": "dist/arte.js",
+                    "dist/arte.editor.min.js": "dist/arte.editor.js",
+                    "dist/arte.toolbar.min.js": "dist/arte.toolbar.js"
+                }
             }
         },
-
         concat: {
-            RangyDebug: {
-                src: ["Editor/lib/rangy-" + rangyVersion + "/**/*.js"],
-                dest: "Release/rangy." + rangyVersion + ".debug.js"
-            },
-            RangyRelease: {
-                src: ["Build/Editor/lib/rangy-" + rangyVersion + "/**/*.js"],
-                dest: "Release/rangy." + rangyVersion + ".min.js"
-            },
-            EditorDebug: {
+            all: {
                 src: [
-                    "Editor/core/Arte.js",
-                    "Editor/core/TextArea.js",
-                    "Editor/core/Configuration.js",
-                    "Editor/core/PluginManager.js",
-                    "Editor/core/**/*.js",
-                    "Editor/lib/jquery-extensions/**/*.js",
-                    "Editor/lib/rangy-extensions/rangy-blockElementApplier.js",
-                    "Editor/lib/rangy-extensions/rangy-inlineElementApplier.js",
-                    "Editor/lib/rangy-extensions/rangy-elementApplierOptions.js",
-                    "Editor/lib/rangy-extensions/richtextCommandApplier.js",
-                    "Editor/lib/rangy-extensions/rangy-extensions.js"
-                ].concat(pluginsToBuildDebug),
-                dest: "Release/arte." + arteVersion + ".debug.js"
+                    "<%= concat.rangy.src %>",
+                    "<%= concat.editor.src %>",
+                    "<%= concat.toolbar.src %>",
+                ],
+                dest: "dist/arte.js"
             },
-            EditorRelease: {
+
+            rangy: {
                 src: [
-                    "Build/Editor/core/Arte.min.js",
-                    "Build/Editor/core/TextArea.min.js",
-                    "Build/Editor/core/Configuration.min.js",
-                    "Build/Editor/core/**/*.min.js",
-                    "Build/Editor/lib/jquery-extensions/**/*.min.js",
-                    "Build/Editor/lib/rangy-extensions/rangy-blockElementApplier.min.js",
-                    "Build/Editor/lib/rangy-extensions/rangy-inlineElementApplier.min.js",
-                    "Build/Editor/lib/rangy-extensions/rangy-elementApplierOptions.min.js",
-                    "Build/Editor/lib/rangy-extensions/richtextCommandApplier.min.js",
-                    "Build/Editor/lib/rangy-extensions/rangy-extensions.min.js"
-                ].concat(pluginsToBuildRelease),
-                dest: "Release/arte." + arteVersion + ".min.js"
+                    "external/rangy/lib/rangy-core.js",
+                    "external/rangy/lib/rangy-selectionsaverestore.js"
+                ],
+                dest: "dist/rangy.js"
             },
-            ToolbarDebug: {
+
+            editor: {
                 src: [
-                "Toolbar/toolbar.js",
-                "Toolbar/Buttons/ToolbarButtonBase.js",
-                "Toolbar/Buttons/*.js",
-                "Toolbar/*.js"
-            ],
-                dest: "Release/Toolbar." + toolbarVersion + ".debug.js"
+                    "src/editor/core/Arte.js",
+                    "src/editor/core/TextArea.js",
+                    "src/editor/core/Configuration.js",
+                    "src/editor/core/PluginManager.js",
+                    "src/editor/core/Commands.js",
+                    "src/editor/core/Util.js",
+
+                    "src/editor/lib/jquery-extensions/*.js",
+                    "src/editor/lib/rangy-extensions/*.js",
+                    "src/editor/plugins/*.js"
+                ],
+                dest: "dist/arte.editor.js"
             },
-            ToolbarRelease: {
-                src: ["Build/Toolbar/**/*.js"],
-                dest: "Release/Toolbar." + toolbarVersion + ".min.js"
+
+            toolbar: {
+                src: [
+                    "src/toolbar/toolbar.js",
+                    "src/toolbar/Buttons/*.js",
+                    "src/toolbar/Configuration.js",
+                    "src/toolbar/SelectionManager.js"
+                ],
+                dest: "dist/arte.toolbar.js"
             }
         },
         qunit: {
@@ -124,12 +88,6 @@ module.exports = function(grunt) {
             },
             all: ["tests/all.html"]
         },
-        clean: {
-            options: {
-                force: true
-            },
-            src: ["Build", "Release"]
-        },
         copy: {
             qunit: {
                 files: [
@@ -144,6 +102,20 @@ module.exports = function(grunt) {
             jquery: {
                 src: "node_modules/jquery/jquery.js",
                 dest: "tests/dependencies/jquery.js"
+            },
+            rangy: {
+                files: [
+                    {
+                        expand: true,
+                        cwd: "node_modules/rangy",
+                        src: [
+                            "LICENSE",
+                            "lib/rangy-core.js",
+                            "lib/rangy-selectionsaverestore.js"
+                        ],
+                        dest: "external/rangy/"
+                    },
+                ]
             }
         },
         plato: {
@@ -157,21 +129,15 @@ module.exports = function(grunt) {
                     exclude: /ThirdParty/
                 },
                 files: {
-                    "reports/plato": [
-                        "Editor/core/**/*.js",
-                        "Editor/lib/rangy-extensions/*.js",
-                        "Editor/lib/jquery-extensions/*.js",
-                        "Editor/plugins/*.js",
-                        "Editor/toolbar/**/*.js"
-                    ]
+                    "reports/plato": ["src/**/*.js"]
                 }
             }
         }
     });
 
     // Default task.
-    grunt.registerTask("default", ["clean", "jscs", "jshint", "build", "qunit"]);
-    grunt.registerTask("build", ["uglify", "concat"]);
+    grunt.registerTask("default", ["jscs", "jshint", "build", "qunit"]);
+    grunt.registerTask("build", ["concat", "uglify"]);
     grunt.registerTask("travis", ["copy", "default"]);
     grunt.registerTask("analysis", ["plato"]);
     grunt.registerTask("all", ["build", "plato"]);
