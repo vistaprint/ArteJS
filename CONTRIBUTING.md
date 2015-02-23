@@ -11,7 +11,7 @@ ArteJS is an open source project falling under the [Apache license](blob/master/
 
 ### Issue Discussion
 
-General ArteJS discussion takes place via [Gitter](https://gitter.im/vistaprint/ArteJS), but issue threads are preferred for specific issues, so as to retaining the history.
+General ArteJS discussion takes place via [Gitter](https://gitter.im/vistaprint/ArteJS), but issue threads are preferred for specific issues, so as to retain the history.
 
 ### Modifying the code
 First, ensure that you have the latest [Node.js](http://nodejs.org/) and [npm](http://npmjs.org/) installed.

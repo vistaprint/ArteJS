@@ -3,7 +3,7 @@ ArteJS [![Build Status](https://secure.travis-ci.org/vistaprint/ArteJS.png?branc
 
 ArteJS is a powerful, extensible, configurable, flexible and cross-browser rich text editor with a simple API that produces consistent, valid and concise html.
 
-Authors: See [Authors.txt](https://github.com/vistaprint/ArteJSblob/master/AUTHORS.txt)
+Authors: See [Authors.txt](https://github.com/vistaprint/ArteJS/blob/master/AUTHORS.txt)
 License: Apache
 
 ## Usage, Demos, Docs
@@ -14,8 +14,7 @@ ArteJS [Examples](http://vistaprint.github.io/ArteJS/#Examples) / [Detailed Docu
 
 To use ArteJS in your project, you’ll need to load the following files:
 
-jQuery 1.7.3 up to 1.9.1 (1.10+ support is currently in-progress),
-`dist/rangy.js`, and either `dist/arte.js` or the minified version `dist/arte.min.js`:
+jQuery 1.7.3 up to 1.9.1 (1.10+ support is currently in-progress) and either `dist/arte.js` (for development) or the minified version `dist/arte.min.js` (for production):
 
 ```
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
