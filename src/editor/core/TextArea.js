@@ -170,12 +170,13 @@
     };
 
     $.extend($.Arte.TextArea.prototype, {
-		
-    /**
-     * Get or Set innerHtml of the contentEditable element
-     * @params {string} value string to set innerHTML of element to
-     * @returns {string} returns'innerHTML' of the contentEditable element if in rich text mode or 'value' of the element if in plaintext mode if getting value, otherwise returns nothing
-     */
+		/**
+		 * Get or Set innerHtml of the contentEditable element
+		 * @params {string} value string to set innerHTML of element to
+		 * @returns {string} returns 'innerHTML' of the contentEditable element
+		 * if in rich text mode or 'value' of the element if in plaintext mode
+		 * if getting value, otherwise returns nothing
+		 */
         "value": function(value) {
             var constants = $.Arte.constants;
             var prop = this.editorType === constants.editorTypes.richText ? "innerHTML" : "value";
@@ -197,7 +198,7 @@
                 src: "external"
             });
         },
-		
+
         /**
          * Gets or sets outerHtml of the contentEditable element
          * @params {string} value html string to set outerHTML of element to
@@ -215,9 +216,10 @@
             this.el.setAttribute("class", newElement.getAttribute("class") || "");
             this.value(newElement.innerHTML);
         },
-		
+
         /**
-         * Calls a focus event on the contentEditable element, moves the cursor to the end of that element, and fires an onselectionchange event
+         * Calls a focus event on the contentEditable element, moves the cursor
+		 * to the end of that element, and fires an onselectionchange event
          */
         "focus": function() {
             var me = this;
@@ -229,7 +231,7 @@
             me.$el.on("focus", focusHandler);
             me.$el.focus();
         },
-		
+
         /**
         * Triggers the event passed in on the contentEditable element with data provided
         * @params {string} name - name of the event you want to trigger
@@ -240,7 +242,7 @@
                 textArea: this
             }));
         },
-		
+
         /**
         * Removes Arte from this element (Converts the rich text editor to non-editable state and remove rich text state information)
         * @params {Object} options - pass in 'removeContent' in options object to also clear the element of all text and formatting
@@ -258,14 +260,14 @@
                 this.$element.empty();
             }
         },
-		
+
         /**
          *  Listen to events on the Arte.TextAreas element (same as adding events directly to the element)
          */
         on: function(type, handler) {
             this.$element.on(type, handler);
         },
-		
+
 		/**
          *  Stop listening to events on the Arte.TextAreas element (same as adding events directly to the element)
          */
