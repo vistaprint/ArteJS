@@ -26,3 +26,11 @@ QUnit.test("multiple elements", function(assert) {
         "only the first element is affected");
     assert.strictEqual(multiple.last().html(), "", "the last element is not affected");
 });
+
+QUnit.test("commands", function(assert) {
+    var arte = this.element.Arte();
+
+    arte.Arte("bold");
+
+    assert.equal(arte.Arte("bold"), undefined);
+});
