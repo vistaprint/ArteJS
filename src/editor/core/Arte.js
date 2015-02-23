@@ -1,12 +1,16 @@
-﻿/**
+/**
  * @fileoverview jQuery wrapper around the Rich text editor
  * Usage:
  *  1) $(selector).Arte()
  *     Converts the matched elements into rich text editor using default options or returns and existing instance
+ * @returns {jQuery selector of Arte.TextArea}
  *  2) $(selector).Arte({ options });
  *     Converts the matched elements into rich text editor using the options supplied or returns and existing instance
+ * @returns {jQuery selector of Arte.TextArea}
  *  3) $(selector).Arte(command, arguments)
  *     Execute a rich text command with arguments
+ * @returns {jQuery selector of return value of commands called}
+ *
  */
 (function($) {
     $.Arte = $.Arte || {};

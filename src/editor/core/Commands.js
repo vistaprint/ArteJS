@@ -41,8 +41,10 @@
         return attrType;
     };
 
-    /*
+    /**
      * Executes a rich text command
+     * @param {String} commandName - name of the command to call
+     * @param {Object} options - options for the command
      */
     var exec = function(commandName, options) {
         var commandOptions = constructCommandOptions.call(this, commandName, options);

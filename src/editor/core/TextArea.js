@@ -170,7 +170,12 @@
     };
 
     $.extend($.Arte.TextArea.prototype, {
-        // Get innerHtml of the contentEditable element
+		
+    /**
+     * Get or Set innerHtml of the contentEditable element
+     * @params {string} value string to set innerHTML of element to
+     * @returns {string} returns'innerHTML' of the contentEditable element if in rich text mode or 'value' of the element if in plaintext mode if getting value, otherwise returns nothing
+     */
         "value": function(value) {
             var constants = $.Arte.constants;
             var prop = this.editorType === constants.editorTypes.richText ? "innerHTML" : "value";
@@ -184,6 +189,7 @@
                 return;
             }
 
+            //TODO should we return this so that we can chain things?
             this.el[prop] = value;
             this._currentOuterValue = this._container.innerHTML;
             this.triggerEvent(constants.eventNames.onvaluechange, {
@@ -191,7 +197,12 @@
                 src: "external"
             });
         },
-        // Get outerHtml of the contentEditable element
+		
+        /**
+         * Gets or sets outerHtml of the contentEditable element
+         * @params {string} value html string to set outerHTML of element to
+         * @returns {string} returns 'outerHTML' of the contentEditable element with contentEditable tag removed
+         */
         "outerValue": function(value) {
             if (typeof(value) === "undefined") {
                 var clone = this.$element.clone();
@@ -204,6 +215,10 @@
             this.el.setAttribute("class", newElement.getAttribute("class") || "");
             this.value(newElement.innerHTML);
         },
+		
+        /**
+         * Calls a focus event on the contentEditable element, moves the cursor to the end of that element, and fires an onselectionchange event
+         */
         "focus": function() {
             var me = this;
             var focusHandler = function() {
@@ -214,13 +229,23 @@
             me.$el.on("focus", focusHandler);
             me.$el.focus();
         },
+		
+        /**
+        * Triggers the event passed in on the contentEditable element with data provided
+        * @params {string} name - name of the event you want to trigger
+        * @params {object} data - extra parameters to pass into the event handler
+         */
         "triggerEvent": function(name, data) {
             this.$element.trigger(name, $.extend(data, {
                 textArea: this
             }));
         },
+		
+        /**
+        * Removes Arte from this element (Converts the rich text editor to non-editable state and remove rich text state information)
+        * @params {Object} options - pass in 'removeContent' in options object to also clear the element of all text and formatting
+        */
         "destroy": function(options) {
-            // Converts the rich text editor to non-editable state and remove rich text state information
             this.$element.removeData("Arte");
             this.$element.removeAttr($.Arte.configuration.textFieldIdentifier);
             this.$element.off();
@@ -233,12 +258,17 @@
                 this.$element.empty();
             }
         },
+		
         /**
-         *  on/off methods to support attaching events handler using a rich text instance
+         *  Listen to events on the Arte.TextAreas element (same as adding events directly to the element)
          */
         on: function(type, handler) {
             this.$element.on(type, handler);
         },
+		
+		/**
+         *  Stop listening to events on the Arte.TextAreas element (same as adding events directly to the element)
+         */
         off: function(type, handler) {
             this.$element.off(type, handler);
         }
