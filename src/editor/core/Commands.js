@@ -80,7 +80,14 @@
             return defaultValue[attrType];
         }
     };
-
+    
+    /**
+     * Get the tagName for the given command
+     * @param {String} commandName - name of the command get the tagName for
+     * @param {String} attrType - attrType to use if the command contains an applierTagName
+     * @param {Object} options - an object you can supply a tagName on if you already have it so you can just return that
+     * @return {String} return tagName for the given command or if there is none just return default inline/block tag based on command type
+     */
     var getTagNameOrDefault = function(commandName, attrType, options) {
         if (options && options.tagName) {
             return options.tagName;

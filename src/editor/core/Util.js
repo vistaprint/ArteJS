@@ -4,8 +4,10 @@
 (function($) {
     $.Arte = $.Arte || {};
     $.Arte.util = {
-        /*
+        /**
          * Ensure that if there is a user selection, it is inside of the selected element.
+         * @param {jQuery object} jElement - the element to check the selection against
+         * @return {boolean} whether or not there is a selection in the given element
          */
         isSelectionInElement: function(jElement) {
             var selection = rangy.getSelection();
@@ -13,7 +15,7 @@
             return range &&
                 (range.startContainer === jElement.get(0) || jElement.has(range.startContainer).length !== 0);
         },
-        /*
+        /**
          * Move cursor to the end of the input element
          * @param {htmlElement} element
          */
@@ -26,7 +28,7 @@
             selection.setSingleRange(range);
         },
 
-        /*
+        /**
          * Evaluates if all elements in the collection match the condition specified in the callback function
          * @param {Array|Object} collection of objects to evaluate
          * @param {function} callback a function that returns true/false for each object
@@ -40,7 +42,7 @@
             });
             return result;
         },
-        /*
+        /**
          * Evaluates if any elements in the collection match the condition specified in the callback function
          * @param {Array|Object} collection of objects to evaluate
          * @param {function} callback a function that returns true/false for each object
@@ -54,7 +56,7 @@
             });
             return result;
         },
-        /*
+        /**
          * Filter a collection based on the result of the callback function
          * @param {Array|Object} collection of objects to evaluate
          * @param {function} callback a function that returns true/false for each object
@@ -71,6 +73,8 @@
         },
         /**
          * Returns selected text nodes
+         * @param {boolean} allowCollapsedSelection - whether or not to return the parent of the node with the cursor if the selection is collapsed
+         * @return {Array} array of selected text nodes
          */
         getSelectedTextNodes: function(allowCollapsedSelection) {
             var selectedNodes = $();
@@ -88,7 +92,7 @@
                     return selectedNodes;
                 }
 
-                // In case we don"t have a valid selection,
+                // In case we don't have a valid selection,
                 range = rangy.createRangyRange();
                 range.selectNodeContents(this.$el.get(0));
                 selectedNodes = rangy.util.getTextNodes(range);
@@ -99,8 +103,10 @@
             }
             return selectedNodes;
         },
-        /*
-         * Identify the ArteJS command configuration from className, styleName or tagName
+        /**
+         * Identify the ArteJS command configuration from className, styleName or tagName. 
+         * @param {Object} options - an object containing either a commandName, className, styleName, or tagName attribute
+         * @return {Object} returns the command configuration that matched to the parameter passed in or null if no commands are found
          */
         getCommandConfig: function(options) {
             var result = null;
@@ -115,7 +121,7 @@
                 return configuration.commands[options.commandName];
             }
 
-            /* Infer the command from the properties in the options. */
+            // Infer the command from the properties in the options.
             for (var command in configuration.commands) {
                 var commandConfig = configuration.commands[command];
 

@@ -190,19 +190,19 @@ $(document).ready(function() {
      * @return rangyRange object
      */
 
-    function createRangeFromElements(startElement, endElement, excludStartEndElements) {
+    function createRangeFromElements(startElement, endElement, excludeStartEndElements) {
         var range = rangy.createRangyRange();
-        var startOp = excludStartEndElements ? "setStartAfter" : "setStartBefore";
-        var endop = excludStartEndElements ? "setEndBefore" : "setEndAfter";
+        var startOp = excludeStartEndElements ? "setStartAfter" : "setStartBefore";
+        var endOp = excludeStartEndElements ? "setEndBefore" : "setEndAfter";
         range[startOp](startElement);
-        range[endop](endElement);
+        range[endOp](endElement);
         return range;
     }
 
     /**
      * Get non-whitespace text nodes
      * @param {rangyRange} Range object
-     * @return Collection of matched text nodes
+     * @return {array} array of matched text nodes
      */
     function getTextNodes(range) {
         if (!range.collapsed) {
