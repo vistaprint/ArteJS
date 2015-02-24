@@ -11,26 +11,49 @@ QUnit.test("basic", function(assert) {
     assert.strictEqual(this.element.height(), 200, "set's basic height");
 });
 
-QUnit.test("no element", function(assert) {
-    var result = $("#i-dont-exist").Arte();
-    assert.equal(result, false, "an empty jQuery object doesn't create an Arte object");
-});
-
 QUnit.test("multiple elements", function(assert) {
-    var multiple = $("<div/><div/>").addClass("foo");
+    var elem,
+        multiple = $("<div/><div/>")
+            .addClass("foo")
+            // Appends the new elements so we get a proper height value
+            .appendTo(this.element);
 
     multiple.Arte();
 
-    assert.strictEqual(multiple.first().html(),
-        "<div class=\"\" style=\"min-height: 200px; height: inherit;\" contenteditable=\"true\">Please enter text ...</div>",
-        "only the first element is affected");
-    assert.strictEqual(multiple.last().html(), "", "the last element is not affected");
+    elem = multiple.first();
+
+    assert.ok(elem.prop("contenteditable"), "turns into a contenteditable item");
+    assert.strictEqual(elem.text(), "Please enter text ...", "set's default text");
+    assert.strictEqual(elem.height(), 200, "set's basic height");
+
+    elem = multiple.last();
+
+    assert.ok(elem.prop("contenteditable"), "turns into a contenteditable item");
+    assert.strictEqual(elem.text(), "Please enter text ...", "set's default text");
+    assert.strictEqual(elem.height(), 200, "set's basic height");
 });
 
-QUnit.test("commands", function(assert) {
-    var arte = this.element.Arte();
+QUnit.test("no element", function(assert) {
+    var elem = $("#i-dont-exist");
+    var result = elem.Arte();
+    assert.equal(result, elem, "an empty jQuery object doesn't create an Arte object");
+});
+
+QUnit.module("commands", {
+    beforeEach: function() {
+        this.element = $("#test-element");
+    }
+});
+
+QUnit.test("bold", function(assert) {
+    var arte;
+
+    arte = this.element.Arte();
+
+    arte.text("foo");
 
     arte.Arte("bold");
 
-    assert.equal(arte.Arte("bold"), undefined);
+    assert.equal(arte.html(), undefined);
+    assert.equal(this.element.html(), undefined);
 });
