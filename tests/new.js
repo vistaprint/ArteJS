@@ -12,8 +12,8 @@ QUnit.test("basic", function(assert) {
 });
 
 QUnit.test("multiple elements", function(assert) {
-    var elem,
-        multiple = $("<div/><div/>")
+    var elem;
+    var multiple = $("<div/><div/>")
             .addClass("foo")
             // Appends the new elements so we get a proper height value
             .appendTo(this.element);
