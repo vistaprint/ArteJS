@@ -1,4 +1,4 @@
-﻿/// dependencies: Arte.js
+/// dependencies: Arte.js
 (function($) {
     $.Arte = $.Arte || {};
     $.Arte.TextArea = function(options) {
@@ -70,7 +70,7 @@
             }
             me._container.appendChild(me.el);
             me.$el = $(me.el);
-            // Use an existing DIV or TEXTAREA if it already exists
+        // Use an existing DIV or TEXTAREA if it already exists
         } else {
             me.el = me._container.childNodes[0];
             if (me.el.tagName === "DIV") {
@@ -170,19 +170,19 @@
     };
 
     $.extend($.Arte.TextArea.prototype, {
-		/**
-		 * Get or Set innerHtml of the contentEditable element
-		 * @params {string} value string to set innerHTML of element to
-		 * @returns {string} returns 'innerHTML' of the contentEditable element
-		 * if in rich text mode or 'value' of the element if in plaintext mode
-		 * if getting value, otherwise returns nothing
-		 */
+        /**
+         * Get or Set innerHtml of the contentEditable element
+         * @params {string} value string to set innerHTML of element to
+         * @returns {string} returns 'innerHTML' of the contentEditable element
+         * if in rich text mode or 'value' of the element if in plaintext mode
+         * if getting value, otherwise returns nothing
+         */
         "value": function(value) {
             var constants = $.Arte.constants;
             var prop = this.editorType === constants.editorTypes.richText ? "innerHTML" : "value";
             var currentValue = this.el[prop];
 
-            if (typeof(value) === "undefined") {
+            if (typeof (value) === "undefined") {
                 return currentValue;
             }
 
@@ -205,7 +205,7 @@
          * @returns {string} returns 'outerHTML' of the contentEditable element with contentEditable tag removed
          */
         "outerValue": function(value) {
-            if (typeof(value) === "undefined") {
+            if (typeof (value) === "undefined") {
                 var clone = this.$element.clone();
                 clone.children().removeAttr("contenteditable");
                 return clone.html();
@@ -219,7 +219,7 @@
 
         /**
          * Calls a focus event on the contentEditable element, moves the cursor
-		 * to the end of that element, and fires an onselectionchange event
+         * to the end of that element, and fires an onselectionchange event
          */
         "focus": function() {
             var me = this;
@@ -268,7 +268,7 @@
             this.$element.on(type, handler);
         },
 
-		/**
+        /**
          *  Stop listening to events on the Arte.TextAreas element (same as adding events directly to the element)
          */
         off: function(type, handler) {
