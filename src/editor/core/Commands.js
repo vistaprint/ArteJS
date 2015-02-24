@@ -1,4 +1,4 @@
-﻿/// @dependencies: Arte.js, TextArea.js
+/// @dependencies: Arte.js, TextArea.js
 /**
  * @fileoverview extends Arte prototype to add rich text commands
  */
@@ -80,7 +80,7 @@
             return defaultValue[attrType];
         }
     };
-    
+
     /**
      * Get the tagName for the given command
      * @param {String} commandName - name of the command get the tagName for
