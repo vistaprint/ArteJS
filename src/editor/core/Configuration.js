@@ -1,4 +1,4 @@
-﻿/*
+/*
 * This file lists the configuration and constants used by ArteJS
 */
 (function($) {
@@ -113,7 +113,7 @@
         commandAttrType: constants.commandAttrType.styleName,
 
         /*
-        * An attributed added to the dom element to identify that dom element as rich text field
+        * An attribute added to the dom element to identify that dom element as rich text field
         */
         textFieldIdentifier: "rteTextField",
 
