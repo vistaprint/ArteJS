@@ -10,7 +10,7 @@
   "bugs": {
     "url": "https://github.com/vistaprint/ArteJS/issues"
   },
-  "main": "Release",
+  "main": "dist/arte.min.js",
   "engines": {
     "node": ">=0.8.0"
   },
