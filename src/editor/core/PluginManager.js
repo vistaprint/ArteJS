@@ -13,16 +13,16 @@
         register: function(name, plugin) {
             this.plugins[name] = plugin;
         },
-        /*
+        /**
          * Initializes the plugin
          * @param {Arte} an instance of Arte
          */
         init: function(richTextEditor) {
             richTextEditor.pluginInstances = richTextEditor.pluginInstances || [];
             for (var pluginName in this.plugins) {
-                var pluginInstanse = new this.plugins[pluginName]();
-                pluginInstanse.init(richTextEditor);
-                richTextEditor.pluginInstances.push(pluginInstanse);
+                var pluginInstance = new this.plugins[pluginName]();
+                pluginInstance.init(richTextEditor);
+                richTextEditor.pluginInstances.push(pluginInstance);
             }
         }
     };
