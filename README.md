@@ -4,7 +4,8 @@ ArteJS [![Build Status](https://secure.travis-ci.org/vistaprint/ArteJS.png?branc
 ArteJS is a powerful, extensible, configurable, flexible and cross-browser rich text editor with a simple API that produces consistent, valid and concise html.
 
 Authors: See [Authors.txt](https://github.com/vistaprint/ArteJS/blob/master/AUTHORS.txt)
-License: Apache
+
+License: Apache 2
 
 ## Usage, Demos, Docs
 
@@ -16,15 +17,14 @@ To use ArteJS in your project, you’ll need to load the following files:
 
 jQuery 1.7.3 up to 1.9.1 (1.10+ support is currently in-progress) and either `dist/arte.js` (for development) or the minified version `dist/arte.min.js` (for production):
 
-```
+```html
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script src="dist/rangy.js"></script>
 <script src="dist/arte.min.js"></script>
 ```
 
 Then, invoke the script as follows:
 
-```
+```js
 jQuery(function($) {
     var arte = $('#my-editor').Arte();
 });
@@ -50,4 +50,4 @@ Test that Grunt's CLI is installed by running `grunt --version`.  If the command
 
 1. Fork and clone the repo.
 1. Run `npm install` to install all dependencies (including Grunt).
-1. Run `grunt all` to build the project.
+1. Run `grunt` to build the project.
