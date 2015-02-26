@@ -46,7 +46,7 @@
                     <br />
                         For example:
                     <pre>
-$(".editor").Arte(); // Turns .editor into rich text editor 
+$(".editor").Arte(); // Turns .editor into rich text editor
 $(".editor").bold(); // Make the selected text bold
 $(".editor").fontSize(10); // Change fontsize of the selected text to 10px
                     </pre>
@@ -55,25 +55,25 @@ $(".editor").fontSize(10); // Change fontsize of the selected text to 10px
                     </li>
                     <li>Full control over the resultant HTML : TODO: Links to examples with Classes/Styles/Tags for a command
                     </li>
-                    <li>A loosely coupled architecture based on a plugins that can be used overwrite any existing or add new functionality. In fact, a large part of the functionality is built using plugins.
+                    <li>A loosely coupled architecture based on plugins that can be used to overwrite existing or add new functionality. In fact, a large part of the functionality is built using plugins.
                     </li>
                     <li>ArteJS supports a clean interface for toolbar integration. TODO: Link to reference toolbar implementations that can support multiple editors with a single toolbar or one toolbar for each editor.
                     </li>
                     <li>Semantically concise and valid markup: e.g. no redundant styles, classes or tags.
                     </li>
-                    <li>A <a href="#events">rich event model</a> provide a rich integration point.
+                    <li>A <a href="#events">rich event model</a> provides a rich integration point.
                     </li>
                     <li>Keyboard shortcut integration
                     </li>
-                    <li>State detection so that it's easy to figure out the state of selected html.
+                    <li>State detection so that it's easy to figure out the state of selected HTML.
                     </li>
                     <li>Highly granular configuration.
                     </li>
                     <li>Copy/paste functionality from Microsoft Word.
                     </li>
-                    <li>Open sourced so it's free--ArteJS is available on an Apache2 license.
+                    <li>Open source -- ArteJS is free and available on an Apache2 license.
                     </li>
-                    <li>Most importantly, ArteJS is used in production millions of times a day
+                    <li>Most importantly, ArteJS is used in production millions of times a day.
                     </li>
                 </ul>
 
@@ -81,7 +81,7 @@ $(".editor").fontSize(10); // Change fontsize of the selected text to 10px
                 <h2>Get ArteJS</h2>
                 Download the latest release of <a href="https://github.com/vistaprint/ArteJS/releases">ArteJS</a>
 
-                <h2>Typical page structure structure</h2>
+                <h2>Typical page structure</h2>
                 <pre>
         &lt;!-- Markup to host the toolbar and the editor--&gt;
         &lt;div class=&quot;toolbar&quot;&gt;&lt;/div&gt;
@@ -95,7 +95,7 @@ $(".editor").fontSize(10); // Change fontsize of the selected text to 10px
 
         &lt;script type=&quot;text/javascript&quot;&gt;
             $(function () {
-                // List and sequence of the toolbar buttons 
+                // List and sequence of the toolbar buttons
                 var buttons = [&quot;bold&quot;, &quot;italic&quot;, &quot;underline&quot;, &quot;blockquote&quot;, &quot;textAlignLeft&quot;, &quot;textAlignCenter&quot;, &quot;textAlignRight&quot;, &quot;h1&quot;, &quot;h2&quot;, &quot;h3&quot;, &quot;h4&quot;, &quot;h5&quot;, &quot;h6&quot;, &quot;subscript&quot;, &quot;superscript&quot;, &quot;unorderedList&quot;, &quot;orderedList&quot;, &quot;undo&quot;, &quot;redo&quot;, &quot;fontSize&quot;, &quot;fontFamily&quot;, &quot;color&quot;, &quot;backgroundColor&quot;, &quot;insertLink&quot;];
 
                 // Initialize the Arte editor with default options
@@ -127,7 +127,7 @@ $(".editor").fontSize(10); // Change fontsize of the selected text to 10px
 
                 <h1>Rich Text API Reference</h1>
                 <h2>Commands</h2>
-                A rich text command can be applied using a html tag, a style or a class name. ArteJS allows applying the command in either of these three mechanisms. 
+                A rich text command can be applied using a html tag, a style or a class name. ArteJS allows applying the command in either of these three mechanisms.
              <br />
                 Note that the default configuration excluded the use of deprecated html tags (e.g.: font).  Configuration can be easily updated to use the deprecated html tags if needed.
             <br />
@@ -213,7 +213,7 @@ $(".editor").fontSize(10); // Change fontsize of the selected text to 10px
                 An ArteJS method or the public methods on the plugins can be called as the following:
             <pre>
                 // Calling a ArteJS method
-                $(selector).Arte('methodName', arguments ..) 
+                $(selector).Arte('methodName', arguments ..)
                 ArteInstance.methodName(arguments)
             </pre>
                 <h4>Methods on the editor</h4>
@@ -253,17 +253,17 @@ $(".editor").fontSize(10); // Change fontsize of the selected text to 10px
                 <pre>
 // Creating a rich text editor with default initial values ($.Arte.configuration.initialValues)
 $(selector).Arte();
-                
+
 // Creating a rich text editor with options
 var options = {
     styles: {
-        "font-weight": "bold", 
+        "font-weight": "bold",
         "font-size": "16px"
     },
     classes: ["arte-class1", "arte-class2"],
     value: "This is <span style='color: green'>new</span> value"
 };
- 
+
 // Construct the text area
 // The following takes a set of matched elements and convert them to rich text editors
 $(selector).Arte(options);
@@ -273,13 +273,13 @@ $(selector).Arte(options);
                 <pre>
 // Once a rich text editor is created, any rich text method can now be executed as the following
 $(selector).Arte("methodName", parameter1, parameter2, ...);
- 
+
 // Alternatively, a method can be applied to an Arte instance directly
 var editorInstances = $(selector).Arte();
 $(selector).Arte().each(function(){
     this.methodName(parameter1, parameter2);
 });
-// or 
+// or
 editorInstances.get(0).methodName(parameter1, parameter2);
 
 // Example methods
@@ -354,7 +354,7 @@ $("#editor").Arte("on", {
                 if(!isFontInWhiteList(data.commandValue))
                 {
                     // If font name is not whitelisted, don't execute the command
-                    data.execute = false; 
+                    data.execute = false;
                 }
                 break;
         }
@@ -456,7 +456,7 @@ $.Arte.Toolbar.configuration.buttons.fontSize.options = [
                 <li>Build ArteJS: Execute "Grunt all"</li>
             </ul>
                 There are many <a href="https://github.com/vistaprint/ArteJS/blob/master/Gruntfile.js">other grunt tasks</a> defined for conveniance.
-           
+
             </section>
 
         </div>
@@ -483,7 +483,7 @@ $.Arte.Toolbar.configuration.buttons.fontSize.options = [
             $(window).scroll(function () {
                 console.log("in scroll");
                 var scrollTop = $(window).scrollTop();
-                // check the visible top of the browser 
+                // check the visible top of the browser
                 if (offset.top < scrollTop) {
                     $('#toc').addClass('fixed');
                 } else {
