@@ -55,7 +55,7 @@ jQuery(function($) {
                         class: "arte-richtext",
                         contenteditable: true
                     })
-                    .text(this.options.value);
+                    .html(this.options.value);
             } else {
                 newElement = $("<textarea/>", {
                         class: "arte-plaintext",

@@ -67,3 +67,14 @@ QUnit.test("custom options", function(t) {
     t.strictEqual(arte.element.height(), 100, "sets custom height");
     t.ok(arte.element.hasClass("foo"), "Custom class");
 });
+
+QUnit.test("rich text initializes with a html content", function(t) {
+    var arte = new Arte(this.element, {
+            value: "<p>foo</p><div></div>",
+            editorType: "richText"
+        });
+
+    // catches <p> and <div>
+    t.strictEqual(arte.element.children().length, 2);
+    t.strictEqual(arte.element.children('p').text(), "foo");
+});
