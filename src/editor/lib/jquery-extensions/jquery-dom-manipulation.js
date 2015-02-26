@@ -157,7 +157,7 @@
          * Create a dom element with options
          * @param {object} a set of dom element creation options
          *                 tagName, attr, styleName+styleValue, className
-         * @return {jNode} A jQuery element
+         * @return {jQuery} A jQuery element
          */
         createContainer: function(options) {
             var tagName = options.applierTagName || "div";
