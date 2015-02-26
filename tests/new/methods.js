@@ -49,6 +49,8 @@ QUnit.test("Arte.prototype.focus", function(t) {
             t.ok(true, "focus");
         });
 
+    t.expect(1);
+
     arte.focus();
 
     // TODO: test cursor position
