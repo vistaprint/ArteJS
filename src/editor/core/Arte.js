@@ -15,7 +15,6 @@
 (function($) {
     $.Arte = $.Arte || {};
     $.fn.Arte = function(options, args) {
-        var result = [];
         rangy.init();
 
         if (!this.length) {

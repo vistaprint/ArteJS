@@ -90,7 +90,7 @@ module.exports = function(grunt) {
                 }
             },
             all: ["tests/all.html"],
-            single: ["tests/single.html"]
+            single: ["tests/index.html"]
         },
         copy: {
             qunit: {

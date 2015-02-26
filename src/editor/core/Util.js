@@ -1,4 +1,4 @@
-﻿/**
+/**
  * @fileoverview: Various utility functions
  */
 (function($) {
@@ -73,7 +73,8 @@
         },
         /**
          * Returns selected text nodes
-         * @param {boolean} allowCollapsedSelection - whether or not to return the parent of the node with the cursor if the selection is collapsed
+         * @param {boolean} allowCollapsedSelection - whether or not to return the parent of the node
+         *   with the cursor if the selection is collapsed
          * @return {Array} array of selected text nodes
          */
         getSelectedTextNodes: function(allowCollapsedSelection) {
@@ -104,9 +105,11 @@
             return selectedNodes;
         },
         /**
-         * Identify the ArteJS command configuration from className, styleName or tagName. 
-         * @param {Object} options - an object containing either a commandName, className, styleName, or tagName attribute
-         * @return {Object} returns the command configuration that matched to the parameter passed in or null if no commands are found
+         * Identify the ArteJS command configuration from className, styleName or tagName.
+         * @param {Object} options - an object containing either a commandName, className, styleName,
+         *   or tagName attribute
+         * @return {Object} returns the command configuration that matched to the parameter passed in or null
+         *   if no commands are found
          */
         getCommandConfig: function(options) {
             var result = null;
