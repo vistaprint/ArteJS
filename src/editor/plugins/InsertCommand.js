@@ -5,7 +5,9 @@
     var InsertCommand = function() {
         var publicApi = {
             /**
-             * Appends content to end of element if there is no selection. If there is a selection insert content at cursor position and replace all content in selection. Selects new content when done.
+             * Appends content to end of element if there is no selection.
+             * If there is a selection insert content at cursor position and replace all content in selection.
+             * Selects new content when done.
              * @param {Object} options - options object will be passed into the onbeforeinsert/onafterinsert events
              * @param {Object} options.commandValue - the html you want to insert
              */

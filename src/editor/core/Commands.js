@@ -17,11 +17,12 @@
      * @param {Object} [options.styleName] - will use styleName as the attrType if you pass one in
      * @param {Object} [options.className] - will use className as the attrType if you pass one in
      * @param {Object} [options.tagName] - will use tagName as the attrType if you pass one in
-     * @return {String} returns the attrType in this order 
-                1. If it was defined in the config for the command use that
-                2. If no options object then return commandAttrType object from configuration
-                3. If options defines a commandAttrType use that
-                4. If a styleName/className/tagName is passed in options use the styleName/className/tagName properties from $.Arte.constants as the attrType 
+     * @return {String} returns the attrType in this order
+     *      1. If it was defined in the config for the command use that
+     *      2. If no options object then return commandAttrType object from configuration
+     *      3. If options defines a commandAttrType use that
+     *      4. If a styleName/className/tagName is passed in options use the styleName/className/tagName
+     *         properties from $.Arte.constants as the attrType
      */
     var commandAttrType = function(commandName, options) {
         var commandConfig = configuration.commands[commandName];
@@ -59,7 +60,7 @@
         commandOptions.execute = true;
         this.triggerEvent(constants.eventNames.onbeforecommand, commandOptions);
 
-        if (!commandOptions.execute) { // The client requested the cancelation of this command
+        if (!commandOptions.execute) { // The client requested the cancellation of this command
             return;
         }
 
@@ -67,7 +68,7 @@
         $.Arte.RichTextCommandApplier.createAndExecute(commandOptions);
         this.triggerEvent(constants.eventNames.oncommand, commandOptions);
     };
-    
+
     /**
      * Get the correct command value based on the given parameters
      * @param {String} commandName - name of the command get the value for
@@ -76,7 +77,8 @@
      * @param {Object} [options.styleValue] - if attrType == styleName and you pass this in then styleValue will be the the commandValue
      * @param {Object} [options.className] - if attrType == className and you pass this in then className will be the the commandValue
      * @param {Object} [options.commandValue] - if you pass in a commandValue that will be returned
-     * @return {String} try to return commandValue using options that were passed in, if none are found return the default value for the command specified in the configuration
+     * @return {String} try to return commandValue using options that were passed in,
+     *      if none are found return the default value for the command specified in the configuration
      */
     var getCommandValueOrDefault = function(commandName, attrType, options) {
         if (options && attrType === commandAttr.styleName && options.styleValue) {
@@ -101,7 +103,8 @@
     /**
      * Get the tagName for the given command
      * @param {String} commandName - name of the command get the tagName for
-     * @param {String} attrType - attrType you are using the command with - used to find the right tag (for example bold uses the B tag if we want to apply tags or a SPAN if applying styles/classes)
+     * @param {String} attrType - attrType you are using the command with - used to find the right tag
+     *      (for example bold uses the B tag if we want to apply tags or a SPAN if applying styles/classes)
      * @param {Object} options
      * @param {String} options.tagName - if you already know the tagName and put it in the options it will be returned back
      * @return {String} return tagName for the given command or if there is none just return default inline/block tag based on command type
@@ -125,7 +128,7 @@
         return commandConfig.commandType === constants.commandType.inline ?
             configuration.defaultInlineTag : configuration.defaultBlockTag;
     };
-    
+
     /**
      * Creates command options to use for the command based on the configuration
      * @param {String} commandName - name of the command generate the options for
@@ -222,7 +225,8 @@
          * @param {Object} [options]
          * @param {jQuery} [options.element] - pass in your own element or use the rich text area by default
          * @param {Object} [options.styleName] - name of style you would like to toggle on the element (e.g. font-weight)
-         * @param {Object} [options.styleValue] - value for the styleName defined above that you would like to toggle on the element (e.g. bold)
+         * @param {Object} [options.styleValue] - value for the styleName defined above
+         *      that you would like to toggle on the element (e.g. bold)
          * @param {Object} [options.className] - name of css class you would like to toggle on the element (e.g. arte-font-weight)
          */
         "toggleStyleOnElement": function(options) {

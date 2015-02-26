@@ -79,7 +79,9 @@
         /**
          * Same as getAllStates however will only return the states that are applied to every node in the selection
          * @param {String} [commandName] If provided, only result the state of the given command (ie: fontFamily, bold, etc)
-         * @return {Object} returns object containing each commandName and the value only if it is applied to every single node in the selection (if there are multiple nodes in the selection and they have different values for the given command then the value will be false/null)
+         * @return {Object} returns object containing each commandName and the value only if it is applied
+         *      to every single node in the selection (if there are multiple nodes in the selection
+         *      and they have different values for the given command then the value will be false/null)
          */
         getState: function(commandName) {
             var selectedNodes = $.Arte.util.getSelectedTextNodes.apply(this, [true]);
@@ -89,8 +91,9 @@
         /**
          * Get an array of all the states found within the current selection
          * (ie: if the current selection has both a bold and a non-bold component, get two results representing that)
-         * @param {String} [commandName] If provided, only result the state of the given command (ie: fontFamily, bold, etc)
-         * @return {Array<Object>} returns array containing an object for each selected node that lists out the commandName and it's value for that node
+         * @param {String} [commandName] If provided, only return the state of the given command (ie: fontFamily, bold, etc)
+         * @return {Array<Object>} returns array containing an object for each selected node
+         *      that lists out the commandName and it's value for that node
          */
         getAllStates: function(commandName) {
             var selectedNodes = $.Arte.util.getSelectedTextNodes.apply(this, [true]);
