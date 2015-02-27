@@ -174,7 +174,7 @@
                 js: buttonWithDropDown,
                 icon: null,
                 commandName: "fontFamily",
-                options: ["", "Arial", "curier new", "Georgia", "Times New Roman"],
+                options: ["", "Arial", "Courier New", "Georgia", "Times New Roman"],
                 acceptsParams: true,
                 supportedTypes: [editorTypes.richText, editorTypes.plainText],
                 tooltip: "Font family"
