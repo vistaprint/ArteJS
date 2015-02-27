@@ -40,12 +40,6 @@ td .container{
     width: 100%
 }
 
-ul span
-{
-    color: #ccc;
-    font-style: italic;
-}
-
 .syntaxhighlighter
 {
     display: inline-block;

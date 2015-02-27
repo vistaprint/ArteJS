@@ -39,8 +39,8 @@
             <section id="main_content" class="inner">
                 <h1>Overview</h1>
                 <p>A powerful, extensible, flexible, cross-browser rich text editor.</p>
-                <p>ArteJS is an integral part of VistaPrint's DIY product design experience that allows adding rich text to a document that eventually gets printed. This imposes a stringent requirement on the output of the rich text editor. Most of the rich text editors we evaluated either did not allow any control on the resultant markup or were simply buggy/incomplete.</p>
-                <p>In addition, ArteJS provide many other features that are expected of a modern rich text editor library.</p>
+                <p>ArteJS is an integral part of <a href="http://www.vistaprint.com">Vistaprint's</a> DIY product design experience that allows adding rich text to a document that eventually gets printed. This imposes a stringent requirement on the output of the rich text editor. Most of the rich text editors we evaluated either did not allow any control of the resultant markup or were simply buggy/incomplete.</p>
+                <p>In addition, ArteJS provide many other features that are expected of a modern rich text editor library:</p>
                 <ul>
                     <li>A simple and intuitive jQuery like API.
                     <br />
@@ -53,19 +53,19 @@ $(".editor").fontSize(10); // Change fontsize of the selected text to 10px
                     </li>
                     <li>A small dependency footprint: jQuery and Rangy 1.2.3 (Included with ArteJS).
                     </li>
-                    <li>Full control over the resultant HTML : TODO: Links to examples with Classes/Styles/Tags for a command
+                    <li>Full control over the resultant HTML. TODO: Links to examples with Classes/Styles/Tags for a command
                     </li>
-                    <li>A loosely coupled architecture based on plugins that can be used to overwrite existing or add new functionality. In fact, a large part of the functionality is built using plugins.
+                    <li>A loosely coupled architecture based on plugins that can be used to add new or overwrite existing functionality. In fact, a large part of the functionality is built using plugins.
                     </li>
                     <li>ArteJS supports a clean interface for toolbar integration. TODO: Link to reference toolbar implementations that can support multiple editors with a single toolbar or one toolbar for each editor.
                     </li>
-                    <li>Semantically concise and valid markup: e.g. no redundant styles, classes or tags.
+                    <li>Semantically concise and valid markup (e.g.: no redundant styles, classes or tags).
                     </li>
                     <li>A <a href="#events">rich event model</a> provides a rich integration point.
                     </li>
-                    <li>Keyboard shortcut integration
+                    <li>Keyboard shortcut integration.
                     </li>
-                    <li>State detection so that it's easy to figure out the state of selected HTML.
+                    <li>State detection to easily determine the state of selected HTML.
                     </li>
                     <li>Highly granular configuration.
                     </li>
@@ -73,7 +73,7 @@ $(".editor").fontSize(10); // Change fontsize of the selected text to 10px
                     </li>
                     <li>Open source -- ArteJS is free and available on an Apache2 license.
                     </li>
-                    <li>Most importantly, ArteJS is used in production millions of times a day.
+                    <li>Most importantly, ArteJS is already used in production millions of times a day on <a href="http://www.vistaprint.com">vistaprint.com</a>.
                     </li>
                 </ul>
 
@@ -81,7 +81,7 @@ $(".editor").fontSize(10); // Change fontsize of the selected text to 10px
                 <h2>Get ArteJS</h2>
                 Download the latest release of <a href="https://github.com/vistaprint/ArteJS/releases">ArteJS</a>
 
-                <h2>Typical page structure</h2>
+                <h2>Typical Page Structure</h2>
                 <pre>
         &lt;!-- Markup to host the toolbar and the editor--&gt;
         &lt;div class=&quot;toolbar&quot;&gt;&lt;/div&gt;
@@ -111,14 +111,14 @@ $(".editor").fontSize(10); // Change fontsize of the selected text to 10px
     </pre>
                 <h1>Examples</h1>
 
-                <h2>Feature demonstrator</h2>
+                <h2>Feature Demonstrator</h2>
                 <iframe class="editor-demo" src="Demos/FeatureDemonstrator/Demo.html"></iframe>
 
                 <h2>Simple Toolbar Examples</h2>
                 <a href="Demos/SimpleToolbar/Demo.html">Simple toolbar</a><br />
                 <a href="Demos/UnobtrusiveToolbar/Demo.html">Unobtrusive toolbar</a>
 
-                <h2>Various flavors of reference toolbar</h2>
+                <h2>More Toolbar Examples</h2>
                 <a href="Demos/CompleteToolbar/Demo.html">Full toolbar</a>
                 <br />
                 <a href="Demos/CompleteToolbarWithTwitterBootstrap/Demo.html">Toolbar with twitter bootstrap styles</a><br />
@@ -127,22 +127,24 @@ $(".editor").fontSize(10); // Change fontsize of the selected text to 10px
 
                 <h1>Rich Text API Reference</h1>
                 <h2>Commands</h2>
-                A rich text command can be applied using a html tag, a style or a class name. ArteJS allows applying the command in either of these three mechanisms.
+                A rich text command can be applied using an HTML tag, a style, or a class name. ArteJS allows applying the command using any of these three mechanisms.
              <br />
-                Note that the default configuration excluded the use of deprecated html tags (e.g.: font).  Configuration can be easily updated to use the deprecated html tags if needed.
+                Note that the default configuration excludes the use of deprecated HTML tags (e.g.: font).  Configuration can be easily updated to use the deprecated HTML tags if needed.
             <br />
                 <pre>
                 // Calling a rich text command
-                $(selector).Arte('commandName', arguments); or
+                $(selector).Arte('commandName', arguments);
+
+                // Another way to call a rich text command
                 editorInstance.commandName(arguments);
             </pre>
-                <span>Commands that ce be applied using Tag/Style/Class</span>
+                <span>Commands that can be applied using HTML Tag, Style, or Class:</span>
                 <ul>
                     <li>bold</li>
                     <li>italic</li>
                     <li>underline</li>
                 </ul>
-                <span>Commands that can be applied using Style/Class</span>
+                <span>Commands that can be applied using Style or Class:</span>
                 <ul>
                     <li>align</li>
                     <li>backgroundColor</li>
@@ -150,101 +152,105 @@ $(".editor").fontSize(10); // Change fontsize of the selected text to 10px
                     <li>fontFamily</li>
                     <li>color</li>
                 </ul>
-                <span>Commands that can be applied using a html Tag</span>
+                <span>Commands that can be applied using an HTML Tag:</span>
                 <ul>
                     <li>blockquote</li>
                     <li>h1-h6</li>
                     <li>subscript/superscript</li>
                     <li>ul/ol</li>
                 </ul>
-                <span>Other commands</span>
+                <span>Other commands:</span>
                 <ul>
-                    <li>insert (Implemented using a plugin)</li>
+                    <li>insert (implemented using a plugin)</li>
                 </ul>
 
                 <a name="events"></a>
                 <h2>Events</h2>
                 ArteJS raises a rich collection of events to interact with the editor.
             <pre>
-                // Listening to the events
-                $(selector).on('eventname', function(e, data) {...}); // or
+                // Listening to events
+                $(selector).on('eventname', function(e, data) {...});
+
+                // Another way to listen to events
                 editorInstance.on('eventname', function(e, data) {...});
             </pre>
-                <h4>Events raised by editor</h4>
+                <h4>Events raised by the editor:</h4>
                 <ul>
-                    <li>onfocus <span>Editor gained focus.</span></li>
-                    <li>onblur <span>Editor lost focus.</span></li>
-                    <li>onvaluechange <span>Rich text value changed.</span></li>
-                    <li>onmousedown <span>Mouse down over the editor.</span></li>
-                    <li>onmouseup <span>Mouse up over the editor</span></li>
-                    <li>onclick <span>Mouse clicked over the editor.</span></li>
-                    <li>onkeydown <span>Keydown over the editor.</span></li>
-                    <li>onkeypress <span>Keypress over the editor.</span></li>
-                    <li>onkeyup <span>Key up over the editor</span></li>
-                    <li>onpaste <span>Content pasted</span></li>
-                    <li>onselectionchange <span>Selection changed.</span></li>
-                    <li>onbeforecommand <span>Before a command is executed.</span></li>
-                    <li>oncommand <span>A command has been executed.</span></li>
-                    <li>oncreate <span>An editor is created.</span></li>
-                    <li>ondestroy <span>An editor is destroyed.</span></li>
+                    <li><strong>onfocus</strong><span> -- editor gained focus</span></li>
+                    <li><strong>onblur</strong><span> -- editor lost focus</span></li>
+                    <li><strong>onvaluechange</strong> <span> -- rich text value changed</span></li>
+                    <li><strong>onmousedown</strong><span> -- mouse down over the editor</span></li>
+                    <li><strong>onmouseup</strong><span> -- mouse up over the editor</span></li>
+                    <li><strong>onclick</strong><span> -- mouse clicked over the editor</span></li>
+                    <li><strong>onkeydown</strong><span> -- key down over the editor</span></li>
+                    <li><strong>onkeypress</strong><span> -- key press over the editor</span></li>
+                    <li><strong>onkeyup</strong><span> -- key up over the editor</span></li>
+                    <li><strong>onpaste</strong><span> -- content pasted into the editor</span></li>
+                    <li><strong>onselectionchange</strong><span> -- editor text selection changed</span></li>
+                    <li><strong>onbeforecommand</strong><span> -- fired before a command is executed</span></li>
+                    <li><strong>oncommand</strong><span> -- fired after a command has been executed</span></li>
+                    <li><strong>oncreate</strong><span> -- editor has been created</span></li>
+                    <li><strong>ondestroy</strong><span> -- editor has been destroyed</span></li>
                 </ul>
-                <h4>Events raised by plugins</h4>
-                <h5>Insert/replace content Plugin</h5>
+                <h4>Events raised by plugins:</h4>
+                <h5>Insert/replace content plugin:</h5>
                 <ul>
-                    <li>onbeforeinsert</li>
-                    <li>oninsert</li>
-                </ul>
-
-                <h5>Paste handler</h5>
-                <ul>
-                    <li>onbeforehandlepaste</li>
-                    <li>onafterhandlepaste</li>
+                    <li><strong>onbeforeinsert</strong><span> -- fired before insertion occurs</span></li>
+                    <li><strong>oninsert</strong><span> -- fired after insertion occurs</span></li>
                 </ul>
 
-                <h5>Undo/redo</h5>
+                <h5>Paste handler:</h5>
                 <ul>
-                    <li>onbeforeundo</li>
-                    <li>onafterundo</li>
-                    <li>onbeforeredo</li>
-                    <li>onafterredo</li>
+                    <li><strong>onbeforehandlepaste</strong><span> -- fired before paste occurs</span></li>
+                    <li><strong>onafterhandlepaste</strong><span> -- fired after paste occurs</span></li>
+                </ul>
+
+                <h5>Undo/redo:</h5>
+                <ul>
+                    <li><strong>onbeforeundo</strong><span> -- fired before undo occurs</span></li>
+                    <li><strong>onafterundo</strong><span> -- fired after undo occurs</span></li>
+                    <li><strong>onbeforeredo</strong><span> -- fired before redo occurs</span></li>
+                    <li><strong>onafterredo</strong><span> -- fired after redo occurs</span></li>
                 </ul>
 
                 <h2>Methods</h2>
-                An ArteJS method or the public methods on the plugins can be called as the following:
+                An ArteJS method or public methods on the plugins can be called as the follows:
             <pre>
-                // Calling a ArteJS method
-                $(selector).Arte('methodName', arguments ..)
-                ArteInstance.methodName(arguments)
+                // Calling an ArteJS method
+                $(selector).Arte('methodName', arguments ..);
+
+                // Another way to call an ArteJS method
+                ArteInstance.methodName(arguments);
             </pre>
-                <h4>Methods on the editor</h4>
+                <h4>Methods on the editor:</h4>
                 <ul>
-                    <li>value <span>Get the innerHtml of the editor.</span></li>
-                    <li>outerValue <span>Get the outerHtml of the editor.</span></li>
-                    <li>focus <span>Set focus to the editor.</span></li>
-                    <li>destroy <span>Remove the editor from DOM.</span></li>
-                    <li>on <span>Attach an event listener to the editor.</span></li>
-                    <li>off <span>Remove the event listener from the editor.</span></li>
-                    <li>toggleStyleOnElement <span>Apply style to the editor</span></li>
+                    <li><strong>value</strong><span> -- get the innerHtml of the editor</span></li>
+                    <li><strong>outerValue</strong><span> -- get the outerHtml of the editor</span></li>
+                    <li><strong>focus</strong><span> -- set focus on the editor</span></li>
+                    <li><strong>destroy</strong><span> -- remove the editor from the DOM</span></li>
+                    <li><strong>on</strong><span> -- attach an event listener to the editor</span></li>
+                    <li><strong>off</strong><span> -- remove an event listener from the editor</span></li>
+                    <li><strong>toggleStyleOnElement</strong><span> -- apply a style to the editor</span></li>
                 </ul>
 
-                <h4>Public methods exposed by plugins</h4>
+                <h4>Public methods exposed by plugins:</h4>
 
-                <h5>State Detector Plugin</h5>
+                <h5>State Detector plugin:</h5>
                 <ul>
-                    <li>getState <span>Get the state of the selection for each command.</span></li>
+                    <li><strong>getState</strong><span> -- get the state of the selection for each command</span></li>
                 </ul>
 
-                <h5>Insert plugin</h5>
+                <h5>Insert plugin:</h5>
                 <ul>
-                    <li>insert <span>Insert HTML content into the editor.</span></li>
+                    <li><strong>insert</strong><span> -- insert HTML content into the editor</span></li>
                 </ul>
 
-                <h5>UndoManager plugin</h5>
+                <h5>UndoManager plugin:</h5>
                 <ul>
-                    <li>hasUndo <span>Whether the editor has undo information.</span></li>
-                    <li>hasRedo <span>Whether the editor has redo information.</span></li>
-                    <li>undo <span>Undo</span></li>
-                    <li>redo <span>Redo</span></li>
+                    <li><strong>hasUndo</strong><span> -- whether the editor has anything to undo</span></li>
+                    <li><strong>hasRedo</strong><span> -- whether the editor has anything to redo</span></li>
+                    <li><strong>undo</strong><span> -- undo a modification</span></li>
+                    <li><strong>redo</strong><span> -- redo a modification that was undone</span></li>
                 </ul>
 
                 <h1>ArteJS Cookbook</h1>
@@ -274,19 +280,20 @@ $(selector).Arte(options);
 // Once a rich text editor is created, any rich text method can now be executed as the following
 $(selector).Arte("methodName", parameter1, parameter2, ...);
 
-// Alternatively, a method can be applied to an Arte instance directly
+// Alternatively, a method can be applied to an Arte instance directly like this
 var editorInstances = $(selector).Arte();
 $(selector).Arte().each(function(){
     this.methodName(parameter1, parameter2);
 });
-// or
+
+// or like this
 editorInstances.get(0).methodName(parameter1, parameter2);
 
-// Example methods
+// One way to invoke methods
 $(selector).Arte("bold"); // make the selection bold
 $(selector).Arte("fontSize", "12px"); // set the fontsize of the selection to 12px
 
-// alternatively
+// Another way
 $(selector).Arte().each(function(){
     this.bold();
     this.fontSize("12px");
@@ -295,20 +302,20 @@ $(selector).Arte().each(function(){
 
                 <h4>Changing the way a rich text command is applied</h4>
                 <pre>
-// Many rich text commands can be applied using a tagName, style and class.  For example, bold command be applied as either
-// style (font-weight), class (with font-weight), tags (b or strong).  Arte allows us to choose how a rich text command
-// is applied using the following mechanism:
-// 1) Supplied in the command options ({commandAttrType = "styleName" | "className" | "tagName"})
-// 2) Inferred from the values in the options ({className = "..."})
-// 3) Using default attribute type specified in the configuration file (Arte.configuration.commandAttrType)
+// Many rich text commands can be applied using a tagName, style and class.  For example, the bold command be applied as either
+// a style (font-weight), a class (.font-weight), or as HTML tags (b or strong).  ArteJS allows us to choose how a rich text command
+// is applied using the following mechanisms:
+// 1) Supplying the command attribute type in the command options: ({commandAttrType = "styleName" | "className" | "tagName"})
+// 2) Inferring the command attribute type from the values in the options: ({className = "..."})
+// 3) Using the default command attribute type specified in the configuration file (Arte.configuration.commandAttrType)
 
-// Arte configuration allows setting the commandAttrType globally or can be changed for each command.
+// ArteJS configuration allows setting the commandAttrType globally or per command.
 // For the commands that can only be applied one way (e.g. H1, BlockQuotes, etc.) the commandAttrType is ignored.
 
 // Bold is applied based on the global configuration
 $(selector).Arte("bold");
 
-// Override the global configuration to apply bold using B/Strong tag
+// Override the global configuration to apply bold using B or Strong tags
 $(selector).Arte("bold", { tagName: "B" });
 $(selector).Arte("bold", { tagName: "STRONG" });
 
@@ -319,19 +326,22 @@ $(selector).Arte("bold", { className: "arte-font-weight-bold" });
 $(selector).Arte("bold", { styleName: "font-weight", styleValue: "bold" });
             </pre>
 
-                <h4>Getting/Setting the rich text values</h4>
+                <h4>Getting and setting the contents of the rich text editor</h4>
                 <pre>
-// Arte allows getting the innerValue or the outerValue (like outerHTML) of the editor
-// Get / set the value of a rich text editor
-var value = $(selector).Arte("value");
-$(selector).Arte("value", "This can be any <b>valid</b> html fragment.");
+// ArteJS allows getting the innerValue or the outerValue (like outerHTML) of the editor
 
-// Get the array of outer html of all rich text editors associated with this selector
-var outerValues = $(selector).Arte("outerValue");
+// Get the value of a rich text editor
+var value = $(selector).Arte("value");
+
+// Set the value of a rich text editor
+$(selector).Arte("value", "This can be any <b>valid</b> html fragment.");
 $(selector).Arte("value", "<div style='font-weight: bold'>This can only be a <span style='font-weight: bold'>single html element</span> </div>");
+
+// Get an array of the outerHTML of all rich text editors associated with this selector
+var outerValues = $(selector).Arte("outerValue");
             </pre>
 
-                <h4>Interacting with rich text command</h4>
+                <h4>Interacting with rich text commands</h4>
                 <pre>
 // Suppose we want to ensure that only valid values are used in rich text commands (e.g. a whitelist
 // for font-size and font-family) or we need to translate some command values (e.g. convert
@@ -364,9 +374,8 @@ $("#editor").Arte("on", {
 
                 <h4>Extending ArteJS</h4>
                 <pre>
-// Following is a basic template for a plugin
-(function(pluginManager)
-{
+// Basic template for a plugin
+(function(pluginManager) {
     // plugin internals
     var property;
     function pluginMethod() { }
@@ -377,11 +386,9 @@ $("#editor").Arte("on", {
         publicMethodB: pluginMethod
     });
 
-    var myPlugin = function ()
-    {
+    var myPlugin = function () {
         return {
-            init: function (textArea)
-            {
+            init: function (textArea) {
                 // any setup or listen to textArea events
             }
         }
@@ -391,18 +398,21 @@ $("#editor").Arte("on", {
     pluginManager.register("myPlugin", myPlugin);
 })($.Arte.pluginManager)
             </pre>
-                Here are a few <a href="https://github.com/vistaprint/ArteJS/blob/master/Editor/plugins">examples</a> of plugins.
+
+            Here are a few <a href="https://github.com/vistaprint/ArteJS/tree/master/src/editor/plugins">examples</a> of plugins.
+
             <h2>Toolbar</h2>
                 <h4>Configure toolbar dropdown</h4>
                 <pre>
-// Toolbar allows setting the display value and actual value that is applied to text
+// The toolbar allows setting the display value and actual value that is applied to text
 // Note that the values need to be set according to the commandAttrType configuration
-// Following are few of the examples of setting the styles
 
-// Simply apply the font-size.
+// Here are a few examples of setting the styles:
+
+// Simply apply the font-size
 $.Arte.Toolbar.configuration.buttons.fontSize.options = ["", 8, 10, 12, 15, 20];
 
-// Example where the display value different than the the actual value
+// Example of the display value being different from the actual value
 $.Arte.Toolbar.configuration.buttons.fontSize.options = [
     { display: "", value: "" },
     { display: "Smaller", value: 8 },
@@ -412,7 +422,7 @@ $.Arte.Toolbar.configuration.buttons.fontSize.options = [
     { display: "Larger", value: 20 }
 ];
 
-// The actual value is name of the class to be applied
+// Example where the actual value is the name of the class to be applied
 $.Arte.Toolbar.configuration.buttons.fontSize.options = [
     { display: "", value: "" },
     { display: "Smaller", value: "arte-font-weight-8" },
@@ -426,11 +436,11 @@ $.Arte.Toolbar.configuration.buttons.fontSize.options = [
                 There are two ways to skin the toolbar
             <ul>
                 <li>Overwrite the <a href="https://github.com/vistaprint/ArteJS/blob/gh-pages/Demos/CommonFiles/CSS/toolbar.css">default styles</a></li>
-                <li>Update the <a href="https://github.com/vistaprint/ArteJS/blob/master/Toolbar/Configuration.js#L248">configuration</a> to use your classes. </li>
+                <li>Update the <a href="https://github.com/vistaprint/ArteJS/blob/master/src/toolbar/Configuration.js#L248>configuration"> to use your classes</a></li>
             </ul>
-                <h1>Project details</h1>
+                <h1>Project Details</h1>
                 <h2>Project file structure</h2>
-                <strong>/Editor</strong>
+                <strong>/Editor:</strong>
                 <div class="indent">
                     <strong>/Core: </strong>rich text infrastructure classes
                 <br />
@@ -440,7 +450,7 @@ $.Arte.Toolbar.configuration.buttons.fontSize.options = [
                 <br />
                     <strong>/unittests: </strong>unit tests for each components
                 </div>
-                <strong>Toolbar</strong>
+                <strong>Toolbar:</strong>
                 <div class="indent">
                     <strong>/Buttons: </strong>various base button types
                 </div>
@@ -453,9 +463,9 @@ $.Arte.Toolbar.configuration.buttons.fontSize.options = [
                 <li>Create and navigate to a local directory for ArteJS code</li>
                 <li>Clone the git repository</li>
                 <li>Install node dependencies: execute "npm install"</li>
-                <li>Build ArteJS: Execute "Grunt all"</li>
+                <li>Build ArteJS: Execute "grunt all"</li>
             </ul>
-                There are many <a href="https://github.com/vistaprint/ArteJS/blob/master/Gruntfile.js">other grunt tasks</a> defined for conveniance.
+                There are many <a href="https://github.com/vistaprint/ArteJS/blob/master/Gruntfile.js">other grunt tasks</a> defined for convenience.
 
             </section>
 
@@ -464,7 +474,7 @@ $.Arte.Toolbar.configuration.buttons.fontSize.options = [
     <!-- FOOTER  -->
     <div id="footer_wrap" class="outer">
         <footer class="inner">
-            <p class="copyright">ArteJS maintained by <a href="https://github.com/vistaprint">vistaprint</a></p>
+            <p class="copyright">ArteJS maintained by <a href="https://github.com/vistaprint">Vistaprint</a></p>
             <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
         </footer>
     </div>
