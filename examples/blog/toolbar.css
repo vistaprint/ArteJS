@@ -1,0 +1,202 @@
+.toolbar
+{
+    background-color: lightgrey;
+    position: relative;
+}
+
+.btn-inner
+{
+    display: inline-block;
+    height: 16px;
+    width: 16px;
+    margin: 4px;
+}
+
+.toolbar-button:hover
+{
+
+}
+
+.btn
+{
+    display: inline-block;
+    border: grey 1px solid;
+}
+
+.tooltip {
+    position: absolute;
+    background-color: lightblue;
+    line-height: 12px;
+    font-size: 10px;
+}
+
+.toolbar select
+{
+    width: auto;
+    margin-bottom: 0px;
+}
+
+.bold
+{
+   background-image: url("../Content/Icons/text_bold.png");
+}
+
+.italic
+{
+   background-image: url("../Content/Icons/text_italic.png");
+}
+
+.underline
+{
+   background-image: url("../Content/Icons/text_underline.png");
+}
+
+.blockquote
+{
+   background-image: url("../Content/Icons/text_padding_left.png");
+}
+
+.textAlignLeft
+{
+   background-image: url("../Content/Icons/text_align_left.png");
+}
+
+.textAlignCenter
+{
+   background-image: url("../Content/Icons/text_align_center.png");
+}
+
+.textAlignRight
+{
+   background-image: url("../Content/Icons/text_align_right.png");
+}
+
+.h1
+{
+   background-image: url("../Content/Icons/text_heading_1.png");
+}
+
+.h2
+{
+   background-image: url("../Content/Icons/text_heading_2.png");
+}
+
+.h3
+{
+   background-image: url("../Content/Icons/text_heading_3.png");
+}
+
+.h4
+{
+   background-image: url("../Content/Icons/text_heading_4.png");
+}
+
+.h5
+{
+   background-image: url("../Content/Icons/text_heading_5.png");
+}
+
+.h6
+{
+   background-image: url("../Content/Icons/text_heading_6.png");
+}
+
+.subscript
+{
+   background-image: url("../Content/Icons/text_subscript.png");
+}
+
+.superscript
+{
+   background-image: url("../Content/Icons/text_superscript.png");
+}
+
+.unorderedList
+{
+   background-image: url("../Content/Icons/text_list_bullets.png");
+}
+
+.orderedList
+{
+   background-image: url("../Content/Icons/text_list_numbers.png");
+}
+
+.undo
+{
+   background-image: url("../Content/Icons/arrow_undo.png");
+}
+
+.redo
+{
+   background-image: url("../Content/Icons/arrow_redo.png");
+}
+
+.insertLink
+{
+    background-image: url("../Content/Icons/link_add.png");
+}
+
+.diabled
+{
+    background-color: gray;
+}
+
+.selected
+{
+    background-color: lightblue;
+}
+
+select
+{
+    vertical-align: top;
+}
+
+
+.inline-dialog
+{
+    position: absolute;
+    text-align: center;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    display:none;
+    background-color:rgba(0, 0, 0, 0.5);
+}
+
+.content-wrapper
+{
+    position: relative;
+    top: 50%;
+}
+
+.dialog-content,
+.ok-cancel,
+.text-to-show,
+.url-input
+{
+    display: inline-block;
+}
+
+.text-to-show,
+.url-input {
+    background-color: white;
+    padding: 0px 5px;
+}
+
+.text-to-show input,
+.url-input input{
+    height: auto;
+    margin: 0px;
+}
+
+.insert-dialog
+{
+    background-color: lightgrey;
+}
+
+.inline-dialog-button
+{
+    display: inline-block;
+    text-align: center;
+    cursor: default;
+}

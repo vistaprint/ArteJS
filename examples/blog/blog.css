@@ -1,0 +1,19 @@
+.toolbar
+{
+	border: 1px dotted black;
+	width: 200px;
+}
+
+.btn-inner
+{
+	border: 1px solid black;
+	display: inline-block;
+	height: 25px;
+	width: 25px;
+	margin-right: 5px;
+}
+
+.toolbar :after .bold
+{
+	content: "Bold";
+}
