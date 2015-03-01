@@ -12,3 +12,4 @@
 /Pages
 *.user
 tests/dependencies
+*.DS_Store
