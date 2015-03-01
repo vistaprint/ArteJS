@@ -1,61 +1,5 @@
 (function(){
 
-	var attachEventHandlers = function($newBlogPost){
-		$newBlogPost.find(".edit-button").click(function(){
-			var arte = $newBlogPost.find(".editor").Arte();
-
-			$newBlogPost.find(".blog-post-content").hide();
-			$newBlogPost.find(".edit-button").hide();
-			$newBlogPost.find(".blog-post-editor").show();
-			$newBlogPost.find(".save-button").show();
-
-			// Set focus to the editor so the toolbar becomes enabled
-			arte.focus();
-
-			var blogPostContent = $newBlogPost.find(".blog-post-content").html();
-			arte.get(0).value(blogPostContent);
-		});
-
-		$newBlogPost.find(".save-button").click(function(){
-			var arte = $newBlogPost.find(".editor").Arte();
-
-			var editorContent = arte.get(0).value();
-			$newBlogPost.find(".blog-post-content").html(editorContent);
-
-			$newBlogPost.find(".blog-post-editor").hide();
-			$newBlogPost.find(".save-button").hide();
-			$newBlogPost.find(".blog-post-content").show();
-			$newBlogPost.find(".edit-button").show();
-		});
-	};
-
-	var createTextEditor = function($newBlogPost){
-		// Initialize and get a reference to the editor
-		var arte = $newBlogPost.find(".editor").Arte({
-			editorType: $.Arte.constants.editorTypes.richText,
-			styles: { // default styles can be passed in as well
-				height: "100px",
-				width: "400px",
-				overflow: "auto",
-				border: "1px dashed gray"
-			}
-		});
-
-		// Initialize the toolbar
-
-		// TODO figure out why this is needed for the demo to work
-		$.Arte.Toolbar.configuration.requireEditorFocus = false;
-
-		var buttons = ["bold", "italic", "underline"];
-
-		$newBlogPost.find(".toolbar").ArteToolbar({
-			buttons: buttons
-		});
-
-		// Hide the editor initially
-		$newBlogPost.find(".blog-post-editor").hide();
-	};
-
 	var getBlogPostTitle = function(defaultTitle){
 		var blogPostTitle;
 		if (defaultTitle !== undefined) {
@@ -69,19 +13,9 @@
 	};
 
 	var createNewBlogPost = function(defaultTitle, defaultText){
-		var blogPost = new BlogPost();
 		var blogPostTitle = getBlogPostTitle(defaultTitle);
-		var $newBlogPost = $(blogPost.createHtml(blogPostTitle));
-
-		$("#blog-posts").prepend($newBlogPost);
-
-		if (defaultText !== undefined) {
-			$newBlogPost.find(".blog-post-content").html(defaultText);
-		}
-
-		createTextEditor($newBlogPost, defaultText);
-
-		attachEventHandlers($newBlogPost);
+		var blogPost = new BlogPost(blogPostTitle, defaultText);
+		blogPost.addToParentContainer($("#blog-posts"));
 	};
 
 	var initializePage = function(){
