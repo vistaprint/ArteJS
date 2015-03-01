@@ -1,21 +1,6 @@
 var BlogPost = function(){
 
-    var createBlogPostEditor = function(){
-        var $blogPostEditor = $('<div class="blog-post-editor">');
-
-        var $toolbar = $('<div class="toolbar"></div>');
-        $blogPostEditor.append($toolbar);
-
-        var $editor = $('<div class="editor"></div>');
-        $blogPostEditor.append($editor);
-
-        var $saveButton = $('<button class="save-button">Save</button>');
-        $blogPostEditor.append($saveButton);
-
-        return $blogPostEditor;
-    };
-
-    this.createHtml = function(title){
+    var createBlogPostContentHtml = function(title){
         var $blogPost = $('<div class="blog-post"></div>');
 
         var $blogPostTitle = $('<h2 class="blog-post-title">' +
@@ -27,6 +12,27 @@ var BlogPost = function(){
 
         var $editButton = $('<button class="edit-button">Edit</button>');
         $blogPost.append($editButton);
+
+        return $blogPost;
+    }
+
+    var createBlogPostEditor = function(){
+        var $blogPostEditor = $('<div class="blog-post-editor">');
+
+        var $saveButton = $('<button class="save-button">Save</button>');
+        $blogPostEditor.append($saveButton);
+
+        var $toolbar = $('<div class="toolbar"></div>');
+        $blogPostEditor.append($toolbar);
+
+        var $editor = $('<div class="editor"></div>');
+        $blogPostEditor.append($editor);
+
+        return $blogPostEditor;
+    };
+
+    this.createHtml = function(title){
+        var $blogPost = createBlogPostContentHtml(title);
 
         var $blogPostEditor = createBlogPostEditor();
         $blogPost.append($blogPostEditor);
