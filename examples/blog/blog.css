@@ -8,12 +8,23 @@
 {
 	border: 1px solid black;
 	display: inline-block;
-	height: 25px;
-	width: 25px;
+	height: 18px;
+	width: 18px;
 	margin-right: 5px;
+	background: no-repeat center center;
 }
 
-.toolbar :after .bold
+.btn-inner.bold
 {
-	content: "Bold";
+   background-image: url("icons/text_bold.png");
+}
+
+.btn-inner.italic
+{
+   background-image: url("icons/text_italic.png");
+}
+
+.btn-inner.underline
+{
+   background-image: url("icons/text_underline.png");
 }
