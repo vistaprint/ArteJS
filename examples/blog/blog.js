@@ -1,6 +1,4 @@
 (function(){
-	var someVariable = "helloWorld";
-
 	// Initialize and get a reference to the editor
 	var arte = $(".editor").Arte({
 		editorType: $.Arte.constants.editorTypes.richText,
@@ -28,6 +26,18 @@
 	$(".blog-post-editor").hide();
 
 	// Set up event handlers
+
+	$("#add-button").click(function(){
+		var blogPost = new BlogPost();
+
+		var $newPostTitle = $('#new-post-title');
+		var blogPostTitle = $newPostTitle.val();
+		$newPostTitle.val(""); // clear out for next post
+		
+		var $newBlogPost = $(blogPost.createHtml(blogPostTitle));
+
+		$("#blog-posts").prepend($newBlogPost);
+	});
 
 	$(".edit-button").click(function(){
 		$(".blog-post-content").hide();
