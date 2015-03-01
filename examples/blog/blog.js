@@ -23,7 +23,18 @@
 		buttons: buttons
 	});
 
+
+	// Hide the editor initially
+	$(".blog-post-editor").hide();
+
+	// Set up event handlers
+
 	$(".edit-button").click(function(){
+		$(".blog-post-content").hide();
+		$(".edit-button").hide();
+		$(".blog-post-editor").show();
+		$(".save-button").show();
+
 		// Set focus to the editor so the toolbar becomes enabled
 		arte.focus();
 
@@ -34,6 +45,11 @@
 	$(".save-button").click(function(){
 		var editorContent = arte.get(0).value();
 		$(".blog-post-content").html(editorContent);
+
+		$(".blog-post-editor").hide();
+		$(".save-button").hide();
+		$(".blog-post-content").show();
+		$(".edit-button").show();
 	});
 
 })();
