@@ -7,11 +7,11 @@ var BlogPost = function(){
             title + '</h2>');
         $blogPost.append($blogPostTitle);
 
-        var $blogPostContent = $('<div class="blog-post-content"></div>');
-        $blogPost.append($blogPostContent);
-
         var $editButton = $('<button class="edit-button">Edit</button>');
         $blogPost.append($editButton);
+
+        var $blogPostContent = $('<div class="blog-post-content"></div>');
+        $blogPost.append($blogPostContent);
 
         return $blogPost;
     }

@@ -34,8 +34,8 @@
 		var arte = $newBlogPost.find(".editor").Arte({
 			editorType: $.Arte.constants.editorTypes.richText,
 			styles: { // default styles can be passed in as well
-				height: "200px",
-				width: "300px",
+				height: "100px",
+				width: "400px",
 				overflow: "auto",
 				border: "1px dashed gray"
 			}
