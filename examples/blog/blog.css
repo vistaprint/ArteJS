@@ -1,3 +1,10 @@
+.blog
+{
+	background-color: #F0D8AA;
+	width: 75%;
+	margin: 0 auto;
+}
+
 .blog-post-content
 {
 	height: 100px;
