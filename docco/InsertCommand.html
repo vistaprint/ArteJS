@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>InsertCommand.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page">
+            
+              
+              <a class="source" href="Arte.html">
+                Arte.js
+              </a>
+            
+              
+              <a class="source" href="Commands.html">
+                Commands.js
+              </a>
+            
+              
+              <a class="source" href="Configuration.html">
+                Configuration.js
+              </a>
+            
+              
+              <a class="source" href="PluginManager.html">
+                PluginManager.js
+              </a>
+            
+              
+              <a class="source" href="TextArea.html">
+                TextArea.js
+              </a>
+            
+              
+              <a class="source" href="Util.html">
+                Util.js
+              </a>
+            
+              
+              <a class="source" href="jquery-dom-cleanup.html">
+                jquery-dom-cleanup.js
+              </a>
+            
+              
+              <a class="source" href="jquery-dom-manipulation.html">
+                jquery-dom-manipulation.js
+              </a>
+            
+              
+              <a class="source" href="jquery-dom-traversal.html">
+                jquery-dom-traversal.js
+              </a>
+            
+              
+              <a class="source" href="rangy-blockElementApplier.html">
+                rangy-blockElementApplier.js
+              </a>
+            
+              
+              <a class="source" href="rangy-elementApplierOptions.html">
+                rangy-elementApplierOptions.js
+              </a>
+            
+              
+              <a class="source" href="rangy-extensions.html">
+                rangy-extensions.js
+              </a>
+            
+              
+              <a class="source" href="rangy-inlineElementApplier.html">
+                rangy-inlineElementApplier.js
+              </a>
+            
+              
+              <a class="source" href="richtextCommandApplier.html">
+                richtextCommandApplier.js
+              </a>
+            
+              
+              <a class="source" href="InsertCommand.html">
+                InsertCommand.js
+              </a>
+            
+              
+              <a class="source" href="StateDetector.html">
+                StateDetector.js
+              </a>
+            
+              
+              <a class="source" href="UndoManager.html">
+                UndoManager.js
+              </a>
+            
+              
+              <a class="source" href="keyboardEventHandler.html">
+                keyboardEventHandler.js
+              </a>
+            
+              
+              <a class="source" href="pasteHandler.html">
+                pasteHandler.js
+              </a>
+            
+              
+              <a class="source" href="Button.html">
+                Button.js
+              </a>
+            
+              
+              <a class="source" href="ButtonWithDialog.html">
+                ButtonWithDialog.js
+              </a>
+            
+              
+              <a class="source" href="ButtonWithDropDown.html">
+                ButtonWithDropDown.js
+              </a>
+            
+              
+              <a class="source" href="Configuration.html">
+                Configuration.js
+              </a>
+            
+              
+              <a class="source" href="SelectionManager.html">
+                SelectionManager.js
+              </a>
+            
+              
+              <a class="source" href="toolbar.html">
+                toolbar.js
+              </a>
+            
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>InsertCommand.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>﻿<span class="hljs-comment">/**
+ * @fileoverview: A plugin to add command to insert and/or replace content
+ */</span>
+(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(pluginManager)</span> </span>{
+    <span class="hljs-keyword">var</span> InsertCommand = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+        <span class="hljs-keyword">var</span> publicApi = {
+            insert: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(options)</span> </span>{
+                $.extend(options, {
+                    execute: <span class="hljs-literal">true</span>
+                });
+                <span class="hljs-keyword">this</span>.triggerEvent($.Arte.constants.eventNames.onbeforeinsert, options);
+
+                <span class="hljs-keyword">if</span> (!options.execute) {
+                    <span class="hljs-keyword">return</span>;
+                }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>Ensure that the selection is valid</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>                <span class="hljs-keyword">var</span> selectionIsInContentEditable = $.Arte.util.isSelectionInElement(<span class="hljs-keyword">this</span>.$el);
+                <span class="hljs-keyword">if</span> (!selectionIsInContentEditable &amp;&amp; $.Arte.configuration.requireFocus) {
+                    <span class="hljs-keyword">return</span>;
+                }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>var element = document.createTextNode(options.commandValue);</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>                <span class="hljs-keyword">var</span> element = $(<span class="hljs-string">"&lt;span&gt;"</span>).html(options.commandValue).get(<span class="hljs-number">0</span>);
+                <span class="hljs-keyword">var</span> selection;
+                <span class="hljs-keyword">if</span> (selectionIsInContentEditable) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>If we have a selection, insert the content at the cursor position</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>                    selection = rangy.getSelection();
+                    <span class="hljs-keyword">var</span> range = selection.getAllRanges()[<span class="hljs-number">0</span>];
+                    <span class="hljs-keyword">if</span> (!selection.isCollapsed) {
+                        range.deleteContents();
+                    }
+                    range.collapse();
+                    range.insertNode(element);
+                } <span class="hljs-keyword">else</span> {
+                    <span class="hljs-keyword">this</span>.$el.append(element);
+                }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>Select the newly inserted content.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>                selection = rangy.getSelection();
+                selection.setSingleRange(rangy.util.createRangeFromElements(element, element));
+
+                <span class="hljs-keyword">this</span>.triggerEvent($.Arte.constants.eventNames.onafterinsert, options);
+            }
+        };
+        $.extend($.Arte.TextArea.prototype, publicApi);
+
+        $.extend($.Arte.constants.eventNames, {
+            <span class="hljs-string">"onbeforeinsert"</span>: <span class="hljs-string">"onbeforeinsert"</span>,
+            <span class="hljs-string">"onafterinsert"</span>: <span class="hljs-string">"onafterinsert"</span>
+        });
+
+        <span class="hljs-keyword">return</span> {
+            init: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{ <span class="hljs-comment">/* no op */</span> }
+        };
+    };
+    pluginManager.register(<span class="hljs-string">"insertCommand"</span>, InsertCommand);
+})($.Arte.pluginManager);</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

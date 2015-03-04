@@ -1,0 +1,55 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+    <title>Rich text editor</title>
+    <link rel="stylesheet" href="../CommonFiles/CSS/page.css" />
+    <link rel="stylesheet" href="../CommonFiles/CSS/arte.css" />
+    <link rel="stylesheet" href="../CommonFiles/CSS/toolbar.css" />
+</head>
+<body>
+    <div id="demo">
+        <!-- Markup to host the toolbar and the editor-->
+
+        <div class="pair1" style="position: relative">
+            Toolbar and Editor #1
+            <div class="toolbar"></div>
+            <div class="editor"></div>
+        </div>
+        <div class="pair2" style="position: relative">
+            Toolbar and Editor #2
+            <div class="toolbar"></div>
+            <div class="editor"></div>
+        </div>
+        <!--Included the Rich text files-->
+        <!-- Include the Arte scripts-->
+        <script src="../CommonFiles/Scripts/3rdParty/JQuery/jquery-1.9.1.js"></script>
+        <script src="../CommonFiles/Scripts/ArteJS/rangy.debug.js"></script>
+        <script src="../CommonFiles/Scripts/ArteJS/arte.debug.js"></script>
+        <script src="../CommonFiles/Scripts/ArteJS/toolbar.debug.js"></script>
+
+        <script type="text/javascript">
+            $(function () {
+                // List of buttons to show on the toolbar 
+                var buttons = ["bold", "italic", "underline", "blockquote", "textAlignLeft", "textAlignCenter", "textAlignRight", "h1", "h2", "h3", "h4", "h5", "h6",
+                    "subscript", "superscript", "unorderedList", "orderedList", "undo", "redo", "fontSize", "fontFamily", "color", "backgroundColor", "insertLink"
+                ];
+
+                // Initialize the editors
+                $(".editor").Arte();
+
+                // Initialize the toolbar
+                $(".pair1 .toolbar").ArteToolbar({
+                    editor: $(".pair1 .editor"),
+                    buttons: buttons
+                });
+
+                // Initialize the toolbar
+                $(".pair2 .toolbar").ArteToolbar({
+                    editor: $(".pair2 .editor"),
+                    buttons: buttons
+                });
+            });
+        </script>
+    </div>
+</body>
+</html>

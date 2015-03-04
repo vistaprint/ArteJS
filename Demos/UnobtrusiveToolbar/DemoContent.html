@@ -1,0 +1,45 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <link rel="stylesheet" href="../CommonFiles/CSS/page.css" />
+    <!-- Some styles for the toolbar -->
+    <link href="demo.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <div id="demo">
+        <!-- Build the toolbar -->
+        <!-- IE requires the unselectable=on attribute to make the elements not selectable (so that they do not take the focus from the text field) -->
+        <div class="toolbar">
+            <div data-command="bold" unselectable="on">B</div>
+            <div data-command="italic" unselectable="on">I</div>
+            <div data-command="underline" unselectable="on">U</div>
+            <div data-command="orderedList" unselectable="on">OL</div>
+            <!-- Undo and Redo are initially disabled -->
+            <div data-command="undo" unselectable="on" class="disabled">-</div>
+            <div data-command="redo" unselectable="on" class="disabled">+</div>
+            <!-- ensure that your values are lowercase and that font names with multiple words are enclosed in single quotes-->
+            <select data-select="fontFamily">
+                <option value="arial">Arial</option>
+                <option value="'courier new'">Courier New</option>
+                <option value="'comic sans ms'">Comic Sans MS</option>
+            </select>
+            <select data-select="fontSize">
+                <option value="8px">8</option>
+                <option value="16px">16</option>
+                <option value="24px">24</option>
+            </select>
+        </div>
+
+        <!-- Div to host the Arte instance -->
+        <div class="editor"></div>
+
+        <!--Dependencies-->
+        <script src="../CommonFiles/Scripts/3rdParty/JQuery/jquery-1.9.1.js"></script>
+        <script src="../CommonFiles/Scripts/ArteJS/rangy.debug.js"></script>
+        <script src="../CommonFiles/Scripts/ArteJS/arte.debug.js"></script>
+
+        <script src="demo.js"></script>
+    </div>
+
+</body>
+</html>

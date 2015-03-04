@@ -1,0 +1,92 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+    <title>Rich text editor</title>
+    <link rel="stylesheet" href="../CommonFiles/CSS/3rdParty/Bootstrap/bootstrap.min.css" />
+
+    <link rel="stylesheet" href="../CommonFiles/CSS/page.css" />
+    <link rel="stylesheet" href="../CommonFiles/CSS/arte.css" />
+    <link rel="stylesheet" href="../CommonFiles/CSS/toolbar.css" />
+
+    <link rel="stylesheet" href="../CommonFiles/CSS/arte_commands.css" />
+    <link rel="stylesheet" href="demo.css" />
+    <style type="text/css">
+        body > div
+        {
+            margin: 0px;
+        }
+    </style>
+</head>
+<body>
+    <div class="configuration">
+        <div class="editorConfiguration">
+            <h4>Editor Configuration</h4>
+            <label class="checkbox">
+                <input class="requireFocus" type="checkbox" value="focus">
+                Require Focus
+            </label>
+
+            <label class="checkbox">
+                <input class="editorIsPlainText" type="checkbox" value="plainText">
+                Editor is plainText
+            </label>
+
+            <div class="commandAttrTypeSelector">
+                Command Attribute Type
+                        <label class="radio">
+                            <input type="radio" name="attrType" value="className" />
+                            Class 
+                        </label>
+                <label class="radio">
+                    <input type="radio" name="attrType" value="styleName" />
+                    Style
+                </label>
+                <label class="radio">
+                    <input type="radio" name="attrType" value="tagName" />
+                    Tag
+                </label>
+            </div>
+
+        </div>
+        <div class="divider"></div>
+        <div class="toolbarConfiguration">
+            <h4>Toolbar Configuration</h4>
+            <label class="checkbox">
+                <input class="requireEditorFocus" type="checkbox" value="focus">
+                Require Editor Focus
+            </label>
+        </div>
+    </div>
+
+
+    <div class="box" id="text_editor">
+        <h4>Editor and toolbar</h4>
+        <div class="toolbar"></div>
+        <div class="editor"></div>
+    </div>
+
+    <div class="box">
+        <h4>HTML Rendered</h4>
+        <div class="result"></div>
+    </div>
+
+    <div class="box">
+        <h4>Html Markup</h4>
+        <div class="resultHtml"></div>
+    </div>
+
+    <div class="box">
+        <h4>Various events raised by Arte</h4>
+        <div class="console"></div>
+    </div>
+
+    <!-- Dependencies -->
+    <script src="../CommonFiles/Scripts/3rdParty/JQuery/jquery-1.9.1.js"></script>
+    <script src="../CommonFiles/Scripts/ArteJS/rangy.debug.js"></script>
+    <script src="../CommonFiles/Scripts/ArteJS/arte.debug.js"></script>
+    <script src="../CommonFiles/Scripts/ArteJS/toolbar.debug.js"></script>
+
+    <script type="text/javascript" src="demo.js"></script>
+
+</body>
+</html>

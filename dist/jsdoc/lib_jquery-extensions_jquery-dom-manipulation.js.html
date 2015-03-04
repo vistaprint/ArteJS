@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: lib/jquery-extensions/jquery-dom-manipulation.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: lib/jquery-extensions/jquery-dom-manipulation.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @fileoverview: Various dom manipulation function used by Arte
+ */
+(function($) {
+    $.Arte = $.Arte || {};
+    $.Arte.dom = $.Arte.dom || {};
+    var dom = $.Arte.dom;
+    var configuration = $.Arte.configuration;
+    var constants = $.Arte.constants;
+
+    /**
+     * wrap elements/nodes
+     * In addition, if there is a rangySelectionBoundary span before or after the nodes to wrap,
+     * include them in the wrap container
+     */
+    $.extend(dom, {
+        wrapWithOptions: function(jNodes, options) {
+            var wrapContainer = $();
+            if (jNodes.length > 0) {
+                wrapContainer = dom.createContainer(options);
+                var rangyStartTag = dom.prevSiblingIncludingTextNodes(jNodes.first());
+                if (rangyStartTag.hasClass(configuration.rangySelectionBoundaryClassName)) {
+                    wrapContainer.append(rangyStartTag);
+                }
+                var rangyEndTag = dom.nextSiblingIncludingTextNodes(jNodes.last());
+
+                jNodes.first().before(wrapContainer);
+                jNodes.each(function() {
+                    wrapContainer.append(this);
+                });
+
+                if (rangyEndTag.hasClass(configuration.rangySelectionBoundaryClassName)) {
+                    wrapContainer.append(rangyEndTag);
+                }
+            }
+            return wrapContainer;
+        },
+
+        /*
+         * unwrap the elements/nodes
+         * Unwrap each element in the jQuery selection and add br tag at the end if specified.
+         */
+        unwrapWithOptions: function(jNodes, options) {
+            var children = $();
+
+            jNodes.each(function() {
+                var $this = $(this);
+
+                // While unwrapping a block element, don't lose the line breaks before or after
+                // For example: unwrapping the div in abc&lt;div>elementToUnwrap&lt;/div>otherContent
+                // should result in abc&lt;br/>elementToUnwrap&lt;br/>otherContent to maintain visual
+                // consistency
+
+                var filter = function(index, node) {
+                    return !$(node).is(":emptyTextOrRangySpan");
+                };
+
+                if ($this.is(":block")) {
+                    var prevNode = dom.prevSiblingIncludingTextNodes($this, filter);
+                    if (prevNode.length &amp;&amp; !prevNode.is(":block") &amp;&amp; options &amp;&amp; options.insertBr) {
+                        $this.before($("&lt;br />"));
+                    }
+
+                    // We need to insert a &lt;br/> after this node if the current node has next node that is not block.
+                    var nextNode = dom.nextSiblingIncludingTextNodes($this, filter);
+                    if (nextNode.length &amp;&amp; !nextNode.is(":block") &amp;&amp; options &amp;&amp; options.insertBr) {
+                        $this.after($("&lt;br />"));
+                    }
+                }
+
+                var contents = $(this).contents();
+
+                // If this node has any styles, we should maintain them
+                if (options &amp;&amp; options.maintainStyles) {
+                    var newContainer = dom.wrapWithOptions(contents, {
+                        applierTagName: "span",
+                        attr: {
+                            style: $this.attr("style")
+                        }
+                    });
+                    newContainer.unwrap();
+                    children = children.add(newContainer);
+                } else {
+                    contents.first().unwrap();
+                    children = children.add(contents);
+                }
+            });
+
+            return children;
+        },
+
+        /**
+         * Surround a set of nodes with a block element.  If a block parent exist, apply the styles
+         * to the existing block if there are attributes, or update the tagName of the block parent.
+         */
+        wrapWithBlock: function(jNodes, blockOptions) {
+            // Get a block Parent for this range.
+            var blockParent = dom.closestWithAtMostOneBlockChild(jNodes, blockOptions.topEditableParent);
+            var tagName = blockParent.prop("tagName");
+            var nodesToWrap;
+            // Does not have a block parent with desired tagName or the block parent is LI
+            // LI is a special case as we never want to wrap a LI with anything (except )
+            if (!blockParent.first().is(":block") || // top parent is not a block element
+                blockOptions.applierTagName === constants.tagName.LI || // want to wrap the nodes with LI
+                !configuration.styleableTags[tagName]) {
+                nodesToWrap = blockParent;
+            } else if (tagName === blockOptions.applierTagName ||
+                (configuration.styleableTags[tagName] &amp;&amp; configuration.styleableTags[blockOptions.applierTagName])) {
+                if (blockOptions.styleName) {
+                    blockParent.css(blockOptions.styleName, blockOptions.styleValue);
+                } else if (blockOptions.className) {
+                    blockParent.addClass(blockOptions.className);
+                } else {
+                    // e.g. wrapping a LI with a OL.
+                    nodesToWrap = blockParent;
+                }
+            } else {
+                nodesToWrap = jNodes;
+            }
+
+            var container = nodesToWrap ? dom.wrapWithOptions(nodesToWrap, blockOptions) : blockParent;
+
+            // In case there is a immediate sibling of line break, remove that
+            var br = container.next();
+            if (br.length &amp;&amp; br.prop("tagName") == constants.tagName.BR) {
+                br.remove();
+            }
+            return container;
+        },
+
+        /*
+         * block unsurround
+         */
+        unwrapBlock: function(jNodes, blockOptions) {
+            var blockParent = dom.closestWithCommand(jNodes, blockOptions);
+            if (!blockParent.length) {
+                return jNodes;
+            }
+
+            // In this case the blockParent has multiple styles or is the contentEditable, only remove the styles
+            if (!$.isEmptyObject(dom.getStyles(blockParent)) ||
+                    dom.getClasses(blockParent).length > 0 ||
+                    blockParent.attr("contentEditable")) {
+                if (blockOptions.styleName) {
+                    return blockParent.css(blockOptions.styleName, "");
+                } else if (blockOptions.className) {
+                    return blockParent.removeClass(blockOptions.className);
+                }
+            } else {
+                return dom.unwrapWithOptions(blockParent, {
+                    "insertBr": true
+                });
+            }
+        },
+
+        /**
+         * Create a dom element with options
+         * @param {object} a set of dom element creation options
+         *                 tagName, attr, styleName+styleValue, className
+         * @return {jQuery} A jQuery element
+         */
+        createContainer: function(options) {
+            var tagName = options.applierTagName || "div";
+            var newElement = $("&lt;" + tagName + ">");
+            if (options.attr) {
+                newElement.attr(options.attr);
+            }
+            if (options.styleName &amp;&amp; options.styleValue) {
+                newElement.css(options.styleName, options.styleValue);
+            }
+            if (options.className) {
+                newElement.addClass(options.className);
+            }
+            return newElement;
+        }
+    });
+})(jQuery);
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#allHaveClass">allHaveClass</a></li><li><a href="global.html#block">block</a></li><li><a href="global.html#blockChildren">blockChildren</a></li><li><a href="global.html#closestWithAtMostOneBlockChild">closestWithAtMostOneBlockChild</a></li><li><a href="global.html#closestWithCommandValue">closestWithCommandValue</a></li><li><a href="global.html#createContainer">createContainer</a></li><li><a href="global.html#destroy">destroy</a></li><li><a href="global.html#element">element</a></li><li><a href="global.html#focus">focus</a></li><li><a href="global.html#getAllStates">getAllStates</a></li><li><a href="global.html#getClasses">getClasses</a></li><li><a href="global.html#getClassWithPattern">getClassWithPattern</a></li><li><a href="global.html#getState">getState</a></li><li><a href="global.html#getStyles">getStyles</a></li><li><a href="global.html#hasClassWithPattern">hasClassWithPattern</a></li><li><a href="global.html#hasCommandApplied">hasCommandApplied</a></li><li><a href="global.html#hasCommandValue">hasCommandValue</a></li><li><a href="global.html#hasSameClass">hasSameClass</a></li><li><a href="global.html#hasSameListParent">hasSameListParent</a></li><li><a href="global.html#hasSameStyle">hasSameStyle</a></li><li><a href="global.html#hasSameStyleAndClass">hasSameStyleAndClass</a></li><li><a href="global.html#init">init</a></li><li><a href="global.html#listSurrounded">listSurrounded</a></li><li><a href="global.html#nextSiblingIncludingTextNodes">nextSiblingIncludingTextNodes</a></li><li><a href="global.html#off">off</a></li><li><a href="global.html#on">on</a></li><li><a href="global.html#outerValue">outerValue</a></li><li><a href="global.html#prevSiblingIncludingTextNodes">prevSiblingIncludingTextNodes</a></li><li><a href="global.html#removeClassWithPattern">removeClassWithPattern</a></li><li><a href="global.html#styleableTags">styleableTags</a></li><li><a href="global.html#toggleStyleOnElement">toggleStyleOnElement</a></li><li><a href="global.html#triggerEvent">triggerEvent</a></li><li><a href="global.html#value">value</a></li><li><a href="global.html#wrapWithBlock">wrapWithBlock</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta1</a> on Thu Feb 26 2015 14:06:25 GMT-0500 (Eastern Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

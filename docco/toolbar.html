@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>toolbar.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page">
+            
+              
+              <a class="source" href="Arte.html">
+                Arte.js
+              </a>
+            
+              
+              <a class="source" href="Commands.html">
+                Commands.js
+              </a>
+            
+              
+              <a class="source" href="Configuration.html">
+                Configuration.js
+              </a>
+            
+              
+              <a class="source" href="PluginManager.html">
+                PluginManager.js
+              </a>
+            
+              
+              <a class="source" href="TextArea.html">
+                TextArea.js
+              </a>
+            
+              
+              <a class="source" href="Util.html">
+                Util.js
+              </a>
+            
+              
+              <a class="source" href="jquery-dom-cleanup.html">
+                jquery-dom-cleanup.js
+              </a>
+            
+              
+              <a class="source" href="jquery-dom-manipulation.html">
+                jquery-dom-manipulation.js
+              </a>
+            
+              
+              <a class="source" href="jquery-dom-traversal.html">
+                jquery-dom-traversal.js
+              </a>
+            
+              
+              <a class="source" href="rangy-blockElementApplier.html">
+                rangy-blockElementApplier.js
+              </a>
+            
+              
+              <a class="source" href="rangy-elementApplierOptions.html">
+                rangy-elementApplierOptions.js
+              </a>
+            
+              
+              <a class="source" href="rangy-extensions.html">
+                rangy-extensions.js
+              </a>
+            
+              
+              <a class="source" href="rangy-inlineElementApplier.html">
+                rangy-inlineElementApplier.js
+              </a>
+            
+              
+              <a class="source" href="richtextCommandApplier.html">
+                richtextCommandApplier.js
+              </a>
+            
+              
+              <a class="source" href="InsertCommand.html">
+                InsertCommand.js
+              </a>
+            
+              
+              <a class="source" href="StateDetector.html">
+                StateDetector.js
+              </a>
+            
+              
+              <a class="source" href="UndoManager.html">
+                UndoManager.js
+              </a>
+            
+              
+              <a class="source" href="keyboardEventHandler.html">
+                keyboardEventHandler.js
+              </a>
+            
+              
+              <a class="source" href="pasteHandler.html">
+                pasteHandler.js
+              </a>
+            
+              
+              <a class="source" href="Button.html">
+                Button.js
+              </a>
+            
+              
+              <a class="source" href="ButtonWithDialog.html">
+                ButtonWithDialog.js
+              </a>
+            
+              
+              <a class="source" href="ButtonWithDropDown.html">
+                ButtonWithDropDown.js
+              </a>
+            
+              
+              <a class="source" href="Configuration.html">
+                Configuration.js
+              </a>
+            
+              
+              <a class="source" href="SelectionManager.html">
+                SelectionManager.js
+              </a>
+            
+              
+              <a class="source" href="toolbar.html">
+                toolbar.js
+              </a>
+            
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>toolbar.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>﻿(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">($)</span> </span>{
+    $.fn.ArteToolbar = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(options)</span> </span>{
+        <span class="hljs-keyword">if</span> (options &amp;&amp; <span class="hljs-keyword">typeof</span>(options) === <span class="hljs-string">"object"</span>) {
+            options = $.extend({}, $.Arte.Toolbar.Defaults, options);
+        }
+        <span class="hljs-keyword">var</span> result = $();
+        <span class="hljs-keyword">this</span>.each(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+            <span class="hljs-keyword">var</span> toolbar = $(<span class="hljs-keyword">this</span>).data(<span class="hljs-string">"ArteToolbar"</span>);
+            <span class="hljs-keyword">if</span> (options &amp;&amp; <span class="hljs-keyword">typeof</span>(options) === <span class="hljs-string">"string"</span>) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>Most likely this is a method call</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>                <span class="hljs-keyword">var</span> methodName = options;
+                <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.constructor === $.Arte.Toolbar) {
+                    toolbar = <span class="hljs-keyword">this</span>;
+                }
+
+                <span class="hljs-keyword">if</span> (!toolbar) {
+                    <span class="hljs-keyword">throw</span> <span class="hljs-string">"This is not a arte toolbar."</span>;
+                }
+
+                <span class="hljs-keyword">var</span> returnValue = toolbar[methodName].call(toolbar);
+                result.push(returnValue);
+            } <span class="hljs-keyword">else</span> {
+                <span class="hljs-keyword">if</span> (!toolbar) {
+                    $.extend(options, {
+                        element: $(<span class="hljs-keyword">this</span>)
+                    });
+                    toolbar = <span class="hljs-keyword">new</span> $.Arte.Toolbar(options);
+                    $(<span class="hljs-keyword">this</span>).data(<span class="hljs-string">"ArteToolbar"</span>, toolbar);
+                }
+                result.push(toolbar);
+            }
+        });
+        <span class="hljs-keyword">return</span> result;
+    };
+
+    $.Arte.Toolbar = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(options)</span> </span>{
+        <span class="hljs-keyword">var</span> me = <span class="hljs-keyword">this</span>;
+
+        me.$el = options.element;
+
+        me.$el.on({
+            <span class="hljs-string">"click mousedown mouseup"</span>: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> </span>{
+                e.stopPropagation();
+                e.preventDefault();
+            }
+        });</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>Clear the selection if user clicks outside of the editor</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        $(<span class="hljs-string">"body"</span>).on({
+            click: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+                me.selectionManager.clear();
+                me.refresh();
+            }
+        });
+
+        <span class="hljs-keyword">var</span> buttons = [];</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>Initialize and render each of the button</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        $.each(options.buttons, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(index, buttonName)</span> </span>{
+            <span class="hljs-keyword">var</span> config = $.Arte.Toolbar.configuration.buttons[buttonName];
+            <span class="hljs-keyword">var</span> button = <span class="hljs-keyword">new</span> config.js(me, buttonName, config);
+            button.render();
+
+            buttons.push(button);
+        });</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>Create the containers for the inline dialog and tooltip</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">var</span> classes = $.Arte.Toolbar.configuration.classes;
+        $(<span class="hljs-string">"&lt;div&gt;"</span>).addClass(classes.dialog.container).appendTo(me.$el);
+        $(<span class="hljs-string">"&lt;div&gt;"</span>).addClass(classes.tooltip.container).appendTo(me.$el);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>public api</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">this</span>.refresh = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+            <span class="hljs-keyword">var</span> selectedField = me.selectionManager.getSelectedEditors()[<span class="hljs-number">0</span>];
+            <span class="hljs-keyword">var</span> state = (selectedField) ? selectedField.getState() : {};
+            $.each(buttons, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+                <span class="hljs-keyword">this</span>.refresh(state);
+            });
+        };
+
+        <span class="hljs-keyword">this</span>.destroy = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+            me.$el.removeData(<span class="hljs-string">"ArteToolbar"</span>);
+
+            $.each(buttons, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+                <span class="hljs-keyword">this</span>.unrender();
+            });
+            $(<span class="hljs-string">"."</span> + classes.dialog.container).remove();
+            $(<span class="hljs-string">"."</span> + classes.tooltip.container).remove();
+            me.$el.off();
+        };</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>Setup the selection manager</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        me.selectionManager = <span class="hljs-keyword">new</span> $.Arte.Toolbar.SelectionManager();
+        me.selectionManager.initialize({
+            editor: options.editor
+        });
+        me.selectionManager.on({
+            selectionchanged: me.refresh
+        });
+
+        me.refresh();
+    };
+})(jQuery);</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

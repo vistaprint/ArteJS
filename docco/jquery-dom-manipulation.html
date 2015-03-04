@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>jquery-dom-manipulation.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page">
+            
+              
+              <a class="source" href="Arte.html">
+                Arte.js
+              </a>
+            
+              
+              <a class="source" href="Commands.html">
+                Commands.js
+              </a>
+            
+              
+              <a class="source" href="Configuration.html">
+                Configuration.js
+              </a>
+            
+              
+              <a class="source" href="PluginManager.html">
+                PluginManager.js
+              </a>
+            
+              
+              <a class="source" href="TextArea.html">
+                TextArea.js
+              </a>
+            
+              
+              <a class="source" href="Util.html">
+                Util.js
+              </a>
+            
+              
+              <a class="source" href="jquery-dom-cleanup.html">
+                jquery-dom-cleanup.js
+              </a>
+            
+              
+              <a class="source" href="jquery-dom-manipulation.html">
+                jquery-dom-manipulation.js
+              </a>
+            
+              
+              <a class="source" href="jquery-dom-traversal.html">
+                jquery-dom-traversal.js
+              </a>
+            
+              
+              <a class="source" href="rangy-blockElementApplier.html">
+                rangy-blockElementApplier.js
+              </a>
+            
+              
+              <a class="source" href="rangy-elementApplierOptions.html">
+                rangy-elementApplierOptions.js
+              </a>
+            
+              
+              <a class="source" href="rangy-extensions.html">
+                rangy-extensions.js
+              </a>
+            
+              
+              <a class="source" href="rangy-inlineElementApplier.html">
+                rangy-inlineElementApplier.js
+              </a>
+            
+              
+              <a class="source" href="richtextCommandApplier.html">
+                richtextCommandApplier.js
+              </a>
+            
+              
+              <a class="source" href="InsertCommand.html">
+                InsertCommand.js
+              </a>
+            
+              
+              <a class="source" href="StateDetector.html">
+                StateDetector.js
+              </a>
+            
+              
+              <a class="source" href="UndoManager.html">
+                UndoManager.js
+              </a>
+            
+              
+              <a class="source" href="keyboardEventHandler.html">
+                keyboardEventHandler.js
+              </a>
+            
+              
+              <a class="source" href="pasteHandler.html">
+                pasteHandler.js
+              </a>
+            
+              
+              <a class="source" href="Button.html">
+                Button.js
+              </a>
+            
+              
+              <a class="source" href="ButtonWithDialog.html">
+                ButtonWithDialog.js
+              </a>
+            
+              
+              <a class="source" href="ButtonWithDropDown.html">
+                ButtonWithDropDown.js
+              </a>
+            
+              
+              <a class="source" href="Configuration.html">
+                Configuration.js
+              </a>
+            
+              
+              <a class="source" href="SelectionManager.html">
+                SelectionManager.js
+              </a>
+            
+              
+              <a class="source" href="toolbar.html">
+                toolbar.js
+              </a>
+            
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>jquery-dom-manipulation.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-comment">/**
+ * @fileoverview: Various dom manipulation function used by Arte
+ */</span>
+(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">($)</span> </span>{
+    $.Arte = $.Arte || {};
+    $.Arte.dom = $.Arte.dom || {};
+    <span class="hljs-keyword">var</span> dom = $.Arte.dom;
+    <span class="hljs-keyword">var</span> configuration = $.Arte.configuration;
+    <span class="hljs-keyword">var</span> constants = $.Arte.constants;
+
+    <span class="hljs-comment">/**
+     * wrap elements/nodes
+     * In addition, if there is a rangySelectionBoundary span before or after the nodes to wrap,
+     * include them in the wrap container
+     */</span>
+    $.extend(dom, {
+        wrapWithOptions: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(jNodes, options)</span> </span>{
+            <span class="hljs-keyword">var</span> wrapContainer = $();
+            <span class="hljs-keyword">if</span> (jNodes.length &gt; <span class="hljs-number">0</span>) {
+                wrapContainer = dom.createContainer(options);
+                <span class="hljs-keyword">var</span> rangyStartTag = dom.prevSiblingIncludingTextNodes(jNodes.first());
+                <span class="hljs-keyword">if</span> (rangyStartTag.hasClass(configuration.rangySelectionBoundaryClassName)) {
+                    wrapContainer.append(rangyStartTag);
+                }
+                <span class="hljs-keyword">var</span> rangyEndTag = dom.nextSiblingIncludingTextNodes(jNodes.last());
+
+                jNodes.first().before(wrapContainer);
+                jNodes.each(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+                    wrapContainer.append(<span class="hljs-keyword">this</span>);
+                });
+
+                <span class="hljs-keyword">if</span> (rangyEndTag.hasClass(configuration.rangySelectionBoundaryClassName)) {
+                    wrapContainer.append(rangyEndTag);
+                }
+            }
+            <span class="hljs-keyword">return</span> wrapContainer;
+        },
+
+        <span class="hljs-comment">/*
+         * unwrap the elements/nodes
+         * Unwrap each element in the jQuery selection and add br tag at the end if specified.
+         */</span>
+        unwrapWithOptions: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(jNodes, options)</span> </span>{
+            <span class="hljs-keyword">var</span> children = $();
+
+            jNodes.each(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+                <span class="hljs-keyword">var</span> $<span class="hljs-keyword">this</span> = $(<span class="hljs-keyword">this</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>While unwrapping a block element, don’t lose the line breaks before or after
+For example: unwrapping the div in abc<div>elementToUnwrap</div>otherContent
+should result in abc<br/>elementToUnwrap<br/>otherContent to maintain visual
+consistency</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+                <span class="hljs-keyword">var</span> filter = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(index, node)</span> </span>{
+                    <span class="hljs-keyword">return</span> !$(node).is(<span class="hljs-string">":emptyTextOrRangySpan"</span>);
+                };
+
+                <span class="hljs-keyword">if</span> ($<span class="hljs-keyword">this</span>.is(<span class="hljs-string">":block"</span>)) {
+                    <span class="hljs-keyword">var</span> prevNode = dom.prevSiblingIncludingTextNodes($<span class="hljs-keyword">this</span>, filter);
+                    <span class="hljs-keyword">if</span> (prevNode.length &amp;&amp; !prevNode.is(<span class="hljs-string">":block"</span>) &amp;&amp; options &amp;&amp; options.insertBr) {
+                        $<span class="hljs-keyword">this</span>.before($(<span class="hljs-string">"&lt;br /&gt;"</span>));
+                    }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>We need to insert a <br/> after this node if the current node has next node that is not block.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>                    <span class="hljs-keyword">var</span> nextNode = dom.nextSiblingIncludingTextNodes($<span class="hljs-keyword">this</span>, filter);
+                    <span class="hljs-keyword">if</span> (nextNode.length &amp;&amp; !nextNode.is(<span class="hljs-string">":block"</span>) &amp;&amp; options &amp;&amp; options.insertBr) {
+                        $<span class="hljs-keyword">this</span>.after($(<span class="hljs-string">"&lt;br /&gt;"</span>));
+                    }
+                }
+
+                <span class="hljs-keyword">var</span> contents = $(<span class="hljs-keyword">this</span>).contents();</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>If this node has any styles, we should maintain them</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>                <span class="hljs-keyword">if</span> (options &amp;&amp; options.maintainStyles) {
+                    <span class="hljs-keyword">var</span> newContainer = dom.wrapWithOptions(contents, {
+                        applierTagName: <span class="hljs-string">"span"</span>,
+                        attr: {
+                            style: $<span class="hljs-keyword">this</span>.attr(<span class="hljs-string">"style"</span>)
+                        }
+                    });
+                    newContainer.unwrap();
+                    children = children.add(newContainer);
+                } <span class="hljs-keyword">else</span> {
+                    contents.first().unwrap();
+                    children = children.add(contents);
+                }
+            });
+
+            <span class="hljs-keyword">return</span> children;
+        },
+
+        <span class="hljs-comment">/**
+         * Surround a set of nodes with a block element.  If a block parent exist, apply the styles
+         * to the existing block if there are attributes, or update the tagName of the block parent.
+         */</span>
+        wrapWithBlock: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(jNodes, blockOptions)</span> </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>Get a block Parent for this range.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            <span class="hljs-keyword">var</span> blockParent = dom.closestWithAtMostOneBlockChild(jNodes, blockOptions.topEditableParent);
+            <span class="hljs-keyword">var</span> tagName = blockParent.prop(<span class="hljs-string">"tagName"</span>);
+            <span class="hljs-keyword">var</span> nodesToWrap;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>Does not have a block parent with desired tagName or the block parent is LI
+LI is a special case as we never want to wrap a LI with anything (except )</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            <span class="hljs-keyword">if</span> (!blockParent.first().is(<span class="hljs-string">":block"</span>) || <span class="hljs-comment">// top parent is not a block element</span>
+                blockOptions.applierTagName === constants.tagName.LI || <span class="hljs-comment">// want to wrap the nodes with LI</span>
+                !configuration.styleableTags[tagName]) {
+                nodesToWrap = blockParent;
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (tagName === blockOptions.applierTagName ||
+                (configuration.styleableTags[tagName] &amp;&amp; configuration.styleableTags[blockOptions.applierTagName])) {
+                <span class="hljs-keyword">if</span> (blockOptions.styleName) {
+                    blockParent.css(blockOptions.styleName, blockOptions.styleValue);
+                } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (blockOptions.className) {
+                    blockParent.addClass(blockOptions.className);
+                } <span class="hljs-keyword">else</span> {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>e.g. wrapping a LI with a OL.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>                    nodesToWrap = blockParent;
+                }
+            } <span class="hljs-keyword">else</span> {
+                nodesToWrap = jNodes;
+            }
+
+            <span class="hljs-keyword">var</span> container = nodesToWrap ? dom.wrapWithOptions(nodesToWrap, blockOptions) : blockParent;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>In case there is a immediate sibling of line break, remove that</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            <span class="hljs-keyword">var</span> br = container.next();
+            <span class="hljs-keyword">if</span> (br.length &amp;&amp; br.prop(<span class="hljs-string">"tagName"</span>) == constants.tagName.BR) {
+                br.remove();
+            }
+            <span class="hljs-keyword">return</span> container;
+        },
+
+        <span class="hljs-comment">/*
+         * block unsurround
+         */</span>
+        unwrapBlock: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(jNodes, blockOptions)</span> </span>{
+            <span class="hljs-keyword">var</span> blockParent = dom.closestWithCommand(jNodes, blockOptions);
+            <span class="hljs-keyword">if</span> (!blockParent.length) {
+                <span class="hljs-keyword">return</span> jNodes;
+            }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>In this case the blockParent has multiple styles or is the contentEditable, only remove the styles</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            <span class="hljs-keyword">if</span> (!$.isEmptyObject(dom.getStyles(blockParent)) ||
+                    dom.getClasses(blockParent).length &gt; <span class="hljs-number">0</span> ||
+                    blockParent.attr(<span class="hljs-string">"contentEditable"</span>)) {
+                <span class="hljs-keyword">if</span> (blockOptions.styleName) {
+                    <span class="hljs-keyword">return</span> blockParent.css(blockOptions.styleName, <span class="hljs-string">""</span>);
+                } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (blockOptions.className) {
+                    <span class="hljs-keyword">return</span> blockParent.removeClass(blockOptions.className);
+                }
+            } <span class="hljs-keyword">else</span> {
+                <span class="hljs-keyword">return</span> dom.unwrapWithOptions(blockParent, {
+                    <span class="hljs-string">"insertBr"</span>: <span class="hljs-literal">true</span>
+                });
+            }
+        },
+
+        <span class="hljs-comment">/**
+         * Create a dom element with options
+         * @param {object} a set of dom element creation options
+         *                 tagName, attr, styleName+styleValue, className
+         * @return {jNode} A jQuery element
+         */</span>
+        createContainer: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(options)</span> </span>{
+            <span class="hljs-keyword">var</span> tagName = options.applierTagName || <span class="hljs-string">"div"</span>;
+            <span class="hljs-keyword">var</span> newElement = $(<span class="hljs-string">"&lt;"</span> + tagName + <span class="hljs-string">"&gt;"</span>);
+            <span class="hljs-keyword">if</span> (options.attr) {
+                newElement.attr(options.attr);
+            }
+            <span class="hljs-keyword">if</span> (options.styleName &amp;&amp; options.styleValue) {
+                newElement.css(options.styleName, options.styleValue);
+            }
+            <span class="hljs-keyword">if</span> (options.className) {
+                newElement.addClass(options.className);
+            }
+            <span class="hljs-keyword">return</span> newElement;
+        }
+    });
+})(jQuery);</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

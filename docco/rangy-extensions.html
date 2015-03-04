@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>rangy-extensions.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page">
+            
+              
+              <a class="source" href="Arte.html">
+                Arte.js
+              </a>
+            
+              
+              <a class="source" href="Commands.html">
+                Commands.js
+              </a>
+            
+              
+              <a class="source" href="Configuration.html">
+                Configuration.js
+              </a>
+            
+              
+              <a class="source" href="PluginManager.html">
+                PluginManager.js
+              </a>
+            
+              
+              <a class="source" href="TextArea.html">
+                TextArea.js
+              </a>
+            
+              
+              <a class="source" href="Util.html">
+                Util.js
+              </a>
+            
+              
+              <a class="source" href="jquery-dom-cleanup.html">
+                jquery-dom-cleanup.js
+              </a>
+            
+              
+              <a class="source" href="jquery-dom-manipulation.html">
+                jquery-dom-manipulation.js
+              </a>
+            
+              
+              <a class="source" href="jquery-dom-traversal.html">
+                jquery-dom-traversal.js
+              </a>
+            
+              
+              <a class="source" href="rangy-blockElementApplier.html">
+                rangy-blockElementApplier.js
+              </a>
+            
+              
+              <a class="source" href="rangy-elementApplierOptions.html">
+                rangy-elementApplierOptions.js
+              </a>
+            
+              
+              <a class="source" href="rangy-extensions.html">
+                rangy-extensions.js
+              </a>
+            
+              
+              <a class="source" href="rangy-inlineElementApplier.html">
+                rangy-inlineElementApplier.js
+              </a>
+            
+              
+              <a class="source" href="richtextCommandApplier.html">
+                richtextCommandApplier.js
+              </a>
+            
+              
+              <a class="source" href="InsertCommand.html">
+                InsertCommand.js
+              </a>
+            
+              
+              <a class="source" href="StateDetector.html">
+                StateDetector.js
+              </a>
+            
+              
+              <a class="source" href="UndoManager.html">
+                UndoManager.js
+              </a>
+            
+              
+              <a class="source" href="keyboardEventHandler.html">
+                keyboardEventHandler.js
+              </a>
+            
+              
+              <a class="source" href="pasteHandler.html">
+                pasteHandler.js
+              </a>
+            
+              
+              <a class="source" href="Button.html">
+                Button.js
+              </a>
+            
+              
+              <a class="source" href="ButtonWithDialog.html">
+                ButtonWithDialog.js
+              </a>
+            
+              
+              <a class="source" href="ButtonWithDropDown.html">
+                ButtonWithDropDown.js
+              </a>
+            
+              
+              <a class="source" href="Configuration.html">
+                Configuration.js
+              </a>
+            
+              
+              <a class="source" href="SelectionManager.html">
+                SelectionManager.js
+              </a>
+            
+              
+              <a class="source" href="toolbar.html">
+                toolbar.js
+              </a>
+            
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>rangy-extensions.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>$(<span class="hljs-built_in">document</span>).ready(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>Make sure that rangy is initialized first.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    rangy.init();</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>Function that takes a given range, and finds all the blocks inside of it.
+Block is something that is surrounded by a block element on either side.
+Returns an array of ranges where each range represents all of the text nodes
+inside a one block element.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    rangy.rangePrototype.splitByBlock = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+        <span class="hljs-keyword">var</span> blockRanges = [];</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>clone current range just in case.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">var</span> range = <span class="hljs-keyword">this</span>.cloneRange();
+        <span class="hljs-keyword">if</span> (range.collapsed) {
+            <span class="hljs-keyword">return</span> range;
+        }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>get all non-empty text nodes from the range as well as all block elements and line breaks</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">var</span> nodes = range.getNodes([<span class="hljs-number">3</span>, <span class="hljs-number">1</span>], <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(node)</span> </span>{
+            <span class="hljs-keyword">return</span> isBlockOrLineBreak(node) || (node.nodeType === <span class="hljs-number">3</span> &amp;&amp; !isWhitespaceNode(node));
+        });
+        <span class="hljs-keyword">var</span> tempRange;
+        <span class="hljs-keyword">var</span> currentTopNode = <span class="hljs-literal">null</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>loop through the collection of text nodes removing them when we find a new range</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">while</span> (nodes.length &gt; <span class="hljs-number">0</span>) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>If this is a block element. Skip over it</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            <span class="hljs-keyword">if</span> (nodes[<span class="hljs-number">0</span>].nodeType === <span class="hljs-number">1</span>) {
+                <span class="hljs-keyword">if</span> (!(currentTopNode &amp;&amp; $(currentTopNode).has(nodes[<span class="hljs-number">0</span>]).length)) {
+                    currentTopNode = nodes[<span class="hljs-number">0</span>];
+                }
+                nodes.splice(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>);
+                <span class="hljs-keyword">continue</span>;
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (currentTopNode &amp;&amp; !$(currentTopNode).has(nodes[<span class="hljs-number">0</span>]).length) {
+                currentTopNode = <span class="hljs-literal">null</span>;
+            }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>Node has siblings or it’s parent is not a block level element</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            <span class="hljs-keyword">if</span> (nodes[<span class="hljs-number">0</span>].parentNode.childNodes.length &gt; <span class="hljs-number">1</span> || !isBlockOrLineBreak(getTopParentWithSingleChild(nodes[<span class="hljs-number">0</span>]))) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>Create a new temporary range.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>                tempRange = rangy.createRangyRange();
+                tempRange.setStartBefore(nodes[<span class="hljs-number">0</span>]);
+                <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, l = nodes.length; i &lt; l; i++) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>If this is a block element. Skip over it</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>                    <span class="hljs-keyword">if</span> (nodes[i].nodeType === <span class="hljs-number">1</span>) {
+                        <span class="hljs-keyword">continue</span>;
+                    }
+                    <span class="hljs-keyword">if</span> (isBlockOrLineBreak(nodes[i].nextSibling) ||
+                        (!nodes[i].nextSibling &amp;&amp; isBlockOrLineBreak(nodes[i].parentNode)) ||
+                        (nodes[i + <span class="hljs-number">1</span>] &amp;&amp; isBlockOrLineBreak(nodes[i + <span class="hljs-number">1</span>]))) {
+                        tempRange.setEndAfter(nodes[i]);
+                        <span class="hljs-keyword">break</span>;
+                    }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <p>Is the next node within the block parent</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>                    <span class="hljs-keyword">if</span> (currentTopNode &amp;&amp; !$(currentTopNode).has(nodes[i + <span class="hljs-number">1</span>]).length) {
+                        tempRange.setEndAfter(nodes[i]);
+                        <span class="hljs-keyword">break</span>;
+                    }
+                }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-12">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              <p>If we didn’t find any block elements (i.e. begging of the range is the same as the end)
+Then set the end to the very last element in the list</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>                <span class="hljs-keyword">if</span> (tempRange.startContainer === tempRange.endContainer &amp;&amp; tempRange.startOffset === tempRange.endOffset) {
+                    i--;
+                    tempRange.setEndAfter(nodes[i]);
+                }
+                blockRanges.push(tempRange);
+                nodes.splice(<span class="hljs-number">0</span>, i + <span class="hljs-number">1</span>);
+            } <span class="hljs-keyword">else</span> {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-13">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-13">&#182;</a>
+              </div>
+              <p>Doesn’t have siblings</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>                <span class="hljs-keyword">if</span> (isBlockOrLineBreak(getTopParentWithSingleChild(nodes[<span class="hljs-number">0</span>]))) {
+                    tempRange = rangy.createRangyRange();
+                    tempRange.selectNodeContents(nodes[<span class="hljs-number">0</span>]);
+                    blockRanges.push(tempRange);
+                    nodes.splice(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>);
+                }
+            }
+        }
+        <span class="hljs-keyword">return</span> blockRanges;
+    };</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-14">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-14">&#182;</a>
+              </div>
+              <p>Helper function to find all text nodes of a given node.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">var</span> collectTextNodes = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(element, texts)</span> </span>{
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> child = element.firstChild; child !== <span class="hljs-literal">null</span>; child = child.nextSibling) {
+            <span class="hljs-keyword">if</span> (child.nodeType === <span class="hljs-number">3</span>) {
+                texts.push(child);
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (child.nodeType === <span class="hljs-number">1</span>) {
+                collectTextNodes(child, texts);
+            }
+        }
+    };
+
+    <span class="hljs-keyword">var</span> getTopNodes = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(nodes)</span> </span>{
+        <span class="hljs-keyword">var</span> newNodeCollection = [];
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, l = nodes.length; i &lt; l; i++) {
+            <span class="hljs-keyword">var</span> foundParent = <span class="hljs-literal">false</span>;
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> j = <span class="hljs-number">0</span>, len = nodes.length; j &lt; len; j++) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-15">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-15">&#182;</a>
+              </div>
+              <p>if current node is a child of any other node in the list, skip over it</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>                <span class="hljs-keyword">if</span> ($.contains(nodes[j], nodes[i])) {
+                    foundParent = <span class="hljs-literal">true</span>;
+                    <span class="hljs-keyword">break</span>;
+                }
+            }
+            <span class="hljs-keyword">if</span> (!foundParent) {
+                newNodeCollection.push(nodes[i]);
+            }
+        }
+        <span class="hljs-keyword">return</span> newNodeCollection;
+    };
+
+    <span class="hljs-keyword">var</span> getTopParentWithSingleChild = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(node)</span> </span>{
+        <span class="hljs-keyword">if</span> (node.parentNode.childNodes.length === <span class="hljs-number">1</span>) {
+            <span class="hljs-keyword">return</span> getTopParentWithSingleChild(node.parentNode);
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-keyword">return</span> node;
+        }
+
+    };</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-16">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-16">&#182;</a>
+              </div>
+              <p>“A whitespace node is either a Text node whose data is the empty string; or
+a Text node whose data consists only of one or more tabs (0x0009), line
+feeds (0x000A), carriage returns (0x000D), and/or spaces (0x0020), and whose
+parent is an Element whose resolved value for “white-space” is “normal” or
+“nowrap”; or a Text node whose data consists only of one or more tabs
+(0x0009), carriage returns (0x000D), and/or spaces (0x0020), and whose
+parent is an Element whose resolved value for “white-space” is “pre-line”.”</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">var</span> isWhitespaceNode = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(node)</span> </span>{
+        <span class="hljs-keyword">if</span> (!node || node.nodeType != <span class="hljs-number">3</span>) {
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+        }
+        <span class="hljs-keyword">var</span> text = node.data;
+        <span class="hljs-keyword">if</span> (text === <span class="hljs-string">""</span> || text === <span class="hljs-string">"\uFEFF"</span>) {
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+        }
+        <span class="hljs-keyword">var</span> parent = node.parentNode;
+        <span class="hljs-keyword">if</span> (!parent || parent.nodeType != <span class="hljs-number">1</span>) {
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+        }
+        <span class="hljs-keyword">var</span> computedWhiteSpace = getComputedStyleProperty(node.parentNode, <span class="hljs-string">"whiteSpace"</span>);
+
+        <span class="hljs-keyword">return</span> ((<span class="hljs-regexp">/^[\t\n\r ]+$/</span>).test(text) &amp;&amp; (<span class="hljs-regexp">/^(normal|nowrap)$/</span>).test(computedWhiteSpace)) ||
+            ((<span class="hljs-regexp">/^[\t\r ]+$/</span>).test(text) &amp;&amp; computedWhiteSpace == <span class="hljs-string">"pre-line"</span>);
+    };
+
+    <span class="hljs-keyword">var</span> getComputedStyleProperty;
+
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> <span class="hljs-built_in">window</span>.getComputedStyle != <span class="hljs-string">"undefined"</span>) {
+        getComputedStyleProperty = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(el, propName)</span> </span>{
+            <span class="hljs-keyword">return</span> rangy.dom.getWindow(el).getComputedStyle(el, <span class="hljs-literal">null</span>)[propName];
+        };
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> <span class="hljs-built_in">document</span>.documentElement.currentStyle != <span class="hljs-string">"undefined"</span>) {
+        getComputedStyleProperty = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(el, propName)</span> </span>{
+            <span class="hljs-keyword">return</span> el.currentStyle[propName];
+        };
+    } <span class="hljs-keyword">else</span> {
+        <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">"Can't create getComputedStyleProperty"</span>);
+    }
+
+    <span class="hljs-keyword">var</span> inlineDisplayRegex = <span class="hljs-regexp">/^(none|inline(-block|-table)?)$/i</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-17">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-17">&#182;</a>
+              </div>
+              <p>“A block node is either an Element whose “display” property does not have
+resolved value “inline” or “inline-block” or “inline-table” or “none”, or a
+Document, or a DocumentFragment.”</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">var</span> isBlockOrLineBreak = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(node)</span> </span>{
+        <span class="hljs-keyword">if</span> (!node) {
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+        }
+        <span class="hljs-keyword">var</span> nodeType = node.nodeType;
+        <span class="hljs-keyword">return</span> nodeType == <span class="hljs-number">1</span> &amp;&amp; (!inlineDisplayRegex.test(getComputedStyleProperty(node, <span class="hljs-string">"display"</span>)) ||
+            node.tagName === <span class="hljs-string">"BR"</span>) || nodeType == <span class="hljs-number">9</span> || nodeType == <span class="hljs-number">11</span>;
+    };
+
+    <span class="hljs-comment">/**
+     * Constructs a range from a saved selection using the start and end marker
+     * @param {rangySelection} savedSelection
+     * @return rangyRange object
+     */</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getRangeFromSavedSelection</span><span class="hljs-params">(savedSelection)</span> </span>{
+        <span class="hljs-keyword">var</span> rangeInfo = savedSelection.rangeInfos[<span class="hljs-number">0</span>];
+        <span class="hljs-keyword">if</span> (rangeInfo.collapsed) { <span class="hljs-comment">// Nothing is selected</span>
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
+        }
+
+        <span class="hljs-keyword">var</span> startElement = $(<span class="hljs-string">"#"</span> + rangeInfo.startMarkerId)[<span class="hljs-number">0</span>];
+        <span class="hljs-keyword">var</span> endElement = $(<span class="hljs-string">"#"</span> + rangeInfo.endMarkerId)[<span class="hljs-number">0</span>];
+        <span class="hljs-keyword">return</span> createRangeFromElements(startElement, endElement);
+    }
+
+    <span class="hljs-comment">/**
+     * Create a rangy range using the startElement and endElement
+     * @param {htmlElement} startElement
+     * @param {htmlElement} startElement
+     * @return rangyRange object
+     */</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">createRangeFromElements</span><span class="hljs-params">(startElement, endElement, excludStartEndElements)</span> </span>{
+        <span class="hljs-keyword">var</span> range = rangy.createRangyRange();
+        <span class="hljs-keyword">var</span> startOp = excludStartEndElements ? <span class="hljs-string">"setStartAfter"</span> : <span class="hljs-string">"setStartBefore"</span>;
+        <span class="hljs-keyword">var</span> endop = excludStartEndElements ? <span class="hljs-string">"setEndBefore"</span> : <span class="hljs-string">"setEndAfter"</span>;
+        range[startOp](startElement);
+        range[endop](endElement);
+        <span class="hljs-keyword">return</span> range;
+    }
+
+    <span class="hljs-comment">/**
+     * Get non-whitespace text nodes
+     * @param {rangyRange} Range object
+     * @return Collection of matched text nodes
+     */</span>
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getTextNodes</span><span class="hljs-params">(range)</span> </span>{
+        <span class="hljs-keyword">if</span> (!range.collapsed) {
+            <span class="hljs-keyword">return</span> $(range.getNodes([<span class="hljs-number">3</span>])).filter(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+                <span class="hljs-keyword">return</span> !isWhitespaceNode(<span class="hljs-keyword">this</span>);
+            });
+        }
+    }
+
+    rangy.util.getRangeFromSavedSelection = getRangeFromSavedSelection;
+    rangy.util.createRangeFromElements = createRangeFromElements;
+    rangy.util.getTextNodes = getTextNodes;
+
+    rangy.util.isWhitespaceNode = isWhitespaceNode;
+    rangy.util.isBlockOrLineBreak = isBlockOrLineBreak;
+    rangy.util.getTopNodes = getTopNodes;
+    rangy.util.getTopParentWithSingleChild = getTopParentWithSingleChild;
+
+});</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

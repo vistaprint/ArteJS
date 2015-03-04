@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>pasteHandler.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page">
+            
+              
+              <a class="source" href="Arte.html">
+                Arte.js
+              </a>
+            
+              
+              <a class="source" href="Commands.html">
+                Commands.js
+              </a>
+            
+              
+              <a class="source" href="Configuration.html">
+                Configuration.js
+              </a>
+            
+              
+              <a class="source" href="PluginManager.html">
+                PluginManager.js
+              </a>
+            
+              
+              <a class="source" href="TextArea.html">
+                TextArea.js
+              </a>
+            
+              
+              <a class="source" href="Util.html">
+                Util.js
+              </a>
+            
+              
+              <a class="source" href="jquery-dom-cleanup.html">
+                jquery-dom-cleanup.js
+              </a>
+            
+              
+              <a class="source" href="jquery-dom-manipulation.html">
+                jquery-dom-manipulation.js
+              </a>
+            
+              
+              <a class="source" href="jquery-dom-traversal.html">
+                jquery-dom-traversal.js
+              </a>
+            
+              
+              <a class="source" href="rangy-blockElementApplier.html">
+                rangy-blockElementApplier.js
+              </a>
+            
+              
+              <a class="source" href="rangy-elementApplierOptions.html">
+                rangy-elementApplierOptions.js
+              </a>
+            
+              
+              <a class="source" href="rangy-extensions.html">
+                rangy-extensions.js
+              </a>
+            
+              
+              <a class="source" href="rangy-inlineElementApplier.html">
+                rangy-inlineElementApplier.js
+              </a>
+            
+              
+              <a class="source" href="richtextCommandApplier.html">
+                richtextCommandApplier.js
+              </a>
+            
+              
+              <a class="source" href="InsertCommand.html">
+                InsertCommand.js
+              </a>
+            
+              
+              <a class="source" href="StateDetector.html">
+                StateDetector.js
+              </a>
+            
+              
+              <a class="source" href="UndoManager.html">
+                UndoManager.js
+              </a>
+            
+              
+              <a class="source" href="keyboardEventHandler.html">
+                keyboardEventHandler.js
+              </a>
+            
+              
+              <a class="source" href="pasteHandler.html">
+                pasteHandler.js
+              </a>
+            
+              
+              <a class="source" href="Button.html">
+                Button.js
+              </a>
+            
+              
+              <a class="source" href="ButtonWithDialog.html">
+                ButtonWithDialog.js
+              </a>
+            
+              
+              <a class="source" href="ButtonWithDropDown.html">
+                ButtonWithDropDown.js
+              </a>
+            
+              
+              <a class="source" href="Configuration.html">
+                Configuration.js
+              </a>
+            
+              
+              <a class="source" href="SelectionManager.html">
+                SelectionManager.js
+              </a>
+            
+              
+              <a class="source" href="toolbar.html">
+                toolbar.js
+              </a>
+            
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>pasteHandler.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>﻿(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(pluginManager)</span> </span>{
+    $.Arte.configuration.pasteHandler = {
+        attributes: {
+            <span class="hljs-string">"id"</span>: <span class="hljs-number">1</span>,
+            <span class="hljs-string">"style"</span>: <span class="hljs-number">1</span>,
+            <span class="hljs-string">"class"</span>: <span class="hljs-number">1</span>
+        },
+        style: {
+            <span class="hljs-string">"font"</span>: <span class="hljs-number">1</span>,
+            <span class="hljs-string">"font-style"</span>: <span class="hljs-number">1</span>,
+            <span class="hljs-string">"font-weight"</span>: <span class="hljs-number">1</span>,
+            <span class="hljs-string">"font-family"</span>: <span class="hljs-number">1</span>, <span class="hljs-comment">// TODO: font-family, color, font-size needs to compare against some sanctioned list</span>
+            <span class="hljs-string">"color"</span>: <span class="hljs-number">1</span>,
+            <span class="hljs-string">"font-size"</span>: <span class="hljs-number">1</span>,
+            <span class="hljs-string">"text-align"</span>: <span class="hljs-number">1</span>
+        },
+        tag: {
+            <span class="hljs-string">"P"</span>: <span class="hljs-number">1</span>,
+            <span class="hljs-string">"DIV"</span>: <span class="hljs-number">1</span>,
+            <span class="hljs-string">"UL"</span>: <span class="hljs-number">1</span>,
+            <span class="hljs-string">"OL"</span>: <span class="hljs-number">1</span>,
+            <span class="hljs-string">"LI"</span>: <span class="hljs-number">1</span>,
+            <span class="hljs-string">"SPAN"</span>: <span class="hljs-number">1</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>What to do with tags not in this list</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        },
+        nodeType: {
+            <span class="hljs-string">"1"</span>: <span class="hljs-number">1</span>, <span class="hljs-comment">// Text</span>
+            <span class="hljs-string">"3"</span>: <span class="hljs-number">1</span> <span class="hljs-comment">// Element</span>
+        },
+        invalidTagHandlers: {
+            <span class="hljs-string">"B"</span>: {
+                applierTagName: <span class="hljs-string">"span"</span>,
+                styleName: <span class="hljs-string">"font-weight"</span>,
+                styleValue: <span class="hljs-string">"bold"</span>
+            },
+            <span class="hljs-string">"I"</span>: {
+                applierTagName: <span class="hljs-string">"span"</span>,
+                styleName: <span class="hljs-string">"font-style"</span>,
+                styleValue: <span class="hljs-string">"italic"</span>
+            },
+            <span class="hljs-string">"U"</span>: {
+                applierTagName: <span class="hljs-string">"span"</span>,
+                styleName: <span class="hljs-string">"text-decoration"</span>,
+                styleValue: <span class="hljs-string">"underline"</span>
+            },
+            <span class="hljs-string">"FONT"</span>: {
+                applierTagName: <span class="hljs-string">"span"</span>
+            }
+        }
+    };
+
+    <span class="hljs-keyword">var</span> configuration = $.Arte.configuration.pasteHandler;
+    <span class="hljs-keyword">var</span> classNameSpace = $.Arte.configuration.classNameSpace;
+
+    <span class="hljs-keyword">var</span> getReplacementNode = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(jNode)</span> </span>{
+        <span class="hljs-keyword">var</span> nodeType = jNode.get(<span class="hljs-number">0</span>).nodeType;
+        <span class="hljs-keyword">if</span> (!configuration.nodeType[nodeType]) { <span class="hljs-comment">// Remove unsupported nodes</span>
+            jNode.remove();
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
+        }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>Additional node type based processing</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">if</span> (nodeType == $.Arte.constants.nodeType.TEXT) {
+            <span class="hljs-keyword">var</span> nodeValue = jNode.get(<span class="hljs-number">0</span>).nodeValue;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>Remove the html comment text</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            nodeValue = nodeValue.replace(<span class="hljs-regexp">/&lt;!--[\S\s]*?--&gt;/ig</span>, <span class="hljs-string">""</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>Remove empty nodes</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            <span class="hljs-keyword">if</span> (nodeValue === <span class="hljs-string">""</span> || !nodeValue.match(<span class="hljs-regexp">/\S+/ig</span>) || nodeValue.match(<span class="hljs-regexp">/^[\xA0]+$/ig</span>)) {
+                jNode.remove();
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
+            }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>Remove multiple spaces and new line characters</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            jNode.get(<span class="hljs-number">0</span>).nodeValue = nodeValue.replace(<span class="hljs-regexp">/\n/ig</span>, <span class="hljs-string">""</span>).replace(<span class="hljs-regexp">/[\xA0|\s+]{2,}/ig</span>, <span class="hljs-string">" "</span>);
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
+        }
+        <span class="hljs-keyword">var</span> content = jNode.html();
+        <span class="hljs-keyword">if</span> (!content) {
+            jNode.remove();
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
+        }
+
+        <span class="hljs-keyword">var</span> tagName = jNode.prop(<span class="hljs-string">"tagName"</span>);
+        <span class="hljs-keyword">if</span> (configuration.tag[tagName]) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>This is a supported tag, remove unsupported attributes</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            <span class="hljs-keyword">var</span> attr = jNode.prop(<span class="hljs-string">"attributes"</span>);
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; attr.length; i++) {
+                <span class="hljs-keyword">if</span> (!configuration.attributes[attr[i].name]) {
+                    <span class="hljs-keyword">try</span> {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>IE7 returns events/properties as attributes, removing those throw exception</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>                        jNode.removeAttr(attr[i].name);
+                    } <span class="hljs-keyword">catch</span> (e) {}
+                }
+            }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>Remove unrecognized class</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            <span class="hljs-keyword">var</span> classes = $.Arte.dom.getClasses(jNode);
+            $.each(classes, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(index, className)</span> </span>{
+                <span class="hljs-keyword">if</span> (className.indexOf(classNameSpace) !== <span class="hljs-number">0</span>) {
+                    jNode.removeClass(className);
+                }
+            });
+
+            <span class="hljs-keyword">var</span> cssText = <span class="hljs-string">""</span>;
+            $.each($.Arte.dom.getStyles(jNode), <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(style, value)</span> </span>{
+                <span class="hljs-keyword">var</span> keepStyle = configuration.style[style];
+                <span class="hljs-keyword">if</span> (keepStyle) {
+                    <span class="hljs-keyword">switch</span> (style) {
+                        <span class="hljs-keyword">case</span> <span class="hljs-string">"font-size"</span>:
+                            keepStyle = value.match(<span class="hljs-regexp">/\d+\s?px/</span>);
+                            <span class="hljs-keyword">break</span>;
+                        <span class="hljs-keyword">case</span> <span class="hljs-string">"color"</span>:
+                            keepStyle = value.match(<span class="hljs-regexp">/#[a-fA-F0-9]{6}/</span>) || value.match(<span class="hljs-regexp">/rgb\(\d+,\s*\d+\,\s*\d+\)/</span>);
+                            <span class="hljs-keyword">break</span>;
+                        <span class="hljs-keyword">default</span>:
+                            <span class="hljs-keyword">break</span>;
+                    }
+                }
+
+                <span class="hljs-keyword">if</span> (keepStyle) {
+                    cssText += style + <span class="hljs-string">": "</span> + value + <span class="hljs-string">"; "</span>;
+                }
+            });
+            jNode.get(<span class="hljs-number">0</span>).style.cssText = cssText;
+
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
+        }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>Unsupported tags, construct a replacement node</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">var</span> invalidTagHandlerConfig = configuration.invalidTagHandlers[jNode.prop(<span class="hljs-string">"tagName"</span>)] || {
+            tagName: <span class="hljs-string">"DIV"</span> <span class="hljs-comment">/* Just wrap the content in a div*/</span>
+        };
+        <span class="hljs-keyword">var</span> newNode = $.Arte.dom.createContainer(invalidTagHandlerConfig).html(jNode.html());
+        <span class="hljs-keyword">return</span> newNode;
+    };
+
+    <span class="hljs-keyword">var</span> handleUnsanctionedTags = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(nodes)</span> </span>{
+        nodes.each(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+            <span class="hljs-keyword">var</span> $<span class="hljs-keyword">this</span> = $(<span class="hljs-keyword">this</span>);
+            handleUnsanctionedTags($<span class="hljs-keyword">this</span>.contents());
+
+            <span class="hljs-keyword">var</span> replacementNode = getReplacementNode($<span class="hljs-keyword">this</span>);
+            <span class="hljs-keyword">if</span> (replacementNode) {
+                $<span class="hljs-keyword">this</span>.replaceWith(replacementNode);
+            }
+        });
+    };</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <p>Set of events raised by this plugin</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    $.extend($.Arte.constants.eventNames, {
+        <span class="hljs-string">"onbeforehandlepaste"</span>: <span class="hljs-string">"onbeforehandlepaste"</span>,
+        <span class="hljs-string">"onhandlepaste"</span>: <span class="hljs-string">"onhandlepaste"</span>
+    });
+
+    <span class="hljs-keyword">var</span> pasteHandler = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+        <span class="hljs-keyword">return</span> {
+            init: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(textArea)</span> </span>{
+                textArea.$element.on({
+                    <span class="hljs-string">"onpaste"</span>: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e, data)</span> </span>{
+                        <span class="hljs-keyword">var</span> options = {
+                            execute: <span class="hljs-literal">true</span>
+                        };
+                        textArea.triggerEvent($.Arte.constants.eventNames.onbeforehandlepaste, options);
+                        <span class="hljs-keyword">if</span> (!options.execute) {
+                            <span class="hljs-keyword">return</span>;
+                        }
+                        handleUnsanctionedTags(data.textArea.$el.children());
+                        textArea.triggerEvent($.Arte.constants.eventNames.onbeforehandlepaste, options);
+                    }
+                });
+            }
+        };
+    };
+
+    pluginManager.register(<span class="hljs-string">"pasteHandler"</span>, pasteHandler);
+})($.Arte.pluginManager);</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

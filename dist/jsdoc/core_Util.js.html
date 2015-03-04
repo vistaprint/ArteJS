@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: core/Util.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: core/Util.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @fileoverview: Various utility functions
+ */
+(function($) {
+    $.Arte = $.Arte || {};
+    $.Arte.util = {
+        /**
+         * Ensure that if there is a user selection, it is inside of the selected element.
+         * @param {jQuery} jElement - the element to check the selection against
+         * @return {boolean} whether or not there is a selection in the given element
+         */
+        isSelectionInElement: function(jElement) {
+            var selection = rangy.getSelection();
+            var range = selection.getAllRanges()[0];
+            return range &amp;&amp;
+                (range.startContainer === jElement.get(0) || jElement.has(range.startContainer).length !== 0);
+        },
+        /**
+         * Move cursor to the end of the input element
+         * @param {htmlElement} element
+         */
+        moveCursorToEndOfElement: function(element) {
+            var range = new rangy.createRangyRange();
+            range.selectNodeContents(element);
+            range.collapse();
+
+            var selection = rangy.getSelection();
+            selection.setSingleRange(range);
+        },
+
+        /**
+         * Evaluates if all elements in the collection match the condition specified in the callback function
+         * @param {Array|Object} collection of objects to evaluate
+         * @param {function} callback a function that returns true/false for each object
+         * @return {boolean} whether the callback returns true for all objects in the collection
+         */
+        all: function(collection, callback) {
+            var result = true;
+            $.each(collection, function(key, value) {
+                result = callback(key, value);
+                return !!result;
+            });
+            return result;
+        },
+        /**
+         * Evaluates if any elements in the collection match the condition specified in the callback function
+         * @param {Array|Object} collection of objects to evaluate
+         * @param {function} callback a function that returns true/false for each object
+         * @return {boolean} whether the callback returns true for any objects in the collection
+         */
+        any: function(collection, callback) {
+            var result = true;
+            $.each(collection, function(key, value) {
+                result = callback(key, value);
+                return !result; // stop evaluation
+            });
+            return result;
+        },
+        /**
+         * Filter a collection based on the result of the callback function
+         * @param {Array|Object} collection of objects to evaluate
+         * @param {function} callback a function that returns true/false for each object
+         * @return {Array} a collection of values that satisfy the condition in callback function
+         */
+        filterCollection: function(collection, callback) {
+            var result = [];
+            $.each(collection, function(key, value) {
+                if (callback(key, value)) {
+                    result.push(collection.length ? value : key);
+                }
+            });
+            return result;
+        },
+        /**
+         * Returns selected text nodes
+         * @param {boolean} allowCollapsedSelection - whether or not to return the parent of the node
+         *   with the cursor if the selection is collapsed
+         * @return {Array} array of selected text nodes
+         */
+        getSelectedTextNodes: function(allowCollapsedSelection) {
+            var selectedNodes = $();
+            var range;
+            // Is there a user selection
+            var userSelection = rangy.getSelection();
+            var isSelectionInElement = $.Arte.util.isSelectionInElement(this.$el);
+
+            // User selection is collapsed or the selection is not valid (i.e. something outside of the text field is selected)
+            if (userSelection.isCollapsed || !isSelectionInElement) {
+                if (allowCollapsedSelection &amp;&amp; isSelectionInElement) {
+                    // Get the parent of the node with the cursor
+                    range = userSelection.getRangeAt(0);
+                    selectedNodes.push(range.startContainer);
+                    return selectedNodes;
+                }
+
+                // In case we don't have a valid selection,
+                range = rangy.createRangyRange();
+                range.selectNodeContents(this.$el.get(0));
+                selectedNodes = rangy.util.getTextNodes(range);
+            } else if (isSelectionInElement) {
+                // We have a valid selection
+                range = userSelection.getAllRanges()[0];
+                selectedNodes = rangy.util.getTextNodes(range);
+            }
+            return selectedNodes;
+        },
+        /**
+         * Identify the ArteJS command configuration from className, styleName or tagName.
+         * @param {Object} options - an object containing either a commandName, className, styleName,
+         *   or tagName attribute
+         * @return {Object} returns the command configuration that matched to the parameter passed in or null
+         *   if no commands are found
+         */
+        getCommandConfig: function(options) {
+            var result = null;
+            var commandAttrType = null;
+            var configuration = $.Arte.configuration;
+            var constants = $.Arte.constants;
+            var verifyTag = function(key, value) {
+                return value === options.tagName;
+            };
+
+            if (options &amp;&amp; options.commandName) {
+                return configuration.commands[options.commandName];
+            }
+
+            // Infer the command from the properties in the options.
+            for (var command in configuration.commands) {
+                var commandConfig = configuration.commands[command];
+
+                if (options.className &amp;&amp; commandConfig.classNameRegex &amp;&amp; commandConfig.classNameRegex.test(options.className)) {
+                    result = commandConfig;
+                    commandAttrType = constants.commandAttrType.className;
+                } else if (options.styleName &amp;&amp; options.styleName === commandConfig.styleName) {
+                    result = commandConfig;
+                    commandAttrType = constants.commandAttrType.styleName;
+                } else if (options.tagName &amp;&amp; !(options.className || options.styleName)) {
+                    if ($.isPlainObject(commandConfig.tagName)) {
+                        if ($.Arte.util.any(commandConfig.tagName, verifyTag)) {
+                            result = commandConfig;
+                        }
+                    } else if (options.tagName === commandConfig.tagName) {
+                        result = commandConfig;
+                    }
+                    commandAttrType = constants.commandAttrType.tagName;
+                }
+                if (result) {
+                    return $.extend({
+                        commandAttrType: commandAttrType
+                    }, result);
+                }
+            }
+            return null;
+        }
+    };
+})(jQuery);
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#allHaveClass">allHaveClass</a></li><li><a href="global.html#block">block</a></li><li><a href="global.html#blockChildren">blockChildren</a></li><li><a href="global.html#closestWithAtMostOneBlockChild">closestWithAtMostOneBlockChild</a></li><li><a href="global.html#closestWithCommandValue">closestWithCommandValue</a></li><li><a href="global.html#createContainer">createContainer</a></li><li><a href="global.html#destroy">destroy</a></li><li><a href="global.html#element">element</a></li><li><a href="global.html#focus">focus</a></li><li><a href="global.html#getAllStates">getAllStates</a></li><li><a href="global.html#getClasses">getClasses</a></li><li><a href="global.html#getClassWithPattern">getClassWithPattern</a></li><li><a href="global.html#getState">getState</a></li><li><a href="global.html#getStyles">getStyles</a></li><li><a href="global.html#hasClassWithPattern">hasClassWithPattern</a></li><li><a href="global.html#hasCommandApplied">hasCommandApplied</a></li><li><a href="global.html#hasCommandValue">hasCommandValue</a></li><li><a href="global.html#hasSameClass">hasSameClass</a></li><li><a href="global.html#hasSameListParent">hasSameListParent</a></li><li><a href="global.html#hasSameStyle">hasSameStyle</a></li><li><a href="global.html#hasSameStyleAndClass">hasSameStyleAndClass</a></li><li><a href="global.html#init">init</a></li><li><a href="global.html#listSurrounded">listSurrounded</a></li><li><a href="global.html#nextSiblingIncludingTextNodes">nextSiblingIncludingTextNodes</a></li><li><a href="global.html#off">off</a></li><li><a href="global.html#on">on</a></li><li><a href="global.html#outerValue">outerValue</a></li><li><a href="global.html#prevSiblingIncludingTextNodes">prevSiblingIncludingTextNodes</a></li><li><a href="global.html#removeClassWithPattern">removeClassWithPattern</a></li><li><a href="global.html#styleableTags">styleableTags</a></li><li><a href="global.html#toggleStyleOnElement">toggleStyleOnElement</a></li><li><a href="global.html#triggerEvent">triggerEvent</a></li><li><a href="global.html#value">value</a></li><li><a href="global.html#wrapWithBlock">wrapWithBlock</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta1</a> on Thu Feb 26 2015 14:06:25 GMT-0500 (Eastern Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

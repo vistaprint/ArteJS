@@ -1,0 +1,196 @@
+<!doctype html>
+<!--[if !IE]>      <html class="no-js non-ie" lang="en-US"> <![endif]-->
+<!--[if IE 7 ]>    <html class="no-js ie7" lang="en-US"> <![endif]-->
+<!--[if IE 8 ]>    <html class="no-js ie8" lang="en-US"> <![endif]-->
+<!--[if IE 9 ]>    <html class="no-js ie9" lang="en-US"> <![endif]-->
+<!--[if gt IE 9]><!--> <html class="no-js" lang="en-US"> <!--<![endif]-->
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+  <!--[if lt IE 9]> <script src="javascripts/html5shiv.js"></script> <![endif]-->
+
+  <link rel='stylesheet' id='responsive-style-css' href='/stylesheets/style.css' type='text/css' />
+  <link rel='stylesheet' id='responsive-media-queries-css'  href='/stylesheets/media-queries.css' type='text/css'/>
+  <link rel="stylesheet" href='/stylesheets/syntax-highlighting.css'/>
+
+  <script type='text/javascript' src='/javascripts/jquery.js'></script>
+  <script type='text/javascript' src='/javascripts/jquery-migrate.min.js'></script>
+  <script type='text/javascript' src='/javascripts/responsive-modernizr.js'></script>
+  <script type="text/javascript" src='/javascripts/script.js'></script>
+  <script type="text/javascript" src='/javascripts/toc.js'></script>
+
+  <title>ArteJS</title>
+
+  <meta name="description" content="ArteJS">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+
+</head>
+
+<body class="home blog front-page">
+                 
+  <div id="container" class="hfeed">
+           
+      <div id="header">
+                 
+        <div id="logo" class="skinny-logo">
+            <a href="./">ArtéJS</a>
+        </div>
+            
+        <div class="main-nav">
+          <ul class="menu">
+            <li class="current_page_item"><a href="/index.html" title="Home">Home</a></li>
+            <li class="page_item"><a href="/artejs.zip">Download</a></li>
+            <li class="page_item"><a href="#" onclick="return false;">Documentation</a>
+              <ul class='children'>
+                <li class="page_item"><a href='/overview.html'>Overview</a>
+                <li class="page_item"><a href="#" onclick="return false;">Core</a>
+                  <ul class="children">
+                    <li class="page_item"><a href='/textarea.html'>Text Area</a></li>
+                    <li class="page_item"><a href='/commands.html'>Commands</a></li>
+                    <li class="page_item"><a href='/events.html'>Events</a></li>           
+                  </ul>
+                </li>
+                <li class="page_item"><a href="#" onclick="return false;">Plugins</a>
+                  <ul class="children">
+                    <li class="page_item"><a href='/statedetector.html'>State Detector</a></li>
+                    <li class="page_item"><a href='/undomanager.html'>Undo Manager</a></li>
+                    <li class="page_item"><a href='/keyboardeventhandler.html'>Keyboard Event Handler</a></li>
+                    <li class="page_item"><a href='/insertcommand.html'>Insert Command</a></li>             
+                  </ul>
+                </li>
+              </ul>
+            </li>
+            <li class="page_item"><a href="#" onclick="return false;">Demos</a>
+              <ul class='children'>
+                <li class="page_item"><a href='/demos/FeatureDemonstrator/demo.html'>Feature Demonstrator</a></li>
+                <li class="page_item"><a href='/demos/SimpleToolbar/demo.html'>Simple Toolbar</a></li>
+                <li class="page_item"><a href='/demos/UnobtrusiveToolbar/demo.html'>Unobtrusive Toolbar</a></li>
+                <li class="page_item"><a href='/demos/CompleteToolbar/demo.html'>Full Toolbar</a></li>
+                <li class="page_item"><a href='/demos/CompleteToolbarWithTwitterBootstrap/demo.html'>Toolbar + Twitter Bootstrap</a></li>
+                <li class="page_item"><a href='/demos/SingleToolbarMultipleEditors/demo.html'>Single toolbar with multiple editors</a></li>         
+                <li class="page_item"><a href='/demos/MultipleEditors/demo.html'>Multiple toolbars/editors</a></li>                       
+              </ul>
+            </li>
+          </ul>
+      </div>                
+                   
+    </div>
+          
+    <div id="wrapper" class="clearfix">
+
+      <div class="grid col-940">
+  <div class="widget-wrapper markdown-body">
+
+    
+
+    <h2 id="events">Events</h2>
+
+<p>ArteJS raises a rich collection of events to interact with the editor.</p>
+<div class='highlight'><pre><code class='javascript'><span class='c1'>// Listening to events</span>
+<span class='nx'>$</span><span class='p'>(</span><span class='nx'>selector</span><span class='p'>).</span><span class='nx'>on</span><span class='p'>(</span><span class='s1'>&#39;eventname&#39;</span><span class='p'>,</span> <span class='kd'>function</span><span class='p'>(</span><span class='nx'>e</span><span class='p'>,</span> <span class='nx'>data</span><span class='p'>)</span> <span class='p'>{...});</span>
+ 
+<span class='c1'>// Another way to listen to events</span>
+<span class='nx'>editorInstance</span><span class='p'>.</span><span class='nx'>on</span><span class='p'>(</span><span class='s1'>&#39;eventname&#39;</span><span class='p'>,</span> <span class='kd'>function</span><span class='p'>(</span><span class='nx'>e</span><span class='p'>,</span> <span class='nx'>data</span><span class='p'>)</span> <span class='p'>{...});</span>
+</code></pre></div>
+<h3 id="events_raised_by_the_editor">Events raised by the editor:</h3>
+
+<ul>
+<li>onfocus – editor gained focus</li>
+
+<li>onblur – editor lost focus</li>
+
+<li>onvaluechange – rich text value changed</li>
+
+<li>onmousedown – mouse down over the editor</li>
+
+<li>onmouseup – mouse up over the editor</li>
+
+<li>onclick – mouse clicked over the editor</li>
+
+<li>onkeydown – key down over the editor</li>
+
+<li>onkeypress – key press over the editor</li>
+
+<li>onkeyup – key up over the editor</li>
+
+<li>onpaste – content pasted into the editor</li>
+
+<li>onselectionchange – editor text selection changed</li>
+
+<li>onbeforecommand – fired before a command is executed</li>
+
+<li>oncommand – fired after a command has been executed</li>
+
+<li>oncreate – editor has been created</li>
+
+<li>ondestroy – editor has been destroyed</li>
+</ul>
+
+<h3 id="events_raised_by_plugins">Events raised by plugins:</h3>
+
+<h4 id="insertreplace_content_plugin">Insert/replace content plugin:</h4>
+
+<ul>
+<li>onbeforeinsert – fired before insertion occurs</li>
+
+<li>oninsert – fired after insertion occurs</li>
+</ul>
+
+<h4 id="paste_handler">Paste handler:</h4>
+
+<ul>
+<li>onbeforehandlepaste – fired before paste occurs</li>
+
+<li>onafterhandlepaste – fired after paste occurs</li>
+</ul>
+
+<h4 id="undoredo">Undo/redo:</h4>
+
+<ul>
+<li>onbeforeundo – fired before undo occurs</li>
+
+<li>onafterundo – fired after undo occurs</li>
+
+<li>onbeforeredo – fired before redo occurs</li>
+
+<li>onafterredo – fired after redo occurs</li>
+</ul>
+  </div>
+</div>
+ 
+
+    </div><!-- end of #wrapper -->
+  </div><!-- end of #container -->
+
+  <div id="footer" class="clearfix">
+    
+      <div id="footer-wrapper">
+      
+          <div class="grid col-940">
+          
+            <div class="grid col-540"></div><!-- end of col-540 -->
+           
+            <div class="grid col-380 fit">
+              <ul class="social-icons"></ul><!-- end of .social-icons -->         
+            </div><!-- end of col-380 fit -->
+           
+          </div><!-- end of col-940 -->
+                               
+          <div class="grid col-300 copyright">
+              &copy; 2013 <a href="http://www.vistaprint.com/" title="Vistaprint | Business Cards, Websites, Postcards, T-shirts And More">Vistaprint</a>
+          </div><!-- end of .copyright -->
+          
+          <div class="grid col-300 scroll-top"><a href="#scroll-top" title="scroll to top">&uarr;</a></div>
+          
+          <div class="grid col-300 fit powered">
+          </div><!-- end .powered -->
+          
+      </div><!-- end #footer-wrapper -->
+      
+  </div><!-- end #footer -->
+
+  <script type='text/javascript' src='/javascripts/responsive.js'></script>
+</body>
+</html>

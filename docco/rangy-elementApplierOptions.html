@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>rangy-elementApplierOptions.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page">
+            
+              
+              <a class="source" href="Arte.html">
+                Arte.js
+              </a>
+            
+              
+              <a class="source" href="Commands.html">
+                Commands.js
+              </a>
+            
+              
+              <a class="source" href="Configuration.html">
+                Configuration.js
+              </a>
+            
+              
+              <a class="source" href="PluginManager.html">
+                PluginManager.js
+              </a>
+            
+              
+              <a class="source" href="TextArea.html">
+                TextArea.js
+              </a>
+            
+              
+              <a class="source" href="Util.html">
+                Util.js
+              </a>
+            
+              
+              <a class="source" href="jquery-dom-cleanup.html">
+                jquery-dom-cleanup.js
+              </a>
+            
+              
+              <a class="source" href="jquery-dom-manipulation.html">
+                jquery-dom-manipulation.js
+              </a>
+            
+              
+              <a class="source" href="jquery-dom-traversal.html">
+                jquery-dom-traversal.js
+              </a>
+            
+              
+              <a class="source" href="rangy-blockElementApplier.html">
+                rangy-blockElementApplier.js
+              </a>
+            
+              
+              <a class="source" href="rangy-elementApplierOptions.html">
+                rangy-elementApplierOptions.js
+              </a>
+            
+              
+              <a class="source" href="rangy-extensions.html">
+                rangy-extensions.js
+              </a>
+            
+              
+              <a class="source" href="rangy-inlineElementApplier.html">
+                rangy-inlineElementApplier.js
+              </a>
+            
+              
+              <a class="source" href="richtextCommandApplier.html">
+                richtextCommandApplier.js
+              </a>
+            
+              
+              <a class="source" href="InsertCommand.html">
+                InsertCommand.js
+              </a>
+            
+              
+              <a class="source" href="StateDetector.html">
+                StateDetector.js
+              </a>
+            
+              
+              <a class="source" href="UndoManager.html">
+                UndoManager.js
+              </a>
+            
+              
+              <a class="source" href="keyboardEventHandler.html">
+                keyboardEventHandler.js
+              </a>
+            
+              
+              <a class="source" href="pasteHandler.html">
+                pasteHandler.js
+              </a>
+            
+              
+              <a class="source" href="Button.html">
+                Button.js
+              </a>
+            
+              
+              <a class="source" href="ButtonWithDialog.html">
+                ButtonWithDialog.js
+              </a>
+            
+              
+              <a class="source" href="ButtonWithDropDown.html">
+                ButtonWithDropDown.js
+              </a>
+            
+              
+              <a class="source" href="Configuration.html">
+                Configuration.js
+              </a>
+            
+              
+              <a class="source" href="SelectionManager.html">
+                SelectionManager.js
+              </a>
+            
+              
+              <a class="source" href="toolbar.html">
+                toolbar.js
+              </a>
+            
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>rangy-elementApplierOptions.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">($)</span> </span>{
+    $.Arte = $.Arte || {};
+    $.Arte.ElementApplierOptions = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(initOptions)</span> </span>{
+        <span class="hljs-keyword">if</span> (initOptions._isProcessed) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>Options object is already processed</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            <span class="hljs-keyword">return</span> initOptions;
+        }
+
+        <span class="hljs-keyword">var</span> constants = $.Arte.constants;
+        <span class="hljs-keyword">this</span>.tagName = <span class="hljs-string">""</span>;
+        <span class="hljs-keyword">this</span>.topEditableParent = <span class="hljs-string">""</span>;
+        <span class="hljs-keyword">this</span>.commandName = <span class="hljs-string">""</span>;
+        <span class="hljs-keyword">this</span>.commandAttrType = initOptions.commandAttrType;
+        <span class="hljs-keyword">this</span>.textArea = <span class="hljs-literal">null</span>;
+        <span class="hljs-keyword">switch</span> (<span class="hljs-keyword">this</span>.commandAttrType) {
+            <span class="hljs-keyword">case</span> constants.commandAttrType.className:
+                <span class="hljs-keyword">this</span>.classNameRegex = <span class="hljs-string">""</span>;
+                <span class="hljs-keyword">this</span>.className = <span class="hljs-string">""</span>;
+                <span class="hljs-keyword">break</span>;
+            <span class="hljs-keyword">case</span> constants.commandAttrType.styleName:
+                <span class="hljs-keyword">this</span>.styleName = <span class="hljs-string">""</span>;
+                <span class="hljs-keyword">this</span>.styleValue = <span class="hljs-string">""</span>;
+                <span class="hljs-keyword">break</span>;
+        }
+
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> prop <span class="hljs-keyword">in</span> initOptions) {
+            <span class="hljs-keyword">this</span>[prop] = initOptions[prop];
+        }
+
+        <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.tagName) {
+            <span class="hljs-keyword">this</span>.tagName = $(<span class="hljs-string">"&lt;"</span> + <span class="hljs-keyword">this</span>.tagName + <span class="hljs-string">"&gt;"</span>).prop(<span class="hljs-string">"tagName"</span>);
+        }
+
+        <span class="hljs-keyword">this</span>.attr = {};
+        <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.commandAttrType == constants.commandAttrType.className) {
+            <span class="hljs-keyword">this</span>.attr[<span class="hljs-string">"class"</span>] = <span class="hljs-keyword">this</span>.className;
+        }
+
+        <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.commandAttrType == constants.commandAttrType.styleName) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>Construct a style string, so that we can easily apply/remove this from an element</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            <span class="hljs-keyword">var</span> div = $(<span class="hljs-string">"&lt;div&gt;"</span>).css(<span class="hljs-keyword">this</span>.styleName, <span class="hljs-keyword">this</span>.styleValue);
+            <span class="hljs-keyword">this</span>.attr.style = div[<span class="hljs-number">0</span>].style.cssText;
+        }
+
+        <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.commandName) {
+            <span class="hljs-keyword">var</span> commandConfig = $.Arte.util.getCommandConfig(<span class="hljs-keyword">this</span>);
+            <span class="hljs-keyword">if</span> (commandConfig) {
+                <span class="hljs-keyword">this</span>.commandName = commandConfig.commandName;
+                <span class="hljs-keyword">this</span>.commandAttrType = commandConfig.commandAttrType;
+            }
+        }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>Adding a field so that we don’t do this multiple times.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">this</span>._isProcessed = <span class="hljs-literal">true</span>;
+    };
+})(jQuery);</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

@@ -1,0 +1,295 @@
+<!doctype html>
+<!--[if !IE]>      <html class="no-js non-ie" lang="en-US"> <![endif]-->
+<!--[if IE 7 ]>    <html class="no-js ie7" lang="en-US"> <![endif]-->
+<!--[if IE 8 ]>    <html class="no-js ie8" lang="en-US"> <![endif]-->
+<!--[if IE 9 ]>    <html class="no-js ie9" lang="en-US"> <![endif]-->
+<!--[if gt IE 9]><!--> <html class="no-js" lang="en-US"> <!--<![endif]-->
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+  <!--[if lt IE 9]> <script src="javascripts/html5shiv.js"></script> <![endif]-->
+
+  <link rel='stylesheet' id='responsive-style-css' href='/stylesheets/style.css' type='text/css' />
+  <link rel='stylesheet' id='responsive-media-queries-css'  href='/stylesheets/media-queries.css' type='text/css'/>
+  <link rel="stylesheet" href='/stylesheets/syntax-highlighting.css'/>
+
+  <script type='text/javascript' src='/javascripts/jquery.js'></script>
+  <script type='text/javascript' src='/javascripts/jquery-migrate.min.js'></script>
+  <script type='text/javascript' src='/javascripts/responsive-modernizr.js'></script>
+  <script type="text/javascript" src='/javascripts/script.js'></script>
+  <script type="text/javascript" src='/javascripts/toc.js'></script>
+
+  <title>ArteJS</title>
+
+  <meta name="description" content="ArteJS">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+
+</head>
+
+<body class="home blog front-page">
+                 
+  <div id="container" class="hfeed">
+           
+      <div id="header">
+                 
+        <div id="logo" class="skinny-logo">
+            <a href="./">ArtéJS</a>
+        </div>
+            
+        <div class="main-nav">
+          <ul class="menu">
+            <li class="current_page_item"><a href="/index.html" title="Home">Home</a></li>
+            <li class="page_item"><a href="/artejs.zip">Download</a></li>
+            <li class="page_item"><a href="#" onclick="return false;">Documentation</a>
+              <ul class='children'>
+                <li class="page_item"><a href='/overview.html'>Overview</a>
+                <li class="page_item"><a href="#" onclick="return false;">Core</a>
+                  <ul class="children">
+                    <li class="page_item"><a href='/textarea.html'>Text Area</a></li>
+                    <li class="page_item"><a href='/commands.html'>Commands</a></li>
+                    <li class="page_item"><a href='/events.html'>Events</a></li>           
+                  </ul>
+                </li>
+                <li class="page_item"><a href="#" onclick="return false;">Plugins</a>
+                  <ul class="children">
+                    <li class="page_item"><a href='/statedetector.html'>State Detector</a></li>
+                    <li class="page_item"><a href='/undomanager.html'>Undo Manager</a></li>
+                    <li class="page_item"><a href='/keyboardeventhandler.html'>Keyboard Event Handler</a></li>
+                    <li class="page_item"><a href='/insertcommand.html'>Insert Command</a></li>             
+                  </ul>
+                </li>
+              </ul>
+            </li>
+            <li class="page_item"><a href="#" onclick="return false;">Demos</a>
+              <ul class='children'>
+                <li class="page_item"><a href='/demos/FeatureDemonstrator/demo.html'>Feature Demonstrator</a></li>
+                <li class="page_item"><a href='/demos/SimpleToolbar/demo.html'>Simple Toolbar</a></li>
+                <li class="page_item"><a href='/demos/UnobtrusiveToolbar/demo.html'>Unobtrusive Toolbar</a></li>
+                <li class="page_item"><a href='/demos/CompleteToolbar/demo.html'>Full Toolbar</a></li>
+                <li class="page_item"><a href='/demos/CompleteToolbarWithTwitterBootstrap/demo.html'>Toolbar + Twitter Bootstrap</a></li>
+                <li class="page_item"><a href='/demos/SingleToolbarMultipleEditors/demo.html'>Single toolbar with multiple editors</a></li>         
+                <li class="page_item"><a href='/demos/MultipleEditors/demo.html'>Multiple toolbars/editors</a></li>                       
+              </ul>
+            </li>
+          </ul>
+      </div>                
+                   
+    </div>
+          
+    <div id="wrapper" class="clearfix">
+
+      <div class="grid col-940">
+  <div class="widget-wrapper markdown-body">
+
+    
+
+    <h2 id="creating_a_rich_text_editor">Creating a rich text editor</h2>
+<div class='highlight'><pre><code class='javascript'><span class='c1'>// Creating a rich text editor with default initial values ($.Arte.configuration.initialValues)</span>
+<span class='nx'>$</span><span class='p'>(</span><span class='nx'>selector</span><span class='p'>).</span><span class='nx'>Arte</span><span class='p'>();</span>
+
+<span class='c1'>// Creating a rich text editor with options</span>
+<span class='kd'>var</span> <span class='nx'>options</span> <span class='o'>=</span> <span class='p'>{</span>
+    <span class='nx'>styles</span><span class='o'>:</span> <span class='p'>{</span>
+        <span class='s2'>&quot;font-weight&quot;</span><span class='o'>:</span> <span class='s2'>&quot;bold&quot;</span><span class='p'>,</span>
+        <span class='s2'>&quot;font-size&quot;</span><span class='o'>:</span> <span class='s2'>&quot;16px&quot;</span>
+    <span class='p'>},</span>
+    <span class='nx'>classes</span><span class='o'>:</span> <span class='p'>[</span><span class='s2'>&quot;arte-class1&quot;</span><span class='p'>,</span> <span class='s2'>&quot;arte-class2&quot;</span><span class='p'>],</span>
+    <span class='nx'>value</span><span class='o'>:</span> <span class='s2'>&quot;This is &amp;lt;span style=&#39;color: green&#39;&amp;gt;new&amp;lt;/span&amp;gt; value&quot;</span>
+<span class='p'>};</span>
+
+<span class='c1'>// Construct the text area</span>
+<span class='c1'>// The following takes a set of matched elements and convert them to rich text editors</span>
+<span class='nx'>$</span><span class='p'>(</span><span class='nx'>selector</span><span class='p'>).</span><span class='nx'>Arte</span><span class='p'>(</span><span class='nx'>options</span><span class='p'>);</span>
+</code></pre></div>
+<h2 id="executing_arte_methods">Executing Arte methods</h2>
+<div class='highlight'><pre><code class='javascript'><span class='c1'>// Once a rich text editor is created, any rich text method can now be executed as the following</span>
+<span class='nx'>$</span><span class='p'>(</span><span class='nx'>selector</span><span class='p'>).</span><span class='nx'>Arte</span><span class='p'>(</span><span class='s2'>&quot;methodName&quot;</span><span class='p'>,</span> <span class='nx'>parameter1</span><span class='p'>,</span> <span class='nx'>parameter2</span><span class='p'>,</span> <span class='p'>...);</span>
+
+<span class='c1'>// Alternatively, a method can be applied to an Arte instance directly like this</span>
+<span class='kd'>var</span> <span class='nx'>editorInstances</span> <span class='o'>=</span> <span class='nx'>$</span><span class='p'>(</span><span class='nx'>selector</span><span class='p'>).</span><span class='nx'>Arte</span><span class='p'>();</span>
+<span class='nx'>$</span><span class='p'>(</span><span class='nx'>selector</span><span class='p'>).</span><span class='nx'>Arte</span><span class='p'>().</span><span class='nx'>each</span><span class='p'>(</span><span class='kd'>function</span><span class='p'>(){</span>
+    <span class='k'>this</span><span class='p'>.</span><span class='nx'>methodName</span><span class='p'>(</span><span class='nx'>parameter1</span><span class='p'>,</span> <span class='nx'>parameter2</span><span class='p'>);</span>
+<span class='p'>});</span>
+
+<span class='c1'>// or like this</span>
+<span class='nx'>editorInstances</span><span class='p'>.</span><span class='nx'>get</span><span class='p'>(</span><span class='mi'>0</span><span class='p'>).</span><span class='nx'>methodName</span><span class='p'>(</span><span class='nx'>parameter1</span><span class='p'>,</span> <span class='nx'>parameter2</span><span class='p'>);</span>
+
+<span class='c1'>// One way to invoke methods</span>
+<span class='nx'>$</span><span class='p'>(</span><span class='nx'>selector</span><span class='p'>).</span><span class='nx'>Arte</span><span class='p'>(</span><span class='s2'>&quot;bold&quot;</span><span class='p'>);</span> <span class='c1'>// make the selection bold</span>
+<span class='nx'>$</span><span class='p'>(</span><span class='nx'>selector</span><span class='p'>).</span><span class='nx'>Arte</span><span class='p'>(</span><span class='s2'>&quot;fontSize&quot;</span><span class='p'>,</span> <span class='s2'>&quot;12px&quot;</span><span class='p'>);</span> <span class='c1'>// set the fontsize of the selection to 12px</span>
+
+<span class='c1'>// Another way</span>
+<span class='nx'>$</span><span class='p'>(</span><span class='nx'>selector</span><span class='p'>).</span><span class='nx'>Arte</span><span class='p'>().</span><span class='nx'>each</span><span class='p'>(</span><span class='kd'>function</span><span class='p'>(){</span>
+    <span class='k'>this</span><span class='p'>.</span><span class='nx'>bold</span><span class='p'>();</span>
+    <span class='k'>this</span><span class='p'>.</span><span class='nx'>fontSize</span><span class='p'>(</span><span class='s2'>&quot;12px&quot;</span><span class='p'>);</span>
+<span class='p'>});</span>
+</code></pre></div>
+<h2 id="changing_the_way_a_rich_text_command_is_applied">Changing the way a rich text command is applied</h2>
+<div class='highlight'><pre><code class='javascript'><span class='c1'>// Many rich text commands can be applied using a tagName, style and class.</span>
+<span class='c1'>// For example, the bold command be applied as either:</span>
+<span class='c1'>//      a style (font-weight), a class (.font-weight), or as HTML tags (b or strong).</span>
+<span class='c1'>// ArteJS allows us to choose how a rich text command is applied using the following mechanisms:</span>
+<span class='c1'>// 1) Supplying the command attribute type in the command options:</span>
+<span class='c1'>//      ({commandAttrType = &quot;styleName&quot; | &quot;className&quot; | &quot;tagName&quot;})</span>
+<span class='c1'>// 2) Inferring the command attribute type from the values in the options: ({className = &quot;...&quot;})</span>
+<span class='c1'>// 3) Using the default command attribute type specified in the configuration file:</span>
+<span class='c1'>//      (Arte.configuration.commandAttrType)</span>
+
+<span class='c1'>// ArteJS configuration allows setting the commandAttrType globally or per command.</span>
+<span class='c1'>// For the commands that can only be applied one way (e.g. H1, BlockQuotes, etc.),</span>
+<span class='c1'>// the commandAttrType is ignored.</span>
+
+<span class='c1'>// Bold is applied based on the global configuration</span>
+<span class='nx'>$</span><span class='p'>(</span><span class='nx'>selector</span><span class='p'>).</span><span class='nx'>Arte</span><span class='p'>(</span><span class='s2'>&quot;bold&quot;</span><span class='p'>);</span>
+
+<span class='c1'>// Override the global configuration to apply bold using B or Strong tags</span>
+<span class='nx'>$</span><span class='p'>(</span><span class='nx'>selector</span><span class='p'>).</span><span class='nx'>Arte</span><span class='p'>(</span><span class='s2'>&quot;bold&quot;</span><span class='p'>,</span> <span class='p'>{</span> <span class='nx'>tagName</span><span class='o'>:</span> <span class='s2'>&quot;B&quot;</span> <span class='p'>});</span>
+<span class='nx'>$</span><span class='p'>(</span><span class='nx'>selector</span><span class='p'>).</span><span class='nx'>Arte</span><span class='p'>(</span><span class='s2'>&quot;bold&quot;</span><span class='p'>,</span> <span class='p'>{</span> <span class='nx'>tagName</span><span class='o'>:</span> <span class='s2'>&quot;STRONG&quot;</span> <span class='p'>});</span>
+
+<span class='c1'>// Override the global configuration to apply bold using a className</span>
+<span class='nx'>$</span><span class='p'>(</span><span class='nx'>selector</span><span class='p'>).</span><span class='nx'>Arte</span><span class='p'>(</span><span class='s2'>&quot;bold&quot;</span><span class='p'>,</span> <span class='p'>{</span> <span class='nx'>className</span><span class='o'>:</span> <span class='s2'>&quot;arte-font-weight-bold&quot;</span> <span class='p'>});</span>
+
+<span class='c1'>// Apply the command using the styleName</span>
+<span class='nx'>$</span><span class='p'>(</span><span class='nx'>selector</span><span class='p'>).</span><span class='nx'>Arte</span><span class='p'>(</span><span class='s2'>&quot;bold&quot;</span><span class='p'>,</span> <span class='p'>{</span> <span class='nx'>styleName</span><span class='o'>:</span> <span class='s2'>&quot;font-weight&quot;</span><span class='p'>,</span> <span class='nx'>styleValue</span><span class='o'>:</span> <span class='s2'>&quot;bold&quot;</span> <span class='p'>});</span>
+</code></pre></div>
+<h2 id="getting_and_setting_the_contents_of_the_rich_text_editor">Getting and setting the contents of the rich text editor</h2>
+<div class='highlight'><pre><code class='javascript'><span class='c1'>// ArteJS allows getting the innerValue or the outerValue (like outerHTML) of the editor</span>
+
+<span class='c1'>// Get the value of a rich text editor</span>
+<span class='kd'>var</span> <span class='nx'>value</span> <span class='o'>=</span> <span class='nx'>$</span><span class='p'>(</span><span class='nx'>selector</span><span class='p'>).</span><span class='nx'>Arte</span><span class='p'>(</span><span class='s2'>&quot;value&quot;</span><span class='p'>);</span>
+
+<span class='c1'>// Set the value of a rich text editor</span>
+<span class='nx'>$</span><span class='p'>(</span><span class='nx'>selector</span><span class='p'>).</span><span class='nx'>Arte</span><span class='p'>(</span><span class='s2'>&quot;value&quot;</span><span class='p'>,</span> <span class='s2'>&quot;This can be any &lt;b&gt;valid&lt;/b&gt; html fragment.&quot;</span><span class='p'>);</span>
+<span class='nx'>$</span><span class='p'>(</span><span class='nx'>selector</span><span class='p'>).</span><span class='nx'>Arte</span><span class='p'>(</span><span class='s2'>&quot;value&quot;</span><span class='p'>,</span> <span class='s2'>&quot;&amp;lt;div style=&#39;font-weight: bold&#39;&amp;gt;This can only be a &quot;</span> <span class='o'>+</span>
+    <span class='s2'>&quot;&amp;lt;span style=&#39;font-weight: bold&#39;&amp;gt;single html element&amp;lt;/span&amp;gt; &amp;lt;/div&amp;gt;&quot;</span><span class='p'>);</span>
+
+<span class='c1'>// Get an array of the outerHTML of all rich text editors associated with this selector</span>
+<span class='kd'>var</span> <span class='nx'>outerValues</span> <span class='o'>=</span> <span class='nx'>$</span><span class='p'>(</span><span class='nx'>selector</span><span class='p'>).</span><span class='nx'>Arte</span><span class='p'>(</span><span class='s2'>&quot;outerValue&quot;</span><span class='p'>);</span>
+</code></pre></div>
+<h2 id="interacting_with_rich_text_commands">Interacting with rich text commands</h2>
+<div class='highlight'><pre><code class='javascript'><span class='c1'>// Suppose we want to ensure that only valid values are used in rich text commands</span>
+<span class='c1'>// (e.g. a whitelist for font-size and font-family)</span>
+<span class='c1'>// or we need to translate some command values (e.g. convert color from CMYk to RGB).</span>
+<span class='c1'>// This can be achieved by listening to the `onbeforecommand` event</span>
+<span class='nx'>$</span><span class='p'>(</span><span class='s2'>&quot;#editor&quot;</span><span class='p'>).</span><span class='nx'>Arte</span><span class='p'>(</span><span class='s2'>&quot;on&quot;</span><span class='p'>,</span> <span class='p'>{</span>
+    <span class='s2'>&quot;onbeforecommand&quot;</span><span class='o'>:</span> <span class='kd'>function</span> <span class='p'>(</span><span class='nx'>e</span><span class='p'>,</span> <span class='nx'>data</span><span class='p'>)</span> <span class='p'>{</span>
+        <span class='k'>switch</span> <span class='p'>(</span><span class='nx'>data</span><span class='p'>.</span><span class='nx'>commandName</span><span class='p'>)</span> <span class='p'>{</span>
+            <span class='k'>case</span> <span class='s2'>&quot;fontSize&quot;</span><span class='o'>:</span>
+                <span class='k'>switch</span> <span class='p'>(</span><span class='nx'>data</span><span class='p'>.</span><span class='nx'>commandValue</span><span class='p'>)</span> <span class='p'>{</span>
+                    <span class='c1'>// Translate the commandValue to a valid fontSize</span>
+                    <span class='k'>case</span> <span class='s2'>&quot;Big font&quot;</span><span class='o'>:</span>
+                        <span class='nx'>data</span><span class='p'>.</span><span class='nx'>commandValue</span> <span class='o'>=</span> <span class='s2'>&quot;50px&quot;</span><span class='p'>;</span>
+                        <span class='k'>break</span><span class='p'>;</span>
+                    <span class='k'>case</span> <span class='s2'>&quot;Small font&quot;</span><span class='o'>:</span>
+                        <span class='nx'>data</span><span class='p'>.</span><span class='nx'>commandValue</span> <span class='o'>=</span> <span class='s2'>&quot;5px&quot;</span><span class='p'>;</span>
+                        <span class='k'>break</span><span class='p'>;</span>
+                <span class='p'>}</span>
+                <span class='k'>break</span><span class='p'>;</span>
+            <span class='k'>case</span> <span class='s2'>&quot;fontFamily&quot;</span><span class='o'>:</span>
+                <span class='k'>if</span><span class='p'>(</span><span class='o'>!</span><span class='nx'>isFontInWhiteList</span><span class='p'>(</span><span class='nx'>data</span><span class='p'>.</span><span class='nx'>commandValue</span><span class='p'>))</span>
+                <span class='p'>{</span>
+                    <span class='c1'>// If font name is not whitelisted, don&#39;t execute the command</span>
+                    <span class='nx'>data</span><span class='p'>.</span><span class='nx'>execute</span> <span class='o'>=</span> <span class='kc'>false</span><span class='p'>;</span>
+                <span class='p'>}</span>
+                <span class='k'>break</span><span class='p'>;</span>
+        <span class='p'>}</span>
+    <span class='p'>}</span>
+<span class='p'>});</span>
+</code></pre></div>
+<h2 id="extending_artejs">Extending ArteJS</h2>
+<div class='highlight'><pre><code class='javascript'><span class='c1'>// Basic template for a plugin</span>
+<span class='p'>(</span><span class='kd'>function</span><span class='p'>(</span><span class='nx'>pluginManager</span><span class='p'>)</span> <span class='p'>{</span>
+    <span class='c1'>// plugin internals</span>
+    <span class='kd'>var</span> <span class='nx'>property</span><span class='p'>;</span>
+    <span class='kd'>function</span> <span class='nx'>pluginMethod</span><span class='p'>()</span> <span class='p'>{</span> <span class='p'>}</span>
+
+    <span class='c1'>// Public methods</span>
+    <span class='nx'>$</span><span class='p'>.</span><span class='nx'>extend</span><span class='p'>(</span><span class='nx'>$</span><span class='p'>.</span><span class='nx'>Arte</span><span class='p'>.</span><span class='nx'>TextArea</span><span class='p'>.</span><span class='nx'>prototype</span><span class='p'>,</span> <span class='p'>{</span>
+        <span class='nx'>publicMethodA</span><span class='o'>:</span> <span class='kd'>function</span><span class='p'>{},</span>
+        <span class='nx'>publicMethodB</span><span class='o'>:</span> <span class='nx'>pluginMethod</span>
+    <span class='p'>});</span>
+
+    <span class='kd'>var</span> <span class='nx'>myPlugin</span> <span class='o'>=</span> <span class='kd'>function</span> <span class='p'>()</span> <span class='p'>{</span>
+        <span class='k'>return</span> <span class='p'>{</span>
+            <span class='nx'>init</span><span class='o'>:</span> <span class='kd'>function</span> <span class='p'>(</span><span class='nx'>textArea</span><span class='p'>)</span> <span class='p'>{</span>
+                <span class='c1'>// any setup or listen to textArea events</span>
+            <span class='p'>}</span>
+        <span class='p'>}</span>
+    <span class='p'>}</span>
+
+    <span class='c1'>// Register this plugin with the plugin manager</span>
+    <span class='nx'>pluginManager</span><span class='p'>.</span><span class='nx'>register</span><span class='p'>(</span><span class='s2'>&quot;myPlugin&quot;</span><span class='p'>,</span> <span class='nx'>myPlugin</span><span class='p'>);</span>
+<span class='p'>})(</span><span class='nx'>$</span><span class='p'>.</span><span class='nx'>Arte</span><span class='p'>.</span><span class='nx'>pluginManager</span><span class='p'>)</span>
+</code></pre></div>
+<p>A few plugin <a href='https://github.com/vistaprint/ArteJS/tree/master/src/editor/plugins'>examples</a>.</p>
+
+<h1 id="toolbar">Toolbar</h1>
+
+<h2 id="configure_toolbar_dropdown">Configure toolbar dropdown</h2>
+<div class='highlight'><pre><code class='javascript'><span class='c1'>// The toolbar allows setting the display value and actual value that is applied to text</span>
+<span class='c1'>// Note that the values need to be set according to the commandAttrType configuration</span>
+
+<span class='c1'>// Here are a few examples of setting the styles:</span>
+
+<span class='c1'>// Simply apply the font-size</span>
+<span class='nx'>$</span><span class='p'>.</span><span class='nx'>Arte</span><span class='p'>.</span><span class='nx'>Toolbar</span><span class='p'>.</span><span class='nx'>configuration</span><span class='p'>.</span><span class='nx'>buttons</span><span class='p'>.</span><span class='nx'>fontSize</span><span class='p'>.</span><span class='nx'>options</span> <span class='o'>=</span> <span class='p'>[</span><span class='s2'>&quot;&quot;</span><span class='p'>,</span> <span class='mi'>8</span><span class='p'>,</span> <span class='mi'>10</span><span class='p'>,</span> <span class='mi'>12</span><span class='p'>,</span> <span class='mi'>15</span><span class='p'>,</span> <span class='mi'>20</span><span class='p'>];</span>
+
+<span class='c1'>// Example of the display value being different from the actual value</span>
+<span class='nx'>$</span><span class='p'>.</span><span class='nx'>Arte</span><span class='p'>.</span><span class='nx'>Toolbar</span><span class='p'>.</span><span class='nx'>configuration</span><span class='p'>.</span><span class='nx'>buttons</span><span class='p'>.</span><span class='nx'>fontSize</span><span class='p'>.</span><span class='nx'>options</span> <span class='o'>=</span> <span class='p'>[</span>
+    <span class='p'>{</span> <span class='nx'>display</span><span class='o'>:</span> <span class='s2'>&quot;&quot;</span><span class='p'>,</span> <span class='nx'>value</span><span class='o'>:</span> <span class='s2'>&quot;&quot;</span> <span class='p'>},</span>
+    <span class='p'>{</span> <span class='nx'>display</span><span class='o'>:</span> <span class='s2'>&quot;Smaller&quot;</span><span class='p'>,</span> <span class='nx'>value</span><span class='o'>:</span> <span class='mi'>8</span> <span class='p'>},</span>
+    <span class='p'>{</span> <span class='nx'>display</span><span class='o'>:</span> <span class='s2'>&quot;Small&quot;</span><span class='p'>,</span> <span class='nx'>value</span><span class='o'>:</span> <span class='mi'>10</span> <span class='p'>},</span>
+    <span class='p'>{</span> <span class='nx'>display</span><span class='o'>:</span> <span class='s2'>&quot;Medium&quot;</span><span class='p'>,</span> <span class='nx'>value</span><span class='o'>:</span> <span class='mi'>12</span> <span class='p'>},</span>
+    <span class='p'>{</span> <span class='nx'>display</span><span class='o'>:</span> <span class='s2'>&quot;Large&quot;</span><span class='p'>,</span> <span class='nx'>value</span><span class='o'>:</span> <span class='mi'>15</span> <span class='p'>},</span>
+    <span class='p'>{</span> <span class='nx'>display</span><span class='o'>:</span> <span class='s2'>&quot;Larger&quot;</span><span class='p'>,</span> <span class='nx'>value</span><span class='o'>:</span> <span class='mi'>20</span> <span class='p'>}</span>
+<span class='p'>];</span>
+
+<span class='c1'>// Example where the actual value is the name of the class to be applied</span>
+<span class='nx'>$</span><span class='p'>.</span><span class='nx'>Arte</span><span class='p'>.</span><span class='nx'>Toolbar</span><span class='p'>.</span><span class='nx'>configuration</span><span class='p'>.</span><span class='nx'>buttons</span><span class='p'>.</span><span class='nx'>fontSize</span><span class='p'>.</span><span class='nx'>options</span> <span class='o'>=</span> <span class='p'>[</span>
+    <span class='p'>{</span> <span class='nx'>display</span><span class='o'>:</span> <span class='s2'>&quot;&quot;</span><span class='p'>,</span> <span class='nx'>value</span><span class='o'>:</span> <span class='s2'>&quot;&quot;</span> <span class='p'>},</span>
+    <span class='p'>{</span> <span class='nx'>display</span><span class='o'>:</span> <span class='s2'>&quot;Smaller&quot;</span><span class='p'>,</span> <span class='nx'>value</span><span class='o'>:</span> <span class='s2'>&quot;arte-font-weight-8&quot;</span> <span class='p'>},</span>
+    <span class='p'>{</span> <span class='nx'>display</span><span class='o'>:</span> <span class='s2'>&quot;Small&quot;</span><span class='p'>,</span> <span class='nx'>value</span><span class='o'>:</span> <span class='s2'>&quot;arte-font-weight-10&quot;</span> <span class='p'>},</span>
+    <span class='p'>{</span> <span class='nx'>display</span><span class='o'>:</span> <span class='s2'>&quot;Medium&quot;</span><span class='p'>,</span> <span class='nx'>value</span><span class='o'>:</span> <span class='s2'>&quot;arte-font-weight-12&quot;</span> <span class='p'>},</span>
+    <span class='p'>{</span> <span class='nx'>display</span><span class='o'>:</span> <span class='s2'>&quot;Large&quot;</span><span class='p'>,</span> <span class='nx'>value</span><span class='o'>:</span> <span class='s2'>&quot;arte-font-weight-15&quot;</span> <span class='p'>},</span>
+    <span class='p'>{</span> <span class='nx'>display</span><span class='o'>:</span> <span class='s2'>&quot;Larger&quot;</span><span class='p'>,</span> <span class='nx'>value</span><span class='o'>:</span> <span class='s2'>&quot;arte-font-weight-20&quot;</span> <span class='p'>}</span>
+<span class='p'>];</span>
+</code></pre></div>
+  </div>
+</div>
+ 
+
+    </div><!-- end of #wrapper -->
+  </div><!-- end of #container -->
+
+  <div id="footer" class="clearfix">
+    
+      <div id="footer-wrapper">
+      
+          <div class="grid col-940">
+          
+            <div class="grid col-540"></div><!-- end of col-540 -->
+           
+            <div class="grid col-380 fit">
+              <ul class="social-icons"></ul><!-- end of .social-icons -->         
+            </div><!-- end of col-380 fit -->
+           
+          </div><!-- end of col-940 -->
+                               
+          <div class="grid col-300 copyright">
+              &copy; 2013 <a href="http://www.vistaprint.com/" title="Vistaprint | Business Cards, Websites, Postcards, T-shirts And More">Vistaprint</a>
+          </div><!-- end of .copyright -->
+          
+          <div class="grid col-300 scroll-top"><a href="#scroll-top" title="scroll to top">&uarr;</a></div>
+          
+          <div class="grid col-300 fit powered">
+          </div><!-- end .powered -->
+          
+      </div><!-- end #footer-wrapper -->
+      
+  </div><!-- end #footer -->
+
+  <script type='text/javascript' src='/javascripts/responsive.js'></script>
+</body>
+</html>

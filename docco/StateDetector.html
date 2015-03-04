@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>StateDetector.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page">
+            
+              
+              <a class="source" href="Arte.html">
+                Arte.js
+              </a>
+            
+              
+              <a class="source" href="Commands.html">
+                Commands.js
+              </a>
+            
+              
+              <a class="source" href="Configuration.html">
+                Configuration.js
+              </a>
+            
+              
+              <a class="source" href="PluginManager.html">
+                PluginManager.js
+              </a>
+            
+              
+              <a class="source" href="TextArea.html">
+                TextArea.js
+              </a>
+            
+              
+              <a class="source" href="Util.html">
+                Util.js
+              </a>
+            
+              
+              <a class="source" href="jquery-dom-cleanup.html">
+                jquery-dom-cleanup.js
+              </a>
+            
+              
+              <a class="source" href="jquery-dom-manipulation.html">
+                jquery-dom-manipulation.js
+              </a>
+            
+              
+              <a class="source" href="jquery-dom-traversal.html">
+                jquery-dom-traversal.js
+              </a>
+            
+              
+              <a class="source" href="rangy-blockElementApplier.html">
+                rangy-blockElementApplier.js
+              </a>
+            
+              
+              <a class="source" href="rangy-elementApplierOptions.html">
+                rangy-elementApplierOptions.js
+              </a>
+            
+              
+              <a class="source" href="rangy-extensions.html">
+                rangy-extensions.js
+              </a>
+            
+              
+              <a class="source" href="rangy-inlineElementApplier.html">
+                rangy-inlineElementApplier.js
+              </a>
+            
+              
+              <a class="source" href="richtextCommandApplier.html">
+                richtextCommandApplier.js
+              </a>
+            
+              
+              <a class="source" href="InsertCommand.html">
+                InsertCommand.js
+              </a>
+            
+              
+              <a class="source" href="StateDetector.html">
+                StateDetector.js
+              </a>
+            
+              
+              <a class="source" href="UndoManager.html">
+                UndoManager.js
+              </a>
+            
+              
+              <a class="source" href="keyboardEventHandler.html">
+                keyboardEventHandler.js
+              </a>
+            
+              
+              <a class="source" href="pasteHandler.html">
+                pasteHandler.js
+              </a>
+            
+              
+              <a class="source" href="Button.html">
+                Button.js
+              </a>
+            
+              
+              <a class="source" href="ButtonWithDialog.html">
+                ButtonWithDialog.js
+              </a>
+            
+              
+              <a class="source" href="ButtonWithDropDown.html">
+                ButtonWithDropDown.js
+              </a>
+            
+              
+              <a class="source" href="Configuration.html">
+                Configuration.js
+              </a>
+            
+              
+              <a class="source" href="SelectionManager.html">
+                SelectionManager.js
+              </a>
+            
+              
+              <a class="source" href="toolbar.html">
+                toolbar.js
+              </a>
+            
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>StateDetector.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>﻿<span class="hljs-comment">/**
+ * @fileoverview: StateDetector detects the command state of user selection
+ */</span>
+(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(pluginManager)</span> </span>{
+    <span class="hljs-keyword">var</span> constants = $.Arte.constants;
+
+    <span class="hljs-keyword">var</span> getValue = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(nodes, commandOptions)</span> </span>{
+        <span class="hljs-keyword">var</span> styleValue = <span class="hljs-literal">null</span>;
+        <span class="hljs-keyword">var</span> hasSameValue = <span class="hljs-literal">true</span>;
+
+        <span class="hljs-keyword">var</span> nodesWithCommand = $.Arte.dom.closestWithCommand(nodes, commandOptions);
+        <span class="hljs-keyword">if</span> (nodes.length !== nodesWithCommand.length) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>Not all nodes have this command applied</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
+        }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>All nodes should have same style applied</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">var</span> commandValue = $.Arte.dom.getCommandValue(nodesWithCommand.first(), commandOptions);
+
+        nodesWithCommand.each(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+            hasSameValue = $.Arte.dom.hasCommandValue($(<span class="hljs-keyword">this</span>), commandValue);
+            <span class="hljs-keyword">return</span> hasSameValue;
+        });
+
+        <span class="hljs-keyword">if</span> (hasSameValue) {
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> value <span class="hljs-keyword">in</span> commandValue) {
+                styleValue = commandValue[value];
+            }
+        }
+
+        <span class="hljs-keyword">return</span> styleValue;
+    };
+
+    <span class="hljs-keyword">var</span> isApplied = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(nodes, commandOptions)</span> </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>Special case for OL/UL: Check if the text nodes are surrounded by LIs and the LIs belong to same OL/LI parent</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">var</span> tag = commandOptions.tagName;
+        <span class="hljs-keyword">if</span> (tag &amp;&amp; (tag === constants.tagName.OL || tag === constants.tagName.UL)) {
+            <span class="hljs-keyword">return</span> $.Arte.dom.listSurrounded(nodes, {
+                singleList: <span class="hljs-literal">true</span>,
+                tagName: tag
+            });
+        }
+        <span class="hljs-keyword">var</span> nodesWithStyleValue = $.Arte.dom.closestWithCommandValue(nodes, commandOptions);
+        <span class="hljs-keyword">return</span> nodesWithStyleValue.length === nodes.length;
+    };
+
+    <span class="hljs-keyword">var</span> getState = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(selectedNodes, commandName, options)</span> </span>{
+        <span class="hljs-keyword">if</span> (!selectedNodes || !selectedNodes.length) {
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
+        }
+        <span class="hljs-keyword">var</span> commandConfig = $.Arte.configuration.commands[commandName];
+        <span class="hljs-keyword">var</span> commandOptions = $.extend({
+            commandName: commandName,
+            tagName: commandConfig.tagName,
+            styleName: commandConfig.styleName,
+            styleValue: commandConfig.defaultValue ? commandConfig.defaultValue.styleName : <span class="hljs-literal">null</span>,
+            className: commandConfig.defaultValue ? commandConfig.defaultValue.className : <span class="hljs-literal">null</span>
+        }, options);
+
+        <span class="hljs-keyword">return</span> commandConfig.acceptsParams ? getValue(selectedNodes, commandOptions) : isApplied(selectedNodes, commandOptions);
+    };
+
+    <span class="hljs-keyword">var</span> getSelectedNodesState = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(selectedNodes, commandName)</span> </span>{
+        <span class="hljs-keyword">if</span> (commandName) {
+            <span class="hljs-keyword">return</span> getState(selectedNodes, commandName);
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-keyword">var</span> result = {};
+            $.each($.Arte.configuration.commands, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(name, config)</span> </span>{
+                <span class="hljs-keyword">if</span> ($.isPlainObject(config) &amp;&amp; config.commandType &amp;&amp; config.commandType != constants.commandType.other) {
+                    result[name] = getState(selectedNodes, name);
+                }
+            });
+            <span class="hljs-keyword">return</span> result;
+        }
+    };</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>Extend the prototype of the TextArea to expose the public API</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    $.extend($.Arte.TextArea.prototype, {
+        getState: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(commandName)</span> </span>{
+            <span class="hljs-keyword">var</span> selectedNodes = $.Arte.util.getSelectedTextNodes.apply(<span class="hljs-keyword">this</span>, [<span class="hljs-literal">true</span>]);
+            <span class="hljs-keyword">return</span> getSelectedNodesState(selectedNodes, commandName);
+        },
+
+        <span class="hljs-comment">/**
+         * Get an array of all the states found within the current selection
+         * (ie: if the current selection has both a bold and a non-bold component, get two results representing that)
+         * @param {commandName} string. Optional. If provided, only result the state of the given command (ie: fontFamily, bold, etc)
+         */</span>
+        getAllStates: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(commandName)</span> </span>{
+            <span class="hljs-keyword">var</span> selectedNodes = $.Arte.util.getSelectedTextNodes.apply(<span class="hljs-keyword">this</span>, [<span class="hljs-literal">true</span>]);
+            <span class="hljs-keyword">var</span> results = [];
+
+            $.each(selectedNodes, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+                <span class="hljs-keyword">var</span> selectedNode = $(<span class="hljs-keyword">this</span>);
+                results.push(getSelectedNodesState(selectedNode, commandName));
+            });
+
+            <span class="hljs-keyword">return</span> results;
+        }
+    });
+
+    <span class="hljs-keyword">var</span> stateDetector = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+        <span class="hljs-keyword">return</span> {
+            <span class="hljs-comment">/**
+             * A callback method for when a Arte is initialized
+             * @param {TextArea} textArea.  An instance of a Arte text area
+             */</span>
+            init: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{}
+        };
+    };</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>Register this plugin with the plugin manager</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    pluginManager.register(<span class="hljs-string">"stateDetector"</span>, stateDetector);
+})($.Arte.pluginManager);</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

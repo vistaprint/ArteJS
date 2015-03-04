@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>rangy-blockElementApplier.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page">
+            
+              
+              <a class="source" href="Arte.html">
+                Arte.js
+              </a>
+            
+              
+              <a class="source" href="Commands.html">
+                Commands.js
+              </a>
+            
+              
+              <a class="source" href="Configuration.html">
+                Configuration.js
+              </a>
+            
+              
+              <a class="source" href="PluginManager.html">
+                PluginManager.js
+              </a>
+            
+              
+              <a class="source" href="TextArea.html">
+                TextArea.js
+              </a>
+            
+              
+              <a class="source" href="Util.html">
+                Util.js
+              </a>
+            
+              
+              <a class="source" href="jquery-dom-cleanup.html">
+                jquery-dom-cleanup.js
+              </a>
+            
+              
+              <a class="source" href="jquery-dom-manipulation.html">
+                jquery-dom-manipulation.js
+              </a>
+            
+              
+              <a class="source" href="jquery-dom-traversal.html">
+                jquery-dom-traversal.js
+              </a>
+            
+              
+              <a class="source" href="rangy-blockElementApplier.html">
+                rangy-blockElementApplier.js
+              </a>
+            
+              
+              <a class="source" href="rangy-elementApplierOptions.html">
+                rangy-elementApplierOptions.js
+              </a>
+            
+              
+              <a class="source" href="rangy-extensions.html">
+                rangy-extensions.js
+              </a>
+            
+              
+              <a class="source" href="rangy-inlineElementApplier.html">
+                rangy-inlineElementApplier.js
+              </a>
+            
+              
+              <a class="source" href="richtextCommandApplier.html">
+                richtextCommandApplier.js
+              </a>
+            
+              
+              <a class="source" href="InsertCommand.html">
+                InsertCommand.js
+              </a>
+            
+              
+              <a class="source" href="StateDetector.html">
+                StateDetector.js
+              </a>
+            
+              
+              <a class="source" href="UndoManager.html">
+                UndoManager.js
+              </a>
+            
+              
+              <a class="source" href="keyboardEventHandler.html">
+                keyboardEventHandler.js
+              </a>
+            
+              
+              <a class="source" href="pasteHandler.html">
+                pasteHandler.js
+              </a>
+            
+              
+              <a class="source" href="Button.html">
+                Button.js
+              </a>
+            
+              
+              <a class="source" href="ButtonWithDialog.html">
+                ButtonWithDialog.js
+              </a>
+            
+              
+              <a class="source" href="ButtonWithDropDown.html">
+                ButtonWithDropDown.js
+              </a>
+            
+              
+              <a class="source" href="Configuration.html">
+                Configuration.js
+              </a>
+            
+              
+              <a class="source" href="SelectionManager.html">
+                SelectionManager.js
+              </a>
+            
+              
+              <a class="source" href="toolbar.html">
+                toolbar.js
+              </a>
+            
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>rangy-blockElementApplier.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>rangy.createModule(<span class="hljs-string">"BlockElementApplier"</span>, [<span class="hljs-string">"WrappedSelection"</span>, <span class="hljs-string">"WrappedRange"</span>], <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(api)</span> </span>{
+    <span class="hljs-keyword">var</span> dom = $.Arte.dom;
+    <span class="hljs-keyword">var</span> constants = $.Arte.constants;
+
+    <span class="hljs-comment">/**
+     * An object to holde the result of block surround test operation
+     */</span>
+    <span class="hljs-keyword">var</span> blockSurroundState = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+        <span class="hljs-keyword">this</span>.Surrounded = <span class="hljs-number">0</span>; <span class="hljs-comment">// All of the blocks in the range are surrounded</span>
+        <span class="hljs-keyword">this</span>.UnSurrounded = <span class="hljs-number">1</span>; <span class="hljs-comment">// All of the blocks in the range are not surrounded</span>
+        <span class="hljs-keyword">this</span>.Mixed = <span class="hljs-number">2</span>; <span class="hljs-comment">// Some of the blocks in the range are surrounded</span>
+        <span class="hljs-keyword">this</span>.Invalid = <span class="hljs-number">3</span>; <span class="hljs-comment">// Invalid State</span>
+
+        <span class="hljs-keyword">this</span>.surroundedIndexes = []; <span class="hljs-comment">// collection of surrounded ranges</span>
+        <span class="hljs-keyword">this</span>.unSurroundedIndexes = []; <span class="hljs-comment">// collection of unsurrounded ranges</span>
+
+        <span class="hljs-keyword">this</span>._state = <span class="hljs-string">""</span>;
+        <span class="hljs-keyword">this</span>.computeState = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>All surrounded</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.surroundedIndexes.length &amp;&amp; !<span class="hljs-keyword">this</span>.unSurroundedIndexes.length) {
+                <span class="hljs-keyword">this</span>._state = <span class="hljs-keyword">this</span>.Surrounded;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>All un-surrounded</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.unSurroundedIndexes.length &amp;&amp; !<span class="hljs-keyword">this</span>.surroundedIndexes.length) {
+                <span class="hljs-keyword">this</span>._state = <span class="hljs-keyword">this</span>.UnSurrounded;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>Some are surrounded and some are not surrounded</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.surroundedIndexes.length &amp;&amp; <span class="hljs-keyword">this</span>.unSurroundedIndexes.length) {
+                <span class="hljs-keyword">this</span>._state = <span class="hljs-keyword">this</span>.Mixed;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>Something weird happened</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            } <span class="hljs-keyword">else</span> {
+                <span class="hljs-keyword">this</span>._state = <span class="hljs-keyword">this</span>.Invalid;
+            }
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>._state;
+        };
+
+        <span class="hljs-keyword">this</span>.state = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(newState)</span> </span>{
+            <span class="hljs-keyword">if</span> (newState) {
+                <span class="hljs-keyword">this</span>._state = newState;
+            }
+            <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>._state) {
+                <span class="hljs-keyword">this</span>._state = <span class="hljs-keyword">this</span>.computeState();
+            }
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>._state;
+        };
+    };
+
+    <span class="hljs-comment">/**
+     * Checks if all of the block ranges block surrounded and the attributes are applied to the parent node
+     * @param {[rangyRanges]} ranges
+     * @return result object
+     */</span>
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">areRangesBlockSurrounded</span><span class="hljs-params">(ranges, options)</span> </span>{
+        <span class="hljs-keyword">var</span> rangeCount = ranges.length;
+        <span class="hljs-keyword">var</span> surroundState = <span class="hljs-keyword">new</span> blockSurroundState();
+        <span class="hljs-keyword">var</span> nodesByRange = getTopNodesFromRanges(ranges);
+        <span class="hljs-keyword">var</span> bucket;
+
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; rangeCount; i++) {
+            bucket = (dom.closestWithCommandValue(nodesByRange[i], options).length &gt; <span class="hljs-number">0</span>) ?
+                    surroundState.surroundedIndexes :
+                    surroundState.unSurroundedIndexes;
+            bucket.push(i);
+        }
+
+        <span class="hljs-keyword">return</span> surroundState;
+    }
+
+    <span class="hljs-comment">/**
+     * Checks if a set of ranges is block surrounded by a LI tag
+     * In case all of the ranges are surrounded, also checks if the surrounded blocks are surrounded by the same ol/ul parent
+     * @param {[rangyRanges]} ranges
+     * @param {BlockSurroundOptions} options
+     * @return BlockSurroundResult
+     */</span>
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">isBlockSetSurrounded</span><span class="hljs-params">(ranges, blockOptions)</span> </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>Check if all of the ranges are surrounded by LI.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">var</span> surroundState = areRangesBlockSurrounded(ranges, {
+            tagName: constants.tagName.LI,
+            commandAttrType: blockOptions.commandAttrType,
+            topEditableParent: blockOptions.topEditableParent
+        });</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>Make sure in case all the ranges are surrounded, they are surrounded by same list parent;
+if not, change the state to Mixed
+In case there are two lists next to each other</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">if</span> (surroundState.state() === surroundState.Surrounded) {
+            <span class="hljs-keyword">var</span> listElements = $();
+            $.each(ranges, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(index, range)</span> </span>{
+                <span class="hljs-keyword">var</span> li = $(rangy.util.getTopNodes(range.getNodes())).closest(constants.tagName.LI);
+                listElements.push(li.get(<span class="hljs-number">0</span>));
+            });
+
+            <span class="hljs-keyword">if</span> (!dom.hasSameListParent(listElements)) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>Check if all of the list element are part of same list
+Mixed State =&gt; <ol> <li> first </li> </ol> <ol> <li> second </li> <ol></p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>                surroundState.state(surroundState.Mixed);
+            } <span class="hljs-keyword">else</span> {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>Check if the list tag is not the one we want</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>                <span class="hljs-keyword">var</span> parent = listElements.first().parent();
+                <span class="hljs-keyword">if</span> (parent.prop(<span class="hljs-string">"tagName"</span>) !== blockOptions.applierTagName.toUpperCase()) {
+                    surroundState.state(surroundState.UnSurrounded);
+                }
+            }
+        }
+        <span class="hljs-keyword">return</span> surroundState;
+    }
+
+    <span class="hljs-comment">/*
+     * Given a range and a list, determent how many list items are before, inside and after the range
+     */</span>
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getSelectedListElements</span><span class="hljs-params">(jListParent, blockOptions)</span> </span>{
+        <span class="hljs-keyword">var</span> jListElement = jListParent.children();</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>construct a list of nodes that are after and before the selection</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">var</span> beforeSelection = $();
+        <span class="hljs-keyword">var</span> selection = $();
+        <span class="hljs-keyword">var</span> afterSelection = $();
+        <span class="hljs-keyword">var</span> target = beforeSelection;
+
+        jListElement.each(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+            <span class="hljs-keyword">if</span> (blockOptions.originalRange.intersectsNode(<span class="hljs-keyword">this</span>)) {
+                target = afterSelection;
+                selection.push(<span class="hljs-keyword">this</span>);
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+            }
+            target.push(<span class="hljs-keyword">this</span>);
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+        });
+
+        <span class="hljs-keyword">return</span> {
+            tagName: jListParent.prop(<span class="hljs-string">"tagName"</span>),
+            beforeSelection: beforeSelection,
+            selection: selection,
+            afterSelection: afterSelection
+        };
+    }
+
+    <span class="hljs-comment">/**
+     * Gets nodes from ranges
+     * Note that once the dom is manipulated, the ranges are no longer valid
+     * @param {[rangyRanges]} ranges
+     * @return object with nodeIndex -&gt; [nodes in the range] mapping
+     */</span>
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getTopNodesFromRanges</span><span class="hljs-params">(ranges)</span> </span>{
+        <span class="hljs-keyword">var</span> nodeCollection = {};
+        <span class="hljs-keyword">var</span> func = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+            nodeCollection[i].push(<span class="hljs-keyword">this</span>);
+        };
+
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; ranges.length; i++) {
+            nodeCollection[i] = $();
+            $(rangy.util.getTopNodes(ranges[i].getNodes())).each(func);
+        }
+        <span class="hljs-keyword">return</span> nodeCollection;
+    }
+
+    <span class="hljs-comment">/*
+     * If there are partially selected lists at the begining or end of selection, properly close the
+     * non selected list elements.
+     */</span>
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">closeListsAroundSelection</span><span class="hljs-params">(splitRanges, blockOptions)</span> </span>{
+        <span class="hljs-keyword">var</span> blockSurroundedResult = blockOptions.blockSurroundState;
+
+        <span class="hljs-keyword">var</span> wrapUnselectedListItems = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(selectionResult)</span> </span>{
+            <span class="hljs-keyword">var</span> wrapWithBlock = dom.wrapWithBlock;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <p>close the list before and after the selection</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            wrapWithBlock(selectionResult.beforeSelection, {
+                applierTagName: selectionResult.tagName
+            });
+            wrapWithBlock(selectionResult.afterSelection, {
+                applierTagName: selectionResult.tagName
+            });
+        };
+
+        <span class="hljs-keyword">var</span> evaluateSelection = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(selectedElement)</span> </span>{
+            <span class="hljs-keyword">var</span> parent = selectedElement.closest(constants.tagName.LI).parent();
+            <span class="hljs-keyword">var</span> selectionResult = getSelectedListElements(parent, blockOptions);
+            <span class="hljs-keyword">return</span> {
+                parent: parent,
+                selectionResult: selectionResult
+            };
+        };</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-12">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              <p>Check if the first and/or the last range is surrounded</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">var</span> selectionBegin;
+        <span class="hljs-keyword">if</span> (blockSurroundedResult.surroundedIndexes[<span class="hljs-number">0</span>] === <span class="hljs-number">0</span>) { <span class="hljs-comment">// first block in the range is surrounded</span>
+            selectionBegin = evaluateSelection($(splitRanges[<span class="hljs-number">0</span>].startContainer));
+        }
+
+        <span class="hljs-keyword">var</span> rangeCount = splitRanges.length;
+        <span class="hljs-keyword">var</span> selectionEnd;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-13">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-13">&#182;</a>
+              </div>
+              <p>Last block in the range is surrounded</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">if</span> (blockSurroundedResult.surroundedIndexes[blockSurroundedResult.surroundedIndexes.length - <span class="hljs-number">1</span>] === rangeCount - <span class="hljs-number">1</span>) {
+            selectionEnd = evaluateSelection($(splitRanges[rangeCount - <span class="hljs-number">1</span>].startContainer));
+        }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-14">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-14">&#182;</a>
+              </div>
+              <p>If the first or the last range is surrounded, remove the selected List elements and properly close the lists</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">if</span> (selectionBegin) {
+            dom.unwrapWithOptions(selectionBegin.parent);
+            wrapUnselectedListItems(selectionBegin.selectionResult);
+        }
+
+        <span class="hljs-keyword">if</span> (selectionEnd &amp;&amp; (!selectionBegin || (selectionBegin.parent[<span class="hljs-number">0</span>] !== selectionEnd.parent[<span class="hljs-number">0</span>]))) {
+            dom.unwrapWithOptions(selectionEnd.parent);
+            wrapUnselectedListItems(selectionEnd.selectionResult);
+        }
+    }
+
+    <span class="hljs-comment">/**
+     * Wrap each range in split ranges with LI and then wrap all LIs into a UL/OL
+     * @param {[rangyRanges]} splitRanges
+     * @param {blockSurroundOptions} blockOptions
+     * @return an array of new ranges
+     */</span>
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">surroundRangeSet</span><span class="hljs-params">(splitRanges, blockOptions)</span> </span>{
+        <span class="hljs-keyword">var</span> blockSurroundedResult = blockOptions.blockSurroundState;
+        <span class="hljs-keyword">var</span> nodesByBlockRange = getTopNodesFromRanges(splitRanges);
+        <span class="hljs-keyword">var</span> wrappedNodes = $();
+
+        closeListsAroundSelection(splitRanges, blockOptions);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-15">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-15">&#182;</a>
+              </div>
+              <p>Create mapping lookup table</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">var</span> rangeLookup = {};
+        $.each(blockSurroundedResult.surroundedIndexes, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+            rangeLookup[<span class="hljs-keyword">this</span>] = <span class="hljs-number">1</span>;
+        });
+
+        <span class="hljs-keyword">var</span> addToWrappedNodes = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+            wrappedNodes.push(<span class="hljs-keyword">this</span>);
+        };</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-16">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-16">&#182;</a>
+              </div>
+              <p>Handle the selected elements</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">var</span> rangeCount = splitRanges.length;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; rangeCount; i++) {
+            <span class="hljs-keyword">var</span> nodeContainer;
+            <span class="hljs-keyword">if</span> (!rangeLookup[i]) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-17">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-17">&#182;</a>
+              </div>
+              <p>If a selection includes a empty line (ex. <br/>some text) a rangy
+selection span gets inserted at the  beginning of the block tag
+in this case we don’t want to wrap this into a block.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>                <span class="hljs-keyword">if</span> (nodesByBlockRange[i][<span class="hljs-number">0</span>].nodeType == <span class="hljs-number">3</span> &amp;&amp; nodesByBlockRange[i][<span class="hljs-number">0</span>].nodeValue.charCodeAt(<span class="hljs-number">0</span>) == <span class="hljs-number">65279</span>) {
+                    <span class="hljs-keyword">continue</span>;
+                }
+
+                nodeContainer = dom.wrapWithBlock(nodesByBlockRange[i], {
+                    applierTagName: constants.tagName.LI,
+                    topEditableParent: blockOptions.topEditableParent
+                });
+                wrappedNodes.push(nodeContainer[<span class="hljs-number">0</span>]);
+            } <span class="hljs-keyword">else</span> {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-18">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-18">&#182;</a>
+              </div>
+              <p>Skip over the nodes that we already unwrapped</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>                <span class="hljs-keyword">var</span> node = nodesByBlockRange[i].first().closest(constants.tagName.LI);
+                <span class="hljs-keyword">if</span> (!(node.parents(constants.tagName.OL)[<span class="hljs-number">0</span>] || node.parents(constants.tagName.UL)[<span class="hljs-number">0</span>])) {
+                    wrappedNodes.push(node[<span class="hljs-number">0</span>]);
+                    <span class="hljs-keyword">continue</span>;
+                }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-19">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-19">&#182;</a>
+              </div>
+              <p>This list is completely with-in a selection</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>                node.parent().children().each(addToWrappedNodes);
+                dom.unwrapWithOptions(node.parent());
+            }
+        }
+
+        dom.wrapWithOptions(wrappedNodes, blockOptions);
+    }
+
+    <span class="hljs-comment">/**
+     * Unwrap each range in split ranges from LI and UL and properly close the Ol/UL of the non-selected list elements
+     * @param {[rangyRanges]} splitRanges
+     * @param {blockSurroundOptions} blockOptions
+     * @return an array of new ranges
+     */</span>
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">unSurroundRangeSet</span><span class="hljs-params">(splitRanges, blockOptions)</span> </span>{
+        <span class="hljs-keyword">var</span> jParent = $(splitRanges[<span class="hljs-number">0</span>].startContainer).closest(constants.tagName.LI).parent();
+        <span class="hljs-keyword">var</span> parentTag = jParent.prop(<span class="hljs-string">"tagName"</span>);
+
+        <span class="hljs-keyword">var</span> selectedLIs = getSelectedListElements(jParent, blockOptions);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-20">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-20">&#182;</a>
+              </div>
+              <p>Remove the ul/ol parent</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        dom.unwrapWithOptions(jParent);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-21">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-21">&#182;</a>
+              </div>
+              <p>close the list before the selection</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        dom.wrapWithOptions(selectedLIs.beforeSelection, {
+            applierTagName: parentTag
+        });</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-22">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-22">&#182;</a>
+              </div>
+              <p>for these nodes, we want to remove the list tags</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        dom.unwrapWithOptions(selectedLIs.selection, {
+            <span class="hljs-string">"insertBr"</span>: <span class="hljs-literal">true</span>,
+            <span class="hljs-string">"maintainStyles"</span>: <span class="hljs-literal">true</span>
+        });</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-23">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-23">&#182;</a>
+              </div>
+              <p>close the list after the selection</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        dom.wrapWithOptions(selectedLIs.afterSelection, {
+            applierTagName: parentTag
+        });
+    }
+
+    <span class="hljs-comment">/**
+     * Given a set of selections and content ranges, expand the selection ranges to block level elements
+     * @param {rangyRange} selectionRange
+     * @param {rangyRange} contentRange
+     * @return expanded range
+     */</span>
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">expandRange</span><span class="hljs-params">(selectionRange, topEditableParent)</span> </span>{
+        <span class="hljs-keyword">if</span> (!topEditableParent) {
+            <span class="hljs-keyword">return</span> selectionRange;
+        }
+
+        <span class="hljs-keyword">var</span> contentEditableRange = rangy.createRangyRange();
+        contentEditableRange.selectNodeContents(topEditableParent);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-24">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-24">&#182;</a>
+              </div>
+              <p>Get all ranges within contentRange</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">var</span> blocks = contentEditableRange.splitByBlock();
+        <span class="hljs-keyword">var</span> clonedSelectionRange = selectionRange.cloneRange();</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-25">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-25">&#182;</a>
+              </div>
+              <p>Loop through blocks and find intersections with selection</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, l = blocks.length; i &lt; l; i++) {
+            <span class="hljs-keyword">if</span> (clonedSelectionRange.intersectsRange(blocks[i])) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-26">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-26">&#182;</a>
+              </div>
+              <p>if begging of the selection is inside the current block, expend the begging of selection to the begging of the block</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>                <span class="hljs-keyword">if</span> (blocks[i].comparePoint(clonedSelectionRange.startContainer, clonedSelectionRange.startOffset) === <span class="hljs-number">0</span>) {
+                    clonedSelectionRange.setStart(blocks[i].startContainer, blocks[i].startOffset);
+                }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-27">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-27">&#182;</a>
+              </div>
+              <p>otherwise if end of the selection is inside the current block, expend the end of selection to the end of the block</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>                <span class="hljs-keyword">if</span> (blocks[i].comparePoint(clonedSelectionRange.endContainer, clonedSelectionRange.endOffset) === <span class="hljs-number">0</span>) {
+                    clonedSelectionRange.setEnd(blocks[i].endContainer, blocks[i].endOffset);
+                }
+            }
+        }
+        <span class="hljs-keyword">return</span> clonedSelectionRange;
+    }
+
+    <span class="hljs-comment">/**
+     * Toggle surround a range with list element
+     * @param {[rangyRanges]} splitRanges
+     * @param {blockSurroundOptions} blockOptions
+     * @return an array of new ranges
+     */</span>
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">toggleSurroundRangeSet</span><span class="hljs-params">(range, options)</span> </span>{
+        <span class="hljs-keyword">var</span> blockOptions = <span class="hljs-keyword">new</span> $.Arte.ElementApplierOptions(options);
+
+        <span class="hljs-keyword">var</span> expandedRanges = expandRange(range, options.topEditableParent);
+
+        blockOptions.originalRange = expandedRanges;
+        <span class="hljs-keyword">var</span> splitRanges = expandedRanges.splitByBlock();
+        <span class="hljs-keyword">var</span> surroundState = isBlockSetSurrounded(splitRanges, blockOptions);
+        blockOptions.blockSurroundState = surroundState;
+
+        <span class="hljs-keyword">if</span> (surroundState.state() === surroundState.UnSurrounded ||
+            surroundState.state() === surroundState.Mixed) {
+            surroundRangeSet(splitRanges, blockOptions);
+        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (surroundState.state() === surroundState.Surrounded) {
+            unSurroundRangeSet(splitRanges, blockOptions);
+        }
+    }
+
+    <span class="hljs-comment">/**
+     * Toggle surround a selection with list element
+     * @param {[rangyRanges]} splitRanges
+     * @param {blockSurroundOptions} blockOptions
+     * @return an array of new ranges
+     */</span>
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">toggleSurroundSelectionSet</span><span class="hljs-params">(options, topEditableParent)</span> </span>{
+        <span class="hljs-keyword">var</span> blockOptions = <span class="hljs-keyword">new</span> $.Arte.ElementApplierOptions(options, topEditableParent);
+        <span class="hljs-keyword">var</span> selection = rangy.getSelection();
+        <span class="hljs-keyword">var</span> range = selection.getRangeAt(<span class="hljs-number">0</span>);
+        <span class="hljs-keyword">if</span> (range) {
+            toggleSurroundRangeSet(range, blockOptions);
+        }
+    }
+
+    <span class="hljs-comment">/**
+     * Toggle surround each range in split ranges
+     * @param {[rangyRanges]} splitRanges
+     * @param {blockSurroundOptions} blockOptions
+     * @return an array of new ranges
+     */</span>
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">toggleSurroundRange</span><span class="hljs-params">(range, options)</span> </span>{
+        <span class="hljs-keyword">if</span> (range.isCollapsed) {
+            <span class="hljs-keyword">return</span>;
+        }
+
+        <span class="hljs-keyword">var</span> blockOptions = <span class="hljs-keyword">new</span> $.Arte.ElementApplierOptions(options);
+
+        <span class="hljs-keyword">var</span> expandedRange = expandRange(range, options.topEditableParent);
+
+        <span class="hljs-keyword">var</span> splitRanges = expandedRange.splitByBlock();
+        <span class="hljs-keyword">var</span> surroundState = areRangesBlockSurrounded(splitRanges, blockOptions);
+        <span class="hljs-keyword">var</span> nodesByRange = getTopNodesFromRanges(splitRanges);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-28">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-28">&#182;</a>
+              </div>
+              <p>Iterate over each range and surround the content of the range with a block level element</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> rangeIndex <span class="hljs-keyword">in</span> nodesByRange) {
+            <span class="hljs-keyword">var</span> jNodes = nodesByRange[rangeIndex];
+            <span class="hljs-keyword">if</span> (surroundState.state() == surroundState.Surrounded) {
+                dom.unwrapBlock(jNodes, blockOptions);
+            } <span class="hljs-keyword">else</span> {
+                dom.wrapWithBlock(nodesByRange[rangeIndex], blockOptions);
+            }
+        }
+    }
+
+    <span class="hljs-comment">/**
+     * Toggle surround a selection with block element
+     * @param {[rangyRanges]} splitRanges
+     * @param {blockSurroundOptions} blockOptions
+     * @return an array of new ranges
+     */</span>
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">toggleSurroundSelection</span><span class="hljs-params">(options, topEditableParent)</span> </span>{
+        <span class="hljs-keyword">var</span> blockOptions = <span class="hljs-keyword">new</span> $.Arte.ElementApplierOptions(options, topEditableParent);
+        <span class="hljs-keyword">var</span> selection = rangy.getSelection();
+        <span class="hljs-keyword">var</span> range = selection.getRangeAt(<span class="hljs-number">0</span>);
+        <span class="hljs-keyword">if</span> (range) {
+            toggleSurroundRange(range, blockOptions);
+        }
+    }
+
+    <span class="hljs-comment">/*Public api*/</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-29">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-29">&#182;</a>
+              </div>
+              <p>Api for surrounding individual blocks</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    api.toggleSurroundRange = toggleSurroundRange;
+    api.toggleSurroundSelection = toggleSurroundSelection;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-30">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-30">&#182;</a>
+              </div>
+              <p>Api for surrounding block sets (for lists)</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    api.toggleSurroundRangeSet = toggleSurroundRangeSet;
+    api.toggleSurroundSelectionSet = toggleSurroundSelectionSet;
+});</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

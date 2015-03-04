@@ -1,0 +1,1130 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>jquery-dom-cleanup.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page">
+            
+              
+              <a class="source" href="Arte.html">
+                Arte.js
+              </a>
+            
+              
+              <a class="source" href="Commands.html">
+                Commands.js
+              </a>
+            
+              
+              <a class="source" href="Configuration.html">
+                Configuration.js
+              </a>
+            
+              
+              <a class="source" href="PluginManager.html">
+                PluginManager.js
+              </a>
+            
+              
+              <a class="source" href="TextArea.html">
+                TextArea.js
+              </a>
+            
+              
+              <a class="source" href="Util.html">
+                Util.js
+              </a>
+            
+              
+              <a class="source" href="jquery-dom-cleanup.html">
+                jquery-dom-cleanup.js
+              </a>
+            
+              
+              <a class="source" href="jquery-dom-manipulation.html">
+                jquery-dom-manipulation.js
+              </a>
+            
+              
+              <a class="source" href="jquery-dom-traversal.html">
+                jquery-dom-traversal.js
+              </a>
+            
+              
+              <a class="source" href="rangy-blockElementApplier.html">
+                rangy-blockElementApplier.js
+              </a>
+            
+              
+              <a class="source" href="rangy-elementApplierOptions.html">
+                rangy-elementApplierOptions.js
+              </a>
+            
+              
+              <a class="source" href="rangy-extensions.html">
+                rangy-extensions.js
+              </a>
+            
+              
+              <a class="source" href="rangy-inlineElementApplier.html">
+                rangy-inlineElementApplier.js
+              </a>
+            
+              
+              <a class="source" href="richtextCommandApplier.html">
+                richtextCommandApplier.js
+              </a>
+            
+              
+              <a class="source" href="InsertCommand.html">
+                InsertCommand.js
+              </a>
+            
+              
+              <a class="source" href="StateDetector.html">
+                StateDetector.js
+              </a>
+            
+              
+              <a class="source" href="UndoManager.html">
+                UndoManager.js
+              </a>
+            
+              
+              <a class="source" href="keyboardEventHandler.html">
+                keyboardEventHandler.js
+              </a>
+            
+              
+              <a class="source" href="pasteHandler.html">
+                pasteHandler.js
+              </a>
+            
+              
+              <a class="source" href="Button.html">
+                Button.js
+              </a>
+            
+              
+              <a class="source" href="ButtonWithDialog.html">
+                ButtonWithDialog.js
+              </a>
+            
+              
+              <a class="source" href="ButtonWithDropDown.html">
+                ButtonWithDropDown.js
+              </a>
+            
+              
+              <a class="source" href="Configuration.html">
+                Configuration.js
+              </a>
+            
+              
+              <a class="source" href="SelectionManager.html">
+                SelectionManager.js
+              </a>
+            
+              
+              <a class="source" href="toolbar.html">
+                toolbar.js
+              </a>
+            
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>jquery-dom-cleanup.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-comment">/**
+ * @FileOverview: Dom clean up routines
+ * depends on: jQuery-dom-traversal, jQuery-dom-manipulation
+ */</span>
+
+(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">($)</span> </span>{
+    $.Arte = $.Arte || {};
+    $.Arte.dom = $.Arte.dom || {};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>Cache references</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">var</span> dom = $.Arte.dom;
+    <span class="hljs-keyword">var</span> configuration = $.Arte.configuration;
+    <span class="hljs-keyword">var</span> constants = $.Arte.constants;
+    <span class="hljs-keyword">var</span> util = $.Arte.util;
+
+    $.extend(configuration, {
+        <span class="hljs-comment">/**
+         * A set of tagNames to which a style/class can be styled.
+         * If a tagName is not styleable, the styles/classes will be applied to all of its
+         * children or the parent depending on the markup.
+         */</span>
+        styleableTags: {
+            SPAN: <span class="hljs-number">1</span>,
+            DIV: <span class="hljs-number">1</span>,
+            P: <span class="hljs-number">1</span>,
+            LI: <span class="hljs-number">1</span>,
+            UL: <span class="hljs-number">1</span>,
+            OL: <span class="hljs-number">1</span>
+        },
+        supportedTags: {
+            <span class="hljs-string">"P"</span>: <span class="hljs-number">1</span>,
+            <span class="hljs-string">"UL"</span>: <span class="hljs-number">1</span>,
+            <span class="hljs-string">"OL"</span>: <span class="hljs-number">1</span>,
+            <span class="hljs-string">"LI"</span>: <span class="hljs-number">1</span>,
+            <span class="hljs-string">"SPAN"</span>: <span class="hljs-number">1</span>,
+            <span class="hljs-string">"BR"</span>: <span class="hljs-number">1</span> <span class="hljs-comment">// Chrome add BR to keep a space</span>
+        }
+    });
+
+    $.extend(configuration, {
+        cleanup: {
+            options: {
+                removeNonPrintableCharacters: <span class="hljs-literal">true</span>,
+                removeEmptyElements: <span class="hljs-literal">true</span>,
+                removeRedundantMarkup: <span class="hljs-literal">true</span>,
+                mergeAdjacentLists: <span class="hljs-literal">true</span>
+            },
+
+            invalidTagHandlers: {
+                <span class="hljs-string">"B"</span>: {
+                    applierTagName: <span class="hljs-string">"span"</span>,
+                    styleName: <span class="hljs-string">"font-weight"</span>,
+                    styleValue: <span class="hljs-string">"bold"</span>
+                },
+                <span class="hljs-string">"I"</span>: {
+                    applierTagName: <span class="hljs-string">"span"</span>,
+                    styleName: <span class="hljs-string">"font-style"</span>,
+                    styleValue: <span class="hljs-string">"italic"</span>
+                },
+                <span class="hljs-string">"U"</span>: {
+                    applierTagName: <span class="hljs-string">"span"</span>,
+                    styleName: <span class="hljs-string">"text-decoration"</span>,
+                    styleValue: <span class="hljs-string">"underline"</span>
+                },
+                <span class="hljs-string">"DIV"</span>: {
+                    applierTagName: <span class="hljs-string">"P"</span>
+                }
+            },
+
+            <span class="hljs-comment">/**
+             * During the cleanup phase, the elements with tagName specified with Key can be merged
+             * with the parent element specified by the values.
+             * For example, A SPAN can be merged with SPAN/DIV/P/LI while a LI can't be merged with anything
+             */</span>
+            mergableTags: {
+                SPAN: {
+                    SPAN: <span class="hljs-number">1</span>,
+                    DIV: <span class="hljs-number">1</span>,
+                    P: <span class="hljs-number">1</span>,
+                    LI: <span class="hljs-number">1</span>
+                },
+                DIV: {
+                    DIV: <span class="hljs-number">1</span>,
+                    P: <span class="hljs-number">1</span>,
+                    LI: <span class="hljs-number">1</span>
+                },
+                P: {
+                    DIV: <span class="hljs-number">1</span>,
+                    P: <span class="hljs-number">1</span>,
+                    LI: <span class="hljs-number">1</span>
+                },
+                LI: {},
+                OL: {},
+                UL: {},
+                B: {
+                    B: <span class="hljs-number">1</span>
+                },
+                U: {
+                    U: <span class="hljs-number">1</span>
+                },
+                I: {
+                    I: <span class="hljs-number">1</span>
+                },
+                STRONG: {
+                    STRONG: <span class="hljs-number">1</span>
+                },
+                SUB: {
+                    SUB: <span class="hljs-number">1</span>
+                },
+                SUP: {
+                    SUP: <span class="hljs-number">1</span>
+                },
+                H1: {
+                    H2: <span class="hljs-number">1</span>,
+                    H3: <span class="hljs-number">1</span>,
+                    H4: <span class="hljs-number">1</span>,
+                    H5: <span class="hljs-number">1</span>,
+                    H6: <span class="hljs-number">1</span>
+                },
+                H2: {
+                    H1: <span class="hljs-number">1</span>,
+                    H3: <span class="hljs-number">1</span>,
+                    H4: <span class="hljs-number">1</span>,
+                    H5: <span class="hljs-number">1</span>,
+                    H6: <span class="hljs-number">1</span>
+                },
+                H3: {
+                    H1: <span class="hljs-number">1</span>,
+                    H2: <span class="hljs-number">1</span>,
+                    H4: <span class="hljs-number">1</span>,
+                    H5: <span class="hljs-number">1</span>,
+                    H6: <span class="hljs-number">1</span>
+                },
+                H4: {
+                    H1: <span class="hljs-number">1</span>,
+                    H2: <span class="hljs-number">1</span>,
+                    H3: <span class="hljs-number">1</span>,
+                    H5: <span class="hljs-number">1</span>,
+                    H6: <span class="hljs-number">1</span>
+                },
+                H5: {
+                    H1: <span class="hljs-number">1</span>,
+                    H2: <span class="hljs-number">1</span>,
+                    H3: <span class="hljs-number">1</span>,
+                    H4: <span class="hljs-number">1</span>,
+                    H6: <span class="hljs-number">1</span>
+                },
+                H6: {
+                    H1: <span class="hljs-number">1</span>,
+                    H2: <span class="hljs-number">1</span>,
+                    H3: <span class="hljs-number">1</span>,
+                    H4: <span class="hljs-number">1</span>,
+                    H5: <span class="hljs-number">1</span>
+                }
+            },
+
+            <span class="hljs-comment">/**
+             * Collection of invalid characters and character ranges
+             */</span>
+            invalidCharacterRegex: [
+                <span class="hljs-string">"\u0000-\u001F"</span>, <span class="hljs-comment">// Control Characters</span>
+                <span class="hljs-string">"\u0080-\u009F"</span>, <span class="hljs-comment">// Latin-Supplement many control characters in this range</span>
+                <span class="hljs-string">"\u2000-\u200F"</span>, <span class="hljs-comment">// Invisible Puntuation</span>
+                <span class="hljs-string">"\uE000-\uF8FF"</span> <span class="hljs-comment">// Private use</span>
+            ]
+        }
+    });
+
+    <span class="hljs-keyword">var</span> cleanupConfig = configuration.cleanup;
+
+    <span class="hljs-keyword">var</span> mergeLists = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(tagName, lists)</span> </span>{
+        <span class="hljs-keyword">var</span> filter = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(index, node)</span> </span>{
+            <span class="hljs-keyword">return</span> !$(node).is(<span class="hljs-string">":emptyTextOrRangySpan"</span>);
+        };</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>Start from the last element in the list and start merging backward</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">while</span> (lists.length) {
+            <span class="hljs-keyword">var</span> currentList = $(lists[lists.length - <span class="hljs-number">1</span>]);
+            lists.splice(lists.length - <span class="hljs-number">1</span>, <span class="hljs-number">1</span>);
+            <span class="hljs-keyword">var</span> prevNode = dom.prevSiblingIncludingTextNodes(currentList, filter);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>If the previous element has same list tagName, merge both of these elements</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            <span class="hljs-keyword">if</span> (prevNode &amp;&amp; prevNode.prop(<span class="hljs-string">"tagName"</span>) === tagName) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>Move the current node’s li children to previous node</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>                currentList.children().appendTo(prevNode);
+                currentList.remove();
+            }
+        }
+    };
+
+    <span class="hljs-comment">/**
+     * Merge adjacent lists within the set of matched element
+     * For example &lt;ul&gt;&lt;li&gt;1&lt;/li&gt;&lt;ul&gt;&lt;ul&gt;&lt;li&gt;2&lt;/li&gt;&lt;/ul&gt; =&gt; &lt;ul&gt;&lt;li&gt;1&lt;/li&gt;&lt;li&gt;2&lt;/li&gt;&lt;/ul&gt;
+     */</span>
+    <span class="hljs-keyword">var</span> mergeAdjacentLists = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(jNodes)</span> </span>{
+        jNodes.each(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+            mergeLists(constants.tagName.OL, $(<span class="hljs-keyword">this</span>).find(constants.tagName.OL));
+            mergeLists(constants.tagName.UL, $(<span class="hljs-keyword">this</span>).find(constants.tagName.UL));
+        });
+    };
+
+    <span class="hljs-keyword">var</span> seekDirection = {
+        Next: <span class="hljs-number">0</span>,
+        Prev: <span class="hljs-number">1</span>
+    };
+    <span class="hljs-comment">/**
+     * Get a next/prev mergable sibling such the sibling is an element with same tagName, styles, classes and is not block
+     * @param {jElement} jQuery element to find the sibling of
+     * @param {seekDirection} direction to navigate (Prev/Next)
+     * @param {function}  function to provide filtering if finding next/prev elements
+     * @return {jElement} next/prev element that is mergable
+     */</span>
+    <span class="hljs-keyword">var</span> getMergableSibling = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(jElement, direction, filter)</span> </span>{
+        <span class="hljs-keyword">var</span> result = $();
+        <span class="hljs-keyword">var</span> op = direction == seekDirection.Next ? <span class="hljs-string">"nextSiblingIncludingTextNodes"</span> : <span class="hljs-string">"prevSiblingIncludingTextNodes"</span>;
+        <span class="hljs-keyword">var</span> adjacentElement = dom[op](jElement, filter);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>check if the sibling element is mergable</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">if</span> (adjacentElement.length &amp;&amp;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>Has an element sibling</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>                adjacentElement.is(<span class="hljs-string">":element"</span>) &amp;&amp;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>Not a block element</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>                !adjacentElement.is(<span class="hljs-string">":block"</span>) &amp;&amp;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>has same tag</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>                jElement.prop(<span class="hljs-string">"tagName"</span>) === adjacentElement.prop(<span class="hljs-string">"tagName"</span>) &amp;&amp;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>has same style and class</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>                dom.hasSameStyleAndClass(jElement, adjacentElement)) {
+            result.push(adjacentElement[<span class="hljs-number">0</span>]);
+        }
+        <span class="hljs-keyword">return</span> result;
+    };
+
+    <span class="hljs-comment">/**
+     * Get previous mergable sibling
+     * @param {jNode} jQuery element to find the sibling of
+     * @param {function}  function to provide filtering if finding next/prev elements
+     * @return {jNode} next/prev element that is mergable
+     */</span>
+    <span class="hljs-keyword">var</span> prevMergableSibling = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(jElement, filter)</span> </span>{
+        <span class="hljs-keyword">return</span> getMergableSibling(jElement, seekDirection.Prev, filter);
+    };
+
+    <span class="hljs-comment">/**
+     * Get all of the non-empty and non-rangyspan nodes
+     * @param {jNode} jQuery element to find the sibling of
+     */</span>
+    <span class="hljs-keyword">var</span> getContentNodes = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(jElement)</span> </span>{
+        <span class="hljs-keyword">return</span> jElement.contents().filter(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(index, node)</span> </span>{
+            <span class="hljs-keyword">return</span> !$(node).is(<span class="hljs-string">":emptyTextOrRangySpan"</span>);
+        });
+    };
+
+    <span class="hljs-comment">/*
+     * bubbles the style from the children to the parent if possible
+     * Example 1: &lt;div&gt;&lt;span style="color: black"&gt; ABC &lt;/span&gt;&lt;/div&gt; =&gt; &lt;div style="color: black"&gt;&lt;span&gt;ABC&lt;/span&gt;&lt;/div&gt;
+     * Normalize the styles: Check if we can push the styles of this child node to the parent ($this).
+     * Following are three cases to evaluate:
+     * 1. if jElement has only once child, simply push all the styles up to the parent
+     * 2. if jElement has multiple children and all children has same style, we should push those styles to the parent
+     * 3. if any of the JElement's parents have the same style or class applied, remove it from jElement
+     * @param {jElement} jElement
+     */</span>
+    <span class="hljs-keyword">var</span> bubbleStylesFromChildren = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(jElement, options)</span> </span>{
+        <span class="hljs-keyword">var</span> contentNodes = getContentNodes(jElement);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <p>If we can’t apply styles to jElement, don’t process further</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">if</span> (!configuration.styleableTags[jElement.prop(<span class="hljs-string">"tagName"</span>)]) {
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+        }
+
+        <span class="hljs-keyword">var</span> candidateNodes = contentNodes.filter(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+            <span class="hljs-keyword">return</span> $(<span class="hljs-keyword">this</span>).is(<span class="hljs-string">":element"</span>); <span class="hljs-comment">// Only evaluate non-text</span>
+        });
+
+        candidateNodes.each(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+            <span class="hljs-keyword">var</span> $<span class="hljs-keyword">this</span> = $(<span class="hljs-keyword">this</span>);
+            <span class="hljs-keyword">var</span> styles = dom.getStyles($<span class="hljs-keyword">this</span>);
+            <span class="hljs-keyword">var</span> classes = dom.getClasses($<span class="hljs-keyword">this</span>);
+
+            <span class="hljs-keyword">if</span> (contentNodes.length === <span class="hljs-number">1</span>) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-12">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              <p>jElement has only single child, simply apply the push all the styles to $this</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>                $.each(styles, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(styleName, styleValue)</span> </span>{
+                    jElement.css(styleName, styleValue);
+                    $<span class="hljs-keyword">this</span>.css(styleName, <span class="hljs-string">""</span>);
+                });
+
+                $.each(classes, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(index, className)</span> </span>{
+                    <span class="hljs-keyword">var</span> commandConfig = util.getCommandConfig({
+                        className: className
+                    });
+                    <span class="hljs-keyword">if</span> (commandConfig &amp;&amp; commandConfig.classNameRegex) {
+                        dom.removeClassWithPattern(jElement, commandConfig.classNameRegex);
+                    }
+                    jElement.addClass(className);
+                    contentNodes.removeClass(className);
+                });
+            } <span class="hljs-keyword">else</span> {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-13">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-13">&#182;</a>
+              </div>
+              <p>jElement has 1+ children,</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>                $.each(styles, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(styleName, styleValue)</span> </span>{
+                    <span class="hljs-keyword">var</span> commandConfig = util.getCommandConfig({
+                        styleName: styleName
+                    });
+                    <span class="hljs-keyword">var</span> styleOptions = {
+                        commandName: commandConfig.commandName,
+                        styleName: styleName,
+                        styleValue: styleValue,
+                        topEditableParent: options.topEditableParent
+                    };</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-14">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-14">&#182;</a>
+              </div>
+              <p>If all of the children have a style value applied, push it to the node</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>                    <span class="hljs-keyword">if</span> (dom.closestWithCommandValue(contentNodes, styleOptions).length === contentNodes.length) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-15">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-15">&#182;</a>
+              </div>
+              <p>All of the nodes have the styles applied</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>                        jElement.css(styleName, styleValue);
+                        contentNodes.css(styleName, <span class="hljs-string">""</span>);
+                    }
+                });
+                $.each(classes, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(index, className)</span> </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-16">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-16">&#182;</a>
+              </div>
+              <p>If all of the contentNodes have a class, push it to the parent and remove it from all contentNodes</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>                    <span class="hljs-keyword">if</span> (dom.allHaveClass(contentNodes, className)) {
+                        <span class="hljs-keyword">var</span> commandConfig = util.getCommandConfig({
+                            className: className
+                        });
+                        <span class="hljs-keyword">if</span> (commandConfig.classNameRegex) {
+                            dom.removeClassWithPattern(jElement, commandConfig.classNameRegex);
+                        }
+                        jElement.addClass(className);
+                        contentNodes.removeClass(className);
+                    }
+                });
+            }
+        });
+    };
+
+    <span class="hljs-comment">/*
+     * Merge the non-block element children of jElement
+     * If two siblings have same class and styles merge them
+     */</span>
+    <span class="hljs-keyword">var</span> mergeChildren = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(jElement)</span> </span>{
+        <span class="hljs-keyword">var</span> contentNodes = getContentNodes(jElement);
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">1</span>; i &lt; contentNodes.length; i++) {
+            <span class="hljs-keyword">var</span> $current = $(contentNodes[i]);
+            <span class="hljs-keyword">if</span> (!$current.is(<span class="hljs-string">":element"</span>) || $current.is(<span class="hljs-string">":block"</span>)) {
+                <span class="hljs-keyword">continue</span>;
+            }
+
+            <span class="hljs-keyword">var</span> prev = prevMergableSibling($current);
+            <span class="hljs-keyword">if</span> (prev.get(<span class="hljs-number">0</span>)) {
+                prev.append($current.contents());
+                $current.remove();
+            }
+        }
+    };
+
+    <span class="hljs-comment">/**
+     * Remove the redundant child markup.
+     * 1) Non-block children =&gt; remove the markup if all the styles/classes are applied
+     * 2) A single block child =&gt; remove the markup if the parent and child tags can be merged
+     * 3) Mix of block/non-block children =&gt; remove the markup of non-block children all the styles/classes are applied
+     * 4) otherwise no-op
+     */</span>
+    <span class="hljs-keyword">var</span> mergeChildrenWithSelf = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(node, options)</span> </span>{
+        <span class="hljs-keyword">var</span> contentNodes = getContentNodes(node);
+        <span class="hljs-keyword">var</span> candidateNodes = contentNodes.filter(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-17">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-17">&#182;</a>
+              </div>
+              <p>Find out which nodes are candidates for evaluation to merge up with the parent
+don’t evaluate the text nodes or the block nodes with siblings</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            <span class="hljs-keyword">var</span> $<span class="hljs-keyword">this</span> = $(<span class="hljs-keyword">this</span>);
+            <span class="hljs-keyword">var</span> mergableTags = cleanupConfig.mergableTags[$<span class="hljs-keyword">this</span>.prop(<span class="hljs-string">"tagName"</span>)];
+
+            <span class="hljs-keyword">return</span> $<span class="hljs-keyword">this</span>.is(<span class="hljs-string">":element"</span>) &amp;&amp;
+                (!$<span class="hljs-keyword">this</span>.is(<span class="hljs-string">":block"</span>) || contentNodes.length === <span class="hljs-number">1</span>) &amp;&amp; <span class="hljs-comment">// The only block child</span>
+                mergableTags &amp;&amp; mergableTags[node.prop(<span class="hljs-string">"tagName"</span>)]; <span class="hljs-comment">// Merge only whitelisted element types</span>
+        });
+
+        candidateNodes.each(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-18">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-18">&#182;</a>
+              </div>
+              <p>Try to merge the child and parent;</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            <span class="hljs-keyword">var</span> $<span class="hljs-keyword">this</span> = $(<span class="hljs-keyword">this</span>);
+            <span class="hljs-keyword">var</span> styles = dom.getStyles($<span class="hljs-keyword">this</span>);
+            <span class="hljs-keyword">var</span> classes = dom.getClasses($<span class="hljs-keyword">this</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-19">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-19">&#182;</a>
+              </div>
+              <p>check if the content nodes’s style are applied by some parent
+if so, we can simply unwrap the child</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            <span class="hljs-keyword">var</span> allStylesApplied = util.all(styles, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(styleName, styleValue)</span> </span>{
+                <span class="hljs-keyword">var</span> commandConfig = util.getCommandConfig({
+                    styleName: styleName
+                });
+                <span class="hljs-keyword">var</span> parentWithStyle = dom.closestWithCommand($<span class="hljs-keyword">this</span>.parent(), {
+                    commandName: commandConfig.commandName,
+                    styleName: styleName
+                });
+                <span class="hljs-keyword">return</span> parentWithStyle.get(<span class="hljs-number">0</span>) &amp;&amp; (dom.getStyles(parentWithStyle)[styleName] === styleValue);
+            });
+
+            <span class="hljs-keyword">var</span> parents = $<span class="hljs-keyword">this</span>.parentsUntil(options.topEditableParent.parentNode);
+            <span class="hljs-keyword">var</span> allClassesApplied = util.all(classes, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(index, className)</span> </span>{
+                <span class="hljs-keyword">return</span> parents.hasClass(className);
+            });
+
+            <span class="hljs-keyword">if</span> (allStylesApplied &amp;&amp; allClassesApplied) {
+                $<span class="hljs-keyword">this</span>.contents().first().unwrap();
+                <span class="hljs-keyword">return</span>;
+            }
+        });
+    };
+
+    <span class="hljs-comment">/***/</span>
+    <span class="hljs-keyword">var</span> removeRedundantStylesfromParent = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(jElement, options)</span> </span>{
+        <span class="hljs-keyword">var</span> contentNodes = getContentNodes(jElement);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-20">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-20">&#182;</a>
+              </div>
+              <p>If parent has a style that is applied to all of the children, remove it</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">var</span> styles = dom.getStyles(jElement);
+        $.each(styles, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(styleName, styleValue)</span> </span>{
+            <span class="hljs-keyword">var</span> removeStyle = util.all(contentNodes, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(index, contentNode)</span> </span>{
+                <span class="hljs-keyword">return</span> dom.getStyles($(contentNode))[styleName];
+            }) || dom.closestWithCommandValue(jElement.parent(), {
+                styleName: styleName,
+                styleValue: styleValue,
+                topEditableParent: options.topEditableParent
+            }).length &gt; <span class="hljs-number">0</span>;
+
+            <span class="hljs-keyword">if</span> (removeStyle) {
+                jElement.css(styleName, <span class="hljs-string">""</span>);
+            }
+        });</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-21">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-21">&#182;</a>
+              </div>
+              <p>If parent has a class that is applied to all of th children, remove it</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">var</span> classes = dom.getClasses(jElement);
+        $.each(classes, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(index, className)</span> </span>{
+            <span class="hljs-keyword">var</span> commandConfig = util.getCommandConfig({
+                className: className
+            });
+            <span class="hljs-keyword">var</span> allNodesHaveClass = commandConfig &amp;&amp; commandConfig.classNameRegex &amp;&amp; util.all(contentNodes, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(index, contentNode)</span> </span>{
+                <span class="hljs-keyword">return</span> dom.hasClassWithPattern($(contentNode), commandConfig.classNameRegex);
+            }) || jElement.parents().hasClass(className);
+            <span class="hljs-keyword">if</span> (allNodesHaveClass) {
+                jElement.removeClass(className);
+            }
+        });
+    };
+
+    <span class="hljs-comment">/**
+     * Cleanup Dom recursively (depth first) using the following steps for each element
+     * 1) Move styles from the children to the parent element
+     * 2) Remove redundant styles from the element
+     * 3) Merge the children
+     * 4) Unwrap the children
+     */</span>
+    <span class="hljs-keyword">var</span> removeRedundantMarkup = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(jNodes, options)</span> </span>{
+        jNodes.each(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-22">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-22">&#182;</a>
+              </div>
+              <p>Do not merge with the content editable element or the text nodes with the parent</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            <span class="hljs-keyword">var</span> $<span class="hljs-keyword">this</span> = $(<span class="hljs-keyword">this</span>);
+            <span class="hljs-keyword">if</span> (!$<span class="hljs-keyword">this</span>.is(<span class="hljs-string">":element"</span>)) {
+                <span class="hljs-keyword">return</span>;
+            }
+
+            <span class="hljs-keyword">var</span> nodes = getContentNodes($<span class="hljs-keyword">this</span>);
+            removeRedundantMarkup(nodes, options);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-23">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-23">&#182;</a>
+              </div>
+              <p>Step 1: Push the styles towards the top</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            bubbleStylesFromChildren($<span class="hljs-keyword">this</span>, options);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-24">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-24">&#182;</a>
+              </div>
+              <p>Step 2: If the parent has a style that is explicitly applied to all of its children, remove the style from the parent</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            removeRedundantStylesfromParent($<span class="hljs-keyword">this</span>, options);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-25">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-25">&#182;</a>
+              </div>
+              <p>Step 3: Try to merge all of the siblings</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            mergeChildren($<span class="hljs-keyword">this</span>, options);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-26">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-26">&#182;</a>
+              </div>
+              <p>Step 4: Check if we can merge any of the children with the parent node by removing the redundant html</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            mergeChildrenWithSelf($<span class="hljs-keyword">this</span>, options);
+        });
+    };
+
+    <span class="hljs-keyword">var</span> processEmptyElement = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(jNode)</span> </span>{
+        <span class="hljs-keyword">var</span> parent = jNode.parent();
+        <span class="hljs-keyword">if</span> (jNode.is(<span class="hljs-string">":block"</span>) &amp;&amp;
+            dom.nextSiblingIncludingTextNodes(jNode).length &amp;&amp;
+            dom.prevSiblingIncludingTextNodes(jNode).length) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-27">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-27">&#182;</a>
+              </div>
+              <p>If a div has next and prev, empty div is acting like a line break
+add a line break.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            jNode.before(<span class="hljs-string">"&lt;br /&gt;"</span>);
+        }
+        jNode.remove();
+        <span class="hljs-keyword">if</span> (parent.is(<span class="hljs-string">":empty"</span>)) {
+            processEmptyElement(parent);
+        }
+    };
+
+    <span class="hljs-comment">/*
+     * Clean up: Recursively remove the empty elements until there are not empty elements left
+     * For example: &lt;div&gt; &lt;div&gt; &lt;div&gt; &lt;/div&gt; &lt;/div&gt; &lt;/div&gt;
+     */</span>
+    <span class="hljs-keyword">var</span> removeEmptyElements = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(jNodes)</span> </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-28">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-28">&#182;</a>
+              </div>
+              <p>Exclude the <br/> and rangy selection marker spans</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">var</span> emptyElements = jNodes.find(<span class="hljs-string">":empty"</span>).not(<span class="hljs-string">"br"</span>).not(<span class="hljs-string">":rangySpan"</span>);
+        emptyElements.each(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+            processEmptyElement($(<span class="hljs-keyword">this</span>));
+        });
+    };
+
+    <span class="hljs-comment">/**
+     * If rangy selection marker span is the only child of some element, remove that element
+     */</span>
+    <span class="hljs-keyword">var</span> handleRangySelectionMarkers = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(jNodes)</span> </span>{
+        jNodes.find(<span class="hljs-string">"."</span> + configuration.rangySelectionBoundaryClassName).each(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+            <span class="hljs-keyword">if</span> ($(<span class="hljs-keyword">this</span>).parent().contents().length === <span class="hljs-number">1</span>) {
+                $(<span class="hljs-keyword">this</span>).unwrap();
+            }
+        });
+    };
+
+    <span class="hljs-comment">/**
+     * Remove the empty characters from the HTML dom.
+     */</span>
+    <span class="hljs-keyword">var</span> invalidCharacterRegex;
+    <span class="hljs-keyword">var</span> removeNonPrintableCharacters = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(options)</span> </span>{
+        <span class="hljs-keyword">var</span> html = options.topEditableParent.innerHTML;
+        invalidCharacterRegex = invalidCharacterRegex || <span class="hljs-keyword">new</span> <span class="hljs-built_in">RegExp</span>(<span class="hljs-string">"["</span> + cleanupConfig.invalidCharacterRegex.join(<span class="hljs-string">""</span>) + <span class="hljs-string">"]"</span>, <span class="hljs-string">"g"</span>);
+        options.topEditableParent.innerHTML = html.replace(invalidCharacterRegex, <span class="hljs-string">""</span>);
+    };
+
+    <span class="hljs-comment">/**
+     * Remove any redundant markup
+     */</span>
+    <span class="hljs-keyword">var</span> cleanup = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(jNodes, options)</span> </span>{
+        options = $.extend({}, cleanupConfig.options, options);
+        <span class="hljs-keyword">if</span> (!options.topEditableParent) {
+            options.topEditableParent = dom.getTopEditableParent(jNodes).get(<span class="hljs-number">0</span>);
+        }
+        handleRangySelectionMarkers(jNodes);
+        <span class="hljs-keyword">if</span> (options.removeNonPrintableCharacters) {
+            removeNonPrintableCharacters(options);
+        }
+        <span class="hljs-keyword">if</span> (options.removeEmptyElements) {
+            removeEmptyElements(jNodes);
+        }
+        <span class="hljs-keyword">if</span> (options.mergeAdjacentLists) {
+            mergeAdjacentLists(jNodes);
+        }
+        <span class="hljs-keyword">if</span> (options.removeRedundantMarkup) {
+            removeRedundantMarkup(jNodes, options);
+        }
+    };
+
+    <span class="hljs-comment">/*
+     * Check if there are any unsanctioned tags
+     */</span>
+    <span class="hljs-keyword">var</span> hasUnsanctionedElements = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(jNodes)</span> </span>{
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; jNodes.length; i++) {
+            <span class="hljs-keyword">var</span> node = jNodes[i];
+            <span class="hljs-keyword">if</span> (node.nodeType == $.Arte.constants.nodeType.TEXT) {
+                <span class="hljs-keyword">continue</span>;
+            }
+            <span class="hljs-keyword">if</span> (!configuration.supportedTags[node.tagName]) {
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+            }
+            <span class="hljs-keyword">if</span> (hasUnsanctionedElements($(node).contents())) {
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+            }
+        }
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+    };
+
+    <span class="hljs-comment">/*
+     * Remove all unsanctioned tags
+     */</span>
+    <span class="hljs-keyword">var</span> handleUnsanctionedElements = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(jNodes)</span> </span>{
+        jNodes.each(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+            <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.nodeType == $.Arte.constants.nodeType.TEXT) {
+                <span class="hljs-keyword">return</span>;
+            }
+
+            <span class="hljs-keyword">var</span> $<span class="hljs-keyword">this</span> = $(<span class="hljs-keyword">this</span>);
+            handleUnsanctionedElements($<span class="hljs-keyword">this</span>.contents());
+
+            <span class="hljs-keyword">var</span> tagName = <span class="hljs-keyword">this</span>.tagName;
+            <span class="hljs-keyword">if</span> (configuration.supportedTags[tagName]) { <span class="hljs-comment">// Current tag is supported; do nothing</span>
+                <span class="hljs-keyword">return</span>;
+            }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-29">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-29">&#182;</a>
+              </div>
+              <p>Unsupported tags, construct a replacement node</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            <span class="hljs-keyword">var</span> invalidTagHandlerConfig = cleanupConfig.invalidTagHandlers[tagName] || {
+                tagName: <span class="hljs-string">"P"</span> <span class="hljs-comment">/* Just wrap the content in a P tag*/</span>
+            };
+            <span class="hljs-keyword">var</span> newNode = $.Arte.dom.createContainer(invalidTagHandlerConfig).html($<span class="hljs-keyword">this</span>.html());
+            $<span class="hljs-keyword">this</span>.replaceWith(newNode);
+        });
+    };</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-30">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-30">&#182;</a>
+              </div>
+              <p>Public API</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    dom.hasUnsanctionedElements = hasUnsanctionedElements;
+    dom.handleUnsanctionedElements = handleUnsanctionedElements;
+    dom.cleanup = cleanup;
+
+})(jQuery);</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

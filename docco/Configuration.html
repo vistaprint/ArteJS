@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>Configuration.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page">
+            
+              
+              <a class="source" href="Arte.html">
+                Arte.js
+              </a>
+            
+              
+              <a class="source" href="Commands.html">
+                Commands.js
+              </a>
+            
+              
+              <a class="source" href="Configuration.html">
+                Configuration.js
+              </a>
+            
+              
+              <a class="source" href="PluginManager.html">
+                PluginManager.js
+              </a>
+            
+              
+              <a class="source" href="TextArea.html">
+                TextArea.js
+              </a>
+            
+              
+              <a class="source" href="Util.html">
+                Util.js
+              </a>
+            
+              
+              <a class="source" href="jquery-dom-cleanup.html">
+                jquery-dom-cleanup.js
+              </a>
+            
+              
+              <a class="source" href="jquery-dom-manipulation.html">
+                jquery-dom-manipulation.js
+              </a>
+            
+              
+              <a class="source" href="jquery-dom-traversal.html">
+                jquery-dom-traversal.js
+              </a>
+            
+              
+              <a class="source" href="rangy-blockElementApplier.html">
+                rangy-blockElementApplier.js
+              </a>
+            
+              
+              <a class="source" href="rangy-elementApplierOptions.html">
+                rangy-elementApplierOptions.js
+              </a>
+            
+              
+              <a class="source" href="rangy-extensions.html">
+                rangy-extensions.js
+              </a>
+            
+              
+              <a class="source" href="rangy-inlineElementApplier.html">
+                rangy-inlineElementApplier.js
+              </a>
+            
+              
+              <a class="source" href="richtextCommandApplier.html">
+                richtextCommandApplier.js
+              </a>
+            
+              
+              <a class="source" href="InsertCommand.html">
+                InsertCommand.js
+              </a>
+            
+              
+              <a class="source" href="StateDetector.html">
+                StateDetector.js
+              </a>
+            
+              
+              <a class="source" href="UndoManager.html">
+                UndoManager.js
+              </a>
+            
+              
+              <a class="source" href="keyboardEventHandler.html">
+                keyboardEventHandler.js
+              </a>
+            
+              
+              <a class="source" href="pasteHandler.html">
+                pasteHandler.js
+              </a>
+            
+              
+              <a class="source" href="Button.html">
+                Button.js
+              </a>
+            
+              
+              <a class="source" href="ButtonWithDialog.html">
+                ButtonWithDialog.js
+              </a>
+            
+              
+              <a class="source" href="ButtonWithDropDown.html">
+                ButtonWithDropDown.js
+              </a>
+            
+              
+              <a class="source" href="Configuration.html">
+                Configuration.js
+              </a>
+            
+              
+              <a class="source" href="SelectionManager.html">
+                SelectionManager.js
+              </a>
+            
+              
+              <a class="source" href="toolbar.html">
+                toolbar.js
+              </a>
+            
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>Configuration.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>﻿<span class="hljs-comment">/* File overview: configuration for the toolbar */</span>
+(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">($)</span> </span>{
+    $.Arte.Toolbar = $.Arte.Toolbar || {};
+    <span class="hljs-keyword">var</span> buttonBase = $.Arte.Toolbar.Button;
+    <span class="hljs-keyword">var</span> buttonWithDropDown = $.Arte.Toolbar.ButtonWithDropDown;
+    <span class="hljs-keyword">var</span> commandAttrType = $.Arte.constants.commandAttrType;
+    <span class="hljs-keyword">var</span> editorTypes = $.Arte.constants.editorTypes;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>Button Configuration</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    $.Arte.Toolbar.configuration = {
+        requireEditorFocus: <span class="hljs-literal">true</span>,</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>By default, this toolbar will apply rich text commands using styles</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        commandAttrType: commandAttrType.styleName,</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>In case a command can’t be applied using the commandAttrType, try applying the command using the altCommandAttrType</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        altCommandAttrType: commandAttrType.styleName,
+        buttons: {
+            <span class="hljs-string">"bold"</span>: {
+                js: buttonBase, <span class="hljs-comment">// Button js to render and manage this button</span>
+                commandName: <span class="hljs-string">"bold"</span>, <span class="hljs-comment">// Command to execute</span>
+                commandValue: { <span class="hljs-comment">// command values for each command attribut type</span>
+                    <span class="hljs-string">"styleName"</span>: <span class="hljs-string">"bold"</span>,
+                    <span class="hljs-string">"className"</span>: <span class="hljs-string">"arte-font-weight-bold"</span>
+                },
+                supportedTypes: [editorTypes.richText, editorTypes.plainText],
+                supportsTagName: <span class="hljs-literal">true</span>,
+                tooltip: <span class="hljs-string">"Bold"</span>
+            },
+            <span class="hljs-string">"italic"</span>: {
+                js: buttonBase,
+                commandName: <span class="hljs-string">"italic"</span>,
+                commandValue: {
+                    <span class="hljs-string">"styleName"</span>: <span class="hljs-string">"italic"</span>,
+                    <span class="hljs-string">"className"</span>: <span class="hljs-string">"arte-font-style-italic"</span>
+                },
+                supportedTypes: [editorTypes.richText, editorTypes.plainText],
+                supportsTagName: <span class="hljs-literal">true</span>,
+                tooltip: <span class="hljs-string">"Italic"</span>
+            },
+            <span class="hljs-string">"underline"</span>: {
+                js: buttonBase,
+                commandName: <span class="hljs-string">"underline"</span>,
+                commandValue: {
+                    <span class="hljs-string">"styleName"</span>: <span class="hljs-string">"underline"</span>,
+                    <span class="hljs-string">"className"</span>: <span class="hljs-string">"arte-text-decoration-underline"</span>
+                },
+                supportedTypes: [editorTypes.richText, editorTypes.plainText],
+                supportsTagName: <span class="hljs-literal">true</span>,
+                tooltip: <span class="hljs-string">"Underline"</span>
+            },
+            <span class="hljs-string">"blockquote"</span>: {
+                js: buttonBase,
+                commandName: <span class="hljs-string">"blockquote"</span>,
+                supportedTypes: [editorTypes.richText],
+                tooltip: <span class="hljs-string">"Blockquote"</span>
+            },
+            <span class="hljs-string">"textAlignLeft"</span>: {
+                js: buttonBase,
+                icon: <span class="hljs-string">"../content/Icons/icons/text_align_left.png"</span>,
+                commandName: <span class="hljs-string">"textAlign"</span>,
+                commandValue: {
+                    <span class="hljs-string">"styleName"</span>: <span class="hljs-string">"left"</span>,
+                    <span class="hljs-string">"className"</span>: <span class="hljs-string">"arte-text-align-left"</span>
+                },
+                supportedTypes: [editorTypes.richText, editorTypes.plainText],
+                tooltip: <span class="hljs-string">"Text align left"</span>
+            },
+            <span class="hljs-string">"textAlignCenter"</span>: {
+                js: buttonBase,
+                icon: <span class="hljs-string">"../content/Icons/icons/text_align_center.png"</span>,
+                commandName: <span class="hljs-string">"textAlign"</span>,
+                commandValue: {
+                    <span class="hljs-string">"styleName"</span>: <span class="hljs-string">"center"</span>,
+                    <span class="hljs-string">"className"</span>: <span class="hljs-string">"arte-text-align-center"</span>
+                },
+                supportedTypes: [editorTypes.richText, editorTypes.plainText],
+                tooltip: <span class="hljs-string">"Text align center"</span>
+            },
+            <span class="hljs-string">"textAlignRight"</span>: {
+                js: buttonBase,
+                icon: <span class="hljs-string">"../content/Icons/icons/text_align_right.png"</span>,
+                commandName: <span class="hljs-string">"textAlign"</span>,
+                commandValue: {
+                    <span class="hljs-string">"styleName"</span>: <span class="hljs-string">"right"</span>,
+                    <span class="hljs-string">"className"</span>: <span class="hljs-string">"arte-text-align-right"</span>
+                },
+                supportedTypes: [editorTypes.richText, editorTypes.plainText],
+                tooltip: <span class="hljs-string">"Text align right"</span>
+            },
+            <span class="hljs-string">"h1"</span>: {
+                js: buttonBase,
+                commandName: <span class="hljs-string">"h1"</span>,
+                icon: <span class="hljs-string">"../content/Icons/icons/text_heading_1.png"</span>,
+                supportedTypes: [editorTypes.richText],
+                tooltip: <span class="hljs-string">"H1"</span>
+            },
+            <span class="hljs-string">"h2"</span>: {
+                js: buttonBase,
+                commandName: <span class="hljs-string">"h2"</span>,
+                icon: <span class="hljs-string">"../content/Icons/icons/text_heading_2.png"</span>,
+                supportedTypes: [editorTypes.richText],
+                tooltip: <span class="hljs-string">"H2"</span>
+            },
+            <span class="hljs-string">"h3"</span>: {
+                js: buttonBase,
+                commandName: <span class="hljs-string">"h3"</span>,
+                icon: <span class="hljs-string">"../content/Icons/icons/text_heading_3.png"</span>,
+                supportedTypes: [editorTypes.richText],
+                tooltip: <span class="hljs-string">"H3"</span>
+            },
+            <span class="hljs-string">"h4"</span>: {
+                js: buttonBase,
+                commandName: <span class="hljs-string">"h4"</span>,
+                icon: <span class="hljs-string">"../content/Icons/icons/text_heading_4.png"</span>,
+                supportedTypes: [editorTypes.richText],
+                tooltip: <span class="hljs-string">"H4"</span>
+            },
+            <span class="hljs-string">"h5"</span>: {
+                js: buttonBase,
+                commandName: <span class="hljs-string">"h5"</span>,
+                icon: <span class="hljs-string">"../content/Icons/icons/text_heading_5.png"</span>,
+                supportedTypes: [editorTypes.richText],
+                tooltip: <span class="hljs-string">"H5"</span>
+            },
+            <span class="hljs-string">"h6"</span>: {
+                js: buttonBase,
+                commandName: <span class="hljs-string">"h6"</span>,
+                icon: <span class="hljs-string">"../content/Icons/icons/text_heading_6.png"</span>,
+                supportedTypes: [editorTypes.richText],
+                tooltip: <span class="hljs-string">"H6"</span>
+            },
+            <span class="hljs-string">"subscript"</span>: {
+                js: buttonBase,
+                commandName: <span class="hljs-string">"subscript"</span>,
+                icon: <span class="hljs-string">"../content/Icons/icons/text_subscript.png"</span>,
+                supportedTypes: [editorTypes.richText],
+                tooltip: <span class="hljs-string">"Subscript"</span>
+            },
+            <span class="hljs-string">"superscript"</span>: {
+                js: buttonBase,
+                commandName: <span class="hljs-string">"superscript"</span>,
+                icon: <span class="hljs-string">"../content/Icons/icons/text_superscript.png"</span>,
+                supportedTypes: [editorTypes.richText],
+                tooltip: <span class="hljs-string">"Superscript"</span>
+            },
+            <span class="hljs-string">"fontSize"</span>: {
+                js: buttonWithDropDown,
+                icon: <span class="hljs-literal">null</span>,
+                commandName: <span class="hljs-string">"fontSize"</span>,
+                options: [<span class="hljs-string">""</span>, <span class="hljs-number">8</span>, <span class="hljs-number">10</span>, <span class="hljs-number">12</span>, <span class="hljs-number">15</span>, <span class="hljs-number">20</span>],
+                <span class="hljs-comment">/*
+                Alternate way of specifying the options where the display is different that the actual values
+                options: [
+                    { display: "", value: "" },
+                    { display: "Smaller", value: 8 },
+                    { display: "Small", value: 10 },
+                    { display: "Medium", value: 12 },
+                    { display: "Large", value: 15 },
+                    { display: "Larger", value: 20 }
+                ],
+                Another way of specifying the options where the display is different that the actual values
+                options: [
+                    { display: "", value: "" },
+                    { display: "Smaller", value: "arte-font-weight-8" },
+                    { display: "Small", value: "arte-font-weight-10" },
+                    { display: "Medium", value: "arte-font-weight-12" },
+                    { display: "Large", value: "arte-font-weight-15" },
+                    { display: "Larger", value: "arte-font-weight-20" }
+                ],
+                */</span>
+                acceptsParams: <span class="hljs-literal">true</span>,
+                supportedTypes: [editorTypes.richText, editorTypes.plainText],
+                tooltip: <span class="hljs-string">"Font size"</span>
+            },
+            <span class="hljs-string">"fontFamily"</span>: {
+                js: buttonWithDropDown,
+                icon: <span class="hljs-literal">null</span>,
+                commandName: <span class="hljs-string">"fontFamily"</span>,
+                options: [<span class="hljs-string">""</span>, <span class="hljs-string">"Arial"</span>, <span class="hljs-string">"curier new"</span>, <span class="hljs-string">"Georgia"</span>, <span class="hljs-string">"Times New Roman"</span>],
+                acceptsParams: <span class="hljs-literal">true</span>,
+                supportedTypes: [editorTypes.richText, editorTypes.plainText],
+                tooltip: <span class="hljs-string">"Font family"</span>
+            },
+            <span class="hljs-string">"color"</span>: {
+                js: buttonWithDropDown,
+                icon: <span class="hljs-literal">null</span>,
+                commandName: <span class="hljs-string">"color"</span>,
+                options: [<span class="hljs-string">""</span>, <span class="hljs-string">"Black"</span>, <span class="hljs-string">"Blue"</span>, <span class="hljs-string">"Green"</span>, <span class="hljs-string">"Red"</span>],
+                acceptsParams: <span class="hljs-literal">true</span>,
+                supportedTypes: [editorTypes.richText, editorTypes.plainText],
+                tooltip: <span class="hljs-string">"Color"</span>
+            },
+            <span class="hljs-string">"unorderedList"</span>: {
+                js: buttonBase,
+                commandName: <span class="hljs-string">"unorderedList"</span>,
+                supportedTypes: [editorTypes.richText],
+                tooltip: <span class="hljs-string">"Unordered list"</span>
+            },
+            <span class="hljs-string">"orderedList"</span>: {
+                js: buttonBase,
+                commandName: <span class="hljs-string">"orderedList"</span>,
+                supportedTypes: [editorTypes.richText],
+                tooltip: <span class="hljs-string">"Ordered list"</span>
+            },
+            <span class="hljs-string">"backgroundColor"</span>: {
+                acceptsParams: <span class="hljs-literal">true</span>,
+                js: buttonWithDropDown,
+                commandName: <span class="hljs-string">"backgroundColor"</span>,
+                options: [<span class="hljs-string">""</span>, <span class="hljs-string">"Black"</span>, <span class="hljs-string">"Blue"</span>, <span class="hljs-string">"Green"</span>, <span class="hljs-string">"Red"</span>],
+                supportedTypes: [editorTypes.richText],
+                tooltip: <span class="hljs-string">"Background Color"</span>
+            },
+            <span class="hljs-string">"undo"</span>: {
+                js: buttonBase,
+                commandName: <span class="hljs-string">"undo"</span>,
+                supportedTypes: [editorTypes.richText, editorTypes.plainText],
+                tooltip: <span class="hljs-string">"Undo"</span>
+            },
+            <span class="hljs-string">"redo"</span>: {
+                js: buttonBase,
+                commandName: <span class="hljs-string">"redo"</span>,
+                supportedTypes: [editorTypes.richText, editorTypes.plainText],
+                tooltip: <span class="hljs-string">"Redo"</span>
+            },
+            <span class="hljs-string">"toolbarLineBreak"</span>: {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>Inserts a line break into the toolbar.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>                js: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+                    <span class="hljs-keyword">return</span> {
+                        render: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(parentElement)</span> </span>{
+                            $(<span class="hljs-string">"&lt;div&gt;"</span>).appendTo(parentElement);
+                        },
+                        refresh: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{}
+                    };
+                }
+            },
+            <span class="hljs-string">"insertLink"</span>: {
+                commandName: <span class="hljs-string">"insert"</span>,
+                js: $.Arte.Toolbar.InsertLink,
+                supportedTypes: [editorTypes.richText],
+                tooltip: <span class="hljs-string">"Insert link"</span>
+            },
+            <span class="hljs-string">"insertImage"</span>: {
+                commandName: <span class="hljs-string">"insert"</span>,
+                js: $.Arte.Toolbar.InsertImage,
+                supportedTypes: [editorTypes.richText],
+                tooltip: <span class="hljs-string">"Insert Image"</span>
+            }
+        },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>Set of classes used to control the look-n-feel of the toolbar buttons</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        classes: {
+            <span class="hljs-string">"button"</span>: {
+                <span class="hljs-string">"outer"</span>: <span class="hljs-string">"btn"</span>,
+                <span class="hljs-string">"inner"</span>: <span class="hljs-string">"btn-inner"</span>,
+                <span class="hljs-string">"disabled"</span>: <span class="hljs-string">"disabled"</span>,
+                <span class="hljs-string">"selected"</span>: <span class="hljs-string">"selected"</span>
+            },
+            <span class="hljs-string">"select"</span>: {
+                <span class="hljs-string">"inner"</span>: <span class="hljs-string">"select"</span>
+            },
+            <span class="hljs-string">"dialog"</span>: {
+                <span class="hljs-string">"container"</span>: <span class="hljs-string">"inline-dialog"</span>,
+                <span class="hljs-string">"contentWrapper"</span>: <span class="hljs-string">"content-wrapper"</span>,
+                <span class="hljs-string">"content"</span>: <span class="hljs-string">"dialog-content"</span>,
+                <span class="hljs-string">"okCancel"</span>: <span class="hljs-string">"ok-cancel"</span>,
+                <span class="hljs-string">"label"</span>: <span class="hljs-string">"label"</span>,
+                <span class="hljs-string">"button"</span>: <span class="hljs-string">"btn"</span>,
+                <span class="hljs-string">"insertLink"</span>: {
+                    <span class="hljs-string">"button"</span>: <span class="hljs-string">"btn"</span>,
+                    <span class="hljs-string">"textToShow"</span>: <span class="hljs-string">"text-to-show"</span>,
+                    <span class="hljs-string">"urlInput"</span>: <span class="hljs-string">"url-input"</span>
+                },
+                <span class="hljs-string">"insertImage"</span>: {
+
+                }
+            },
+            <span class="hljs-string">"tooltip"</span>: {
+                <span class="hljs-string">"container"</span>: <span class="hljs-string">"tooltip"</span>
+            }
+        }
+    };
+})(jQuery);</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

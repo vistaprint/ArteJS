@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: lib/rangy-extensions/richtextCommandApplier.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: lib/rangy-extensions/richtextCommandApplier.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @fileoverview Encapsulates applying a rich text command
+ */
+(function($) {
+    $.Arte = $.Arte || {};
+    $.Arte.RichTextCommandApplier = function(options) {
+        //
+        var dom = $.Arte.dom;
+        var util = $.Arte.util;
+        var constants = $.Arte.constants;
+        var configuration = $.Arte.configuration;
+
+        var applyToTextNodes = function(commandInfo, type) {
+            var selection = rangy.getSelection();
+            var textArea = commandInfo.textArea;
+
+            // If the selection is not in the content editable element and ops of collapsed
+            // selection aren't allowed, return
+            var selectionIsInContentEditable = util.isSelectionInElement(textArea.$el);
+
+            var range = null;
+            if (selection.isCollapsed) {
+                var selectedRange = selection.getAllRanges()[0];
+                var selectedContainer;
+                if (selectedRange &amp;&amp; selectionIsInContentEditable) {
+                    // The cursor is inside the contentEditable; select the node around the cursor
+                    selectedContainer = selectedRange.startContainer;
+                    selectedContainer = selectedContainer.nodeType === constants.nodeType.TEXT ?
+                        selectedContainer.parentNode :
+                        selectedContainer;
+
+                } else {
+                    selectedContainer = textArea.$el.get(0);
+                }
+                // if selection is collapsed, construct a range from the first parent
+                range = rangy.util.createRangeFromElements(selectedContainer, selectedContainer);
+            }
+
+            // Explicitly define the contentEditable parent
+            var contentEditableParent = textArea.$el;
+
+            var contentEditableContainer = contentEditableParent.get(0);
+            var commandOptions = {
+                topEditableParent: contentEditableContainer
+            };
+
+            $.extend(commandOptions, commandInfo);
+            var commandType = constants.commandType;
+            var commandToExecute = null;
+            switch (type) {
+                case commandType.inline:
+                    commandToExecute = function() {
+                        return range ?
+                            rangy.toggleStyleOnRange(range, commandOptions) :
+                            rangy.toggleStyleOnSelection(commandOptions);
+                    };
+                    break;
+                case commandType.block:
+                    commandToExecute = function() {
+                        return range ?
+                            rangy.toggleSurroundRange(range, commandOptions) :
+                            rangy.toggleSurroundSelection(commandOptions, contentEditableContainer);
+                    };
+                    break;
+                case commandType.complex:
+                    commandToExecute = function() {
+                        return range ?
+                            rangy.toggleSurroundRangeSet(range, commandOptions) :
+                            rangy.toggleSurroundSelectionSet(commandOptions, contentEditableContainer);
+                    };
+                    break;
+            }
+
+            var sel = rangy.saveSelection();
+            commandToExecute();
+            dom.cleanup($(commandOptions.topEditableParent));
+            rangy.restoreSelection(sel);
+        };
+
+        var applyCommand = function(commandInfo, type) {
+            var textField = commandInfo.textArea;
+            var editorTypes = constants.editorTypes;
+            var applyToElement = textField.editorType === editorTypes.plainText || !textField.$el.html();
+
+            // If the selection is not in the content editable element and focus is required return
+            var selectionIsInContentEditable = util.isSelectionInElement(textField.$el);
+            if (!selectionIsInContentEditable &amp;&amp; configuration.requireFocus) {
+                return;
+            }
+
+            // Apply to element if focus is not required
+            if (!selectionIsInContentEditable &amp;&amp; !configuration.requireFocus &amp;&amp;
+                commandInfo.commandAttrType != "tagName") {
+                applyToElement = true;
+            }
+
+            if (applyToElement) {
+                textField.toggleStyleOnElement(commandInfo);
+            } else {
+                applyToTextNodes(commandInfo, type);
+            }
+        };
+
+        /*
+         * Execute a rich text command
+         */
+        this.execute = function() {
+            if (!options.commandName) {
+                throw "commandName not specified.";
+            }
+
+            var commandConfig = configuration.commands[options.commandName];
+            if (!commandConfig) {
+                throw "unrecognized command: " + options.commandName;
+            }
+
+            applyCommand(options, commandConfig.commandType);
+        };
+    };
+
+    /*
+     * Create an execute a rich text command
+     */
+    $.Arte.RichTextCommandApplier.createAndExecute = function(options) {
+        var command = new $.Arte.RichTextCommandApplier(options);
+        command.execute();
+        return command;
+    };
+})(jQuery);
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#allHaveClass">allHaveClass</a></li><li><a href="global.html#block">block</a></li><li><a href="global.html#blockChildren">blockChildren</a></li><li><a href="global.html#closestWithAtMostOneBlockChild">closestWithAtMostOneBlockChild</a></li><li><a href="global.html#closestWithCommandValue">closestWithCommandValue</a></li><li><a href="global.html#createContainer">createContainer</a></li><li><a href="global.html#destroy">destroy</a></li><li><a href="global.html#element">element</a></li><li><a href="global.html#focus">focus</a></li><li><a href="global.html#getAllStates">getAllStates</a></li><li><a href="global.html#getClasses">getClasses</a></li><li><a href="global.html#getClassWithPattern">getClassWithPattern</a></li><li><a href="global.html#getState">getState</a></li><li><a href="global.html#getStyles">getStyles</a></li><li><a href="global.html#hasClassWithPattern">hasClassWithPattern</a></li><li><a href="global.html#hasCommandApplied">hasCommandApplied</a></li><li><a href="global.html#hasCommandValue">hasCommandValue</a></li><li><a href="global.html#hasSameClass">hasSameClass</a></li><li><a href="global.html#hasSameListParent">hasSameListParent</a></li><li><a href="global.html#hasSameStyle">hasSameStyle</a></li><li><a href="global.html#hasSameStyleAndClass">hasSameStyleAndClass</a></li><li><a href="global.html#init">init</a></li><li><a href="global.html#listSurrounded">listSurrounded</a></li><li><a href="global.html#nextSiblingIncludingTextNodes">nextSiblingIncludingTextNodes</a></li><li><a href="global.html#off">off</a></li><li><a href="global.html#on">on</a></li><li><a href="global.html#outerValue">outerValue</a></li><li><a href="global.html#prevSiblingIncludingTextNodes">prevSiblingIncludingTextNodes</a></li><li><a href="global.html#removeClassWithPattern">removeClassWithPattern</a></li><li><a href="global.html#styleableTags">styleableTags</a></li><li><a href="global.html#toggleStyleOnElement">toggleStyleOnElement</a></li><li><a href="global.html#triggerEvent">triggerEvent</a></li><li><a href="global.html#value">value</a></li><li><a href="global.html#wrapWithBlock">wrapWithBlock</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta1</a> on Thu Feb 26 2015 14:06:25 GMT-0500 (Eastern Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

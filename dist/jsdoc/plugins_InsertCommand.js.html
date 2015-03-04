@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: plugins/InsertCommand.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: plugins/InsertCommand.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>﻿/**
+ * @fileoverview: A plugin to add command to insert and/or replace content
+ */
+(function(pluginManager) {
+    var InsertCommand = function() {
+        var publicApi = {
+            /**
+             * Appends content to end of element if there is no selection. If there is a selection insert content at cursor position
+             * and replace all content in selection. Selects new content when done.
+             * @param {Object} options - options object will be passed into the onbeforeinsert/onafterinsert events
+             * @param {Object} options.commandValue - the html you want to insert
+             */
+            insert: function(options) {
+                $.extend(options, {
+                    execute: true
+                });
+                this.triggerEvent($.Arte.constants.eventNames.onbeforeinsert, options);
+
+                if (!options.execute) {
+                    return;
+                }
+
+                // Ensure that the selection is valid
+                var selectionIsInContentEditable = $.Arte.util.isSelectionInElement(this.$el);
+                if (!selectionIsInContentEditable &amp;&amp; $.Arte.configuration.requireFocus) {
+                    return;
+                }
+
+                //var element = document.createTextNode(options.commandValue);
+                var element = $("&lt;span>").html(options.commandValue).get(0);
+                var selection;
+                if (selectionIsInContentEditable) {
+                    // If we have a selection, insert the content at the cursor position
+                    selection = rangy.getSelection();
+                    var range = selection.getAllRanges()[0];
+                    if (!selection.isCollapsed) {
+                        range.deleteContents();
+                    }
+                    range.collapse();
+                    range.insertNode(element);
+                } else {
+                    this.$el.append(element);
+                }
+
+                // Select the newly inserted content.
+                selection = rangy.getSelection();
+                selection.setSingleRange(rangy.util.createRangeFromElements(element, element));
+
+                this.triggerEvent($.Arte.constants.eventNames.onafterinsert, options);
+            }
+        };
+        $.extend($.Arte.TextArea.prototype, publicApi);
+
+        $.extend($.Arte.constants.eventNames, {
+            "onbeforeinsert": "onbeforeinsert",
+            "onafterinsert": "onafterinsert"
+        });
+
+        return {
+            init: function() { /* no op */ }
+        };
+    };
+    pluginManager.register("insertCommand", InsertCommand);
+})($.Arte.pluginManager);
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#allHaveClass">allHaveClass</a></li><li><a href="global.html#block">block</a></li><li><a href="global.html#blockChildren">blockChildren</a></li><li><a href="global.html#closestWithAtMostOneBlockChild">closestWithAtMostOneBlockChild</a></li><li><a href="global.html#closestWithCommandValue">closestWithCommandValue</a></li><li><a href="global.html#createContainer">createContainer</a></li><li><a href="global.html#destroy">destroy</a></li><li><a href="global.html#element">element</a></li><li><a href="global.html#focus">focus</a></li><li><a href="global.html#getAllStates">getAllStates</a></li><li><a href="global.html#getClasses">getClasses</a></li><li><a href="global.html#getClassWithPattern">getClassWithPattern</a></li><li><a href="global.html#getState">getState</a></li><li><a href="global.html#getStyles">getStyles</a></li><li><a href="global.html#hasClassWithPattern">hasClassWithPattern</a></li><li><a href="global.html#hasCommandApplied">hasCommandApplied</a></li><li><a href="global.html#hasCommandValue">hasCommandValue</a></li><li><a href="global.html#hasSameClass">hasSameClass</a></li><li><a href="global.html#hasSameListParent">hasSameListParent</a></li><li><a href="global.html#hasSameStyle">hasSameStyle</a></li><li><a href="global.html#hasSameStyleAndClass">hasSameStyleAndClass</a></li><li><a href="global.html#init">init</a></li><li><a href="global.html#listSurrounded">listSurrounded</a></li><li><a href="global.html#nextSiblingIncludingTextNodes">nextSiblingIncludingTextNodes</a></li><li><a href="global.html#off">off</a></li><li><a href="global.html#on">on</a></li><li><a href="global.html#outerValue">outerValue</a></li><li><a href="global.html#prevSiblingIncludingTextNodes">prevSiblingIncludingTextNodes</a></li><li><a href="global.html#removeClassWithPattern">removeClassWithPattern</a></li><li><a href="global.html#styleableTags">styleableTags</a></li><li><a href="global.html#toggleStyleOnElement">toggleStyleOnElement</a></li><li><a href="global.html#triggerEvent">triggerEvent</a></li><li><a href="global.html#value">value</a></li><li><a href="global.html#wrapWithBlock">wrapWithBlock</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta1</a> on Thu Feb 26 2015 14:06:25 GMT-0500 (Eastern Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
