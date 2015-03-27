@@ -119,7 +119,7 @@
                 var parent = null;
                 $(this).parentsUntil(topMostElement).each(function() {
                     var blockChildrenCount = $(this).children(":block").length;
-                        // 0 or 1 block child
+                    // 0 or 1 block child
                     var isValid = (blockChildrenCount === 0) ||
                         // There are not other non-block children
                         (blockChildrenCount === 1 && blockChildrenCount === this.childNodes.length);
