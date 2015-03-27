@@ -39,7 +39,7 @@ module.exports = function(grunt) {
                 src: [
                     "<%= concat.rangy.src %>",
                     "<%= concat.editor.src %>",
-                    "<%= concat.toolbar.src %>",
+                    "<%= concat.toolbar.src %>"
                 ],
                 dest: "dist/arte.js"
             },
@@ -100,7 +100,7 @@ module.exports = function(grunt) {
                         cwd: "node_modules/qunitjs/qunit",
                         src: ["qunit.*"],
                         dest: "tests/dependencies/QUnit/"
-                    },
+                    }
                 ]
             },
             rangy: {
@@ -141,7 +141,7 @@ module.exports = function(grunt) {
             "tests/dependencies/jquery-1.7.2.js": "http://code.jquery.com/jquery-1.7.2.js",
 
             // jQuery 2.x - IE9+
-            "tests/dependencies/jquery-2.1.3.js": "http://code.jquery.com/jquery-2.1.3.js",
+            "tests/dependencies/jquery-2.1.3.js": "http://code.jquery.com/jquery-2.1.3.js"
         },
         plato: {
             all: {
