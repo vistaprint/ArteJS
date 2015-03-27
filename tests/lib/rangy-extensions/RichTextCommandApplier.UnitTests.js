@@ -137,7 +137,7 @@ var simpleSelectionUnitTestData = [{
     rangeContentId: "s",
     rawContent: "<div id=\"s\">SomeText</div>",
     expectedContent: "<div style=\"font-style: italic;\" >SomeText</div>"
-    }, {
+}, {
     // Selects all of the content within the element with contentId = r
     name: "makeItalicContentBetweenDivs",
     commandName: "italic",
@@ -272,23 +272,23 @@ var textSelectionUnitTestData = [{
 }];
 
 var simpleSelectionMultiCommandTestData = [{
-        name: "rightAlignCenterAlign",
-        rawContent: "SomeText",
-        op: function(arte) {
-            var options = {
-                commandName: "textAlign",
-                styleName: "text-align",
-                styleValue: "right",
-                commandAttrType: $.Arte.constants.commandAttrType.styleName,
-                applierTagName: "div",
-                textArea: arte
-            };
-            $.Arte.RichTextCommandApplier.createAndExecute(options);
-            $.Arte.RichTextCommandApplier.createAndExecute($.extend(options, {
-                styleValue: "center"
-            }));
-        },
-        expectedContent: "<div style=\"text-align: center;\">SomeText</div>"
+    name: "rightAlignCenterAlign",
+    rawContent: "SomeText",
+    op: function(arte) {
+        var options = {
+            commandName: "textAlign",
+            styleName: "text-align",
+            styleValue: "right",
+            commandAttrType: $.Arte.constants.commandAttrType.styleName,
+            applierTagName: "div",
+            textArea: arte
+        };
+        $.Arte.RichTextCommandApplier.createAndExecute(options);
+        $.Arte.RichTextCommandApplier.createAndExecute($.extend(options, {
+            styleValue: "center"
+        }));
+    },
+    expectedContent: "<div style=\"text-align: center;\">SomeText</div>"
 }, {
     name: "centerAlignRightAlign",
     rawContent: "SomeText",
@@ -767,9 +767,8 @@ var richTextComplexSelectionMultiCommandsTestData = [{
         };
         $.Arte.RichTextCommandApplier.createAndExecute(options);
     },
-
     expectedContent: "<ul><li>Line 1</li><li>Line 2</li><li>ABC</li></ul>DEF<br/><ul><li>Line A</li><li>Line B</li></ul>XYZ"
-    }, {
+}, {
     name: "toggleUnorderedListFromOrderedListAndText",
     rawContent: "<ol><li><span id=\"s1\">Line 1</span></li><li><span id=\"s2\">Line 2</span></li></ol>" +
         "<span id=\"s4\">DEF</span><ul><li><span id=\"s5\">Line A</span></li><li><span id=\"s6\">Line B</span></li></ul> " +
