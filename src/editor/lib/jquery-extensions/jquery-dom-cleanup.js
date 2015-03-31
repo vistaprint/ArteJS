@@ -487,7 +487,9 @@
      */
     var removeEmptyElements = function(jNodes) {
         // Exclude the <br/> and rangy selection marker spans
-        var emptyElements = jNodes.find(":empty").not("br").not(":rangySpan");
+        var emptyElements = jNodes.find(":empty").not("br").not(function(index, element) {
+            return dom.isRangySpan(element);
+        });
         emptyElements.each(function() {
             processEmptyElement($(this));
         });

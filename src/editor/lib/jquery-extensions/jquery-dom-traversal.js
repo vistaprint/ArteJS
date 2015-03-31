@@ -28,12 +28,6 @@
         element: function(element) {
             return element.nodeType === constants.nodeType.ELEMENT;
         },
-        emptyText: function(element) {
-            return element.nodeType === 3 && (element.nodeValue.match(/^\s*$/ig) !== null);
-        },
-        rangySpan: function(element) {
-            return $(element).hasClass(configuration.rangySelectionBoundaryClassName);
-        },
         /**
          * Find all elements that have block level children nodes
          * Usage: $("div").not(":blockChildren") - will return all div elements that don't have block children
@@ -109,11 +103,15 @@
          * @param {element} an HTML DOM element
          */
         isEmptyText: function(element) {
-            //cwkTODO we might get rid of the Sizzle extension eventually
-            var jQueryExpr = $.expr[":"];
-            var isEmptyText = (typeof jQueryExpr.emptyText === "function") ?
-                jQueryExpr.emptyText(element) : false;
-            return isEmptyText;
+            return element.nodeType === 3 && (element.nodeValue.match(/^\s*$/ig) !== null);
+        },
+
+        /**
+         * Check if an element is a rangy span.
+         * @param {element} an HTML DOM element
+         */
+        isRangySpan: function(element) {
+            return $(element).hasClass(configuration.rangySelectionBoundaryClassName);
         },
 
         /**
@@ -131,13 +129,7 @@
          * @param {element} an HTML DOM element
          */
         isEmptyTextOrRangySpan: function(element) {
-            //cwkTODO move these to methods as well?
-            var jQueryExpr = $.expr[":"];
-            var isEmptyText = this.isEmptyText(element);
-            var isRangySpan = (typeof jQueryExpr.rangySpan(element) === "function") ?
-                jQueryExpr.rangySpan(element) : false;
-
-            return (isEmptyText || isRangySpan);
+            return this.isEmptyText(element) || this.isRangySpan(element);
         },
 
         /**
@@ -537,7 +529,7 @@
                 if (isEqual) {
                     //check children nodes
                     var noEmptyTextNodesFilter = function(index, node) {
-                        return !$(node).is(":emptyText");
+                        return !dom.isEmptyText(node);
                     };
                     var thisContent = jNode1.contents().filter(noEmptyTextNodesFilter);
                     var thatContent = jNode2.contents().filter(noEmptyTextNodesFilter);
@@ -548,7 +540,7 @@
                     for (var i = 0, l = thisContent.length; i < l && isEqual; i++) {
                         isEqual = thisContent[i].nodeType === 3 ?
                             $.trim(thisContent[i].nodeValue) === $.trim(thatContent[i].nodeValue) :
-                            $.Arte.dom.isEqual($(thisContent[i]), $(thatContent[i]));
+                            dom.isEqual($(thisContent[i]), $(thatContent[i]));
                     }
                 }
             } else {
