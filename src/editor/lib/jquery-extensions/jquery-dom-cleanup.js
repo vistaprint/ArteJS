@@ -170,7 +170,27 @@
 
     var mergeLists = function(tagName, lists) {
         var filter = function(index, node) {
-            return !$(node).is(":emptyTextOrRangySpan");
+            // cwkTODO this is copied from getContentNodes
+            // refactor it to its own method
+            if (node.nodeType === 1) {
+                return !$(node).is(":emptyTextOrRangySpan");
+            } else {
+                // Starting in jQuery 1.10,
+                // filter() only works on nodeType 1 (ELEMENT_NODE)
+                // (callStack: is() -> winnow() -> filter() ),
+                // For other nodeTypes, e.g. 3 (TEXT_NODE),
+                // we must manually do the !emptyTextOrRangySpan check
+
+                var jQueryExpr = $.expr[":"];
+
+                // These methods are added in jquery-dom-traversal
+                var isEmptyText = (typeof jQueryExpr.emptyText === "function") ?
+                    jQueryExpr.emptyText(node) : false;
+                var isRangySpan = (typeof jQueryExpr.rangySpan(node) === "function") ?
+                    jQueryExpr.rangySpan(node) : false;
+
+                return !(isEmptyText || isRangySpan);
+            }
         };
         // Start from the last element in the list and start merging backward
         while (lists.length) {
