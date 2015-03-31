@@ -27,7 +27,7 @@ $(document).ready(function() {
         }
         // Verify the results
         var result = unitTestHelper.isEqual({
-            testName: suiteName + " " + testData.testName,
+            name: suiteName + " " + testData.name,
             expectedContent: $("<div>").html(testData.expectedContent),
             actualContent: $("<div>").html($(TEST_ELEMENT_SELECTOR).html())
         });
