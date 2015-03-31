@@ -105,6 +105,31 @@
 
     $.extend(dom, {
         /**
+         * Check if an element is empty text or a rangy span.
+         *
+         * NOTE: We use this method now instead of using
+         * jQuery.is() with a custom Sizzle selector
+         * (e.g.: `return $(element).is(":emptyTextOrRangySpan")`)
+         * because starting in jQuery 1.10,
+         * filter(), which is called by jQuery.is(),
+         * only works on nodeType 1 (ELEMENT_NODE),
+         * but we use it to check TEXT_NODE (nodeType = 3) as well.
+         * Ref: https://github.com/vistaprint/ArteJS/issues/60
+         *
+         * @param {element} an HTML DOM element
+         */
+        isEmptyTextOrRangySpan: function(element) {
+            //cwkTODO move these to methods as well?
+            var jQueryExpr = $.expr[":"];
+            var isEmptyText = (typeof jQueryExpr.emptyText === "function") ?
+                jQueryExpr.emptyText(element) : false;
+            var isRangySpan = (typeof jQueryExpr.rangySpan(element) === "function") ?
+                jQueryExpr.rangySpan(element) : false;
+
+            return (isEmptyText || isRangySpan);
+        },
+
+        /**
          * Get top most parent such that there are is either no block child or only one block child
          * @param {jElement} topMostElement absolute ceiling (for example the top content editable element).
          * @return {jElement} parent node or the input jquery object

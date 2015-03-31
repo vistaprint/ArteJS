@@ -168,28 +168,9 @@
 
     var cleanupConfig = configuration.cleanup;
 
-    var isEmptyTextOrRangySpan = function(node) {
-        // This used to be `return $(node).is(":emptyTextOrRangySpan")`
-        // but starting in jQuery 1.10,
-        // filter() only works on nodeType 1 (ELEMENT_NODE)
-        // (callStack: is() -> winnow() -> filter() ),
-        // so to support other nodeTypes, e.g. 3 (TEXT_NODE),
-        // we must manually perform the logic of the check
-
-        var jQueryExpr = $.expr[":"];
-
-        // These methods are added in jquery-dom-traversal
-        var isEmptyText = (typeof jQueryExpr.emptyText === "function") ?
-            jQueryExpr.emptyText(node) : false;
-        var isRangySpan = (typeof jQueryExpr.rangySpan(node) === "function") ?
-            jQueryExpr.rangySpan(node) : false;
-
-        return (isEmptyText || isRangySpan);
-    };
-
     var mergeLists = function(tagName, lists) {
         var filter = function(index, node) {
-            return !isEmptyTextOrRangySpan(node);
+            return !dom.isEmptyTextOrRangySpan(node);
         };
         // Start from the last element in the list and start merging backward
         while (lists.length) {
@@ -264,7 +245,7 @@
      */
     var getContentNodes = function(jElement) {
         return jElement.contents().filter(function(index, node) {
-            return !isEmptyTextOrRangySpan(node);
+            return !dom.isEmptyTextOrRangySpan(node);
         });
     };
 
