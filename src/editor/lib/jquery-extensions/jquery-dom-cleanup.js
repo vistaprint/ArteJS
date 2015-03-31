@@ -245,7 +245,25 @@
      */
     var getContentNodes = function(jElement) {
         return jElement.contents().filter(function(index, node) {
-            return !$(node).is(":emptyTextOrRangySpan");
+            if (node.nodeType === 1) {
+                return !$(node).is(":emptyTextOrRangySpan");
+            } else {
+                // Starting in jQuery 1.10,
+                // filter() only works on nodeType 1 (ELEMENT_NODE)
+                // (callStack: is() -> winnow() -> filter() ),
+                // For other nodeTypes, e.g. 3 (TEXT_NODE),
+                // we must manually do the emptyTextOrRangySpan check
+
+                var jQueryExpr = $.expr[":"];
+
+                // These methods are added in jquery-dom-traversal
+                var isEmptyText = (typeof jQueryExpr.emptyText === "function") ?
+                    jQueryExpr.emptyText(node) : false;
+                var isRangySpan = (typeof jQueryExpr.rangySpan(node) === "function") ?
+                    jQueryExpr.rangySpan(node) : false;
+
+                return isEmptyText || isRangySpan;
+            }
         });
     };
 
