@@ -255,22 +255,19 @@ var unitTestHelper = {
                 var noEmptyTextNodesFilter = function(index, node) {
                     //cwkTODO move this logic in one place to replace is()?
 
-                    if (node.nodeType === 1) { //cwkTODO this check isn't really necessary
-                        return !$(node).is(":emptyText");
-                    } else {
-                        // Starting in jQuery 1.10,
-                        // filter() only works on nodeType 1 (ELEMENT_NODE)
-                        // (callStack: is() -> winnow() -> filter() ),
-                        // For other nodeTypes, e.g. 3 (TEXT_NODE),
-                        // we must manually do the !emptyTextOrRangySpan check
+                    // This used to be `return !$(node).is(":emptyText")`
+                    // but starting in jQuery 1.10,
+                    // filter() only works on nodeType 1 (ELEMENT_NODE)
+                    // (callStack: is() -> winnow() -> filter() ),
+                    // so to support other nodeTypes, e.g. 3 (TEXT_NODE),
+                    // we must manually perform the logic of the check
 
-                        // These methods are added in jquery-dom-traversal
-                        var jQueryExpr = $.expr[":"];
-                        var isEmptyText = (typeof jQueryExpr.emptyText === "function") ?
-                            jQueryExpr.emptyText(node) : false;
+                    // These methods are added in jquery-dom-traversal
+                    var jQueryExpr = $.expr[":"];
+                    var isEmptyText = (typeof jQueryExpr.emptyText === "function") ?
+                        jQueryExpr.emptyText(node) : false;
 
-                        return !isEmptyText;
-                    }
+                    return !isEmptyText;
                 };
                 var thisContent = this.contents().filter(noEmptyTextNodesFilter);
                 var thatContent = $node.contents().filter(noEmptyTextNodesFilter);
