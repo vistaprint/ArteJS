@@ -252,7 +252,7 @@
                 // filter() only works on nodeType 1 (ELEMENT_NODE)
                 // (callStack: is() -> winnow() -> filter() ),
                 // For other nodeTypes, e.g. 3 (TEXT_NODE),
-                // we must manually do the emptyTextOrRangySpan check
+                // we must manually do the !emptyTextOrRangySpan check
 
                 var jQueryExpr = $.expr[":"];
 
@@ -262,7 +262,7 @@
                 var isRangySpan = (typeof jQueryExpr.rangySpan(node) === "function") ?
                     jQueryExpr.rangySpan(node) : false;
 
-                return isEmptyText || isRangySpan;
+                return !(isEmptyText || isRangySpan);
             }
         });
     };
