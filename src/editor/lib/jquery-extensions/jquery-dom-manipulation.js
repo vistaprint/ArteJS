@@ -8,6 +8,27 @@
     var configuration = $.Arte.configuration;
     var constants = $.Arte.constants;
 
+    // cwkTODO this is copied from jquery-dom-cleanup
+    // we should refactor them to one place
+    var isEmptyTextOrRangySpan = function(node) {
+        // This used to be `return $(node).is(":emptyTextOrRangySpan")`
+        // but starting in jQuery 1.10,
+        // filter() only works on nodeType 1 (ELEMENT_NODE)
+        // (callStack: is() -> winnow() -> filter() ),
+        // so to support other nodeTypes, e.g. 3 (TEXT_NODE),
+        // we must manually perform the logic of the check
+
+        var jQueryExpr = $.expr[":"];
+
+        // These methods are added in jquery-dom-traversal
+        var isEmptyText = (typeof jQueryExpr.emptyText === "function") ?
+            jQueryExpr.emptyText(node) : false;
+        var isRangySpan = (typeof jQueryExpr.rangySpan(node) === "function") ?
+            jQueryExpr.rangySpan(node) : false;
+
+        return (isEmptyText || isRangySpan);
+    };
+
     /**
      * wrap elements/nodes
      * In addition, if there is a rangySelectionBoundary span before or after the nodes to wrap,
@@ -52,7 +73,7 @@
                 // consistency
 
                 var filter = function(index, node) {
-                    return !$(node).is(":emptyTextOrRangySpan");
+                    return !isEmptyTextOrRangySpan(node);
                 };
 
                 if ($this.is(":block")) {
