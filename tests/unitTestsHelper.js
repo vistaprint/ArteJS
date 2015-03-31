@@ -253,21 +253,7 @@ var unitTestHelper = {
             if (isEqual) {
                 //check children nodes
                 var noEmptyTextNodesFilter = function(index, node) {
-                    //cwkTODO move this logic in one place to replace is()?
-
-                    // This used to be `return !$(node).is(":emptyText")`
-                    // but starting in jQuery 1.10,
-                    // filter() only works on nodeType 1 (ELEMENT_NODE)
-                    // (callStack: is() -> winnow() -> filter() ),
-                    // so to support other nodeTypes, e.g. 3 (TEXT_NODE),
-                    // we must manually perform the logic of the check
-
-                    // These methods are added in jquery-dom-traversal
-                    var jQueryExpr = $.expr[":"];
-                    var isEmptyText = (typeof jQueryExpr.emptyText === "function") ?
-                        jQueryExpr.emptyText(node) : false;
-
-                    return !isEmptyText;
+                    return !$.Arte.dom.isEmptyText(node);
                 };
                 var thisContent = this.contents().filter(noEmptyTextNodesFilter);
                 var thatContent = $node.contents().filter(noEmptyTextNodesFilter);

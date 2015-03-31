@@ -105,6 +105,18 @@
 
     $.extend(dom, {
         /**
+         * Check if an element is empty text.
+         * @param {element} an HTML DOM element
+         */
+        isEmptyText: function(element) {
+            //cwkTODO we might get rid of the Sizzle extension eventually
+            var jQueryExpr = $.expr[":"];
+            var isEmptyText = (typeof jQueryExpr.emptyText === "function") ?
+                jQueryExpr.emptyText(element) : false;
+            return isEmptyText;
+        },
+
+        /**
          * Check if an element is empty text or a rangy span.
          *
          * NOTE: We use this method now instead of using
@@ -121,8 +133,7 @@
         isEmptyTextOrRangySpan: function(element) {
             //cwkTODO move these to methods as well?
             var jQueryExpr = $.expr[":"];
-            var isEmptyText = (typeof jQueryExpr.emptyText === "function") ?
-                jQueryExpr.emptyText(element) : false;
+            var isEmptyText = this.isEmptyText(element);
             var isRangySpan = (typeof jQueryExpr.rangySpan(element) === "function") ?
                 jQueryExpr.rangySpan(element) : false;
 
