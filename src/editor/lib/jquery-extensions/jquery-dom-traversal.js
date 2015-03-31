@@ -34,10 +34,6 @@
         rangySpan: function(element) {
             return $(element).hasClass(configuration.rangySelectionBoundaryClassName);
         },
-        emptyTextOrRangySpan: function(element) {
-            var $element = $(element);
-            return $element.is(":emptyText") || $element.is(":rangySpan");
-        },
         /**
          * Find all elements that have block level children nodes
          * Usage: $("div").not(":blockChildren") - will return all div elements that don't have block children
