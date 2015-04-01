@@ -89,7 +89,19 @@ module.exports = function(grunt) {
 
                 }
             },
-            all: ["tests/all.html"],
+            all: {
+                options: {
+                    urls: [
+                        "tests/index.html?jquery=1.7.2",
+                        "tests/index.html?jquery=1.8.3",
+                        "tests/index.html?jquery=1.9.1",
+                        "tests/index.html?jquery=1.10.2",
+                        "tests/index.html?jquery=1.11.2",
+                        "tests/index.html?jquery=2.0.0",
+                        "tests/index.html?jquery=2.1.3"
+                    ]
+                }
+            },
             single: ["tests/index.html"]
         },
         copy: {
