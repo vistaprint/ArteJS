@@ -28,16 +28,6 @@
         element: function(element) {
             return element.nodeType === constants.nodeType.ELEMENT;
         },
-        emptyText: function(element) {
-            return element.nodeType === 3 && (element.nodeValue.match(/^\s*$/ig) !== null);
-        },
-        rangySpan: function(element) {
-            return $(element).hasClass(configuration.rangySelectionBoundaryClassName);
-        },
-        emptyTextOrRangySpan: function(element) {
-            var $element = $(element);
-            return $element.is(":emptyText") || $element.is(":rangySpan");
-        },
         /**
          * Find all elements that have block level children nodes
          * Usage: $("div").not(":blockChildren") - will return all div elements that don't have block children
@@ -109,6 +99,40 @@
 
     $.extend(dom, {
         /**
+         * Check if an element is empty text.
+         * @param {element} an HTML DOM element
+         */
+        isEmptyText: function(element) {
+            return element.nodeType === 3 && (element.nodeValue.match(/^\s*$/ig) !== null);
+        },
+
+        /**
+         * Check if an element is a rangy span.
+         * @param {element} an HTML DOM element
+         */
+        isRangySpan: function(element) {
+            return $(element).hasClass(configuration.rangySelectionBoundaryClassName);
+        },
+
+        /**
+         * Check if an element is empty text or a rangy span.
+         *
+         * NOTE: We use this method now instead of using
+         * jQuery.is() with a custom Sizzle selector
+         * (e.g.: `return $(element).is(":emptyTextOrRangySpan")`)
+         * because starting in jQuery 1.10,
+         * filter(), which is called by jQuery.is(),
+         * only works on nodeType 1 (ELEMENT_NODE),
+         * but we use it to check TEXT_NODE (nodeType = 3) as well.
+         * Ref: https://github.com/vistaprint/ArteJS/issues/60
+         *
+         * @param {element} an HTML DOM element
+         */
+        isEmptyTextOrRangySpan: function(element) {
+            return this.isEmptyText(element) || this.isRangySpan(element);
+        },
+
+        /**
          * Get top most parent such that there are is either no block child or only one block child
          * @param {jElement} topMostElement absolute ceiling (for example the top content editable element).
          * @return {jElement} parent node or the input jquery object
@@ -119,7 +143,7 @@
                 var parent = null;
                 $(this).parentsUntil(topMostElement).each(function() {
                     var blockChildrenCount = $(this).children(":block").length;
-                        // 0 or 1 block child
+                    // 0 or 1 block child
                     var isValid = (blockChildrenCount === 0) ||
                         // There are not other non-block children
                         (blockChildrenCount === 1 && blockChildrenCount === this.childNodes.length);
@@ -505,7 +529,7 @@
                 if (isEqual) {
                     //check children nodes
                     var noEmptyTextNodesFilter = function(index, node) {
-                        return !$(node).is(":emptyText");
+                        return !dom.isEmptyText(node);
                     };
                     var thisContent = jNode1.contents().filter(noEmptyTextNodesFilter);
                     var thatContent = jNode2.contents().filter(noEmptyTextNodesFilter);
@@ -516,7 +540,7 @@
                     for (var i = 0, l = thisContent.length; i < l && isEqual; i++) {
                         isEqual = thisContent[i].nodeType === 3 ?
                             $.trim(thisContent[i].nodeValue) === $.trim(thatContent[i].nodeValue) :
-                            $.Arte.dom.isEqual($(thisContent[i]), $(thatContent[i]));
+                            dom.isEqual($(thisContent[i]), $(thatContent[i]));
                     }
                 }
             } else {

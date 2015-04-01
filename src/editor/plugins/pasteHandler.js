@@ -21,7 +21,7 @@
             "OL": 1,
             "LI": 1,
             "SPAN": 1
-                // What to do with tags not in this list
+            // What to do with tags not in this list
         },
         nodeType: {
             "1": 1, // Text

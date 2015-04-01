@@ -52,7 +52,7 @@
                 // consistency
 
                 var filter = function(index, node) {
-                    return !$(node).is(":emptyTextOrRangySpan");
+                    return !dom.isEmptyTextOrRangySpan(node);
                 };
 
                 if ($this.is(":block")) {

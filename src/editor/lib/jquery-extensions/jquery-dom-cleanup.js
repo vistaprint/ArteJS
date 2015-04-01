@@ -170,7 +170,7 @@
 
     var mergeLists = function(tagName, lists) {
         var filter = function(index, node) {
-            return !$(node).is(":emptyTextOrRangySpan");
+            return !dom.isEmptyTextOrRangySpan(node);
         };
         // Start from the last element in the list and start merging backward
         while (lists.length) {
@@ -245,7 +245,7 @@
      */
     var getContentNodes = function(jElement) {
         return jElement.contents().filter(function(index, node) {
-            return !$(node).is(":emptyTextOrRangySpan");
+            return !dom.isEmptyTextOrRangySpan(node);
         });
     };
 
@@ -487,7 +487,9 @@
      */
     var removeEmptyElements = function(jNodes) {
         // Exclude the <br/> and rangy selection marker spans
-        var emptyElements = jNodes.find(":empty").not("br").not(":rangySpan");
+        var emptyElements = jNodes.find(":empty").not("br").not(function(index, element) {
+            return dom.isRangySpan(element);
+        });
         emptyElements.each(function() {
             processEmptyElement($(this));
         });

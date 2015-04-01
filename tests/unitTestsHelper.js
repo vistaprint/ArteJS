@@ -253,7 +253,7 @@ var unitTestHelper = {
             if (isEqual) {
                 //check children nodes
                 var noEmptyTextNodesFilter = function(index, node) {
-                    return !$(node).is(":emptyText");
+                    return !$.Arte.dom.isEmptyText(node);
                 };
                 var thisContent = this.contents().filter(noEmptyTextNodesFilter);
                 var thatContent = $node.contents().filter(noEmptyTextNodesFilter);
