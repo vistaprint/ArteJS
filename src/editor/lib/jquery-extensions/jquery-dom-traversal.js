@@ -28,6 +28,10 @@
         element: function(element) {
             return element.nodeType === constants.nodeType.ELEMENT;
         },
+        //cwkTODO delete
+        emptyText: function(element) {
+            return element.nodeType === 3 && (element.nodeValue.match(/^\s*$/ig) !== null);
+        },
         /**
          * Find all elements that have block level children nodes
          * Usage: $("div").not(":blockChildren") - will return all div elements that don't have block children
@@ -129,7 +133,8 @@
          * @param {element} an HTML DOM element
          */
         isEmptyTextOrRangySpan: function(element) {
-            return this.isEmptyText(element) || this.isRangySpan(element);
+            return $(element).is(":emptyText") || this.isRangySpan(element); //cwkTODO undo
+            //return this.isEmptyText(element) || this.isRangySpan(element);
         },
 
         /**
