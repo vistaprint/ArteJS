@@ -129,22 +129,22 @@ module.exports = function(grunt) {
             }
         },
         curl: {
-            // "Latest" - the most downloaded version of jQuery
-            "tests/dependencies/jquery.js": "http://code.jquery.com/jquery-latest.min.js",
+            // Grab different versions of jQuery for unit testing
+            // NOTE: that we should not be using "jquery-latest" anymore:
+            // http://blog.jquery.com/2014/07/03/dont-use-jquery-latest-js/
 
-            // Specific versions
-            "tests/dependencies/jquery-1.11.2.js": "http://code.jquery.com/jquery-1.11.2.js",
-            "tests/dependencies/jquery-1.10.2.js": "http://code.jquery.com/jquery-1.10.2.js",
-            "tests/dependencies/jquery-1.10.0.js": "http://code.jquery.com/jquery-1.10.0.js",
-            "tests/dependencies/jquery-1.9.1.js": "http://code.jquery.com/jquery-1.9.1.js",
-            "tests/dependencies/jquery-1.8.3.js": "http://code.jquery.com/jquery-1.8.3.js",
+            // Grab the latest version of each minor release
+
+            // jQuery 1.x
             "tests/dependencies/jquery-1.7.2.js": "http://code.jquery.com/jquery-1.7.2.js",
+            "tests/dependencies/jquery-1.8.3.js": "http://code.jquery.com/jquery-1.8.3.js",
+            "tests/dependencies/jquery-1.9.1.js": "http://code.jquery.com/jquery-1.9.1.js",
+            "tests/dependencies/jquery-1.10.2.js": "http://code.jquery.com/jquery-1.10.2.js",
+            "tests/dependencies/jquery-1.11.2.js": "http://code.jquery.com/jquery-1.11.2.js",
 
             // jQuery 2.x - IE9+
-            "tests/dependencies/jquery-2.1.3.js": "http://code.jquery.com/jquery-2.1.3.js",
-            "tests/dependencies/jquery-2.1.0.js": "http://code.jquery.com/jquery-2.1.0.js",
-            "tests/dependencies/jquery-2.0.3.js": "http://code.jquery.com/jquery-2.0.3.js",
-            "tests/dependencies/jquery-2.0.0.js": "http://code.jquery.com/jquery-2.0.0.js"
+            "tests/dependencies/jquery-2.0.0.js": "http://code.jquery.com/jquery-2.0.0.js",
+            "tests/dependencies/jquery-2.1.3.js": "http://code.jquery.com/jquery-2.1.3.js"
         },
         plato: {
             all: {
