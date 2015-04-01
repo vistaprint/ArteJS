@@ -166,7 +166,7 @@ module.exports = function(grunt) {
     // Default task.
     grunt.registerTask("default", ["jscs", "jshint", "build", "qunit:single"]);
     grunt.registerTask("build", ["concat", "uglify"]);
-    grunt.registerTask("travis", ["copy", "curl", "default"]);
+    grunt.registerTask("travis", ["copy", "curl", "default", "qunit:all"]);
     grunt.registerTask("analysis", ["plato"]);
     grunt.registerTask("all", ["build", "plato"]);
 };
