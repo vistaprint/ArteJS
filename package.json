@@ -47,7 +47,6 @@
     "grunt-qunit-istanbul": "^0.4.7",
     "jquery": "^1.9.1",
     "load-grunt-tasks": "^3.1.0",
-    "qunit-composite": "^1.0.4",
     "qunitjs": "^1.17.1",
     "rangy": "1.3.0-alpha.20140921"
   }

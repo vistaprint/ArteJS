@@ -128,16 +128,6 @@ module.exports = function(grunt) {
                         dest: "external/rangy/"
                     }
                 ]
-            },
-            qunitComposite: {
-                files: [
-                    {
-                        expand: true,
-                        cwd: "node_modules/qunit-composite",
-                        src: ["qunit-composite.*"],
-                        dest: "tests/dependencies/QUnit/"
-                    }
-                ]
             }
         },
         curl: {
