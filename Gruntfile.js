@@ -138,8 +138,6 @@ module.exports = function(grunt) {
             // Grab the latest version of each minor release
 
             // jQuery 1.x
-            "tests/dependencies/jquery-1.7.2.js": "http://code.jquery.com/jquery-1.7.2.js",
-            "tests/dependencies/jquery-1.8.3.js": "http://code.jquery.com/jquery-1.8.3.js",
             "tests/dependencies/jquery-1.9.1.js": "http://code.jquery.com/jquery-1.9.1.js",
             "tests/dependencies/jquery-1.10.2.js": "http://code.jquery.com/jquery-1.10.2.js",
             "tests/dependencies/jquery-1.11.2.js": "http://code.jquery.com/jquery-1.11.2.js",
