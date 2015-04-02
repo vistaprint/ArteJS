@@ -4,6 +4,29 @@ module.exports = function(grunt) {
 
     require("load-grunt-tasks")(grunt);
 
+    // Supported jQuery versions to test against
+    // (the latest version of each minor release after 1.9.1)
+    // NOTE: jQuery 2.x is IE9+
+    // NOTE: that we should not be using "jquery-latest" anymore:
+    // http://blog.jquery.com/2014/07/03/dont-use-jquery-latest-js/
+    var jQueryVersions = ["1.9.1", "1.10.2", "1.11.2", "2.0.0", "2.1.3"];
+
+    // Construct an object with properties like this:
+    // "tests/dependencies/jquery-1.9.1.js": "http://code.jquery.com/jquery-1.9.1.js"
+    // and a list of urls like this: "tests/index.html?jquery=1.9.1"
+    var jQueryToCurl = {};
+    var qunitUrls = [];
+
+    for (var i = 0; i < jQueryVersions.length; i++) {
+        var version = jQueryVersions[i];
+
+        var dst = "tests/dependencies/jquery-" + version + ".js";
+        var src = "http://code.jquery.com/jquery-" + version + ".js";
+        jQueryToCurl[dst] = src;
+
+        qunitUrls.push("tests/index.html?jquery=" + version);
+    }
+
     // Project configuration.
     grunt.initConfig({
         jshint: {
@@ -91,13 +114,7 @@ module.exports = function(grunt) {
             },
             all: {
                 options: {
-                    urls: [
-                        "tests/index.html?jquery=1.9.1",
-                        "tests/index.html?jquery=1.10.2",
-                        "tests/index.html?jquery=1.11.2",
-                        "tests/index.html?jquery=2.0.0",
-                        "tests/index.html?jquery=2.1.3"
-                    ]
+                    urls: qunitUrls
                 }
             },
             single: ["tests/index.html"]
@@ -128,22 +145,7 @@ module.exports = function(grunt) {
                 ]
             }
         },
-        curl: {
-            // Grab different versions of jQuery for unit testing
-            // NOTE: that we should not be using "jquery-latest" anymore:
-            // http://blog.jquery.com/2014/07/03/dont-use-jquery-latest-js/
-
-            // Grab the latest version of each minor release
-
-            // jQuery 1.x
-            "tests/dependencies/jquery-1.9.1.js": "http://code.jquery.com/jquery-1.9.1.js",
-            "tests/dependencies/jquery-1.10.2.js": "http://code.jquery.com/jquery-1.10.2.js",
-            "tests/dependencies/jquery-1.11.2.js": "http://code.jquery.com/jquery-1.11.2.js",
-
-            // jQuery 2.x - IE9+
-            "tests/dependencies/jquery-2.0.0.js": "http://code.jquery.com/jquery-2.0.0.js",
-            "tests/dependencies/jquery-2.1.3.js": "http://code.jquery.com/jquery-2.1.3.js"
-        },
+        curl: jQueryToCurl,
         plato: {
             all: {
                 options: {
