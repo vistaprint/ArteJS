@@ -11,9 +11,12 @@
 (function($) {
     $.Arte = $.Arte || {};
     $.fn.Arte = function(options, args) {
-        var result = [];
         rangy.init();
-        this.each(function() {
+
+        if (!this.length) {
+            return this;
+        }
+        return this.map(function() {
             var $this = $(this);
             var editor = $this.data("Arte");
             if (options && typeof(options) === "string") {
@@ -28,7 +31,7 @@
                 }
 
                 var returnValue = editor[methodName].call(editor, args);
-                result.push(returnValue);
+                return returnValue;
             } else {
                 // If $this is not a rich text editor, construct the editor
                 if (!editor) {
@@ -37,9 +40,8 @@
                     editor = new $.Arte.TextArea(options);
                     $this.data("Arte", editor);
                 }
-                result.push(editor);
+                return editor;
             }
         });
-        return $(result);
     };
 })(jQuery);
