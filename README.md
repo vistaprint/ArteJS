@@ -15,7 +15,7 @@ ArteJS [Examples](http://vistaprint.github.io/ArteJS/#Examples) / [Detailed Docu
 
 To use ArteJS in your project, you’ll need to load the following files:
 
-jQuery 1.7.3 up to 1.9.1 (1.10+ support is currently in-progress) and either `dist/arte.js` (for development) or the minified version `dist/arte.min.js` (for production):
+jQuery 1.9.1+ and either `dist/arte.js` (for development) or the minified version `dist/arte.min.js` (for production):
 
 ```html
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>

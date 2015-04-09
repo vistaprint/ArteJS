@@ -6,9 +6,13 @@
     <!--Rich text dependencies and rich text script-->
 
     <script>
+        // Load the version of jQuery specified in the query string
+        // E.g.: "index.html?jquery=1.11.2"
+        // Used for running tests against multiple versions of jQuery
+        // (see Gruntfile.js)
         (function() {
             var item, i, script,
-                source = "dependencies/jquery-1.9.1",
+                source = "dependencies/jquery-1.9.1", // in case version was not specified
                 parts = location.search
                     .substr(1)
                     .split("&");
