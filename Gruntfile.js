@@ -34,7 +34,10 @@ module.exports = function(grunt) {
                 jshintrc: true
             },
             gruntfile: ["Gruntfile.js"],
-            all: ["src/**/*.js"],
+            all: [
+                "src/**/*.js",
+                "examples/**/*.js"
+            ],
             tests: [
                 "tests/**/*.js",
                 "!tests/dependencies/**/*.js"

@@ -1,0 +1,46 @@
+.blog
+{
+	background-color: #F0D8AA;
+	width: 75%;
+	margin: 0 auto;
+}
+
+.blog-post-content
+{
+	height: 100px;
+	width: 400px;
+	overflow: auto;
+	border: 1px solid black;
+	background-color: #EFEFEF;
+}
+
+.toolbar
+{
+	border: 1px dotted black;
+	width: 200px;
+}
+
+.btn-inner
+{
+	border: 1px solid black;
+	display: inline-block;
+	height: 18px;
+	width: 18px;
+	margin-right: 5px;
+	background: no-repeat center center;
+}
+
+.btn-inner.bold
+{
+   background-image: url("icons/text_bold.png");
+}
+
+.btn-inner.italic
+{
+   background-image: url("icons/text_italic.png");
+}
+
+.btn-inner.underline
+{
+   background-image: url("icons/text_underline.png");
+}
